@@ -71,6 +71,7 @@ class ActivityDataContainer
         $this->ContinuousDataAdapter->clearEmptyArrays();
         $this->ContinuousDataAdapter->calculateDistancesIfRequired();
         $this->ContinuousDataAdapter->correctCadenceIfRequired();
+        $this->ContinuousDataAdapter->correctPreNullGpsIfRequired();
 
         $this->completeRoundsIfRequired();
         $this->clearRoundsIfOnlyOneRoundIsThere();

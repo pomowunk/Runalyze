@@ -52,6 +52,32 @@ class ContinuousDataAdapter
         }
     }
 
+	/**
+	 * Corrects the problem that the GPS device has NULL values while GPS is not fully initializes while 
+	 * activity is tracking.
+	 * so search for the first Latitude with NOT NULL and copy these value to the NULLs. Do this also with
+	 * the same range for Longitude and Altitude. Hope that all 3 values has the same NULLs.
+	 * #TSC
+	 */
+    public function correctPreNullGpsIfRequired()
+    {
+        if (!empty($this->ContinuousData->Latitude)) {
+			$size = count($this->ContinuousData->Latitude);
+			//search for the index with the first NOT NULL value
+			$firstNotNull = 0;
+			while($firstNotNull < $size && is_null($this->ContinuousData->Latitude[$firstNotNull])) {
+				$firstNotNull++;
+			}
+			if($firstNotNull > 0 && $firstNotNull < $size) {
+				for($i = 0; $i < $firstNotNull; $i++) {
+					$this->ContinuousData->Latitude[$i]  = $this->ContinuousData->Latitude[$firstNotNull];
+					$this->ContinuousData->Longitude[$i] = $this->ContinuousData->Longitude[$firstNotNull];
+					$this->ContinuousData->Altitude[$i]  = $this->ContinuousData->Altitude[$firstNotNull];
+				}
+			}
+        }
+    }
+    
     public function filterUnwantedZeros()
     {
         foreach ($this->ContinuousData->getPropertyNamesOfArraysThatShouldNotContainZeros() as $key) {
