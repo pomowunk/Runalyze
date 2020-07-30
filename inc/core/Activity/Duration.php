@@ -95,24 +95,27 @@ class Duration {
 	public function fromString($string) {
 		$this->Time = 0;
 
-		$split = explode('.', str_replace(',', '.', $string));
+		// #TSC - fix: only set duration if soming exists in the string
+		if (strlen($string) > 0) {
+				$split = explode('.', str_replace(',', '.', $string));
 
-		if (isset($split[1])) {
-			$this->Time += (float)('0.'.$split[1]);
-		}
+				if (isset($split[1])) {
+					$this->Time += (float)('0.'.$split[1]);
+				}
 
-		$splitDays = explode('d ', $split[0]);
+				$splitDays = explode('d ', $split[0]);
 
-		if (isset($splitDays[1])) {
-			$this->Time += 86400 * $splitDays[0];
-			$splitDays[0] = $splitDays[1];
-		}
+				if (isset($splitDays[1])) {
+					$this->Time += 86400 * $splitDays[0];
+					$splitDays[0] = $splitDays[1];
+				}
 
-		$parts = explode(':', $splitDays[0]);
-		$num = count($parts);
+				$parts = explode(':', $splitDays[0]);
+				$num = count($parts);
 
-		foreach ($parts as $i => $part) {
-			$this->Time += $part * pow(60, $num - $i - 1);
+				foreach ($parts as $i => $part) {
+					$this->Time += $part * pow(60, $num - $i - 1);
+				}
 		}
 
 		return $this;
