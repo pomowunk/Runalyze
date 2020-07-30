@@ -34,7 +34,5 @@ class Version20180113231353 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema)
     {
         $prefix = $this->container->getParameter('database_prefix');
-
-        $this->addSql('ALTER TABLE `'.$prefix.'training` DROP `is_power_calculated`');
     }
 }
