@@ -272,6 +272,7 @@ class FileImporter implements LoggerAwareInterface
         }
 
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileBasename = pathinfo($fileName, PATHINFO_BASENAME);
         $parserClass = $this->ParserMapping->getParserClassFor($extension);
 
         if (null === $parserClass) {
@@ -286,7 +287,11 @@ class FileImporter implements LoggerAwareInterface
         $numContainer = $parser->getNumberOfActivities();
 
         for ($i = 0; $i < $numContainer; ++$i) {
-            $container[] = $parser->getActivityDataContainer($i);
+            $actDataCont = $parser->getActivityDataContainer($i);
+            // TSC: store filename for futher use
+            $actDataCont->Metadata->setUploadedFilename($fileBasename);
+
+            $container[] = $actDataCont;
         }
 
         return $container;

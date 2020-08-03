@@ -42,6 +42,10 @@ class Metadata
     /** @var array */
     protected $EquipmentNames = [];
 
+    // TSC: save the uploaded-filename
+    /** @var string */
+    protected $UploadedFilename = '';
+
     /**
      * @param int $timestampAssumingUTC timestamp in local time, i.e. assuming the activity was in utc
      * @param null|int $timezoneOffset [min]
@@ -271,5 +275,21 @@ class Metadata
     public function getEquipmentNames()
     {
         return $this->EquipmentNames;
+    }
+
+    /**
+     * @param string $filename
+     */
+    public function setUploadedFilename($filename)
+    {
+        $this->UploadedFilename = $filename;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadedFilename()
+    {
+        return $this->UploadedFilename;
     }
 }

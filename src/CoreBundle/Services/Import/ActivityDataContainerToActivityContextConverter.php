@@ -130,7 +130,12 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setCreator($metadata->getCreator());
         $activity->setCreatorDetails($metadata->getCreatorDetails());
 
-        $activity->setTitle($metadata->getDescription());
+        // TSC: set the uploaded-file name
+        if(empty($metadata->getDescription())) {
+            $activity->setTitle($metadata->getUploadedFilename());
+        } else {
+            $activity->setTitle($metadata->getDescription().' / '.$metadata->getUploadedFilename());
+        }
         $activity->setNotes($metadata->getNotes());
 
         $this->tryToSetSportFor($activity, $metadata);

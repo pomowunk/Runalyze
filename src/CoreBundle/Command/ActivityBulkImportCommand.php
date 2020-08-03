@@ -71,7 +71,9 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $filename = 'bulk-import'.uniqid().$file;
+            // TSC: do not use "'bulk-import'.uniqid()" for bulk uploads, because the filename is set in the activity title
+            // $filename = 'bulk-import'.uniqid().$file;
+            $filename = $file;
             $fs->copy($path.'/'.$file, $dataDirectory.'/import/'.$filename);
             $files[] = $dataDirectory.'/import/'.$filename;
         }
