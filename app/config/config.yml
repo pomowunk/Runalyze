@@ -169,6 +169,7 @@ swiftmailer:
     port:                 '%smtp_port%'
     encryption:           '%smtp_security%'
     sender_address:       '%mail_sender%'
+    local_domain:         '%mail_localdomain%'
 
 jms_translation:
     configs:
