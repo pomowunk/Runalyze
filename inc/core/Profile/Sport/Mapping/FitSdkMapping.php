@@ -21,7 +21,8 @@ class FitSdkMapping extends AbstractMapping
             FitSdk\SportProfile::SWIMMING => SportProfile::SWIMMING,
             FitSdk\SportProfile::ROWING => SportProfile::ROWING,
             FitSdk\SportProfile::WALKING => SportProfile::HIKING,
-            FitSdk\SportProfile::HIKING => SportProfile::HIKING
+            FitSdk\SportProfile::HIKING => SportProfile::HIKING,
+            FitSdk\SportProfile::MOUNTAINEERING => SportProfile::HIKING
         ];
     }
 
