@@ -56,7 +56,7 @@ class ContinuousDataAdapter
 	 * Corrects the problem that the GPS device has NULL values while GPS is not fully initializes while 
 	 * activity is tracking.
 	 * so search for the first Latitude with NOT NULL and copy these value to the NULLs. Do this also with
-	 * the same range for Longitude and Altitude. Hope that all 3 values has the same NULLs.
+	 * the same range for Longitude (and Altitude). Hope that all 3 values has the same NULLs.
 	 * #TSC
 	 */
     public function correctPreNullGpsIfRequired()
@@ -68,16 +68,62 @@ class ContinuousDataAdapter
 			while($firstNotNull < $size && is_null($this->ContinuousData->Latitude[$firstNotNull])) {
 				$firstNotNull++;
 			}
+            
 			if($firstNotNull > 0 && $firstNotNull < $size) {
 				for($i = 0; $i < $firstNotNull; $i++) {
 					$this->ContinuousData->Latitude[$i]  = $this->ContinuousData->Latitude[$firstNotNull];
 					$this->ContinuousData->Longitude[$i] = $this->ContinuousData->Longitude[$firstNotNull];
-					$this->ContinuousData->Altitude[$i]  = $this->ContinuousData->Altitude[$firstNotNull];
+                    
+                    // special case altitude: if using baro, the altitude can exist while lat/long is NULL
+                    if(is_null($this->ContinuousData->Altitude[$i])) {
+                        $this->ContinuousData->Altitude[$i]  = $this->ContinuousData->Altitude[$firstNotNull];
+                    }
 				}
 			}
         }
     }
-    
+
+	/**
+	 * On the Fenix 6 sometimes the last heart-rate is NULL. Correct this here to get the last NOT NULL value
+     * and put it on the last NULL's.
+	 * #TSC
+	 */
+    public function correctNullHeartrateIfRequired()
+    {
+        if (!empty($this->ContinuousData->HeartRate)) {
+			$size = count($this->ContinuousData->HeartRate);
+
+            // pre NULLs
+
+			//search for the index with the first NOT NULL value
+			$firstNotNull = 0;
+			while($firstNotNull < $size && is_null($this->ContinuousData->HeartRate[$firstNotNull])) {
+				$firstNotNull++;
+			}
+
+			if($firstNotNull > 0 && $firstNotNull < $size) {
+				for($i = 0; $i < $firstNotNull; $i++) {
+                    $this->ContinuousData->HeartRate[$i] = $this->ContinuousData->HeartRate[$firstNotNull];
+				}
+			}
+            
+            // post NULLs
+
+			//search for the index with the last NOT NULL value
+			$lastNotNull = $size - 1;
+			while($lastNotNull > 0 && is_null($this->ContinuousData->HeartRate[$lastNotNull])) {
+				$lastNotNull--;
+			}
+
+            // yes, we have valid heart-rates. remove the invalid NULLs
+			if($lastNotNull < $size - 1) {
+				for($i = $size - 1; $i > $lastNotNull; $i--) {
+					$this->ContinuousData->HeartRate[$i] = $this->ContinuousData->HeartRate[$lastNotNull];
+				}
+			}
+        }
+    }
+        
     public function filterUnwantedZeros()
     {
         foreach ($this->ContinuousData->getPropertyNamesOfArraysThatShouldNotContainZeros() as $key) {

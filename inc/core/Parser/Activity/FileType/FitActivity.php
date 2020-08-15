@@ -580,7 +580,23 @@ class FitActivity extends AbstractSingleParser
 
         $this->Container->ContinuousData->Latitude[] = isset($this->Values['position_lat']) ? substr($this->Values['position_lat'][1], 0, -4) : null;
         $this->Container->ContinuousData->Longitude[] = isset($this->Values['position_long']) ? substr($this->Values['position_long'][1], 0, -4) : null;
-        $this->Container->ContinuousData->Altitude[] = isset($this->Values['altitude']) && $this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null;
+
+        // TSC: check if altitude baro is not yet set; try to set it one time
+        if(is_null($this->Container->ContinuousData->IsAltitudeDataBarometric)) {
+            // TSC: check if "enhanced_altitude" is existing - if true => reading alti by Baro!
+            if(isset($this->Values['enhanced_altitude']) && $this->Values['enhanced_altitude'][0] != 0) {
+                $this->Container->ContinuousData->IsAltitudeDataBarometric = true;
+            } else if(isset($this->Values['altitude']) && $this->Values['altitude'][0] != 0) {
+                $this->Container->ContinuousData->IsAltitudeDataBarometric = false;
+            }
+        }
+        
+        if($this->Container->ContinuousData->IsAltitudeDataBarometric) {
+            $this->Container->ContinuousData->Altitude[] = isset($this->Values['enhanced_altitude']) && $this->Values['enhanced_altitude'][0] != 0 ? substr($this->Values['enhanced_altitude'][1], 0, -4) : null;
+        } else {
+            $this->Container->ContinuousData->Altitude[] = isset($this->Values['altitude']) && $this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null;
+        }
+
         $this->Container->ContinuousData->Distance[] = isset($this->Values['distance']) ? $this->Values['distance'][0] / 1e5 : end($this->Container->ContinuousData->Distance);
         $this->Container->ContinuousData->HeartRate[] = isset($this->Values['heart_rate']) ? (int)$this->Values['heart_rate'][0] : null;
         $this->Container->ContinuousData->Cadence[] = isset($this->Values['cadence']) ? (int)$this->Values['cadence'][0] : null;

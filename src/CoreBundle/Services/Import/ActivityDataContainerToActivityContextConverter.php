@@ -384,9 +384,9 @@ class ActivityDataContainerToActivityContextConverter
         if (!empty($container->ContinuousData->Altitude)) {
             if ($container->ContinuousData->IsAltitudeDataBarometric) {
                 $route->setElevationsCorrected($container->ContinuousData->Altitude);
-            } else {
-                $route->setElevationsOriginal($container->ContinuousData->Altitude);
             }
+            // TSC: save data also in the original filed - so if the correction is removed we have the originals
+            $route->setElevationsOriginal($container->ContinuousData->Altitude);
         }
 
         if (!empty($container->ContinuousData->Latitude) && !empty($container->ContinuousData->Longitude)) {

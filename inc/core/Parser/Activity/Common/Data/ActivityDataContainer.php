@@ -72,6 +72,7 @@ class ActivityDataContainer
         $this->ContinuousDataAdapter->calculateDistancesIfRequired();
         $this->ContinuousDataAdapter->correctCadenceIfRequired();
         $this->ContinuousDataAdapter->correctPreNullGpsIfRequired();
+        $this->ContinuousDataAdapter->correctNullHeartrateIfRequired();
 
         $this->completeRoundsIfRequired();
         $this->clearRoundsIfOnlyOneRoundIsThere();
