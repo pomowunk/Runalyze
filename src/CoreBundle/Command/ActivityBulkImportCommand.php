@@ -25,7 +25,9 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
             ->setName('runalyze:activity:bulk-import')
             ->setDescription('Bulk import of activity files')
             ->addArgument('username', InputArgument::REQUIRED, 'username')
-            ->addArgument('path', InputArgument::REQUIRED, 'Path to files');
+            ->addArgument('path', InputArgument::REQUIRED, 'Path to files')
+            // #TSC: new optional parameter to set the sports profile if the imported file has no sport (f.e. GPX files)
+            ->addArgument('sport', InputArgument::OPTIONAL, 'Override sport profile');
     }
 
     /**
@@ -59,6 +61,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         $importer = $this->getContainer()->get('app.file_importer');
         $dataDirectory = $this->getContainer()->getParameter('data_directory');
         $path = $input->getArgument('path');
+        $sport = $input->getArgument('sport');
         $it = new \FilesystemIterator($path);
         $fs = new Filesystem();
 
@@ -86,6 +89,12 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         foreach ($importResult as $result) {
             /** @var $result FileImportResult */
             foreach ($result->getContainer() as $container) {
+
+                // #TSC override the sportname to set the sport profile
+                if(!empty($sport)) {
+                    $container->Metadata->setSportName($sport);
+                }
+
                 $activity = $this->containerToActivity($container, $user);
                 $context = new ActivityContext($activity, null, null, $activity->getRoute());
                 $contextAdapter = $contextAdapterFactory->getAdapterFor($context);
