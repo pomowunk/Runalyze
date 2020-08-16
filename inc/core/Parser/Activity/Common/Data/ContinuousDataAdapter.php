@@ -233,4 +233,18 @@ class ContinuousDataAdapter
             $this->ContinuousData->{$key} = array_merge($this->ContinuousData->{$key});
         }
     }
+
+    /**
+     * Returns the temperature from the continuous-data if available.
+     * #TSC
+     */
+    public function getAverageTemperatur() {
+        if (!empty($this->ContinuousData->Temperature)) {
+            $a = array_filter($this->ContinuousData->Temperature);
+            $average = array_sum($a)/count($a);
+            return $average;
+        } else {
+            return NULL;
+        }
+    }
 }

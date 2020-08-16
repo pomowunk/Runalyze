@@ -84,6 +84,9 @@ class ActivityDataContainer
         $this->ActivityData->completeFromContinuousData($this->ContinuousData);
         $this->ActivityData->completeFromRounds($this->Rounds);
         $this->ActivityData->completeFromPauses($this->Pauses);
+
+        // #TSC: set average-temp from the clock/FIT data if available
+        $this->WeatherData->Temperature = $this->ContinuousDataAdapter->getAverageTemperatur();
     }
 
     public function filterActivityData(FilterCollection $filter)
