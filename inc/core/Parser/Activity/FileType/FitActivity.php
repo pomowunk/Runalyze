@@ -442,6 +442,15 @@ class FitActivity extends AbstractSingleParser
         } elseif (isset($this->Values['name'])) {
             $this->Container->Metadata->setSportName(substr($this->Values['name'][0], 1, -1));
         }
+
+        // #TSC: set original sport-name to notes
+        if (isset($this->Values['name'])) {
+            $v = "Profile: " . substr($this->Values['name'][0], 1, -1);
+            if(!empty($this->Container->Metadata->getNotes())) {
+                $v = $v . "\n".$this->Container->Metadata->getNotes();
+            }
+            $this->Container->Metadata->setNotes($v);
+        }
     }
 
     protected function readUserProfile()
