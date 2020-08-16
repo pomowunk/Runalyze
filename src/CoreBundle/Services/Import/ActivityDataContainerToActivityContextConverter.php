@@ -131,10 +131,11 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setCreatorDetails($metadata->getCreatorDetails());
 
         // TSC: set the uploaded-file name
-        if(empty($metadata->getDescription())) {
-            $activity->setTitle($metadata->getUploadedFilename());
+        if(!empty($metadata->getDescription()) && substr_compare($metadata->getDescription(), $metadata->getUploadedFilename(), 0) != 0) {
+            // description exists and is not the same as the filename, so set existing description and filename as title
+            $activity->setTitle($metadata->getDescription() . ' / ' . $metadata->getUploadedFilename());
         } else {
-            $activity->setTitle($metadata->getDescription().' / '.$metadata->getUploadedFilename());
+            $activity->setTitle($metadata->getUploadedFilename());
         }
         $activity->setNotes($metadata->getNotes());
 
