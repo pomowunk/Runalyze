@@ -19,7 +19,8 @@ class EnglishLanguageMapping implements ToInternalMappingInterface
         'ergometer' => SportProfile::CYCLING,
         'swim' => SportProfile::SWIMMING,
         'swimming' => SportProfile::SWIMMING,
-        'hiking' => SportProfile::HIKING
+        'hiking' => SportProfile::HIKING,
+        'mountaineering' => SportProfile::MOUNTAINEERING
     ];
 
     public function toInternal($value)
