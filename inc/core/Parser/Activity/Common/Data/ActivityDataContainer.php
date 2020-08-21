@@ -72,7 +72,11 @@ class ActivityDataContainer
         $this->ContinuousDataAdapter->calculateDistancesIfRequired();
         $this->ContinuousDataAdapter->correctCadenceIfRequired();
         $this->ContinuousDataAdapter->correctPreNullGpsIfRequired();
-        $this->ContinuousDataAdapter->correctNullHeartrateIfRequired();
+
+        // TSC: On the Fenix 6 sometimes the last heart-rate is NULL. Correct this here to get the last NOT NULL value and put it on the last NULL's.
+        $this->ContinuousDataAdapter->correctArraySurroundedNulls($this->ContinuousData->HeartRate);
+        // TSC: On old Mapjack altitudes sometimes the first value is NULL. Correct it.
+        $this->ContinuousDataAdapter->correctArraySurroundedNulls($this->ContinuousData->Altitude);
 
         $this->completeRoundsIfRequired();
         $this->clearRoundsIfOnlyOneRoundIsThere();
