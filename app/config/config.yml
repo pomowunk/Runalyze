@@ -127,9 +127,10 @@ monolog:
     channels: ['queue', 'console', 'external_services', 'activity_uploads']
     handlers:
         applog:
-            type: stream
+            type: rotating_file
             path: '%kernel.root_dir%/../var/logs/symfony.log'
             level: error
+            max_files: 7
         main:
             type: fingers_crossed
             action_level: warning
@@ -141,24 +142,28 @@ monolog:
             type: syslog
             level: error
         queue:
-            type: stream
+            type: rotating_file
             level: debug
             path: '%kernel.root_dir%/../var/logs/queue.log'
+            max_files: 7
             channels: ['queue']
         console:
-            type: stream
+            type: rotating_file
             level: error
             path: '%kernel.root_dir%/../var/logs/console.log'
+            max_files: 7
             channels: ['console']
         external_services:
-            type: stream
+            type: rotating_file
             level: warning
             path: '%kernel.root_dir%/../var/logs/external_services.log'
+            max_files: 7
             channels: ['external_services']
         activity_uploads:
-            type: stream
+            type: rotating_file
             level: debug
             path: '%kernel.root_dir%/../var/logs/activity_uploads.log'
+            max_files: 7
             channels: ['activity_uploads']
 
 swiftmailer:
