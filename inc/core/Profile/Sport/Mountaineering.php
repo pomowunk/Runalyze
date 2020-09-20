@@ -17,7 +17,7 @@ class Mountaineering extends AbstractSport
 
     public function getIconClass()
     {
-        return 'icons8-Trekking';
+        return 'icons8-Mountaineering';
     }
 
     public function getName()
