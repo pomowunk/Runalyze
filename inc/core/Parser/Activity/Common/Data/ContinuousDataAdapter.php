@@ -119,6 +119,23 @@ class ContinuousDataAdapter
         }
     }
 
+	/**
+	 * Ensure that empty/NULL values in array (||) has a valid number/0 (|0|).
+	 * #TSC
+	 */
+    public function correctArrayNullElements(array &$values)
+    {
+        if (is_array($values) && !empty($values)) {
+            $size = count($values);
+
+            for($i = 0; $i < $size; $i++) {
+                if(is_null($values[$i])) {
+                    $values[$i] = 0;
+                }
+            }
+        }
+    }
+    
     public function filterUnwantedZeros()
     {
         foreach ($this->ContinuousData->getPropertyNamesOfArraysThatShouldNotContainZeros() as $key) {

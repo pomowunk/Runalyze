@@ -77,6 +77,10 @@ class ActivityDataContainer
         $this->ContinuousDataAdapter->correctArraySurroundedNulls($this->ContinuousData->HeartRate);
         // TSC: On old Mapjack altitudes sometimes the first value is NULL. Correct it.
         $this->ContinuousDataAdapter->correctArraySurroundedNulls($this->ContinuousData->Altitude);
+        // TSC: On Fenix 6 sometimes "Running Dynamics" values have NULL as array elements - set to 0
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->GroundContactTime);
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->VerticalOscillation);
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->GroundContactBalance);
 
         $this->completeRoundsIfRequired();
         $this->clearRoundsIfOnlyOneRoundIsThere();
