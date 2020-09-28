@@ -220,11 +220,20 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     private $fitHrvAnalysis = null;
 
     /**
-     * @var float|null [1.0 .. 5.0]
+     * @var float|null [0.0 .. 5.0]
      *
      * @ORM\Column(name="fit_training_effect", type="casted_decimal_1", precision=2, scale=1, nullable=true, options={"unsigned":true})
      */
     private $fitTrainingEffect = null;
+
+    /**
+     * @var float|null [0.0 .. 5.0]
+     * 
+     * #TSC: new DB column to training table
+     *
+     * @ORM\Column(name="fit_anaerobic_training_effect", type="casted_decimal_1", precision=2, scale=1, nullable=true, options={"unsigned":true})
+     */
+    private $fitAnaerobicTrainingEffect = null;
 
     /**
      * @var int|null
@@ -1165,6 +1174,26 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function getFitTrainingEffect()
     {
         return $this->fitTrainingEffect;
+    }
+
+    /**
+     * @param null|float $fitAnaerobicTrainingEffect
+     *
+     * @return $this
+     */
+    public function setFitAnaerobicTrainingEffect($fitAnaerobicTrainingEffect)
+    {
+        $this->fitAnaerobicTrainingEffect = $fitAnaerobicTrainingEffect;
+
+        return $this;
+    }
+
+    /**
+     * @return null|float
+     */
+    public function getFitAnaerobicTrainingEffect()
+    {
+        return $this->fitAnaerobicTrainingEffect;
     }
 
     /**

@@ -429,8 +429,14 @@ class FitActivity extends AbstractSingleParser
             $this->Container->Metadata->setSportName($this->Values['sport'][1]);
         }
 
-        if (isset($this->Values['total_training_effect']) && $this->Values['total_training_effect'][0] >= 10.0 && $this->Values['total_training_effect'][0] <= 50.0) {
+        // #TSC: save effect (import at least is greater 0 - see also inc/core/Parser/Activity/Common/Filter/OutOfRangeValueFilter.php)
+        if (isset($this->Values['total_training_effect']) && $this->Values['total_training_effect'][0] > 0 && $this->Values['total_training_effect'][0] <= 99.0) {
             $this->Container->FitDetails->TrainingEffect = $this->Values['total_training_effect'][0] / 10;
+        }
+
+        // #TSC: save anaerob effect (import at least is greater 0 - see also inc/core/Parser/Activity/Common/Filter/OutOfRangeValueFilter.php)
+        if (isset($this->Values['total_anaerobic_training_effect']) && $this->Values['total_anaerobic_training_effect'][0] > 0 && $this->Values['total_anaerobic_training_effect'][0] <= 99.0) {
+            $this->Container->FitDetails->AnaerobicTrainingEffect = $this->Values['total_anaerobic_training_effect'][0] / 10;
         }
     }
 
@@ -463,6 +469,7 @@ class FitActivity extends AbstractSingleParser
     protected function readUndocumentedUserData()
     {
         if (isset($this->Values['unknown0']) && 0.0 == $this->Container->FitDetails->VO2maxEstimate) {
+            // TSC: used on fenix6
             $this->Container->FitDetails->VO2maxEstimate = round((int)$this->Values['unknown0'][1] * 3.5 / 1024, 2);
         }
     }

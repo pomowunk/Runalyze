@@ -134,6 +134,7 @@ class SearchResults {
 			'fit_recovery_time',
 			'fit_hrv_analysis',
 			'fit_training_effect',
+			'fit_anaerobic_training_effect',
 			'fit_performance_condition',
 			'rpe',
 			'trimp',
@@ -184,6 +185,7 @@ class SearchResults {
 		    'climb_score',
 			'percentage_hilly',
 			'fit_training_effect',
+			'fit_anaerobic_training_effect',
 			'fit_performance_condition',
 			'rpe',
 			'temperature',
@@ -421,7 +423,7 @@ class SearchResults {
 	 * @return float|int
 	 */
 	protected function transformValueForDatabase($key, $value) {
-		if (in_array($key, array('distance', 'vertical_oscillation', 'vertical_ratio', 'stride_length', 'groundcontact_balance', 'fit_training_effect', 'kcal'))) {
+		if (in_array($key, array('distance', 'vertical_oscillation', 'vertical_ratio', 'stride_length', 'groundcontact_balance', 'fit_training_effect', 'fit_anaerobic_training_effect', 'kcal'))) {
 			$value = (float)str_replace(',', '.', $value);
 		}
 

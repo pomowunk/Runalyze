@@ -190,6 +190,9 @@ final class Keys extends AbstractEnum
     /** @var int */
     const AVG_PRONATION_EXCURSION = 59;
 
+	/** @var int */
+	const FIT_ANAEROBIC_TRAINING_EFFECT = 60;
+
     /**
 	 * @var array|null
 	 */
@@ -305,7 +308,8 @@ final class Keys extends AbstractEnum
             self::AVG_IMPACT_GS => 'AverageImpactGs',
             self::AVG_BRAKING_GS => 'AverageBrakingGs',
             self::AVG_FOOTSTRIKE_TYPE => 'AverageFootstrikeType',
-            self::AVG_PRONATION_EXCURSION => 'AveragePronationExcursion'
+            self::AVG_PRONATION_EXCURSION => 'AveragePronationExcursion',
+            self::FIT_ANAEROBIC_TRAINING_EFFECT => 'FitAnaerobicTrainingEffect'
         );
 	}
 }

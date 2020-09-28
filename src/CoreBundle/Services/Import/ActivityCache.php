@@ -97,6 +97,7 @@ class ActivityCache
         $activityToMerge->setFitHrvAnalysis($activityFromCache->getFitHrvAnalysis());
         $activityToMerge->setFitRecoveryTime($activityFromCache->getFitRecoveryTime());
         $activityToMerge->setFitTrainingEffect($activityFromCache->getFitTrainingEffect());
+        $activityToMerge->setFitAnaerobicTrainingEffect($activityFromCache->getFitAnaerobicTrainingEffect()); // #TSC: transfer anaerobic eff
         $activityToMerge->setFitPerformanceCondition($activityFromCache->getFitPerformanceCondition());
         $activityToMerge->setFitPerformanceConditionEnd($activityFromCache->getFitPerformanceConditionEnd());
         $activityToMerge->setPowerCalculated($activityFromCache->isPowerCalculated());

@@ -168,6 +168,12 @@ class Entity extends Model\EntityWithID {
 	const FIT_TRAINING_EFFECT = 'fit_training_effect';
 
 	/**
+	 * Key: total anaerobic training effect from fit file
+	 * @var string
+	 */
+	const FIT_ANAEROBIC_TRAINING_EFFECT = 'fit_anaerobic_training_effect';
+
+	/**
 	 * Key: performance condition from fit file
 	 * @var string
 	 */
@@ -450,6 +456,7 @@ class Entity extends Model\EntityWithID {
 			self::FIT_RECOVERY_TIME,
 			self::FIT_HRV_ANALYSIS,
 			self::FIT_TRAINING_EFFECT,
+            self::FIT_ANAEROBIC_TRAINING_EFFECT,
 			self::FIT_PERFORMANCE_CONDITION,
             self::FIT_PERFORMANCE_CONDITION_END,
             self::RPE,
@@ -548,6 +555,7 @@ class Entity extends Model\EntityWithID {
             case self::FIT_RECOVERY_TIME:
             case self::FIT_HRV_ANALYSIS:
             case self::FIT_TRAINING_EFFECT:
+            case self::FIT_ANAEROBIC_TRAINING_EFFECT:
             case self::FIT_PERFORMANCE_CONDITION:
             case self::FIT_PERFORMANCE_CONDITION_END:
             case self::RPE:
@@ -621,6 +629,7 @@ class Entity extends Model\EntityWithID {
             self::FIT_RECOVERY_TIME,
             self::FIT_HRV_ANALYSIS,
             self::FIT_TRAINING_EFFECT,
+            self::FIT_ANAEROBIC_TRAINING_EFFECT,
             self::FIT_PERFORMANCE_CONDITION,
             self::FIT_PERFORMANCE_CONDITION_END,
             self::RPE,
@@ -855,6 +864,14 @@ class Entity extends Model\EntityWithID {
 	 */
 	public function fitTrainingEffect() {
 		return $this->Data[self::FIT_TRAINING_EFFECT];
+	}
+
+	/**
+	 * Total anaerobic training effect
+	 * @return null|float
+	 */
+	public function fitAnaerobicTrainingEffect() {
+		return $this->Data[self::FIT_ANAEROBIC_TRAINING_EFFECT];
 	}
 
 	/**

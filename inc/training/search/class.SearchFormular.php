@@ -217,7 +217,7 @@ class SearchFormular extends Formular {
 		$this->addNumericConditionField('wind_speed', __('Wind Speed'), FormularInput::$SIZE_SMALL, (new WindSpeed())->unit());
 
         $this->addNumericConditionField('fit_performance_condition', __('Performance condition'), FormularInput::$SIZE_SMALL);
-		$this->addNumericConditionField('fit_training_effect', __('Training Effect'), FormularInput::$SIZE_SMALL);
+		$this->addNumericConditionField('fit_training_effect', __('(Aerob) Training Effect'), FormularInput::$SIZE_SMALL);
 		$this->addNumericConditionField('humidity', __('Humidity'), FormularInput::$SIZE_SMALL, (new Humidity())->unit());
 
 		$this->addNumericConditionField('fit_vo2max_estimate', Dataset\Keys::get(Dataset\Keys::FIT_VO2MAX_ESTIMATE)->label(), FormularInput::$SIZE_SMALL);

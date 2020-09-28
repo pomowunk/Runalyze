@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains class::TrainingEffect
+ * This file contains class::AnaerobicTrainingEffect
  * @package Runalyze\Activity
  */
 
@@ -12,7 +12,7 @@ namespace Runalyze\Activity;
  * @see https://www.firstbeat.com/en/consumer-products/features/#training-effect
  * @package Runalyze\Activity
  */
-class TrainingEffect implements ValueInterface
+class AnaerobicTrainingEffect implements ValueInterface
 {
 	/** @var float */
 	const LOWER_LIMIT = 0.0;
@@ -50,8 +50,8 @@ class TrainingEffect implements ValueInterface
      */
 	public function label()
     {
-		// #TSC: Add Aerobic-prefix
-		return __('(Aerob) Training Effect');
+        // #TSC: this label is shown on the statistic heart-rate "box"
+		return __('Anaerob Training Effect');
 	}
 
 	/**
@@ -67,7 +67,7 @@ class TrainingEffect implements ValueInterface
 	/**
 	 * Set training effect
 	 * @param float|null|string $value
-	 * @return \Runalyze\Activity\TrainingEffect $this-reference
+	 * @return \Runalyze\Activity\AnaerobicTrainingEffect $this-reference
      * @throws \InvalidArgumentException
 	 */
 	public function set($value) {
@@ -80,7 +80,7 @@ class TrainingEffect implements ValueInterface
 		$this->Value = (float)str_replace(',', '.', $value);
 
         if ($this->Value < self::LOWER_LIMIT || self::UPPER_LIMIT < $this->Value) {
-            throw new \InvalidArgumentException(sprintf('Training Effect must be between %s and %s', self::LOWER_LIMIT, self::UPPER_LIMIT));
+            throw new \InvalidArgumentException(sprintf('Anaerobic Training Effect must be between %s and %s', self::LOWER_LIMIT, self::UPPER_LIMIT));
         }
 
 		return $this;

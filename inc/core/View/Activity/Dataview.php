@@ -5,6 +5,7 @@ namespace Runalyze\View\Activity;
 use Runalyze\Activity\PerformanceCondition;
 use Runalyze\Activity\Temperature;
 use Runalyze\Activity\TrainingEffect;
+use Runalyze\Activity\AnaerobicTrainingEffect;
 use Runalyze\Configuration;
 use Runalyze\Data\Cadence;
 use Runalyze\Data\Weather\WindChillFactor;
@@ -346,6 +347,16 @@ class Dataview
     public function fitTrainingEffect()
     {
         return TrainingEffect::format($this->Activity->fitTrainingEffect());
+    }
+
+    /**
+     * #TSC: This method returns the anaerobic value to display in the dataview (main)-table from the loaded activity.
+     * 
+     * @return string
+     */
+    public function fitAnaerobicTrainingEffect()
+    {
+        return AnaerobicTrainingEffect::format($this->Activity->fitAnaerobicTrainingEffect());
     }
 
     /**

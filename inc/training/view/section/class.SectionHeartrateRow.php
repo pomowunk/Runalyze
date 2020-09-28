@@ -39,6 +39,7 @@ class SectionHeartrateRow extends TrainingViewSectionRowTabbedPlot {
 		$this->addMaximalHeartrate();
 		$this->addCaloriesAndTrimp();
 		$this->addFitTrainingEffect();
+		$this->addFitAnaerobicTrainingEffect(); // #TSC: add Anaerobic to statistic-page to the heart-rate table
 
 		foreach ($this->BoxedValues as &$Value)
 			$Value->defineAsFloatingBlock('w50');
@@ -86,6 +87,16 @@ class SectionHeartrateRow extends TrainingViewSectionRowTabbedPlot {
 	protected function addFitTrainingEffect() {
 	    if ($this->Context->activity()->fitTrainingEffect() > 0) {
 		$this->BoxedValues[] = new Box\FitTrainingEffect($this->Context);
+	    }
+	}
+
+	/**
+	 * Add: FitAnaerobicTrainingEffect
+     * #TSC: new Anaerobic
+	 */
+	protected function addFitAnaerobicTrainingEffect() {
+	    if ($this->Context->activity()->fitAnaerobicTrainingEffect() > 0) {
+            $this->BoxedValues[] = new Box\FitAnaerobicTrainingEffect($this->Context);
 	    }
 	}
 }

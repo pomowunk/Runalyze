@@ -258,6 +258,8 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setFitRecoveryTime($fitDetails->RecoveryTime);
         $activity->setFitHrvAnalysis($fitDetails->HrvAnalysis);
         $activity->setFitTrainingEffect($fitDetails->TrainingEffect);
+        // #TSC: transfer anaerobic effect from detail(import object) to activity to be saved
+        $activity->setFitAnaerobicTrainingEffect($fitDetails->AnaerobicTrainingEffect);
         $activity->setFitPerformanceCondition($fitDetails->PerformanceCondition);
         $activity->setFitPerformanceConditionEnd($fitDetails->PerformanceConditionEnd);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains class::FitTrainingEffect
+ * This file contains class::FitAnaerobicTrainingEffect
  * @package Runalyze
  */
 
@@ -9,12 +9,14 @@ namespace Runalyze\Dataset\Keys;
 use Runalyze\Dataset\Context;
 
 /**
- * Dataset key: FitTrainingEffect
+ * Dataset key: FitAnaerobicTrainingEffect
+ * 
+ * #TSC: this class contains the labels/short/description for main-data-table, and the dataview (used to select the attributes/position for main-table).
  * 
  * @author Hannes Christiansen
  * @package Runalyze\Dataset\Keys
  */
-class FitTrainingEffect extends AbstractKey
+class FitAnaerobicTrainingEffect extends AbstractKey
 {
 	/**
 	 * Enum id
@@ -22,7 +24,7 @@ class FitTrainingEffect extends AbstractKey
 	 */
 	public function id()
 	{
-		return \Runalyze\Dataset\Keys::FIT_TRAINING_EFFECT;
+		return \Runalyze\Dataset\Keys::FIT_ANAEROBIC_TRAINING_EFFECT;
 	}
 
 	/**
@@ -31,7 +33,7 @@ class FitTrainingEffect extends AbstractKey
 	 */
 	public function column()
 	{
-		return 'fit_training_effect';
+		return 'fit_anaerobic_training_effect';
 	}
 
 	/**
@@ -40,8 +42,8 @@ class FitTrainingEffect extends AbstractKey
 	 */
 	public function label()
 	{
-		// #TSC: Add aerobic
-		return __('(Aerob) Training Effect').' '.__('(by file)');
+        // #TSC: label on the dataview-configuration screen
+		return __('Anaerob Training Effect').' '.__('(by file)');
 	}
 
 	/**
@@ -50,7 +52,8 @@ class FitTrainingEffect extends AbstractKey
 	 */
 	public function shortLabel()
 	{
-		return __('TE');
+        // #TSC: short-label for main-table
+		return __('ATE');
 	}
 
 	/**
@@ -60,8 +63,8 @@ class FitTrainingEffect extends AbstractKey
 	public function description()
 	{
 		return __(
-			'(Aerob) Training Effect is an indicator between 0.0 (none) and 5.0 (overreaching) '.
-			'to rate the impact of aerobic exercise on your body.'
+			'Anaerobic Training Effect is an indicator between 0.0 (none) and 5.0 (overreaching) '.
+			'to rate the impact of anaerobic exercise on your body.'
 		);
 	}
 
@@ -72,7 +75,7 @@ class FitTrainingEffect extends AbstractKey
 	 */
 	public function stringFor(Context $context)
 	{
-		return $context->dataview()->fitTrainingEffect();
+		return $context->dataview()->fitAnaerobicTrainingEffect();
 	}
 
 	/**

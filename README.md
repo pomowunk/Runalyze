@@ -15,3 +15,17 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * Sport types hiking and (new) mountain climbing.
 * Imported filename is stored in title attribute.
 * Temperature of FIT files are stored in the temp attribute as average value.
+* 2020-09-27: Import Garmin FIT "total_training_effect"-attribute (Aerob Training Effect) already with greater 0.0 (and not even 1.0)
+* 2020-09-27: Garmin FIT "total_anaerobic_training_effect" attribute as "Anaerobic Training Effect" is imported
+	* Store it in the DB (runalyze_training.fit_anaerobic_training_effect)
+	* Added on the dataset configuration
+	* Also add field on statistic heart-rate view (activity main page)
+	* **Migration 20200926230800 is necessary!**
+
+## Database migration
+
+For Migration of the Database use the commands:
+- Check state: `/usr/bin/php /app/runalyze/bin/console doctrine:migrations:status --env=prod --show-versions`
+- Do it: `/usr/bin/php /app/runalyze/bin/console doctrine:migrations:migrate --env=prod [--dry-run]`
+- Rollback to an previous version: `/usr/bin/php /app/runalyze/bin/console doctrine:migrations:migrate --env=prod <VersionAufDieZurückgerolltWerdenSoll>`
+Notice: Do the migration with your "project" user.

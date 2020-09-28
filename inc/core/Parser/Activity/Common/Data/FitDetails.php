@@ -13,8 +13,11 @@ class FitDetails
     /** @var int|null */
     public $HrvAnalysis = null;
 
-    /** @var float|null [1.0 .. 5.0] */
+    /** @var float|null [0.0 .. 5.0] */
     public $TrainingEffect = null;
+
+    /** @var float|null [0.0 .. 5.0] */
+    public $AnaerobicTrainingEffect = null; // #TSC: new anaerob
 
     /** @var int|null */
     public $PerformanceCondition = null;
