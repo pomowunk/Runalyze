@@ -479,6 +479,11 @@ class FitActivity extends AbstractSingleParser
         if (isset($this->Values['unknown17'])) {
             $this->Container->FitDetails->PerformanceConditionEnd = 100 + (float)$this->Values['unknown17'][1];
         }
+
+        // #TSC: set recovery time (in minutes) from 140er unknown9, if not already set
+        if (is_null($this->Container->FitDetails->RecoveryTime) && isset($this->Values['unknown9'])) {
+            $this->Container->FitDetails->RecoveryTime = round((int)$this->Values['unknown9'][1], 0);
+        }
     }
 
     protected function readEvent()
@@ -490,7 +495,10 @@ class FitActivity extends AbstractSingleParser
                     return;
 
                 case 38:
-                    $this->Container->FitDetails->RecoveryTime = (int)$this->Values['data'][1];
+                    // #TSC: set recovery time if not set
+                    if(is_null($this->Container->FitDetails->RecoveryTime)) {
+                        $this->Container->FitDetails->RecoveryTime = (int)$this->Values['data'][1];
+                    }
                     return;
 
                 case 39:
