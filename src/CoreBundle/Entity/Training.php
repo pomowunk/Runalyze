@@ -250,6 +250,27 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     private $fitPerformanceConditionEnd = null;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="fit_lactate_threshold_hr", type="tinyint", nullable=true, options={"unsigned":true})
+     */
+    private $fitLactateThresholdHR = null;
+
+    /**
+     * @var int|null [m]
+     *
+     * @ORM\Column(name="fit_total_ascent", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $fitTotalAscent = null;
+
+    /**
+     * @var int|null [m]
+     *
+     * @ORM\Column(name="fit_total_descent", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $fitTotalDescent = null;
+
+    /**
      * @var int|null [6 .. 20]
      *
      * @ORM\Column(name="rpe", type="tinyint", nullable=true, options={"unsigned":true})
@@ -1234,6 +1255,66 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function getFitPerformanceConditionEnd()
     {
         return $this->fitPerformanceConditionEnd;
+    }
+
+    /**
+     * @param null|int $fitLactateThresholdHR
+     *
+     * @return $this
+     */
+    public function setFitLactateThresholdHR($fitLactateThresholdHR)
+    {
+        $this->fitLactateThresholdHR = $fitLactateThresholdHR;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getFitLactateThresholdHR()
+    {
+        return $this->fitLactateThresholdHR;
+    }
+
+    /**
+     * @param null|int $fitTotalAscent
+     *
+     * @return $this
+     */
+    public function setFitTotalAscent($fitTotalAscent)
+    {
+        $this->fitTotalAscent = $fitTotalAscent;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getFitTotalAscent()
+    {
+        return $this->fitTotalAscent;
+    }
+
+    /**
+     * @param null|int $fitTotalDescent
+     *
+     * @return $this
+     */
+    public function setFitTotalDescent($fitTotalDescent)
+    {
+        $this->fitTotalDescent = $fitTotalDescent;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getFitTotalDescent()
+    {
+        return $this->fitTotalDescent;
     }
 
     /**

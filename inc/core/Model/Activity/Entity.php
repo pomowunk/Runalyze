@@ -185,6 +185,24 @@ class Entity extends Model\EntityWithID {
      */
     const FIT_PERFORMANCE_CONDITION_END = 'fit_performance_condition_end';
 
+    /**
+     * Key: lactate threshold heart rate file
+     * @var string
+     */
+    const FIT_LACTATE_THRESHOLD_HR = 'fit_lactate_threshold_hr';
+
+    /**
+     * Key: fit total ascent
+     * @var string
+     */
+    const FIT_TOTAL_ASCENT = 'fit_total_ascent';
+
+    /**
+     * Key: fit total descent
+     * @var string
+     */
+    const FIT_TOTAL_DESCENT = 'fit_total_descent';
+
 	/**
 	 * Key: RPE
 	 * @var string
@@ -459,6 +477,9 @@ class Entity extends Model\EntityWithID {
             self::FIT_ANAEROBIC_TRAINING_EFFECT,
 			self::FIT_PERFORMANCE_CONDITION,
             self::FIT_PERFORMANCE_CONDITION_END,
+            self::FIT_LACTATE_THRESHOLD_HR,
+            self::FIT_TOTAL_ASCENT,
+            self::FIT_TOTAL_DESCENT,
             self::RPE,
 			self::TRIMP,
 			self::CADENCE,
@@ -558,6 +579,9 @@ class Entity extends Model\EntityWithID {
             case self::FIT_ANAEROBIC_TRAINING_EFFECT:
             case self::FIT_PERFORMANCE_CONDITION:
             case self::FIT_PERFORMANCE_CONDITION_END:
+            case self::FIT_LACTATE_THRESHOLD_HR:
+            case self::FIT_TOTAL_ASCENT:
+            case self::FIT_TOTAL_DESCENT:
             case self::RPE:
             case self::TRIMP:
             case self::CADENCE:
@@ -632,6 +656,9 @@ class Entity extends Model\EntityWithID {
             self::FIT_ANAEROBIC_TRAINING_EFFECT,
             self::FIT_PERFORMANCE_CONDITION,
             self::FIT_PERFORMANCE_CONDITION_END,
+            self::FIT_LACTATE_THRESHOLD_HR,
+            self::FIT_TOTAL_ASCENT,
+            self::FIT_TOTAL_DESCENT,
             self::RPE,
             self::TRIMP,
             self::CADENCE,
@@ -888,6 +915,30 @@ class Entity extends Model\EntityWithID {
      */
     public function fitPerformanceConditionEnd() {
         return $this->Data[self::FIT_PERFORMANCE_CONDITION_END];
+    }
+
+    /**
+     * Lactate threshold HR
+     * @return null|int
+     */
+    public function fitLactateThresholdHR() {
+        return $this->Data[self::FIT_LACTATE_THRESHOLD_HR];
+    }
+
+    /**
+     * fit total ascent
+     * @return null|int
+     */
+    public function fitTotalAscent() {
+        return $this->Data[self::FIT_TOTAL_ASCENT];
+    }
+
+    /**
+     * fit total Descent
+     * @return null|int
+     */
+    public function fitTotalDescent() {
+        return $this->Data[self::FIT_TOTAL_DESCENT];
     }
 
 	/**
@@ -1163,5 +1214,21 @@ class Entity extends Model\EntityWithID {
 		$this->set(Entity::VO2MAX_BY_TIME, null);
 		$this->set(Entity::VO2MAX, null);
 		$this->set(Entity::VO2MAX_WITH_ELEVATION, null);
+	}
+
+	/**
+	 * creator
+	 * @return string
+	 */
+	public function creator() {
+		return $this->Data[self::CREATOR];
+	}
+
+	/**
+	 * creatorDetails
+	 * @return string
+	 */
+	public function creatorDetails() {
+		return $this->Data[self::CREATOR_DETAILS];
 	}
 }

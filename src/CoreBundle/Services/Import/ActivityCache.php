@@ -100,6 +100,9 @@ class ActivityCache
         $activityToMerge->setFitAnaerobicTrainingEffect($activityFromCache->getFitAnaerobicTrainingEffect()); // #TSC: transfer anaerobic eff
         $activityToMerge->setFitPerformanceCondition($activityFromCache->getFitPerformanceCondition());
         $activityToMerge->setFitPerformanceConditionEnd($activityFromCache->getFitPerformanceConditionEnd());
+        $activityToMerge->setFitLactateThresholdHR($activityFromCache->getFitLactateThresholdHR()); // #TSC: transfer LTHR
+        $activityToMerge->setFitTotalAscent($activityFromCache->getFitTotalAscent()); // #TSC: transfer ascent
+        $activityToMerge->setFitTotalDescent($activityFromCache->getFitTotalDescent()); // #TSC: transfer descent
         $activityToMerge->setPowerCalculated($activityFromCache->isPowerCalculated());
         $activityToMerge->setGroundcontact($activityFromCache->getGroundcontact());
         $activityToMerge->setGroundcontactBalance($activityFromCache->getGroundcontactBalance());

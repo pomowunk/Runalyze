@@ -262,6 +262,11 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setFitAnaerobicTrainingEffect($fitDetails->AnaerobicTrainingEffect);
         $activity->setFitPerformanceCondition($fitDetails->PerformanceCondition);
         $activity->setFitPerformanceConditionEnd($fitDetails->PerformanceConditionEnd);
+        // #TSC: transfer LTHR from detail(import object) to activity to be saved
+        $activity->setFitLactateThresholdHR($fitDetails->LactateThresholdHR);
+        // #TSC: fit ascent / descent
+        $activity->setFitTotalAscent($fitDetails->TotalAscent);
+        $activity->setFitTotalDescent($fitDetails->TotalDescent);
     }
 
     protected function setActivityWeatherDataFor(Training $activity, WeatherData $weatherData)

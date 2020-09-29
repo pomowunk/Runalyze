@@ -10,6 +10,7 @@ With my other Github project [Clone of Tkl2Gpx](https://github.com/codeproducer1
 
 Here some fixes/improvements i have done in RUNALYZE (see details in the commits):
 * Fixes some small bugs until the base release is running on my environment (missing DB attribute, wrong/missing number values, ...)
+* Fixes some small bugs while importing FIT files from Garmin
 * Batch/Bulk-imports can now set/override the sports type
 * Imports from MapJack watch/GPX and Garmin FR45 & Fenix6/FIT results in errors because missing heart-rates and altitutes. Now the NULL will be filled.
 * Sport types hiking and (new) mountain climbing.
@@ -21,6 +22,16 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Added on the dataset configuration
 	* Also add field on statistic heart-rate view (activity main page)
 	* **Migration 20200926230800 is necessary!**
+* 2020-09-29: Garmin FIT attributes as fit_lactate_threshold_hr, fit_total_ascent/descent (the watch original values) are imported
+	* Store it in the DB (runalyze_training.fit_anaerobic_training_effect)
+	* Shown in the statistic view (activity main page) under 'Miscellaneous' panel
+	* **Migration 20200928150400 is necessary!**
+* 2020-09-29: Show further FIT file attributes (recovery-time, training-effect, creator, vo2max, performance-conditions, hvr) on statistic view (activity main page) under 'Miscellaneous' panel
+
+Please notice:
+* All the changes are only done for me to use this great product for me.
+* I don't take any responsibility if you running this version on your infrastructure and have problems.
+* The extensions i made was done on a release version. So i do not build a release. I have no translations for the new features.
 
 ## Database migration
 

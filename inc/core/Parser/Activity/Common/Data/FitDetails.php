@@ -24,4 +24,13 @@ class FitDetails
 
     /** @var int|null */
     public $PerformanceConditionEnd = null;
+
+    /** @var int|null */
+    public $LactateThresholdHR = null;
+
+    /** @var int|null */
+    public $TotalAscent = null;
+
+    /** @var int|null */
+    public $TotalDescent = null;
 }

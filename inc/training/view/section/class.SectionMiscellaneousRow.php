@@ -29,6 +29,8 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	 */
 	protected $NotesContent = '';
 
+	protected $FitDetails = '';
+
 	/**
 	 * @var bool
 	 */
@@ -56,6 +58,9 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	protected function setRightContent() {
 		$this->fillNotesContent();
 		$this->addRightContent('notes', __('Additional notes'), $this->NotesContent);
+
+		$this->fillFitDetailContent();
+		$this->addRightContent('fitdetails', __('FIT details'), $this->FitDetails);
 
 		if ($this->showCadence && $this->Context->trackdata()->has(Trackdata\Entity::CADENCE)) {
 			$Plot = new Activity\Plot\Cadence($this->Context);
@@ -355,6 +360,37 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	}
 
 	/**
+	 * Fill FIT content.
+     * #TSC add FIT file data as a new panel/sheet
+	 */
+	protected function fillFitDetailContent() {
+		$this->FitDetails = '<div class="panel-content">';
+
+        $details = '<strong>'.__('FIT data from the file').':</strong><br>';
+        $c = 0;
+        $this->addToTable($details, 'Total ascent (m):', ($this->Context->activity()->fitTotalAscent() != null  ? $this->Context->activity()->fitTotalAscent()  : '-'), $c);
+        $this->addToTable($details, 'Total desent (m):', ($this->Context->activity()->fitTotalDescent() != null ? $this->Context->activity()->fitTotalDescent() : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('VO2MAX avg:', 'vo2max'), ($this->Context->activity()->fitVO2maxEstimate() != null ? $this->Context->activity()->fitVO2maxEstimate() : '-'), $c);
+        $this->addToTable($details, 'Recovery time (h):', ($this->Context->activity()->fitRecoveryTime() != null ? round($this->Context->activity()->fitRecoveryTime() / 60, 1) : '-'), $c);
+        $this->addToTable($details, 'New lactate treshhold (bpm):', ($this->Context->activity()->fitLactateThresholdHR() != null ? $this->Context->activity()->fitLactateThresholdHR() : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('HVR Heart-Rate Variability:', 'hrv'), ($this->Context->activity()->fitHRVscore() != null ? $this->Context->activity()->fitHRVscore() : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Performance condition:', 'performance-condition'), ($this->Context->activity()->fitPerformanceCondition() != null ? $this->Context->activity()->fitPerformanceCondition() : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Performance cond. end:', 'performance-condition'), ($this->Context->activity()->fitPerformanceConditionEnd() != null ? $this->Context->activity()->fitPerformanceConditionEnd() - 100 : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Aerob training effect:', 'training-effect'), ($this->Context->activity()->fitTrainingEffect() != null ? $this->Context->activity()->fitTrainingEffect() : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Anaerob training effect:', 'training-effect'), ($this->Context->activity()->fitAnaerobicTrainingEffect() != null ? $this->Context->activity()->fitAnaerobicTrainingEffect() : '-'), $c);
+        $this->addToTable($details, 'Creator:', ($this->Context->activity()->creator() != null ? $this->Context->activity()->creator() : '-'), $c);
+        $this->addToTable($details, 'Creator details:', ($this->Context->activity()->creatorDetails() != null ? $this->Context->activity()->creatorDetails() : '-'), $c);
+        $details .= '</tr></table>';
+        $this->FitDetails .= HTML::fileBlock($details);
+
+		$this->FitDetails .= '</div>';
+	}
+
+    protected function getGlossaryLink($text, $glossary) {
+        return '<a class="window left" href="glossary/' . $glossary . '"><i class="fa fa-question-circle-o"/></a>&nbsp;' . $text;
+    }
+
+	/**
 	 * Add race result
 	 */
 	protected function addRaceResult() {
@@ -401,6 +437,20 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 			$this->NotesContent .= HTML::fileBlock($Notes);
 		}
 	}
+
+    function addToTable(&$html, $desc, $value, &$count) {
+        if($count == 0) {
+            $html .= '<table class="fitdetail">';
+            $html .= '<tr>';
+        } else if($count % 3 == 0) {
+            $html .= '</tr><tr>';
+        }
+
+        $html .= '<td id="desc">' . $desc  . '</td>';
+        $html .= '<td id="val">' . $value . '</td>';
+
+        $count++;
+    }
 
 	/**
 	 * Add weather sources

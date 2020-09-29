@@ -438,6 +438,14 @@ class FitActivity extends AbstractSingleParser
         if (isset($this->Values['total_anaerobic_training_effect']) && $this->Values['total_anaerobic_training_effect'][0] > 0 && $this->Values['total_anaerobic_training_effect'][0] <= 99.0) {
             $this->Container->FitDetails->AnaerobicTrainingEffect = $this->Values['total_anaerobic_training_effect'][0] / 10;
         }
+
+        // #TSC: fit ascent / descent
+        if (isset($this->Values['total_ascent']) && $this->Values['total_ascent'][0] != 0) {
+            $this->Container->FitDetails->TotalAscent = $this->Values['total_ascent'][0];
+        }
+        if (isset($this->Values['total_descent']) && $this->Values['total_descent'][0] != 0) {
+            $this->Container->FitDetails->TotalDescent = $this->Values['total_descent'][0];
+        }
     }
 
     protected function readSport()
@@ -481,8 +489,17 @@ class FitActivity extends AbstractSingleParser
         }
 
         // #TSC: set recovery time (in minutes) from 140er unknown9, if not already set
+        // thanks to: https://github.com/GoldenCheetah/GoldenCheetah/blob/master/src/FileIO/FitRideFile.cpp line 844
         if (is_null($this->Container->FitDetails->RecoveryTime) && isset($this->Values['unknown9'])) {
             $this->Container->FitDetails->RecoveryTime = round((int)$this->Values['unknown9'][1], 0);
+        }
+
+        // #TSC: set Running Lactate Threshold Heart Rate, (in bpm) from 140er unknown14
+        if (isset($this->Values['unknown14'])) {
+            $lthr = (int)$this->Values['unknown14'][1];
+            if ($lthr > 0 && $lthr <= 250) {
+                $this->Container->FitDetails->LactateThresholdHR = $lthr;
+            }
         }
     }
 
