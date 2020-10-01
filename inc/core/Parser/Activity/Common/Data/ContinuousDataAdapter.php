@@ -79,7 +79,7 @@ class ContinuousDataAdapter
     }
 
 	/**
-	 * Ensure that on first/pre and last/post values of a array there are no NULL values.
+	 * Ensure that on first/pre and mid/last values of a array there are no NULL values.
      * So search for the "first/last" valid value and replace the NULLs.
 	 * #TSC
 	 */
@@ -102,18 +102,16 @@ class ContinuousDataAdapter
                 }
             }
 
-            // post NULLs
+            // mid/post NULLs
 
-            // search for the index with the last NOT NULL value (backwards)
-            $lastNotNull = $size - 1;
-            while($lastNotNull > 0 && is_null($values[$lastNotNull])) {
-                $lastNotNull--;
-            }
-
-            // yes, we have valid values. remove the invalid NULLs
-            if($lastNotNull < $size - 1) {
-                for($i = $size - 1; $i > $lastNotNull; $i--) {
-                    $values[$i] = $values[$lastNotNull];
+            // we have set previously the beginning with values so idx0 must have a value!
+            $notNull = $values[$firstNotNull];
+            // now search from start-to-end and set the last not null to the nulls
+            for($i = $firstNotNull; $i < $size; $i++) {
+                if(is_null($values[$i])) {
+                    $values[$i] = $notNull;
+                } else {
+                    $notNull = $values[$i];
                 }
             }
         }
