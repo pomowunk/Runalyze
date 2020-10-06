@@ -27,6 +27,11 @@ class WeatherController extends Controller
     {
         $location = $this->getLocationForRequest($request, $account);
 
+        // #TSC: if no location is given, cancel
+        if(!$location->hasPosition()) {
+            return;
+        }
+
         $weather = $this->get('app.weather_forecast')->loadForecast($location) ?: new WeatherData();
 
         /** @var SourceInterface|null $source */
