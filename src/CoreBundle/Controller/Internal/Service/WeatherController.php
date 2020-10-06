@@ -4,6 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Controller\Internal\Service;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Parser\Activity\Common\Data\WeatherData;
+use Runalyze\Parameter\Application\Timezone;
 use Runalyze\Profile\Weather\Source\SourceInterface;
 use Runalyze\Profile\Weather\Source\WeatherSourceProfile;
 use Runalyze\Service\WeatherForecast\Location;
@@ -82,6 +83,11 @@ class WeatherController extends Controller
         } elseif ($request->query->has('date')) {
             $location->setDateTime(new \DateTime($request->query->get('date')));
         }
+
+        // #TSC set also the timezone for fetch historical time based data
+        $timezone = (int)$account->getTimezone();
+        $timezoneName = Timezone::getFullNameByEnum($timezone);
+        $location->setTimezone($timezoneName);
 
         return $location;
     }

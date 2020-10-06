@@ -395,12 +395,17 @@ services:
     arguments: ["%openweathermap_api_key%", "@app.http_client", "@logger"]
     tags:
       - { name: monolog.logger, channel: external_services }
+  app.weather_forecast.meteostatnet:
+    class: Runalyze\Service\WeatherForecast\Strategy\MeteostatNet
+    arguments: ["%meteostatnet_api_key%", "@app.http_client", "@logger"]
+    tags:
+      - { name: monolog.logger, channel: external_services }
   app.weather_forecast.cache:
     class: Runalyze\Service\WeatherForecast\Strategy\DatabaseCache
     arguments: ["@app.repository.weathercache"]
   app.weather_forecast:
     class: Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast
-    arguments: ["@app.weather_forecast.cache", "@app.weather_forecast.darksky", "@app.weather_forecast.openweathermap", "@app.repository.weathercache"]
+    arguments: ["@app.weather_forecast.cache", "@app.weather_forecast.darksky", "@app.weather_forecast.openweathermap", "@app.weather_forecast.meteostatnet", "@app.repository.weathercache"]
   app.elevation_correction.geotiff_reader:
     class: Runalyze\Bundle\CoreBundle\Services\Import\GeoTiffReader
     arguments: ["%data_directory%/srtm"]

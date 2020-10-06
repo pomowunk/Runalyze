@@ -40,6 +40,7 @@ twig:
     RUNALYZE_VERSION: '%RUNALYZE_VERSION%'
     garmin_api_key: '%garmin_api_key%'
     openweathermap_api_key: '%openweathermap_api_key%'
+    meteostatnet_api_key: '%meteostatnet_api_key%'
     darksky_api_key: '%darksky_api_key%'
     nokia_here_appid: '%nokia_here_appid%'
     nokia_here_token: '%nokia_here_token%'

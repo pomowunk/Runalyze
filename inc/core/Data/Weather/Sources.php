@@ -25,6 +25,9 @@ final class Sources extends AbstractEnum
     /** @var int */
     const DARKSKY = 3;
 
+    /** @var int */
+    const METEOSTAT_NET = 4;
+
 	/**
 	 * @param int $sourceId id from internal enum
 	 * @return string
@@ -36,6 +39,8 @@ final class Sources extends AbstractEnum
                 return '<a href="https://darksky.net/poweredby/" target="_blank">Powered by Dark Sky</a>';
 			case self::OPENWEATHERMAP:
 				return '<a href="http://openweathermap.org/" target="_blank">openweathermap.org</a>';
+			case self::METEOSTAT_NET:
+				return '<a href="https://meteostat.net/" target="_blank">meteostat.net</a>';
 			case self::DBWEATHERCACHE:
 				return __('internal database');
 			default:

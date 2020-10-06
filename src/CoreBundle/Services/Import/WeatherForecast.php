@@ -8,6 +8,7 @@ use Runalyze\Service\WeatherForecast\Location;
 use Runalyze\Service\WeatherForecast\Strategy\DarkSky;
 use Runalyze\Service\WeatherForecast\Strategy\DatabaseCache;
 use Runalyze\Service\WeatherForecast\Strategy\OpenWeatherMap;
+use Runalyze\Service\WeatherForecast\Strategy\MeteostatNet;
 use Runalyze\Service\WeatherForecast\Strategy\StrategyCollection;
 use Runalyze\Service\WeatherForecast\Strategy\StrategyInterface;
 
@@ -23,6 +24,8 @@ class WeatherForecast
         DatabaseCache $cache,
         DarkSky $darkSky,
         OpenWeatherMap $openWeatherMap,
+        // #TSC - new weather source
+        MeteostatNet $meteostatNet,
         DatabaseCacheInterface $databaseCache
     )
     {
@@ -30,6 +33,7 @@ class WeatherForecast
         $this->StrategyCollection->add($cache);
         $this->StrategyCollection->add($darkSky);
         $this->StrategyCollection->add($openWeatherMap);
+        $this->StrategyCollection->add($meteostatNet);
 
         $this->DatabaseCache = $databaseCache;
     }

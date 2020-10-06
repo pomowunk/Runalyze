@@ -19,6 +19,9 @@ class Location
     /** @var string */
     protected $LocationName = '';
 
+    /** @var \string */
+    protected $Timezone;
+
     /**
      * @param float $latitude
      * @param float $longitude
@@ -56,6 +59,14 @@ class Location
     public function setLocationName($location)
     {
         $this->LocationName = $location;
+    }
+
+    /**
+     * @param string $timezone
+     */
+    public function setTimezone($timezone)
+    {
+        $this->Timezone = $timezone;
     }
 
     /**
@@ -124,6 +135,14 @@ class Location
     public function getLocationName()
     {
         return $this->LocationName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimezone()
+    {
+        return $this->Timezone;
     }
 
     /**

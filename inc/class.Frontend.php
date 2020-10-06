@@ -104,6 +104,7 @@ class Frontend {
 
         define('DARKSKY_API_KEY', $this->yamlConfig['darksky_api_key']);
         define('OPENWEATHERMAP_API_KEY', $this->yamlConfig['openweathermap_api_key']);
+        define('METEOSTATNET_API_KEY', $this->yamlConfig['meteostatnet_api_key']);
 	    define('NOKIA_HERE_APPID', $this->yamlConfig['nokia_here_appid']);
 	    define('NOKIA_HERE_TOKEN', $this->yamlConfig['nokia_here_token']);
 	    define('THUNDERFOREST_API_KEY', $this->yamlConfig['thunderforest_api_key']);

@@ -17,4 +17,8 @@ class WeatherSourceProfile extends AbstractEnum
 
     /** @var int */
     const DARK_SKY = 3;
+
+    // #TSC
+    /** @var int */
+    const METEOSTAT_NET = 4;
 }
