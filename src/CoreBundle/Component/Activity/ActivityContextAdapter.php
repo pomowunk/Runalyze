@@ -5,6 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Component\Activity;
 use Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder;
 use Runalyze\Bundle\CoreBundle\Services\Import\WeatherDataToActivityConverter;
 use Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast;
+use Runalyze\Parameter\Application\Timezone;
 use Runalyze\Service\WeatherForecast\Location;
 use Runalyze\Util\LocalTime;
 
@@ -44,17 +45,27 @@ class ActivityContextAdapter
     /**
      * @param string $defaultLocationName
      */
-    public function guessWeatherConditions($defaultLocationName)
+    public function guessWeatherConditions($defaultLocationName, $account)
     {
         $location = new Location();
         $location->setLocationName($defaultLocationName);
-        $location->setDateTime(new LocalTime($this->Context->getActivity()->getTime()));
+
+        // #TSC set the time to the mid of the activity
+        $time = new LocalTime($this->Context->getActivity()->getTime());
+        // we add here the elapsed time, not the duration; half this time to set the mid of the activity
+        $time->add(new \DateInterval('PT'. round($this->Context->getActivity()->getElapsedTime() / 2 ).'S'));
+        $location->setDateTime($time);
 
         if ($this->Context->hasRoute() && $this->Context->getRoute()->hasGeohashes()) {
             $this->Context->getRoute()->setStartEndGeohashes();
 
             $location->setGeohash($this->Context->getRoute()->getStartpoint());
         }
+
+        // #TSC set also the timezone for fetch historical time based data
+        $timezone = (int)$account->getTimezone();
+        $timezoneName = Timezone::getFullNameByEnum($timezone);
+        $location->setTimezone($timezoneName);
 
         $weather = $this->WeatherForecast->loadForecast($location);
 

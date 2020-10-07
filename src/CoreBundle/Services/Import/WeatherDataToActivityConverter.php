@@ -19,6 +19,7 @@ class WeatherDataToActivityConverter
         $activity->setWindDeg($weatherData->WindDirection);
         $activity->setHumidity($weatherData->Humidity);
         $activity->setPressure($this->getRoundedValue($weatherData->AirPressure));
+        $activity->setWeatherSource($weatherData->Source);
 
         if (null !== $weatherData->InternalConditionId) {
             $activity->setWeatherid($weatherData->InternalConditionId);

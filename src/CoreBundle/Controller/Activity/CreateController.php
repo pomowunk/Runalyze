@@ -212,7 +212,7 @@ class CreateController extends Controller
                 $activity->getAdapter()->setAccountToRelatedEntities();
 
                 $context = new ActivityContext($activity, null, null, $activity->getRoute());
-                $contextAdapterFactory->getAdapterFor($context)->guessWeatherConditions($defaultLocation);
+                $contextAdapterFactory->getAdapterFor($context)->guessWeatherConditions($defaultLocation, $account);
 
                 $activityIds[] = $repository->save($activity, true);
             }
