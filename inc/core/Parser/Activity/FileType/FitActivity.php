@@ -446,6 +446,11 @@ class FitActivity extends AbstractSingleParser
         if (isset($this->Values['total_descent']) && $this->Values['total_descent'][0] != 0) {
             $this->Container->FitDetails->TotalDescent = $this->Values['total_descent'][0];
         }
+
+        // #TSC: set avg temperature
+        if (isset($this->Values['avg_temperature']) && $this->Values['avg_temperature'][0] != 0) {
+            $this->Container->ActivityData->AvgTemperature = $this->Values['avg_temperature'][0];
+        }
     }
 
     protected function readSport()

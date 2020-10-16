@@ -91,6 +91,9 @@ class ActivityData
     /** @var int|null */
     public $TotalStrokes = null;
 
+    /** @var int|null [grad] #TSC: add temperature here */
+    public $AvgTemperature = null;
+
     /**
      * @return array
      */
@@ -123,7 +126,8 @@ class ActivityData
             'AvgPronationExcursionLeft',
             'AvgPronationExcursionRight',
             'PoolLength',
-            'TotalStrokes'
+            'TotalStrokes',
+            'AvgTemperature'
         ];
     }
 
