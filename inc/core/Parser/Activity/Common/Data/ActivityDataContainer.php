@@ -81,6 +81,11 @@ class ActivityDataContainer
         $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->GroundContactTime);
         $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->VerticalOscillation);
         $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->GroundContactBalance);
+        // TSC: On Fenix swimming
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->Strokes);
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->StrokeType);
+
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->Cadence);
 
         $this->completeRoundsIfRequired();
         $this->clearRoundsIfOnlyOneRoundIsThere();
