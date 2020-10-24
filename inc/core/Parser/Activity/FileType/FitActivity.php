@@ -113,6 +113,12 @@ class FitActivity extends AbstractSingleParser
     /** @var array [developer_data_index => application_id] */
     protected $DeveloperDataAppIds = [];
 
+    // #TSC: time of a "record" row
+    protected $RecordTime = [];
+    // #TSC: temporary heartrate for swimming. array-index is the lane
+    protected $SwimHeartrate = [];
+    protected $SwimTemperature = [];
+
     public function parse()
     {
         throw new \RuntimeException('FitActivity does not support parse().');
@@ -130,6 +136,21 @@ class FitActivity extends AbstractSingleParser
                 $this->Container->ActivityData->Duration - $this->Container->Rounds->getTotalDuration()
             ));
         }
+
+        // #TSC: set the temporary collected/calculated values of swimming if we have "valid" values collected
+        if ($this->IsSwimming) {
+            if(array_sum($this->SwimHeartrate) > 0) {
+                $this->Container->ContinuousData->HeartRate = $this->SwimHeartrate;
+            } else {
+                $this->Container->ContinuousData->HeartRate = [];
+            }
+            if(array_sum($this->SwimTemperature) > 0) {
+                $this->Container->ContinuousData->Temperature = $this->SwimTemperature;
+            } else {
+                $this->Container->ContinuousData->Temperature = [];
+            }
+        }
+
     }
 
     public function readMetadataForMultiSessionFrom(Metadata $metadata)
@@ -577,7 +598,6 @@ class FitActivity extends AbstractSingleParser
     {
         if (
             $this->IsPaused || // Should not happen?
-            $this->IsSwimming ||
             count($this->Values) == 1 ||
             (!isset($this->Values['compressed_speed_distance']) && !isset($this->Values['timestamp']))
         ) {
@@ -585,6 +605,13 @@ class FitActivity extends AbstractSingleParser
         }
 
         if ($this->IsSwimming) {
+            // #TSC: if swimming, also save this values (if available)
+            $this->Container->ContinuousData->HeartRate[] = isset($this->Values['heart_rate']) ? (int)$this->Values['heart_rate'][0] : null;
+            $this->Container->ContinuousData->Temperature[] = isset($this->Values['temperature']) ? (int)$this->Values['temperature'][0] : null;
+
+            // save also the timestamp of the record
+            $this->RecordTime[] = isset($this->Values['timestamp']) ? (int)$this->Values['timestamp'][0] : null;
+
             return;
         }
 
@@ -623,6 +650,9 @@ class FitActivity extends AbstractSingleParser
         if ($time < $last) {
             return;
         }
+
+        // #TSC: save also the timestamp of the record
+        $this->RecordTime[] = isset($this->Values['timestamp']) ? (int)$this->Values['timestamp'][0] : null;
 
         $this->Container->ContinuousData->Latitude[] = isset($this->Values['position_lat']) ? substr($this->Values['position_lat'][1], 0, -4) : null;
         $this->Container->ContinuousData->Longitude[] = isset($this->Values['position_long']) ? substr($this->Values['position_long'][1], 0, -4) : null;
@@ -747,11 +777,16 @@ class FitActivity extends AbstractSingleParser
         }
     }
 
+    // "NAME=lenght" is a swim lane
     protected function readLength()
     {
         if (!$this->IsSwimming) {
             foreach ($this->Container->ContinuousData->getPropertyNamesOfArrays() as $key) {
-                $this->Container->ContinuousData->{$key} = [];
+                // TSC: do not delete here heart-rate and temperature
+                // before the first lap is reading the both values are already written
+                if($key != 'Temperature' && $key != 'HeartRate') {
+                    $this->Container->ContinuousData->{$key} = [];
+                }
             }
 
             $this->IsSwimming = true;
@@ -762,10 +797,59 @@ class FitActivity extends AbstractSingleParser
         $this->Container->ContinuousData->Cadence[] = isset($this->Values['avg_swimming_cadence']) ? (int)$this->Values['avg_swimming_cadence'][0] : null;
 
         if (empty($this->Container->ContinuousData->Time)) {
+            // at first time set the start time and the first "round/lane" duration
             $this->Container->Metadata->setTimestampAndTimezoneOffsetWithUtcFixFrom((string)$this->Values['start_time'][1]);
             $this->Container->ContinuousData->Time[] = round(((int)$this->Values['total_timer_time'][0]) / 1000);
         } else {
+            // save the duration of this lane
             $this->Container->ContinuousData->Time[] = end($this->Container->ContinuousData->Time) + round(((int)$this->Values['total_timer_time'][0]) / 1000);
+        }
+
+        // #TSC: calculate the heart-rate / temp for this lane
+        if(isset($this->Values['start_time'][0]) && isset($this->Values['total_timer_time'][0])) {
+            $this->setSwimAdditionalInfos();
+        }
+    }
+
+    /**
+     * set the heartrate and temperature of the "record" sets to the swim-lanes.
+     * for example we have swim 80 lanes, we have 80 "NAME=length"-records but 8000 "NAME=record"-records.
+     * so we must "map" per time of the start-/stop-time of the lane and the "NAME=record" timestamps with "NAME=record" belongs to which lane ans build the average.
+     * #TSC
+     */
+    protected function setSwimAdditionalInfos() {
+        // get start- and end-time of this lane
+        $startTime = (int)$this->Values['start_time'][0];
+        $endTime = (int)($startTime + round(((int)$this->Values['total_timer_time'][0]) / 1000));
+
+        // get the relevant records-times for this lane (inside the start/end-time)
+        $recordTimes = array_filter($this->RecordTime, function($v, $k) use ($startTime, $endTime) {
+            return isset($v) && $v >= $startTime && $v <= $endTime;
+        }, ARRAY_FILTER_USE_BOTH);
+
+        // get the indexes of recordTimes to find the corresponing heartrate and temperature
+        $heartsVal = [];
+        $tempVal = [];
+        forEach(array_keys($recordTimes) as &$i) {
+            if(isset($this->Container->ContinuousData->HeartRate[$i])) {
+                $heartsVal[] = $this->Container->ContinuousData->HeartRate[$i];
+            }
+            if(isset($this->Container->ContinuousData->Temperature[$i])) {
+                $tempVal[]   = $this->Container->ContinuousData->Temperature[$i];
+            }
+        }
+
+        // calculate the avg of the current lane
+        if(count($heartsVal) > 0) {
+            $this->SwimHeartrate[] = round(array_sum($heartsVal)/count($heartsVal));
+        } else {
+            $this->SwimHeartrate[] = null;
+        }
+
+        if(count($tempVal) > 0) {
+            $this->SwimTemperature[] = round(array_sum($tempVal)/count($tempVal));
+        } else {
+            $this->SwimTemperature[] = null;
         }
     }
 

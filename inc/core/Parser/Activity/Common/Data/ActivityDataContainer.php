@@ -87,6 +87,8 @@ class ActivityDataContainer
 
         $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->Cadence);
 
+        $this->ContinuousDataAdapter->correctArrayNullElements($this->ContinuousData->Temperature);
+
         $this->completeRoundsIfRequired();
         $this->clearRoundsIfOnlyOneRoundIsThere();
         $this->applyPauses();
