@@ -238,8 +238,15 @@ class Entity extends Model\Entity implements Model\Loopable {
 
 			for ($i = 1; $i <= $max; ++$i) {
 				$duration = $TrackLoop->difference(Trackdata\Entity::TIME);
-				$swolf[] = $duration + $Loop->stroke();
-				$swolfcycles[] = $duration + $Loop->stroke()/2;
+
+				// #TSC if we have no stroke for this lane we cant calulate SWOLF
+				if ($Loop->stroke() > 0) {
+					$swolf[] = $duration + $Loop->stroke();
+					$swolfcycles[] = $duration + $Loop->stroke()/2;
+				} else {
+					$swolf[] = null;
+					$swolfcycles[] = null;
+				}
 
 				$Loop->nextStep();
 				$TrackLoop->nextStep();
