@@ -32,6 +32,17 @@ abstract class Loop
 	 */
 	protected $StepSize = 1;
 
+
+	// #TSC
+	// is used to identifiy a moveTo or a nextStep is done. this is necessary to identify the FIRST
+	// difference call; if it starts from 0-? and build a difference or used the idx directly
+	// see difference method
+	// example:
+	// if we step to the loop with "nextStep" the process is: current gets the first value, do a "nextStep", current gets the second value
+	// if "moveTo" is used: first set the index with a "moveTo" and get the current; so the idx-pointer is set before the first value is requested
+	// so the moveTo and nextStep increased the counter with different values ;-)
+	protected $InitMove = -1;
+
 	/**
 	 * Total size
 	 * @var int
@@ -82,6 +93,7 @@ abstract class Loop
 	{
 		$this->Index = 0;
 		$this->LastIndex = 0;
+		$this->InitMove = -1;
 	}
 
 	/**
@@ -99,8 +111,14 @@ abstract class Loop
 	 */
 	public function nextStep()
 	{
+		// #TSC we set here +2 because with the first nextStep call we must calculate a difference
+		$this->InitMove = $this->InitMove + 2;
+
 		$this->LastIndex = $this->Index;
 		$this->Index += $this->StepSize;
+
+		// #TSC debug
+		//echo('# Loop.nextStep to='.$this->Index.' ');
 
 		if ($this->Index > $this->TotalSize - 1) {
 			$this->Index = $this->TotalSize - 1;
@@ -160,6 +178,8 @@ abstract class Loop
 	 */
 	public function goToIndex($index)
 	{
+		$this->InitMove++;
+
 		$this->LastIndex = $this->Index;
 		$this->Index = $index;
 	}
@@ -186,12 +206,31 @@ abstract class Loop
 
 		$this->LastIndex = $this->Index;
 
+		// called with TIME or DISTANCE as key and search the array for the target value
+		// example array: ...569|608|642... and search for target=610 we stop on 642
 		while (
 			!$this->isAtEnd() &&
 			$this->Object->at($this->Index, $key) < $target
 		) {
 			$this->Index++;
 		}
+
+		// #TSC
+		// if this is not the value we search for and not the end, decrease the index to point to the correct value
+		// the "$this->Index > $this->LastIndex + 1" is necessary to avoid a endless-loop
+		// for running this does not play a major role (because of tracking intervals of a second); but for swimming the "time" tracking
+		// is based on a swim lane!
+		$curr = $this->Object->at($this->Index, $key);
+		if($curr != $target && $this->Index > $this->LastIndex + 1 && $this->Index > 0 && !$this->isAtEnd()) {
+			// with this step we stop on the below example on "608"
+			$this->Index = $this->Index - 1;
+		}
+
+		// #TSC: for every step increase the counter
+		$this->InitMove++;
+
+		// #TSC debug
+		//echo('# Loop.moveTo key='.$key. ' target='.$target.' '.' result='.$this->Object->at($this->Index, $key).' idx='.$this->Index.' lidx='.$this->LastIndex.' <br> ');
 	}
 
 	/**
@@ -216,11 +255,20 @@ abstract class Loop
 	public function difference($key)
 	{
 		if ($this->Object->has($key)) {
-			if ($this->LastIndex == 0 && $this->Index == 0) {
+			// #TSC if we do not have done a moveTo, use not a difference rather the raw value
+			if (($this->LastIndex == 0 && $this->Index == 0) || $this->InitMove < 1) {
+				// #TSC debug
+				//echo('# Loop.difference key='.$key.' from='.$this->Object->at($this->Index, $key).' init initMove='.$this->InitMove.' ');
+
 				return $this->Object->at($this->Index, $key);
 			}
 
-			return $this->Object->at($this->Index, $key) - $this->Object->at($this->LastIndex, $key);
+			$idx = $this->Index;
+			$lidx = $this->LastIndex;
+			// #TSC: better debuggung
+			// echo('# Loop.difference key='.$key.' from='.$this->Object->at($lidx, $key).'-'.$this->Object->at($this->Index, $key).' idx=('.$lidx.','.$idx.') ');
+
+			return $this->Object->at($idx, $key) - $this->Object->at($lidx, $key);
 		}
 
 		return 0;

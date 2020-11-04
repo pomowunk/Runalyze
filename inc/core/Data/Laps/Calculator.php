@@ -71,6 +71,11 @@ class Calculator
 	 */
 	public function setDistances(array $lapDistances)
 	{
+		// #TSC debugging
+		// echo('# Calculator.setDistances ');
+		// var_dump($lapDistances);
+		// echo(' ');
+
 		if (!self::isSorted($lapDistances)) {
 			throw new \InvalidArgumentException('Calculator needs sorted array of distances');
 		}
@@ -84,6 +89,11 @@ class Calculator
 	 */
 	public function setTimes(array $lapTimes)
 	{
+		// #TSC debugging
+		// echo('# Calculator.setTimes ');
+		// var_dump($lapTimes);
+		// echo(' ');
+
 		if (!self::isSorted($lapTimes)) {
 			throw new \InvalidArgumentException('Calculator needs sorted array of times');
 		}
@@ -100,6 +110,11 @@ class Calculator
 	{
 		$this->TrackdataLoop = new Trackdata\Loop($trackdata);
 		$this->RouteLoop = !is_null($route) ? new Route\Loop($route) : null;
+
+		// #TSC debugging
+		// echo('# Calculator.calculateFrom ');
+		// var_dump($trackdata->time());
+		// var_dump($trackdata->distance());
 
 		if (!empty($this->Distances)) {
 			$this->readLapsFromDistances();
@@ -215,6 +230,9 @@ class Calculator
 			$this->TrackdataLoop->difference(Trackdata\Entity::TIME),
 			$this->TrackdataLoop->difference(Trackdata\Entity::DISTANCE)
 		);
+
+		// #TSC debugging
+		// echo('# Calculator.readLap time='.$this->TrackdataLoop->time().' dist='.$this->TrackdataLoop->distance().' ');
 
 		$Lap->setTrackDuration($this->TrackdataLoop->time());
 		$Lap->setTrackDistance($this->TrackdataLoop->distance());
@@ -345,7 +363,6 @@ class Calculator
 		if (!is_null($this->RouteLoop)) {
 			$this->RouteLoop->goToEnd();
 		}
-
 		$this->readLap();
 	}
 
