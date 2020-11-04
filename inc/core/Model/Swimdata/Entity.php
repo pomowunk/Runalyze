@@ -202,7 +202,21 @@ class Entity extends Model\Entity implements Model\Loopable {
 	public function fillDistanceArray(Trackdata\Entity $trackdata) {
 		if ($this->poollength() && !$trackdata->has(Trackdata\Entity::DISTANCE) && $this->num() == $trackdata->num()) {
 			$length = $this->poollength();
-			$distance = range($length, $this->num()*$length, $length);
+
+			$distance = null;
+			if($this->stroke() && $this->num() == count($this->stroke())) {
+				// #TSC: optimise for GARMINs: if we have 0 strokes for one lane, distance must be 0 for this lane; because it's a erholung/"length_type=0=idle" lane
+				$d = 0;
+				foreach ($this->stroke() as &$str) {
+					// only add pool-length if strokes are done in this lane
+					$d = $d + ($str > 0 ? $length : 0);
+					$distance[] = $d;
+				}
+			} else {
+				// if we have no strokes, fill the array as before; every lane = pool-length
+				$distance = range($length, $this->num()*$length, $length);
+			}
+			// from meter to kilometer
 			$distance = array_map(function($v) { return $v / 100000; }, $distance);
 			$trackdata->set(Trackdata\Entity::DISTANCE, $distance);
 			$trackdata->calculatePaceArray();
