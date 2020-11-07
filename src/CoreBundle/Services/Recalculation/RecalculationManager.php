@@ -134,8 +134,9 @@ class RecalculationManager
     {
         if (!$this->isTaskScheduled($account, VO2maxShapeCalculation::class)) {
             if ($this->isTaskScheduled($account, MarathonShapeCalculation::class)) {
-                $this->Tasks->offsetUnset($this->AccountRelatedTaskNames[$account->getId()][VO2maxShapeCalculation::class]);
-                unset($this->AccountRelatedTaskNames[$account->getId()][VO2maxShapeCalculation::class]);
+                // #TSC: fix: remove here existing MarathonShapeCalculation, than add VO2max and add MarathonShapeCalculation again (order is importent because Marathon based on VO2max)
+                $this->Tasks->offsetUnset($this->AccountRelatedTaskNames[$account->getId()][MarathonShapeCalculation::class]);
+                unset($this->AccountRelatedTaskNames[$account->getId()][MarathonShapeCalculation::class]);
             }
 
             $task = new VO2maxShapeCalculation($this->TrainingRepository, $this->ConfigurationManager, $this->ConfigurationUpdater);
