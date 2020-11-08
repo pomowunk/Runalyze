@@ -129,6 +129,12 @@ class ActivityDataContainer
                     $this->ContinuousData->Distance
                 );
             }
+
+
+            // #TSC check if 'run*' rounds includes intervals
+            if (strpos($this->Metadata->getSportName(), 'run') === 0 && $this->Rounds->hasIntervalRounds()) {
+                $this->Metadata->setTypeName('Intervalltraining');
+            }
         }
     }
 

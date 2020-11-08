@@ -174,4 +174,33 @@ class RoundCollection implements \Countable, \ArrayAccess, \Iterator
 
         return true;
     }
+
+    /**
+     * #TSC check if the rounds has at least 4 intervals.
+     *
+     * Example for 4 intervals with 2:30min running and 1:30min recovery: 0=441, 1=150, 2=90, 3=150, 4=90, 5=150, 6=90, 7=150, 8=462 
+     */
+    public function hasIntervalRounds() {
+        $intDetect = 5;
+
+        if ($this->count() >= $intDetect) {
+            $intCount = 0;
+
+            // iterate over all rounds and check if distance or duration of the next-next is the same value
+            for ($i = 0; $i < count($this->Elements) - 2; $i++) {
+                // i do ignore the round-active-flag...
+                $thisR = $this->Elements[$i];
+                $nextR = $this->Elements[$i + 2];
+                if ($thisR->getDuration() == $nextR->getDuration() || $thisR->getDistance() == $nextR->getDistance()) {
+                    $intCount++;
+                    if ($intCount == $intDetect) {
+                        // if we found 5x consensus we have 4 intervals
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
 }
