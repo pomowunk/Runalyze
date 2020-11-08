@@ -29,6 +29,9 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2020-09-29: Show further FIT file attributes (recovery-time, training-effect, creator, vo2max, performance-conditions, hvr) on statistic view (activity main page) under 'Miscellaneous' panel
 * 2020-10-06: Loading weather data now uses the time in the middle of the activity _(start + (duration / 2))_.
 * 2020-10-07: Add support for [meteostat](https://meteostat.net) historical weather data while editing a activity or while bulk import. Usable with setting the new "meteostatnet_api_key" in config.yml.
+* 2020-10-17 to 2020-11-04: Import heartrate and temperature of Fenix 6 for swimming activities.
+* 2020-11-04: Some fixing of correlate trackdata to laps/swim-lanes.
+* 2020-11-08: Auto detection of running type "interval-training" (detection only works in batch/bulk-mode).
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
