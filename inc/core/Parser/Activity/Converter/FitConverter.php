@@ -56,7 +56,7 @@ class FitConverter extends AbstractShellBasedFileTypeConverter
             }
 
             if (substr($firstLine, 0, strlen(self::PERL_GENERAL_MESSAGE_START)) == self::PERL_GENERAL_MESSAGE_START) {
-                $message .= NL.NL.'See https://github.com/Runalyze/Runalyze/issues/1701';
+                $message .= PHP_EOL.PHP_EOL.'See https://github.com/Runalyze/Runalyze/issues/1701';
 
                 throw new InstallationSpecificException($message);
             }
