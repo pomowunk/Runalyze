@@ -190,7 +190,11 @@ class ActivityDataContainerToActivityContextConverter
     protected function tryToSetTypeFor(Training $activity, $typeName)
     {
         if ('' != $typeName) {
-            $type = $this->TypeRepository->findByNameFor($typeName, $this->Account);
+            $type = $this->TypeRepository->findByNameFor($typeName, $this->Account, $activity->getSport());
+            // #TSC if the name not found, try it with the short-cut
+            if (null === $type) {
+                $type = $this->TypeRepository->findByShortCutFor($typeName, $this->Account, $activity->getSport());
+            }
 
             if (null !== $type) {
                 $activity->setType($type);

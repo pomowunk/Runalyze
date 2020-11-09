@@ -31,7 +31,7 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2020-10-07: Add support for [meteostat](https://meteostat.net) historical weather data while editing a activity or while bulk import. Usable with setting the new "meteostatnet_api_key" in config.yml.
 * 2020-10-17 to 2020-11-04: Import heartrate and temperature of Fenix 6 for swimming activities.
 * 2020-11-04: Some fixing of correlate trackdata to laps/swim-lanes.
-* 2020-11-08: Auto detection of running type "interval-training" (detection only works in batch/bulk-mode).
+* 2020-11-09: Auto detection of type "interval-training" (detection only works in batch/bulk-mode). You must configure a training-type with short-cut "IT" to your sports in the configuration to use this feature.
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

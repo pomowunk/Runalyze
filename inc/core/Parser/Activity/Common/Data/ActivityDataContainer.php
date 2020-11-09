@@ -131,9 +131,10 @@ class ActivityDataContainer
             }
 
 
-            // #TSC check if 'run*' rounds includes intervals
-            if (strpos($this->Metadata->getSportName(), 'run') === 0 && $this->Rounds->hasIntervalRounds()) {
-                $this->Metadata->setTypeName('Intervalltraining');
+            // #TSC check if rounds includes intervals
+            if ($this->Rounds->hasIntervalRounds()) {
+                // search type by short-cut - it must be configured as short-cut "IT" in the master-data
+                $this->Metadata->setTypeName('IT');
             }
         }
     }

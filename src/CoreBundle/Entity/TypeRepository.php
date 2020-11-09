@@ -28,13 +28,33 @@ class TypeRepository extends EntityRepository
     /**
      * @param string $typeName
      * @param Account $account
+     * @param Sport|null $sport
      * @return null|Type
      */
-    public function findByNameFor($typeName, Account $account)
+    public function findByNameFor($typeName, Account $account, Sport $sport = null)
+    {
+        // #TSC add $sport as parameter - only with sport the type can be find unique
+        return $this->findOneBy([
+            'account' => $account->getId(),
+            'name' => (string)$typeName,
+            'sport' => $sport->getId()
+        ]);
+    }
+
+    /**
+     * #TSC add search for shurt-cut.
+     *
+     * @param string $shortCut
+     * @param Account $account
+     * @param Sport|null $sport
+     * @return null|Type
+     */
+    public function findByShortCutFor($shortCut, Account $account, Sport $sport = null)
     {
         return $this->findOneBy([
             'account' => $account->getId(),
-            'name' => (string)$typeName
+            'abbr' => (string)$shortCut,
+            'sport' => $sport->getId()
         ]);
     }
 
