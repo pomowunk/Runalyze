@@ -182,6 +182,8 @@ class RoundCollection implements \Countable, \ArrayAccess, \Iterator
      */
     public function hasIntervalRounds() {
         $intDetect = 5;
+        $precS = 1; // round duration/seconds
+        $precD = 2; // round distance/km
 
         if ($this->count() >= $intDetect) {
             $intCount = 0;
@@ -190,8 +192,15 @@ class RoundCollection implements \Countable, \ArrayAccess, \Iterator
             for ($i = 0; $i < count($this->Elements) - 2; $i++) {
                 // i do ignore the round-active-flag...
                 $thisR = $this->Elements[$i];
-                $nextR = $this->Elements[$i + 2];
-                if ($thisR->getDuration() == $nextR->getDuration() || $thisR->getDistance() == $nextR->getDistance()) {
+                $nextR1 = $this->Elements[$i + 1];
+                $nextR2 = $this->Elements[$i + 2];
+                // first check we not in auto laping (=duration or distance is always the same)
+                // second check if the next-next is the same
+                if ((round($thisR->getDuration(), $precS) != round($nextR1->getDuration(), $precS) 
+                        && round($thisR->getDistance(), $precD) != round($nextR1->getDistance(), $precD)) 
+                    && (round($thisR->getDuration(), $precS) == round($nextR2->getDuration(), $precS) 
+                        || round($thisR->getDistance(), $precD) == round($nextR2->getDistance(), $precD))
+                    ) {
                     $intCount++;
                     if ($intCount == $intDetect) {
                         // if we found 5x consensus we have 4 intervals
@@ -199,7 +208,6 @@ class RoundCollection implements \Countable, \ArrayAccess, \Iterator
                     }
                 }
             }
-
         }
         return false;
     }
