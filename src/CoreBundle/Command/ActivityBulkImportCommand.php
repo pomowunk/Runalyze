@@ -15,6 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
+use Runalyze\Bundle\CoreBundle\Entity\Training;
+use Runalyze\Util\LocalTime;
+
 class ActivityBulkImportCommand extends ContainerAwareCommand
 {
     // move files after import to "this"-folder
@@ -22,6 +26,8 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
 
     /** @var array */
     protected $FailedImports = array();
+
+    private $sportEquipment;
 
     protected function configure()
     {
@@ -60,6 +66,9 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
 
             return 1;
         }
+
+        #TSC create equipment array for automatic mapping
+        $this->createEquiqmentArray($user, $output);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->getContainer()->get('security.token_storage')->setToken($token);
@@ -113,6 +122,10 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
                 }
 
                 $activity = $this->containerToActivity($container, $user);
+
+                // #TSC set the equipments for this training
+                $this->setEquipmentIfPossible($activity, $output);
+
                 $context = new ActivityContext($activity, null, null, $activity->getRoute());
                 $contextAdapter = $contextAdapterFactory->getAdapterFor($context);
                 $output->writeln('<info>'.$result->getOriginalFileName().'</info>');
@@ -174,5 +187,78 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
     private function addFailedFile($fileName, $error)
     {
         $this->FailedImports[$fileName] = $error;
+    }
+
+    /**
+     * #TSC
+     * Creates a array where first IDX=sportsId and second IDX=the equipment.
+     * this is only build with "single-choice" equipments.
+     * and the main-equipment category/type (see sports configuration); so one IDX_1/sport 
+     * can only have on equipment category with multiple (time-range based) equipments.
+     */
+    private function createEquiqmentArray(Account $account, OutputInterface $output) {
+        $accountEquipment = $account->getEquipment();
+
+        // build a array where first index is the sports-id
+        $this->sportEquipment = [];
+        $output->writeln('Use main equipments for automatic-equipment-mapping of '.$account->getUsername().':');
+        foreach ($accountEquipment as $acEqp) {
+            if($acEqp->getType()->getInput() == EquipmentType::CHOICE_SINGLE) {
+
+                foreach ($acEqp->getType()->getSport() as $sports) {
+                    if($sports->getMainEquipmenttype() == $acEqp->getType()) {
+                        $idx = $sports->getId();
+                        $this->sportEquipment[$idx][] = $acEqp;
+
+                        $output->writeln('- '.$acEqp->getName(). ' for sport '.$idx.'/'.$sports->getName());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * #TSC
+     * automatic mapping of preloaded/preselected equipments (in method createEquiqmentArray) to the imported activity.
+     * this means, that the main equipment-type stored in the sportEquipment array are searched for ONE equipment that 
+     * fits to the activity date. if there more than one equipment found, the mapping is not done.
+     */
+    private function setEquipmentIfPossible(Training $activity, OutputInterface $output) {
+        $actDate = $activity->getDateTime();
+        $sportId = $activity->getSport()->getId();
+
+        $foundEqp = null;
+        $foundEqpCount = 0;
+
+        // are there equipments for this (activity) sport?
+        if (isset($this->sportEquipment[$sportId])) {
+            // this sport has one equipment-type/category with multiple (time-range based) equipments
+            foreach ($this->sportEquipment[$sportId] as $acEqp) {
+
+            // set the end-date to time 23:59 for the compare
+            $endDate = null;
+            if($acEqp->getDateEnd() !== null) {
+                $endDate = clone $acEqp->getDateEnd();
+                $endDate->setTime(23,59,59);
+            }
+
+                if(($acEqp->getDateStart() === null || $acEqp->getDateStart() < $actDate) 
+                    && ($endDate === null || $actDate <= $endDate)){
+
+                    $foundEqp = $acEqp;
+                    $foundEqpCount++;
+
+                    //$output->writeln('found: '.$acEqp->getName());
+                }
+            }
+        }
+
+        if($foundEqpCount == 1 && $foundEqp != null) {
+            //$output->writeln('set: '.$foundEqp->getName());
+            $activity->addEquipment($foundEqp);
+        } elseif ($foundEqpCount > 1) {
+            $output->writeln('<fg=yellow>more than one main equipment found for sport '.$sportId.'/'.$activity->getSport()->getName().
+                ' and date '.$actDate->format('Y-m-d H:i').'; mapping canceled!</>');
+        }
     }
 }

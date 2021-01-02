@@ -32,6 +32,12 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2020-10-17 to 2020-11-04: Import heartrate and temperature of Fenix 6 for swimming activities.
 * 2020-11-04: Some fixing of correlate trackdata to laps/swim-lanes.
 * 2020-11-09: Auto detection of type "interval-training" (detection only works in batch/bulk-mode). You must configure a training-type with short-cut "IT" to your sports in the configuration to use this feature.
+* 2021-01-02: Fix "Start date" of an existing equipment is set to the stored date (not to current date).
+* 2021-01-02: While batch/bulk-importing of activities main equipment of the sports are assigned to new activities
+	* only main equipment-type are considered (set your equipment type as main equipment in the sports configuration)
+	* only equipment-type with single-choice considered
+	* a unique/time-ranged equipment must exists for this sport; if multiple equipments are found, nothing is assigned and a warning is logged while importing
+	* keep in mind, that f. e. multiple shoes can not be mapped because no shoe can be clearly identified
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
