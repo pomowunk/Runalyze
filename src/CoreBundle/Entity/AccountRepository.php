@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityRepository;
 class AccountRepository extends EntityRepository implements UserLoaderInterface
 {
     /**
+     * #TSC: because of the UserLoaderInterface and the configuration in security.yml/provider this method is call while authentication.
+     *
      * @param string $username username
      * @return null|Account
      */
