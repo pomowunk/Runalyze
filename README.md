@@ -38,6 +38,13 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* only equipment-type with single-choice considered
 	* a unique/time-ranged equipment must exists for this sport; if multiple equipments are found, nothing is assigned and a warning is logged while importing
 	* keep in mind, that f. e. multiple shoes can not be mapped because no shoe can be clearly identified
+* 2021-01-10: Add API-REST service /api/import/activity for uploading and importing activities for an account
+	* The POST request must be a "multipart/form-data" to support multiple times in one request.
+	* This new API uses the existing command ActivityBulkImportCommand
+	* If no problems occur and all uploaded files are imported successfully a HTTP state 200 is returned otherwise (duplicates or failed) a state 202 is returned.
+	* If there are technical trouble (while creating the tmp-folder, moving files ...) a HTTP state 500 is returned.
+	* Additional infos and the output of the "runalyze:activity:bulk-import" are set in the response content as "Content-Type: text/plain"
+	* Example curl to use: curl -k -u "<runalyze-account>:<pwd>" -H "Accept-Language: de,en" -X POST https://<domain>/api/import/activity -F 'file1=@afile.fit' -F 'file2=@another.fit' [-w 'HttpCode: %{http_code}\n']
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

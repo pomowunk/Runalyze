@@ -9,6 +9,13 @@ security:
                 class: CoreBundle:Account
 
     firewalls:
+        externalapi:
+            pattern:  ^/api
+            anonymous: false
+            http_basic: true
+            provider:  runalyzeuser
+            stateless: true
+
         default:
             anonymous: ~
             http_basic: ~
@@ -34,5 +41,6 @@ security:
         setup:
             pattern:  ^/(update|install)
             security: false
+
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
