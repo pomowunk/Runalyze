@@ -38,7 +38,7 @@ class RunalyzeConfigurationList extends ConfigurationList
     {
         parent::set($key, $value);
 
-        $categoryName = substr($key, 0, strpos('.', $key));
+        $categoryName = substr($key, 0, strpos($key, '.'));
 
         if (isset($this->CategoryPool[$categoryName])) {
             $this->CategoryPool[$categoryName]->set(substr($key, strlen($categoryName) + 1), $value);

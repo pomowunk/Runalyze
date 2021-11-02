@@ -39,6 +39,7 @@ class Configuration
 			if (empty($completeData) && $fallbackToDefault) {
 				$this->Data = (new DefaultConfiguration)->data();
 			} else {
+				$this->Data = [];
 				foreach ($completeData as $data) {
 					$this->Data[$data['keyid']] = $data;
 				}

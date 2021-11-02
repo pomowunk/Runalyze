@@ -211,7 +211,7 @@ class Splits {
 			$this->asArray[$key]['km'] = $this->formatKM($split['km']);
 
 			if (substr($split['time'], -1) == 's') {
-				$this->asArray[$key]['time'] = $this->formatTime(substr($split['time'], 0, -1));
+				$this->asArray[$key]['time'] = $this->formatTime((float)substr($split['time'], 0, -1));
 			}
 		}
 	}

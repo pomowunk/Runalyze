@@ -50,6 +50,9 @@ class GpxTrack extends AbstractSingleParser
         if (!property_exists($track, 'trkseg')) {
             throw new UnsupportedFileException('Given XML object does not contain any track. &lt;trkseg&gt;-tag could not be located.');
         }
+        if ($track->trkseg->trkpt->count() === 0) {
+            throw new UnsupportedFileException('Given XML object does not contain any trackpoints. &lt;trkpt&gt;-tag could not be located.');
+        }
     }
 
     public function setExtensionXML(SimpleXMLElement $xml)

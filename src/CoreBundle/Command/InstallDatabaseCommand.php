@@ -60,9 +60,20 @@ class InstallDatabaseCommand extends ContainerAwareCommand
                 $em->executeQuery($query);
             }
 
-            $em->commit();
+            try {
+                $em->commit();
+            } catch (\Throwable $th) {
+                // queries are auto-committed anyways, even when disabled. ignore...
+                if ($th->getMessage() !== 'There is no active transaction') {
+                    throw $th;
+                }
+            }
         } catch (\Exception $e) {
-            $em->rollBack();
+            try {
+                $em->rollBack();
+            } catch(\Exception $e_ignored) {
+
+            }
 
             throw $e;
         }
@@ -104,8 +115,9 @@ class InstallDatabaseCommand extends ContainerAwareCommand
             if ($inDelimiter) {
                 if (mb_substr($line, 0, 9) == 'DELIMITER') {
                     $inDelimiter = false;
-                    $query .= $removeDelimiter ? '' : ' '.$line;
+                    $query .= $removeDelimiter ? ';' : ' '.$line;
                     $array[] = $query;
+                    $query = '';
                 } elseif (trim($line) != '//') {
                     $query .= ' '.$line;
                 }

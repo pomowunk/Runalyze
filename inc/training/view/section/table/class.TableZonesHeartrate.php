@@ -63,7 +63,7 @@ class TableZonesHeartrate extends TableZonesAbstract {
 		$Data = $Distribution->data();
 
 		foreach ($Distribution->histogram() as $bpm => $seconds) {
-			$hf = $this->zoneFor($bpm, $hrMax);
+			$hf = $this->zoneFor((int)$bpm, $hrMax);
 
 			if (!isset($Zones[$hf])) {
 				$Zones[$hf] = array(

@@ -8,7 +8,7 @@ imports:
   - { resource: ../../data/config.yml }
 
 framework:
-  secret: ThisTokenIsNotSoSecretChangeIt
+  secret: '%secret%'
   validation:
      enable_annotations: true
 #     translation_domain: messages

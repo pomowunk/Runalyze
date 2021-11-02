@@ -112,7 +112,7 @@ class Duration {
 		$num = count($parts);
 
 		foreach ($parts as $i => $part) {
-			$this->Time += $part * pow(60, $num - $i - 1);
+			$this->Time += (int)$part * pow(60, $num - $i - 1);
 		}
 
 		return $this;

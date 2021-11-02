@@ -250,7 +250,7 @@ class Registration
         $Biking->addEquipmentType($this->specialVars['EQUIPMENT_BIKES']);
         $this->em->persist($Biking);
         $this->em->flush();
-        $this->em->clear();
+        // $this->em->clear();
     }
 
     /**

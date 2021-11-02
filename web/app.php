@@ -5,6 +5,8 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+date_default_timezone_set('Europe/Berlin');
+
 // require Composer's autoloader
 require __DIR__.'/../app/autoload.php';
 

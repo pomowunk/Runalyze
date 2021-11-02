@@ -25,6 +25,9 @@ abstract class AbstractBackup
     /** @var string */
     protected $Filename;
 
+    /** @var string */
+    protected $WriterPath;
+
     /**
      * @param string $filename
      * @param int $accountid
@@ -34,12 +37,13 @@ abstract class AbstractBackup
      */
 	public function __construct($filename, $accountid, \PDO $databaseConnection, $databaseTablePrefix, $runalyzeVersion)
     {
-		$this->Writer = new GZipWriter(md5($filename));
         $this->AccountID = $accountid;
 		$this->PDO = $databaseConnection;
         $this->Prefix = $databaseTablePrefix;
         $this->RunalyzeVersion = $runalyzeVersion;
         $this->Filename = $filename;
+		$this->WriterPath = tempnam(sys_get_temp_dir(), 'bak');
+		$this->Writer = new GZipWriter($this->WriterPath);
 	}
 
 	final public function run()
@@ -91,7 +95,7 @@ abstract class AbstractBackup
 
 		$this->Writer->finish();
         $fs = new Filesystem();
-        $fs->rename(md5($this->Filename), $this->Filename);
+        $fs->rename($this->WriterPath, $this->Filename);
     }
 
 	protected function startBackup() {}

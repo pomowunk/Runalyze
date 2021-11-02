@@ -29,7 +29,7 @@ class TcxActivityRuntastic extends TcxActivity
         }
 
         if (!empty($trackPoint->HeartRateBpm)) {
-            $this->LastValidHR = round($trackPoint->HeartRateBpm->Value);
+            $this->LastValidHR = round((int)$trackPoint->HeartRateBpm->Value);
         }
 
         $this->Container->ContinuousData->Time[] = $this->strtotime((string)$trackPoint->Time) - $this->Container->Metadata->getTimestamp();

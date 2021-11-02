@@ -93,10 +93,12 @@ class Calculator
                 return $this->estimateVO2maxByHeartRateWithElevationFor($this->Route->elevationUp(), $this->Route->elevationDown());
             }
 
-            return $this->estimateVO2maxByHeartRateWithElevationFor($this->Route->elevation(), $this->Route->elevation());
+            $route_elevation = $this->Route->elevation() ?: 0.0;
+            return $this->estimateVO2maxByHeartRateWithElevationFor($route_elevation, $route_elevation);
         }
 
-        return $this->estimateVO2maxByHeartRateWithElevationFor($this->Activity->elevation(), $this->Activity->elevation());
+        $activity_elevation = $this->Activity->elevation() ?: 0.0;
+        return $this->estimateVO2maxByHeartRateWithElevationFor($activity_elevation, $activity_elevation);
     }
 
     /**

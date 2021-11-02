@@ -89,6 +89,10 @@ class Calculator {
 		$B = $Factor->B();
 
 		foreach ($this->Data as $bpm => $t) {
+			if ($bpm === '') {
+				continue;
+			}
+
 			$hr = max(0, ($bpm - $rest) / ($max - $rest));
 			$sum += $t / 60 * $hr * exp($B * $hr);
 		}

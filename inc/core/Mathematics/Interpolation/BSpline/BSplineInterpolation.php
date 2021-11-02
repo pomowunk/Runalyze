@@ -56,7 +56,7 @@ class BSplineInterpolation
     public function setPoints(array $points, array $weights = [], array $knots = [])
     {
         $this->NumPoints = count($points);
-        $this->Dimension = count($points[0]);
+        $this->Dimension = is_countable($points[0]) ? count($points[0]) : 1;
 
         if ($this->NumPoints <= $this->Degree) {
             throw new \InvalidArgumentException('Number of points must be greater than degree.');

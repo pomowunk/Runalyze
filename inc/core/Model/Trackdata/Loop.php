@@ -136,7 +136,7 @@ class Loop extends \Runalyze\Model\Loop {
                 $currentTime = $this->Object->at($i, Entity::TIME);
                 $totalTime += $currentTime - $lastTime;
 
-                $sum += $this->Object->at($i, $key) * ($currentTime - $lastTime);
+                $sum += (int)$this->Object->at($i, $key) * ($currentTime - $lastTime);
                 $lastTime = $currentTime;
             }
 

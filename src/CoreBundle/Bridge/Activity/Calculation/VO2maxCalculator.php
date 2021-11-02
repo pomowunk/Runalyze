@@ -81,7 +81,7 @@ class VO2maxCalculator
      */
     protected function estimateVO2maxByHeartRateWithElevation()
     {
-        $elevationUp = $this->Activity->getElevation();
+        $elevationUp = $this->Activity->getElevation() ?: 0;
         $elevationDown = $elevationUp;
 
         if ($this->Activity->hasRoute()) {

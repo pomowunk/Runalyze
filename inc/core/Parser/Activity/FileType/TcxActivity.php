@@ -93,7 +93,7 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
 
     protected function parseLaps()
     {
-        foreach ($this->Xml->Lap as $i => $lap) {
+        foreach ($this->Xml->xpath('Lap') as $i => $lap) {
             if ($i == 0) {
                 if (isset($lap['StartTime'])) {
                     $start = $this->strtotime((string)$lap['StartTime']);
@@ -179,12 +179,11 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
             return;
         }
 
+        $noMove = false;
+        $tooSlow = false;
         if ($this->DetectPauses && !$this->IsWithoutDistance) {
             $noMove = ($this->LastDistance == (float)$trackPoint->DistanceMeters);
             $tooSlow = !$this->LastPointWasEmpty && $thisBreakInMeter > 0 && ($thisBreakInSeconds / $thisBreakInMeter > 6);
-        } else {
-            $noMove = false;
-            $tooSlow = false;
         }
 
         if ((empty($trackPoint->DistanceMeters) && !$this->IsWithoutDistance ) || $noMove || $tooSlow) {
@@ -222,7 +221,7 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
 
         if ($this->WasPause) {
             $pause = new Pause(end($this->Container->ContinuousData->Time), $this->PauseDuration);
-            $pause->setHeartRateDetails(end($this->Container->ContinuousData->HeartRate), !empty($trackPoint->HeartRateBpm) ? round($trackPoint->HeartRateBpm->Value) : null);
+            $pause->setHeartRateDetails(end($this->Container->ContinuousData->HeartRate), !empty($trackPoint->HeartRateBpm) ? round((int)$trackPoint->HeartRateBpm->Value) : null);
 
             $this->Container->Pauses->add($pause);
 
@@ -237,7 +236,7 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
         $this->Container->ContinuousData->Time[] = $this->strtotime((string)$trackPoint->Time) - $this->Container->Metadata->getTimestamp() - $this->PauseInSeconds;
         $this->Container->ContinuousData->Distance[] = (float)$trackPoint->DistanceMeters / 1000;
         $this->Container->ContinuousData->Altitude[] = (int)$trackPoint->AltitudeMeters;
-        $this->Container->ContinuousData->HeartRate[] = (!empty($trackPoint->HeartRateBpm)) ? round($trackPoint->HeartRateBpm->Value) : null;
+        $this->Container->ContinuousData->HeartRate[] = (!empty($trackPoint->HeartRateBpm)) ? round((int)$trackPoint->HeartRateBpm->Value) : null;
 
         if (!empty($trackPoint->Position)) {
             $this->Container->ContinuousData->Latitude[] = (double)$trackPoint->Position->LatitudeDegrees;
@@ -281,16 +280,18 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
 
     protected function parsePowerFromExtensionValues(SimpleXMLElement &$extensions, $namespace, &$power, &$rpm)
     {
-        if ($extensions->children($namespace,true)->count() > 0) {
-            if (isset($extensions->children($namespace,true)->TPX)) {
-                $trackPointx = $extensions->children($namespace,true)->TPX[0];
-
-                if ($trackPointx->children($namespace, true)->count() > 0 && isset($trackPointx->children($namespace,true)->Watts)) {
-                    $power = (int)$trackPointx->children($namespace,true)->Watts;
+        $extensionElements = $extensions->children($namespace, true);
+        if ($extensionElements->count() > 0) {
+            if (isset($extensionElements->TPX)) {
+                $trackPointx = $extensionElements->TPX[0];
+                $tpxElements = $trackPointx->children($namespace, true);
+                
+                if ($tpxElements->count() > 0 && isset($tpxElements->Watts)) {
+                    $power = (int)$tpxElements->Watts;
                 }
 
-                if ($trackPointx->children($namespace,true)->count() > 0 && isset($trackPointx->children($namespace,true)->RunCadence)) {
-                    $rpm = (int)$trackPointx->children($namespace,true)->RunCadence;
+                if ($tpxElements->count() > 0 && isset($tpxElements->RunCadence)) {
+                    $rpm = (int)$tpxElements->RunCadence;
                 }
             }
         }

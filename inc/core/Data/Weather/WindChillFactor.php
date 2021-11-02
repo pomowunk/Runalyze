@@ -63,7 +63,7 @@ class WindChillFactor implements ValueInterface
         $calc = $temperature->celsius();
 
         if (null !== $activitySpeed) {
-            $kmh = $windSpeed->inKilometerPerHour() + $activitySpeed->asKmPerHour();
+            $kmh = $windSpeed->inKilometerPerHour() + (float)$activitySpeed->asKmPerHour();
         }
 
         if ($kmh >= 5) {

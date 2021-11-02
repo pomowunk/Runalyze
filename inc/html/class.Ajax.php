@@ -175,7 +175,7 @@ class Ajax {
 		if ($tooltip == '')
 			return $html;
 
-		$class = $atLeft ? is_string($atLeft) ? 'class="'.$atLeft.'"' : 'class="atLeft" ' : '';
+		$class = $atLeft ? (is_string($atLeft) ? 'class="'.$atLeft.'"' : 'class="atLeft" ') : '';
 
 		if ($onlyAttributes)
 			return $class.'rel="tooltip" title="'.htmlspecialchars($tooltip).'"';

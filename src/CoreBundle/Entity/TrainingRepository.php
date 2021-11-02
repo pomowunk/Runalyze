@@ -17,12 +17,13 @@ class TrainingRepository extends EntityRepository
      */
     public function getAmountOfLoggedKilometers($cache = true)
     {
-        return $this->createQueryBuilder('t')
+        $query = $this->createQueryBuilder('t')
             ->select('SUM(t.distance)')
-            ->getQuery()
-            ->useResultCache($cache)
-            ->setResultCacheLifetime(120)
-            ->getSingleScalarResult();
+            ->getQuery();
+        if ($cache) {
+            $query->enableResultCache(120);
+        }
+        return $query->getSingleScalarResult();
     }
 
     /**

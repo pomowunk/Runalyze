@@ -100,7 +100,6 @@ class RaceResult extends AbstractKey
 				return '';
 			case -1:
 				return $this->FakeString();
-				break;
 			default:
 
 		if ($context->hasData('official_distance')) {
@@ -149,7 +148,6 @@ class RaceResult extends AbstractKey
 		}
 
 		return '';
-		break;
 		}
 	}
 	

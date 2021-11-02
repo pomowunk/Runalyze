@@ -12,6 +12,9 @@ services:
     alias: doctrine.orm.default_entity_manager
     public: false
 
+  Runalyze\Bundle\CoreBundle\Tests\DataFixtures\:
+    resource: '%kernel.project_dir%/tests/CoreBundle/DataFixtures'
+
   app.value_resolver.account:
     class: Runalyze\Bundle\CoreBundle\ArgumentResolver\AccountValueResolver
     tags:

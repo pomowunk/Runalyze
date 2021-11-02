@@ -61,7 +61,11 @@ class LegacyEffectiveVO2max
      */
     public function fromPace($distance, $seconds)
     {
-        $this->Value = (new DanielsGilbertFormula())->estimateFromRaceResult($distance, $seconds);
+        if (empty($distance) || empty($seconds)) {
+            $this->Value = 0.0;
+        } else {
+            $this->Value = (new DanielsGilbertFormula())->estimateFromRaceResult($distance, $seconds);
+        }
     }
 
     /**
