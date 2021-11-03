@@ -2,9 +2,10 @@
 
 namespace Runalyze\Activity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parameter\Application\DistanceUnitSystem;
 
-class PoolLengthTest extends \PHPUnit_Framework_TestCase
+class PoolLengthTest extends TestCase
 {
 	public function testStaticFunction()
 	{

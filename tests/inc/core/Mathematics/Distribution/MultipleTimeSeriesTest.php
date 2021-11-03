@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Mathematics\Distribution;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Distribution\EmpiricalDistribution;
 use Runalyze\Mathematics\Distribution\MultipleTimeSeries;
 
-class MultipleTimeSeriesTest extends \PHPUnit_Framework_TestCase
+class MultipleTimeSeriesTest extends TestCase
 {
     public function testSimpleExample()
     {
@@ -23,18 +24,20 @@ class MultipleTimeSeriesTest extends \PHPUnit_Framework_TestCase
 
     public function testAskingForUnknownDistribution()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $object = new MultipleTimeSeries();
         $object->generateDistributionsFor([
             'foo' => [10, 20, 15]
         ], [1, 2, 3]);
-
-        $this->setExpectedException(\InvalidArgumentException::class);
 
         $object->getDistribution('bar');
     }
 
     public function testOnlyTimeSeriesGiven()
     {
+        $this->expectNotToPerformAssertions();
+
         $object = new MultipleTimeSeries();
         $object->generateDistributionsFor([], [1, 2, 3]);
     }

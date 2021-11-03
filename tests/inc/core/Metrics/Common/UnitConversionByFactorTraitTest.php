@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Common;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Common\UnitConversionByFactorTrait;
 
-class UnitConversionByFactorTraitTest extends \PHPUnit_Framework_TestCase
+class UnitConversionByFactorTraitTest extends TestCase
 {
     public function testThatConversionWorksAsExpected()
     {

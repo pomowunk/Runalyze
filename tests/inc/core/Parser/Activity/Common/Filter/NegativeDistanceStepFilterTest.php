@@ -2,13 +2,14 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Parser\Activity\Common\Exception\InvalidDataException;
 use Runalyze\Parser\Activity\Common\Filter\NegativeDistanceStepFilter;
 
-class NegativeDistanceStepFilterTest extends \PHPUnit_Framework_TestCase
+class NegativeDistanceStepFilterTest extends TestCase
 {
     /** @var NegativeDistanceStepFilter */
     protected $Filter;
@@ -16,7 +17,7 @@ class NegativeDistanceStepFilterTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityDataContainer */
     protected $Container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Filter = new NegativeDistanceStepFilter();
         $this->Container = new ActivityDataContainer();
@@ -24,13 +25,14 @@ class NegativeDistanceStepFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyContainer()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->Filter->filter($this->Container);
     }
 
     public function testExampleWithoutAnyInvalidDistanceSteps()
     {
         $this->Container->ContinuousData->Distance = [1.0, 2.0, 3.0, 4.0, 5.0];
-
         $this->Filter->filter($this->Container);
 
         $this->assertCount(5, $this->Container->ContinuousData->Distance);
@@ -45,25 +47,22 @@ class NegativeDistanceStepFilterTest extends \PHPUnit_Framework_TestCase
         $this->Filter->filter($this->Container);
 
         $this->assertEquals([1.0, 2.0, 2.0, 4.0, 5.0], $this->Container->ContinuousData->Distance);
-
         $this->assertTrue($handler->hasWarningThatContains('fixed'));
     }
 
     public function testStrictMode()
     {
+        $this->expectException(InvalidDataException::class);
+
         $this->Container->ContinuousData->Distance = [1.0, 2.0, 0.0, 4.0, 5.0];
-
-        $this->setExpectedException(InvalidDataException::class);
-
         $this->Filter->filter($this->Container, true);
     }
 
     public function testUnrecoverableDistanceStep()
     {
+        $this->expectException(InvalidDataException::class);
+
         $this->Container->ContinuousData->Distance = [1.0, 2.0, 1.4, 1.6, 4.0, 5.0];
-
-        $this->setExpectedException(InvalidDataException::class);
-
         $this->Filter->filter($this->Container, false);
     }
 }

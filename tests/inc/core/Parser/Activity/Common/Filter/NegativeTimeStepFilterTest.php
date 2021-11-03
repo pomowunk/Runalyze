@@ -2,13 +2,14 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Parser\Activity\Common\Exception\InvalidDataException;
 use Runalyze\Parser\Activity\Common\Filter\NegativeTimeStepFilter;
 
-class NegativeTimeStepFilterTest extends \PHPUnit_Framework_TestCase
+class NegativeTimeStepFilterTest extends TestCase
 {
     /** @var NegativeTimeStepFilter */
     protected $Filter;
@@ -16,7 +17,7 @@ class NegativeTimeStepFilterTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityDataContainer */
     protected $Container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Filter = new NegativeTimeStepFilter();
         $this->Container = new ActivityDataContainer();
@@ -24,6 +25,8 @@ class NegativeTimeStepFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyContainer()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->Filter->filter($this->Container);
     }
 
@@ -49,16 +52,14 @@ class NegativeTimeStepFilterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 2, 3], $this->Container->ContinuousData->Time);
         $this->assertEquals([120, 122, 122, 120], $this->Container->ContinuousData->HeartRate);
-
         $this->assertTrue($handler->hasWarningThatContains('of -1s removed'));
     }
 
     public function testStrictMode()
     {
+        $this->expectException(InvalidDataException::class);
+
         $this->Container->ContinuousData->Time = [1, 2, 1, 2, 3];
-
-        $this->setExpectedException(InvalidDataException::class);
-
         $this->Filter->filter($this->Container, true);
     }
 }

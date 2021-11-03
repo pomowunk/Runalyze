@@ -2,12 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Tool\DatabaseCleanup;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Tool\DatabaseCleanup\ElevationsRecalculator;
 
 /**
  * @group requiresSqlite
  */
-class ElevationsRecalculatorTest extends \PHPUnit_Framework_TestCase
+
+class ElevationsRecalculatorTest extends TestCase
 {
     /** @var \PDO */
 	protected $PDO;
@@ -15,7 +17,7 @@ class ElevationsRecalculatorTest extends \PHPUnit_Framework_TestCase
     /** @var int */
     protected $AccountId = 1;
 
-	protected function setUp()
+	protected function setUp(): void
     {
 		$this->PDO = new \PDO('sqlite::memory:');
 		$this->PDO->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -31,7 +33,7 @@ class ElevationsRecalculatorTest extends \PHPUnit_Framework_TestCase
 		');
 	}
 
-	protected function tearDown()
+	protected function tearDown(): void
     {
 		$this->PDO->exec('DROP TABLE `runalyze_route`');
 	}

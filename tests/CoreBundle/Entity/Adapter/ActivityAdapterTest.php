@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Entity\Adapter;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Adapter\ActivityAdapter;
 use Runalyze\Bundle\CoreBundle\Entity\Route;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
@@ -11,7 +12,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Profile\Athlete\Gender;
 use Runalyze\Util\LocalTime;
 
-class ActivityAdapterTest extends \PHPUnit_Framework_TestCase
+class ActivityAdapterTest extends TestCase
 {
     /** @var Training */
     protected $Activity;
@@ -19,7 +20,7 @@ class ActivityAdapterTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityAdapter */
     protected $Adapter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Activity = new Training();
         $this->Adapter = new ActivityAdapter($this->Activity);
@@ -64,7 +65,7 @@ class ActivityAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $this->Activity->setTime(LocalTime::now());
 
-        $this->assertEquals(0, $this->Adapter->getAgeOfActivity(), '', 1);
+        $this->assertEqualsWithDelta(0, $this->Adapter->getAgeOfActivity(), 1);
         $this->assertTrue($this->Adapter->isNotOlderThanXDays(0));
     }
 

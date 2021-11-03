@@ -2,11 +2,15 @@
 
 namespace Runalyze\Data\Weather;
 
-class SourcesTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SourcesTest extends TestCase
 {
 
 	public function testThatStringsAreDefined()
 	{
+		$this->expectNotToPerformAssertions();
+
 		foreach (Sources::getEnum() as $id) {
 			Sources::stringFor($id);
 		}

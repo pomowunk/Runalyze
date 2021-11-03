@@ -7,22 +7,21 @@ class AbstractMovingAverage_MockTester extends AbstractMovingAverage
     public function calculateWithIndexData() { $this->MovingAverage = $this->IndexData; }
     public function calculateWithoutIndexData() { $this->MovingAverage = $this->Data; }
 }
+use PHPUnit\Framework\TestCase;
 
-class AbstractMovingAverageTest extends \PHPUnit_Framework_TestCase
+class AbstractMovingAverageTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testWrongConstruction()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new AbstractMovingAverage_MockTester([1, 2, 3], [1, 2]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidAt()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         $Object = new AbstractMovingAverage_MockTester([1, 2, 3]);
         $Object->at(1);
     }

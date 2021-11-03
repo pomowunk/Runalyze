@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Common\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Common\Unit\None;
 
-class NoneTest extends \PHPUnit_Framework_TestCase
+class NoneTest extends TestCase
 {
     public function testSomeEasyValues()
     {

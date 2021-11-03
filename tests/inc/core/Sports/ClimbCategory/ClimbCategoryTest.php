@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Sports\ClimbCategory;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Sports\ClimbCategory\ClimbCategory;
 
-class ClimbCategoryTest extends \PHPUnit_Framework_TestCase
+class ClimbCategoryTest extends TestCase
 {
     public function testThatAllCategoriesCanBeConvertedToString()
     {
@@ -19,10 +20,9 @@ class ClimbCategoryTest extends \PHPUnit_Framework_TestCase
 
     public function testThatInvalidCategoryIsFetched()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $object = new ClimbCategory();
-
-        $this->setExpectedException(\InvalidArgumentException::class);
-
         $object->setCategory(-1);
     }
 

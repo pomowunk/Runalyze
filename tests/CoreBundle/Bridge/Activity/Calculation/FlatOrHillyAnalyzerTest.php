@@ -2,17 +2,18 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\FlatOrHillyAnalyzer;
 use Runalyze\Bundle\CoreBundle\Entity\Route;
 use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 
-class FlatOrHillyAnalyzerTest extends \PHPUnit_Framework_TestCase
+class FlatOrHillyAnalyzerTest extends TestCase
 {
     /** @var FlatOrHillyAnalyzer */
     protected $Analyzer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Analyzer = new FlatOrHillyAnalyzer();
     }

@@ -33,13 +33,14 @@ class AbstractModel_MockTesterEmpty extends AbstractModel
         }
     }
 }
+use PHPUnit\Framework\TestCase;
 
-class ModelTest extends \PHPUnit_Framework_TestCase
+class AbstractModelTest extends TestCase
 {
     /** @var AbstractModel */
     protected $object;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->object = new AbstractModel_MockTesterFilled([]);
         $this->object->calculate();

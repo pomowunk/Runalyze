@@ -2,16 +2,17 @@
 
 namespace Runalyze\Tests\Profile\Sport\Mapping;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Profile\FitSdk;
 use Runalyze\Profile\Sport\Mapping\EnglishLanguageMapping;
 use Runalyze\Profile\Sport\SportProfile;
 
-class EnglishLanguageMappingTest extends \PHPUnit_Framework_TestCase
+class EnglishLanguageMappingTest extends TestCase
 {
     /** @var EnglishLanguageMapping */
     protected $Mapping;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Mapping = new EnglishLanguageMapping();
     }

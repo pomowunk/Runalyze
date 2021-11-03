@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Parser\Activity\Data\Merge;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\Merge\MetadataMerger;
 use Runalyze\Parser\Activity\Common\Data\Metadata;
 
-class MetadataMergerTest extends \PHPUnit_Framework_TestCase
+class MetadataMergerTest extends TestCase
 {
     /** @var Metadata */
     protected $FirstMetadata;
@@ -13,7 +14,7 @@ class MetadataMergerTest extends \PHPUnit_Framework_TestCase
     /** @var Metadata */
     protected $SecondMetadata;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->FirstMetadata = new Metadata();
         $this->SecondMetadata = new Metadata();
@@ -21,6 +22,8 @@ class MetadataMergerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatMergeWorksWithEmptyObjects()
     {
+        $this->expectNotToPerformAssertions();
+
         (new MetadataMerger($this->FirstMetadata, $this->SecondMetadata))->merge();
     }
 

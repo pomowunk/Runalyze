@@ -2,15 +2,16 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Data\Pause;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\Pause\Pause;
 use Runalyze\Parser\Activity\Common\Data\Pause\PauseCollection;
 
-class PauseCollectionTest extends \PHPUnit_Framework_TestCase
+class PauseCollectionTest extends TestCase
 {
     /** @var PauseCollection */
     protected $Collection;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Collection = new PauseCollection();
     }
@@ -58,22 +59,20 @@ class PauseCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $this->Collection->count());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConstructorWithBadTypes()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new PauseCollection([
             new Pause(100, 10),
             'foobar'
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOffsetSetWithBadType()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         $this->Collection[] = 'foobar';
     }
 

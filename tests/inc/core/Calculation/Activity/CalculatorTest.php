@@ -2,13 +2,15 @@
 
 namespace Runalyze\Calculation\Activity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Model;
 
 /**
  * @group dependsOn
  * @group dependsOnOldFactory
  */
-class CalculatorTest extends \PHPUnit_Framework_TestCase {
+
+class CalculatorTest extends TestCase {
 
 	public function testGeneralFunctionality() {
 		$Calculator = new Calculator(new Model\Activity\Entity(array(

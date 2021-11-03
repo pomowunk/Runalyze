@@ -2,9 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Tool\Backup;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 
-class FilenameHandlerTest extends \PHPUnit_Framework_TestCase
+class FilenameHandlerTest extends TestCase
 {
     public function testThatCreatedFilenamesAreUnique()
     {

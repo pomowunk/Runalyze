@@ -2,6 +2,7 @@
 
 namespace Runalyze\Tests\Parser\Activity\Data;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\ActivityData;
 use Runalyze\Parser\Activity\Common\Data\ContinuousData;
 use Runalyze\Parser\Activity\Common\Data\Pause\Pause;
@@ -9,12 +10,12 @@ use Runalyze\Parser\Activity\Common\Data\Pause\PauseCollection;
 use Runalyze\Parser\Activity\Common\Data\Round\Round;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollection;
 
-class ActivityDataTest extends \PHPUnit_Framework_TestCase
+class ActivityDataTest extends TestCase
 {
     /** @var ActivityData */
     protected $Data;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Data = new ActivityData();
     }

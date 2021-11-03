@@ -2,13 +2,14 @@
 
 namespace Runalyze\Calculation\Math\MovingAverage;
 
-class WithKernelTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class WithKernelTest extends TestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testWithoutKernel()
     {
+    	$this->expectException(\RuntimeException::class);
+
         $Object = new WithKernel([1, 2, 3]);
         $Object->calculate();
     }

@@ -2,14 +2,15 @@
 
 namespace Runalyze\Tests\Sports\ClimbQuantification;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Sports\ClimbQuantification\ClimbByBikeIndex;
 
-class ClimbByBikeIndexTest extends \PHPUnit_Framework_TestCase
+class ClimbByBikeIndexTest extends TestCase
 {
     /** @var ClimbByBikeIndex */
     protected $Cbb;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Cbb = new ClimbByBikeIndex();
     }
@@ -36,11 +37,11 @@ class ClimbByBikeIndexTest extends \PHPUnit_Framework_TestCase
         ];
 
         foreach ($testMatrix as $testValues) {
-            $this->assertEquals(
+            $this->assertEqualsWithDelta(
                 $testValues[2],
                 $this->Cbb->getScoreFor($testValues[0], $testValues[1]),
-                sprintf('Score for %.2f km with %u m fails.', $testValues[0], $testValues[1]),
-                0.05
+                0.05,
+                sprintf('Score for %.2f km with %u m fails.', $testValues[0], $testValues[1])
             );
         }
     }

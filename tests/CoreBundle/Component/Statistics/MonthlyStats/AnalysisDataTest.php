@@ -2,13 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Statistics\MonthlyStats;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats\AnalysisData;
 use Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats\AnalysisSelection;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Selection\Selection;
 
-class AnalysisDataTest extends \PHPUnit_Framework_TestCase
+class AnalysisDataTest extends TestCase
 {
     /**
      * @param array $results

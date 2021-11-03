@@ -2,14 +2,15 @@
 
 namespace Runalyze\Tests\Sports\ClimbScore;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Sports\ClimbScore\ClimbScore;
 
-class ClimbScoreTest extends \PHPUnit_Framework_TestCase
+class ClimbScoreTest extends TestCase
 {
     /** @var ClimbScore */
     protected $Score;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Score = new ClimbScore();
     }
@@ -36,7 +37,7 @@ class ClimbScoreTest extends \PHPUnit_Framework_TestCase
             0.43
         );
 
-        $this->assertEquals(5.9, $this->Score->getScore(), '', 0.05);
+        $this->assertEqualsWithDelta(5.9, $this->Score->getScore(), 0.05);
     }
 
     public function testSumOfFietsIndices()
@@ -54,10 +55,10 @@ class ClimbScoreTest extends \PHPUnit_Framework_TestCase
 
     public function testScaleForSumOfScores()
     {
-        $this->assertEquals(1.17, $this->Score->getScoreForSumOfSingleScores(0.0), '', 0.01);
+        $this->assertEqualsWithDelta(1.17, $this->Score->getScoreForSumOfSingleScores(0.0), 0.01);
         $this->assertEquals(2.0, $this->Score->getScoreForSumOfSingleScores(0.5));
         $this->assertEquals(4.0, $this->Score->getScoreForSumOfSingleScores(2.5));
-        $this->assertEquals(5.17, $this->Score->getScoreForSumOfSingleScores(4.5), '', 0.01);
+        $this->assertEqualsWithDelta(5.17, $this->Score->getScoreForSumOfSingleScores(4.5), 0.01);
         $this->assertEquals(6.0, $this->Score->getScoreForSumOfSingleScores(6.5));
         $this->assertEquals(8.0, $this->Score->getScoreForSumOfSingleScores(14.5));
         $this->assertEquals(10.0, $this->Score->getScoreForSumOfSingleScores(30.5));

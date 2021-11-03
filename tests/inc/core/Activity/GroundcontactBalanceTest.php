@@ -2,7 +2,9 @@
 
 namespace Runalyze\Activity;
 
-class GroundcontactBalanceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class GroundcontactBalanceTest extends TestCase
 {
 
 	public function testStaticFunction()

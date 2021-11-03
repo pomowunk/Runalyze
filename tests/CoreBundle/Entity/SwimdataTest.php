@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Swimdata;
 
-class SwimdataTest extends \PHPUnit_Framework_TestCase
+class SwimdataTest extends TestCase
 {
     /** @var Swimdata */
     protected $Data;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Data = new Swimdata();
     }

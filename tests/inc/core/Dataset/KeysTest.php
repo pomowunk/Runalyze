@@ -2,7 +2,9 @@
 
 namespace Runalyze\Dataset;
 
-class KeysTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class KeysTest extends TestCase
 {
 
 	public function testAllIDs()
@@ -22,6 +24,8 @@ class KeysTest extends \PHPUnit_Framework_TestCase
 
 	public function testThatSummaryWorksForAllKeys()
 	{
+		$this->expectNotToPerformAssertions();
+
 		foreach (Keys::getEnum() as $key) {
 			$KeyObject = Keys::get($key);
 
@@ -52,9 +56,10 @@ class KeysTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 
-	/** @expectedException \InvalidArgumentException */
 	public function testInvalidKeyForGet()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 		Keys::get('key-ids-are-integers');
 	}
 

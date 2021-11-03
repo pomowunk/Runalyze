@@ -2,25 +2,27 @@
 
 namespace Runalyze\Dataset;
 
+use PHPUnit\Framework\TestCase;
 use PDO;
 
 /**
  * @group requiresSqlite
  */
-class SummaryModeTest extends \PHPUnit_Framework_TestCase
+
+class SummaryModeTest extends TestCase
 {
 
 	/** @var \PDO */
 	protected $PDO;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		$this->PDO = new PDO('sqlite::memory:');
 		$this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->PDO->exec('CREATE TABLE IF NOT EXISTS `testtable` (`value` float, `s` float);');
 	}
 
-	public function tearDown()
+	public function tearDown(): void
 	{
 		$this->PDO->exec('DROP TABLE `testtable`');
 	}

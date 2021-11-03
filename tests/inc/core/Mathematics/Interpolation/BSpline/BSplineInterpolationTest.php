@@ -2,52 +2,38 @@
 
 namespace Runalyze\Tests\Mathematics\Interpolation\BSpline;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Interpolation\BSpline\BSplineInterpolation;
 
-class BSplineInterpolationTest extends \PHPUnit_Framework_TestCase
+class BSplineInterpolationTest extends TestCase
 {
-    protected function assertArraysAreSimilar(array $expected, array $given, $precision)
-    {
-        $this->assertSameSize($expected, $given);
-
-        $num = count($expected);
-
-        for ($i = 0; $i < $num; ++$i) {
-            $this->assertEquals($expected[$i], $given[$i], '', $precision);
-        }
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidDegree()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new BSplineInterpolation(0);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNonNumericDegree()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new BSplineInterpolation('foo');
     }
 
     public function testEvaluationOnEmptyCurve()
     {
+        $this->expectException(\RuntimeException::class);
+
         $spline = new BSplineInterpolation(2);
-
-        $this->setExpectedException(\RuntimeException::class);
-
         $spline->evaluateAt(0.5);
     }
 
     public function testNotEnoughPoints()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $spline = new BSplineInterpolation(2);
-
-        $this->setExpectedException(\InvalidArgumentException::class);
-
         $spline->setPoints([1, 2]);
     }
 
@@ -72,8 +58,8 @@ class BSplineInterpolationTest extends \PHPUnit_Framework_TestCase
         $spline = new BSplineInterpolation(2);
         $spline->setPoints([10, 20, 30, 20, 40, 30, 10]);
 
-        $this->assertArraysAreSimilar([15, 23.3, 27.2, 23.8, 35, 33.2, 20], $spline->evaluateAtAllPoints(true), 0.1);
-        $this->assertArraysAreSimilar([10, 23.2, 27.2, 23.8, 35, 32.9, 10], $spline->evaluateAtAllPoints(false), 0.1);
+        $this->assertEqualsWithDelta([15, 23.3, 27.2, 23.8, 35, 33.2, 20], $spline->evaluateAtAllPoints(true), 0.1);
+        $this->assertEqualsWithDelta([10, 23.2, 27.2, 23.8, 35, 32.9, 10], $spline->evaluateAtAllPoints(false), 0.1);
     }
 
     public function testUniformCurveFromOriginalSource()
@@ -86,7 +72,7 @@ class BSplineInterpolationTest extends \PHPUnit_Framework_TestCase
             [ 1.0,  0.0]
         ]);
 
-        $this->assertArraysAreSimilar([
+        $this->assertEqualsWithDelta([
             [-0.75, 0.25],
             [-0.64, 0.32],
             [-0.51, 0.33],
@@ -111,7 +97,7 @@ class BSplineInterpolationTest extends \PHPUnit_Framework_TestCase
             [ 1.0,  0.0]
         ], [], [0, 0, 0, 1, 2, 2, 2]);
 
-        $this->assertArraysAreSimilar([
+        $this->assertEqualsWithDelta([
             [-1.0, 0.00],
             [-0.8, 0.16],
             [-0.6, 0.24],
@@ -142,7 +128,7 @@ class BSplineInterpolationTest extends \PHPUnit_Framework_TestCase
             [0.0, -0.5]
         ], [1, $w, 1, $w, 1, $w, 1, $w, 1], [0, 0, 0, 1/4, 1/4, 1/2, 1/2, 3/4, 3/4, 1, 1, 1]);
 
-        $this->assertArraysAreSimilar([
+        $this->assertEqualsWithDelta([
             [0.0, -0.5],
             [-0.2906, -0.4069],
             [-0.4779, -0.1469],

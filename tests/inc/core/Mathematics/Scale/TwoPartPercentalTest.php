@@ -2,19 +2,20 @@
 
 namespace Runalyze\Tests\Mathematics\Scale;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Scale\TwoPartPercental;
 
-class TwoPartPercentalTest extends \PHPUnit_Framework_TestCase
+class TwoPartPercentalTest extends TestCase
 {
     /** @var TwoPartPercental */
     protected $Scale;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Scale = new TwoPartPercental();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 
@@ -37,7 +38,7 @@ class TwoPartPercentalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(25, $this->Scale->transform(1.5));
         $this->assertEquals(50, $this->Scale->transform(2.0));
         $this->assertEquals(50, $this->Scale->transform(2.0));
-        $this->assertEquals(56, $this->Scale->transform(3.0), '', 0.5);
+        $this->assertEqualsWithDelta(56, $this->Scale->transform(3.0), 0.5);
         $this->assertEquals(75, $this->Scale->transform(6.0));
     }
 }

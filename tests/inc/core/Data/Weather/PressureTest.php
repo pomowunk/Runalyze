@@ -2,11 +2,14 @@
 
 namespace Runalyze\Data\Weather;
 
-class PressureTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PressureTest extends TestCase
 {
-    /** @expectedException \InvalidArgumentException */
     public function testNonNumericValue()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new Pressure('foobar');
     }
 

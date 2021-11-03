@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Activity\Temperature;
 use Runalyze\Data\Weather\HeatIndex;
 use Runalyze\Data\Weather\Humidity;
 use Runalyze\Parameter\Application\TemperatureUnit;
 
-class HeatIndexTest extends \PHPUnit_Framework_TestCase
+class HeatIndexTest extends TestCase
 {
 	public function testUnknownHeatIndex()
 	{
@@ -25,10 +26,9 @@ class HeatIndexTest extends \PHPUnit_Framework_TestCase
 
 	public function testTryingToSetInvalidValue()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 		$obj = new HeatIndex();
-
-		$this->setExpectedException(\InvalidArgumentException::class);
-
 		$obj->set('foobar');
 	}
 
@@ -52,9 +52,9 @@ class HeatIndexTest extends \PHPUnit_Framework_TestCase
 			$temp->setFahrenheit($dataToTest[0]);
 			$humidity->set($dataToTest[1]);
 
-			$this->assertEquals(
-				$dataToTest[2], (new HeatIndex($temp, $humidity))->value(),
-				sprintf('Heat index does not match for $valuesToTest[%u]', $i), 0.5
+			$this->assertEqualsWithDelta(
+				$dataToTest[2], (new HeatIndex($temp, $humidity))->value(), 0.5,
+				sprintf('Heat index does not match for $valuesToTest[%u]', $i)
 			);
 		}
 	}
@@ -73,6 +73,6 @@ class HeatIndexTest extends \PHPUnit_Framework_TestCase
 			)
 		);
 
-		$this->assertEquals(10.5, $heatIndex->value(), '', 0.1);
+		$this->assertEqualsWithDelta(10.5, $heatIndex->value(), 0.1);
 	}
 }

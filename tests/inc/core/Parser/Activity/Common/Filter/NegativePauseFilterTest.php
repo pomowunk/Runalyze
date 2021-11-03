@@ -2,6 +2,7 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
@@ -9,7 +10,7 @@ use Runalyze\Parser\Activity\Common\Data\Pause\Pause;
 use Runalyze\Parser\Activity\Common\Exception\InvalidDataException;
 use Runalyze\Parser\Activity\Common\Filter\NegativePauseFilter;
 
-class NegativePauseFilterTest extends \PHPUnit_Framework_TestCase
+class NegativePauseFilterTest extends TestCase
 {
     /** @var NegativePauseFilter */
     protected $Filter;
@@ -17,7 +18,7 @@ class NegativePauseFilterTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityDataContainer */
     protected $Container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Filter = new NegativePauseFilter();
         $this->Container = new ActivityDataContainer();
@@ -55,10 +56,9 @@ class NegativePauseFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testStrictMode()
     {
+        $this->expectException(InvalidDataException::class);
+
         $this->Container->Pauses->add(new Pause(117, -12));
-
-        $this->setExpectedException(InvalidDataException::class);
-
         $this->Filter->filter($this->Container, true);
     }
 

@@ -13,7 +13,7 @@ class LogbookTest extends AbstractActivityParserTestCase
     /** @var Logbook */
     protected $Parser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Parser = new Logbook();
     }
@@ -64,6 +64,6 @@ class LogbookTest extends AbstractActivityParserTestCase
         ]);
 
         $this->assertEquals("Rennrad", $this->Container[4]->Metadata->getSportName());
-        $this->assertEquals(19.0, $this->Container[4]->WeatherData->Temperature, '', 0.5);
+        $this->assertEqualsWithDelta(19.0, $this->Container[4]->WeatherData->Temperature, 0.5);
     }
 }

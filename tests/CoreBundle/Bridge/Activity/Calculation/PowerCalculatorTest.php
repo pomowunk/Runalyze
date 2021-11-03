@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\PowerCalculator;
 use Runalyze\Bundle\CoreBundle\Entity\Route;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
@@ -9,7 +10,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Profile\Sport\SportProfile;
 
-class PowerCalculatorTest extends \PHPUnit_Framework_TestCase
+class PowerCalculatorTest extends TestCase
 {
     /** @var PowerCalculator */
     protected $Calculator;
@@ -17,7 +18,7 @@ class PowerCalculatorTest extends \PHPUnit_Framework_TestCase
     /** @var Training */
     protected $Activity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Activity = new Training();
         $this->Activity->setSport(new Sport());

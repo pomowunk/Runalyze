@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Time\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Time\Unit\Hours;
 
-class HoursTest extends \PHPUnit_Framework_TestCase
+class HoursTest extends TestCase
 {
     public function testSomeEasyValues()
     {

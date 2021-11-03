@@ -2,13 +2,15 @@
 
 namespace Runalyze\Activity;
 
+use PHPUnit\Framework\TestCase;
 use PDO;
 
 /**
  * @group dependsOn
  * @group dependsOnOldDatabase
  */
-class DuplicateFinderTest extends \PHPUnit_Framework_TestCase
+
+class DuplicateFinderTest extends TestCase
 {
 	/** @var \PDO */
 	protected $PDO;
@@ -16,7 +18,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase
 	/** @var \Runalyze\Activity\DuplicateFinder */
 	protected $Finder;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		$this->PDO = \DB::getInstance();
 		$this->PDO->exec('DELETE FROM `'.PREFIX.'training`');
@@ -26,7 +28,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase
 		$this->Finder = new DuplicateFinder($this->PDO, 0);
 	}
 
-	public function tearDown()
+	public function tearDown(): void
 	{
 		$this->PDO->exec('DELETE FROM `'.PREFIX.'training`');
 	}
@@ -41,9 +43,10 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase
 	    $this->assertFalse($this->Finder->checkForDuplicate(1234567890));
 	}
 
-	/** @expectedException \InvalidArgumentException */
 	public function testInvalidArgument()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 	    $this->Finder->checkForDuplicate('foobar');
 	}
 
@@ -96,9 +99,10 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
-	/** @expectedException \InvalidArgumentException */
 	public function testInvalidArgumentForDuplicates()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 	    $this->Finder->checkForDuplicates([
 	    	1448797800,
 	    	'foobar',

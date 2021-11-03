@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Common;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Common\UnitConversionByDividendTrait;
 
-class UnitConversionByDividendTraitTest extends \PHPUnit_Framework_TestCase
+class UnitConversionByDividendTraitTest extends TestCase
 {
     public function testThatConversionWorksAsExpected()
     {

@@ -2,7 +2,9 @@
 
 namespace Runalyze\Util;
 
-class StringReaderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class StringReaderTest extends TestCase
 {
 	public function testFindDemandedPace()
 	{

@@ -2,12 +2,13 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\TrimpCalculator;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Profile\Athlete\Gender;
 
-class TrimpCalculatorTest extends \PHPUnit_Framework_TestCase
+class TrimpCalculatorTest extends TestCase
 {
     /** @var TrimpCalculator */
     protected $Calculator;
@@ -15,7 +16,7 @@ class TrimpCalculatorTest extends \PHPUnit_Framework_TestCase
     /** @var Training */
     protected $Activity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Activity = new Training();
         $this->Activity->setSport(new Sport());

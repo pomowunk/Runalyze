@@ -2,14 +2,15 @@
 
 namespace Runalyze\Tests\Parser\Activity\Data;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\ContinuousData;
 
-class ContinuousDataTest extends \PHPUnit_Framework_TestCase
+class ContinuousDataTest extends TestCase
 {
     /** @var ContinuousData */
     protected $Data;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Data = new ContinuousData();
     }

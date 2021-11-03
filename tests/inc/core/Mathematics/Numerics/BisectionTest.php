@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Mathematics\Numerics;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Numerics\Bisection;
 
-class BisectionTest extends \PHPUnit_Framework_TestCase
+class BisectionTest extends TestCase
 {
 	public function testPerfectStartPoint()
     {
@@ -36,7 +37,7 @@ class BisectionTest extends \PHPUnit_Framework_TestCase
 		$Bisection->setIterations(100);
 		$Bisection->setEpsilon(0.01);
 
-		$this->assertEquals(1, $Bisection->findValue(), '', 0.01);
+		$this->assertEqualsWithDelta(1, $Bisection->findValue(), 0.01);
 	}
 
 	public function testCubicFunction()
@@ -48,6 +49,6 @@ class BisectionTest extends \PHPUnit_Framework_TestCase
 		$Bisection->setIterations(100);
 		$Bisection->setEpsilon(0.01);
 
-		$this->assertEquals(1, $Bisection->findValue(), '', 0.01);
+		$this->assertEqualsWithDelta(1, $Bisection->findValue(), 0.01);
 	}
 }

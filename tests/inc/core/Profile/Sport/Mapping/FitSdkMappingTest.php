@@ -2,16 +2,17 @@
 
 namespace Runalyze\Tests\Profile\Sport\Mapping;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Profile\FitSdk;
 use Runalyze\Profile\Sport\Mapping\FitSdkMapping;
 use Runalyze\Profile\Sport\SportProfile;
 
-class FitSdkMappingTest extends \PHPUnit_Framework_TestCase
+class FitSdkMappingTest extends TestCase
 {
     /** @var FitSdkMapping */
     protected $Mapping;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Mapping = new FitSdkMapping();
     }

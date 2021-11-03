@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Parser\Activity\Data\Merge;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\ContinuousData;
 use Runalyze\Parser\Activity\Common\Data\Merge\ContinuousDataMerger;
 
-class ContinuousDataMergerTest extends \PHPUnit_Framework_TestCase
+class ContinuousDataMergerTest extends TestCase
 {
     /** @var ContinuousData */
     protected $FirstData;
@@ -13,7 +14,7 @@ class ContinuousDataMergerTest extends \PHPUnit_Framework_TestCase
     /** @var ContinuousData */
     protected $SecondData;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->FirstData = new ContinuousData();
         $this->SecondData = new ContinuousData();
@@ -21,15 +22,17 @@ class ContinuousDataMergerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatMergeWorksWithEmptyObjects()
     {
+        $this->expectNotToPerformAssertions();
+
         (new ContinuousDataMerger($this->FirstData, $this->SecondData))->merge();
     }
 
     public function testWithDifferentArraySizes()
     {
+        $this->expectException(\RuntimeException::class);
+
         $this->FirstData->Time = [1, 2, 3];
         $this->SecondData->Distance = [1, 2, 3, 4];
-
-        $this->setExpectedException(\RuntimeException::class);
 
         (new ContinuousDataMerger($this->FirstData, $this->SecondData))->merge(true);
     }

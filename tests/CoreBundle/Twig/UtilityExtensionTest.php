@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Twig;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Twig\UtilityExtension;
 
-class UtilityExtensionTest extends \PHPUnit_Framework_TestCase
+class UtilityExtensionTest extends TestCase
 {
     /** @var UtilityExtension */
     protected $Utility;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Utility = new UtilityExtension();
     }

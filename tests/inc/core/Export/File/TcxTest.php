@@ -2,13 +2,14 @@
 
 namespace Runalyze\Export\File;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Model\Activity;
 use Runalyze\Model\Route;
 use Runalyze\Model\Trackdata;
 use Runalyze\View\Activity\FakeContext;
 use Runalyze\Parser\Activity\FileType\Tcx as TcxParser;
 
-class TcxTest extends \PHPUnit_Framework_TestCase
+class TcxTest extends TestCase
 {
     public function testThatEmptyContextIsNotPossible()
     {
@@ -19,12 +20,16 @@ class TcxTest extends \PHPUnit_Framework_TestCase
 
 	public function testFileCreationForOutdoorActivity()
 	{
+        $this->expectNotToPerformAssertions();
+
 		$Exporter = new Tcx(FakeContext::outdoorContext());
 		$Exporter->createFileWithoutDirectDownload();
 	}
 
 	public function testFileCreationForIndoorActivity()
 	{
+        $this->expectNotToPerformAssertions();
+
 		$Exporter = new Tcx(FakeContext::indoorContext());
 		$Exporter->createFileWithoutDirectDownload();
 	}
@@ -46,6 +51,7 @@ class TcxTest extends \PHPUnit_Framework_TestCase
         $parser = new TcxParser();
         $parser->setFileContent($Exporter->fileContent());
         $parser->parse();
+        // $this->assertEquals('', print_r($parser->getActivityDataContainer(), true));
 
         $this->assertEquals(1, $parser->getNumberOfActivities());
         $this->assertNotEmpty($parser->getActivityDataContainer()->ContinuousData->Time);

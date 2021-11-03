@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Profile\Weather\Source;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Profile\Weather\Source\SourceInterface;
 use Runalyze\Profile\Weather\Source\WeatherSourceProfile;
 
-class WeatherSourceProfileTest extends \PHPUnit_Framework_TestCase
+class WeatherSourceProfileTest extends TestCase
 {
     public function testThatAllClassesExist()
     {

@@ -2,9 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Configuration\Category;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\Category\ActivityForm;
 
-class ActivityFormTest extends \PHPUnit_Framework_TestCase
+class ActivityFormTest extends TestCase
 {
     public function testIgnoredActivityIds()
     {

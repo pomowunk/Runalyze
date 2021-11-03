@@ -2,10 +2,11 @@
 
 namespace Runalyze\Activity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Configuration;
 use Runalyze\Parameter\Application\EnergyUnit;
 
-class EnergyTest extends \PHPUnit_Framework_TestCase
+class EnergyTest extends TestCase
 {
 	public function testConstructor()
 	{

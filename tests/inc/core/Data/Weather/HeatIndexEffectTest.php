@@ -1,11 +1,14 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Data\Weather\HeatIndexEffect;
 
-class HeatIndexEffectTest extends \PHPUnit_Framework_TestCase
+class HeatIndexEffectTest extends TestCase
 {
 	public function testThatDescriptionCanBeCalledForAllLevels()
 	{
+        $this->expectNotToPerformAssertions();
+
 		foreach (HeatIndexEffect::getEnum() as $level) {
 			HeatIndexEffect::description($level);
 		}
@@ -13,6 +16,8 @@ class HeatIndexEffectTest extends \PHPUnit_Framework_TestCase
 
 	public function testThatLabelCanBeCalledForAllLevels()
 	{
+        $this->expectNotToPerformAssertions();
+
 		foreach (HeatIndexEffect::getEnum() as $level) {
 			HeatIndexEffect::label($level);
 		}
@@ -20,6 +25,8 @@ class HeatIndexEffectTest extends \PHPUnit_Framework_TestCase
 
 	public function testThatIconCanBeCalledForAllLevels()
 	{
+        $this->expectNotToPerformAssertions();
+
 		foreach (HeatIndexEffect::getEnum() as $level) {
 			HeatIndexEffect::icon($level);
 		}

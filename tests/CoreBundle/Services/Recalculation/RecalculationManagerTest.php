@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Recalculation;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
 use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
@@ -12,7 +13,7 @@ use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class RecalculationManagerTest extends \PHPUnit_Framework_TestCase
+class RecalculationManagerTest extends TestCase
 {
     /** @var  RecalculationManager */
     protected $Manager;
@@ -26,7 +27,7 @@ class RecalculationManagerTest extends \PHPUnit_Framework_TestCase
     /** @var ConfigurationUpdater */
     protected $ConfigurationUpdater;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Account = new Account();
         $confRepository = $this->getConfRepositoryMock();

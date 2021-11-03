@@ -2,7 +2,9 @@
 
 namespace Runalyze\Model\Account;
 
-class UserRoleTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UserRoleTest extends TestCase
 {
 
 	public function testCheckRoleName()

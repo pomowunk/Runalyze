@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Import;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup;
 use Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookupException;
 
@@ -10,12 +11,13 @@ use Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookupException;
  * @group dependsOnTimezoneDatabase
  * @group requiresSqlite
  */
-class TimezoneLookupTest extends \PHPUnit_Framework_TestCase
+
+class TimezoneLookupTest extends TestCase
 {
     /** @var TimezoneLookup */
     protected $Lookup;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Lookup = new TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'libspatialite.so.5');
     }
@@ -31,19 +33,17 @@ class TimezoneLookupTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorWithException()
     {
+        $this->expectException(TimezoneLookupException::class);
+
         $lookup = new TimezoneLookup('here/is/no/timezone/database.sqlite', 'libspatialite.so.5');
-
-        $this->setExpectedException(TimezoneLookupException::class);
-
         $lookup->isPossible();
     }
 
     public function testConstructorWithWrongExtensionName()
     {
+        $this->expectException(TimezoneLookupException::class);
+
         $lookup = new TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'non-existant-extension.so');
-
-        $this->setExpectedException(TimezoneLookupException::class);
-
         $lookup->isPossible();
     }
 

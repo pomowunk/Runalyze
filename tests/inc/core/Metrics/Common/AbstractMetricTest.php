@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Common;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Common\AbstractMetric;
 
-class AbstractMetricTest extends \PHPUnit_Framework_TestCase
+class AbstractMetricTest extends TestCase
 {
     public function testThatConversionWorksAsExpected()
     {

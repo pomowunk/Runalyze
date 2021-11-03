@@ -2,15 +2,15 @@
 
 namespace Runalyze\Tests\Mathematics\DataAnalysis;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\DataAnalysis\ConstantSegmentFinder;
 
-class ConstantSegmentFinderTest extends \PHPUnit_Framework_TestCase
+class ConstantSegmentFinderTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
 	public function testInvalidIndexData()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
 		new ConstantSegmentFinder([1, 2, 3], [1, 2, 3, 4, 5]);
 	}
 

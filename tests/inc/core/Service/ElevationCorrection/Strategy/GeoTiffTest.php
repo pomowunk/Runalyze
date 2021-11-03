@@ -2,6 +2,7 @@
 
 namespace Runalyze\Tests\Service\ElevationCorrection\Strategy;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\DEM\Interpolation\BilinearInterpolation;
 use Runalyze\DEM\Provider\GeoTIFF\SRTM4Provider;
 use Runalyze\DEM\Reader;
@@ -11,7 +12,8 @@ use Runalyze\Service\ElevationCorrection\Strategy\GeoTiff;
  * @group dependsOn
  * @group dependsOnSRTM
  */
-class GeoTiffTest extends \PHPUnit_Framework_TestCase
+
+class GeoTiffTest extends TestCase
 {
     /** @var GeoTiff */
     protected $GeoTiff;
@@ -19,7 +21,7 @@ class GeoTiffTest extends \PHPUnit_Framework_TestCase
     /** @var string */
     protected $SrtmRoot;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->SrtmRoot = TESTS_ROOT.'/../data/srtm';
         $this->GeoTiff = new GeoTiff(

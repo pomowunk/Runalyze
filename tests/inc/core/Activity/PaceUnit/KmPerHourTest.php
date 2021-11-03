@@ -2,7 +2,9 @@
 
 namespace Runalyze\Activity\PaceUnit;
 
-class KmPerHourTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class KmPerHourTest extends TestCase
 {
 	public function testSomePaces()
 	{

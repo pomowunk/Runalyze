@@ -2,18 +2,19 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Import;
 
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Runalyze\Bundle\CoreBundle\Services\Import\FileImporter;
 use Runalyze\Parser\Activity\Converter\FitConverter;
 use Runalyze\Parser\Activity\Converter\TtbinConverter;
 
-class FileImporterTest extends \PHPUnit_Framework_TestCase
+class FileImporterTest extends TestCase
 {
     /** @var FileImporter */
     protected $Importer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Importer = new FileImporter(
             new FitConverter('', ''),

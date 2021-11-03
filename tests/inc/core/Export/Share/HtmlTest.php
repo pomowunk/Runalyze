@@ -2,6 +2,7 @@
 
 namespace Runalyze\Export\Share;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\View\Activity\FakeContext;
 use Runalyze\Model\Activity;
 
@@ -9,7 +10,8 @@ use Runalyze\Model\Activity;
  * @group dependsOn
  * @group dependsOnOldFactory
  */
-class HtmlTest extends \PHPUnit_Framework_TestCase
+
+class HtmlTest extends TestCase
 {
 	public function checkThatItsAlwaysPossible()
 	{
@@ -28,6 +30,8 @@ class HtmlTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCodeCanBeCreated()
     {
+		$this->expectNotToPerformAssertions();
+
         ob_start();
 
 		foreach (FakeContext::examplaryContexts() as $context) {

@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Sports\Performance\Model;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Sports\Performance\Model\BanisterModel;
 use Runalyze\Sports\Performance\Model\BussoModel;
 
-class BussoModelTest extends \PHPUnit_Framework_TestCase
+class BussoModelTest extends TestCase
 {
     public function testEquivalenceWithBanister()
     {

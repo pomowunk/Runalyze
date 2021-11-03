@@ -2,17 +2,18 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Twig;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Twig\ValueExtension;
 use Runalyze\Metrics;
 
-class ValueExtensionTest extends \PHPUnit_Framework_TestCase
+class ValueExtensionTest extends TestCase
 {
     /** @var ValueExtension */
     protected $Extension;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Extension = $this->getExtensionFor();
     }

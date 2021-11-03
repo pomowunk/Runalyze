@@ -20,17 +20,19 @@ class CategoryFake extends Category\VO2max {
 	}
 }
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @group requiresSqlite
  */
-class ShapeTest extends \PHPUnit_Framework_TestCase {
+class ShapeTest extends TestCase {
 
 	/**
 	 * @var \PDO
 	 */
 	protected $PDO;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->PDO = new PDO('sqlite::memory:');
 		$this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->PDO->exec('CREATE TABLE IF NOT EXISTS `'.PREFIX.'training` (
@@ -46,7 +48,7 @@ class ShapeTest extends \PHPUnit_Framework_TestCase {
 
 		LegacyEffectiveVO2maxCorrector::setGlobalFactor(1.0);
 	}
-	protected function tearDown() {
+	protected function tearDown(): void {
 		$this->PDO->exec('DROP TABLE `'.PREFIX.'training`');
 	}
 
@@ -110,10 +112,9 @@ class ShapeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(50, $Shape->value());
 	}
 
-	/**
-	 * @expectedException \RuntimeException
-	 */
 	public function testCallWithoutCalculation() {
+		$this->expectException(\RuntimeException::class);
+
 		$Shape = new Shape($this->PDO, 1, 1, new CategoryFake());
 		$Shape->value();
 	}

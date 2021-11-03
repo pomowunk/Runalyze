@@ -2,11 +2,12 @@
 
 namespace Runalyze\Tests\Service\ElevationCorrection\Strategy;
 
+use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Psr7\Response;
 use Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps;
 use Runalyze\Tests\Service\HttpClientAwareTestCaseTrait;
 
-class GoogleMapsTest extends \PHPUnit_Framework_TestCase
+class GoogleMapsTest extends TestCase
 {
     use HttpClientAwareTestCaseTrait;
 

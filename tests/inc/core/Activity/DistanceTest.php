@@ -2,7 +2,9 @@
 
 namespace Runalyze\Activity;
 
-class DistanceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DistanceTest extends TestCase
 {
 	public function testSimpleDistances()
 	{

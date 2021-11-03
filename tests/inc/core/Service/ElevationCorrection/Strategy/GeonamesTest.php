@@ -2,11 +2,12 @@
 
 namespace Runalyze\Tests\Service\ElevationCorrection\Strategy;
 
+use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Psr7\Response;
 use Runalyze\Service\ElevationCorrection\Strategy\Geonames;
 use Runalyze\Tests\Service\HttpClientAwareTestCaseTrait;
 
-class GeonamesTest extends \PHPUnit_Framework_TestCase
+class GeonamesTest extends TestCase
 {
     use HttpClientAwareTestCaseTrait;
 

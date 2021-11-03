@@ -7,30 +7,28 @@ class AbstractKernelTest_MockTester extends AbstractKernel
     protected $DefaultWidth = 1.0;
     public function atTransformed($difference) { return $difference; }
 }
+use PHPUnit\Framework\TestCase;
 
-class AbstractKernelTest extends \PHPUnit_Framework_TestCase
+class AbstractKernelTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testZeroKernelWidth()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new AbstractKernelTest_MockTester(0);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNegativeKernelWidth()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new AbstractKernelTest_MockTester(-1.23);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNonNumericKernelWidth()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new AbstractKernelTest_MockTester('abc');
     }
 

@@ -2,11 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Form\Type\WindSpeedType;
 use Runalyze\Metrics\Velocity\Unit\KilometerPerHour;
 use Runalyze\Metrics\Velocity\Unit\MilesPerHour;
 
-class WindSpeedTypeTest extends \PHPUnit_Framework_TestCase
+class WindSpeedTypeTest extends TestCase
 {
     public function testTransformWithKilometerPerHour()
     {

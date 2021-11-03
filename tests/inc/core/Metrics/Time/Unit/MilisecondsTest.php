@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Time\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Time\Unit\Miliseconds;
 
-class MilisecondsTest extends \PHPUnit_Framework_TestCase
+class MilisecondsTest extends TestCase
 {
     public function testSomeEasyValues()
     {

@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Velocity\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Velocity\Unit\SecondsPerKilometer;
 
-class SecondsPerKilometerTest extends \PHPUnit_Framework_TestCase
+class SecondsPerKilometerTest extends TestCase
 {
     public function testThatNothingChanges()
     {

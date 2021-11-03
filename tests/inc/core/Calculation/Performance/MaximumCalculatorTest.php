@@ -15,23 +15,22 @@ class FakeAbstractModel extends AbstractModel
         }
     }
 }
+use PHPUnit\Framework\TestCase;
 
-class MaximumCalculatorTest extends \PHPUnit_Framework_TestCase
+class MaximumCalculatorTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testWrongClosure()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new MaximumCalculator(function () {
         }, []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNoModelInClosure()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new MaximumCalculator(function () {
             return new \StdClass();
         }, []);
@@ -39,6 +38,8 @@ class MaximumCalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testTSBclosure()
     {
+        $this->expectNotToPerformAssertions();
+
         new MaximumCalculator(function (array $array) {
             return new TsbModel($array);
         }, []);

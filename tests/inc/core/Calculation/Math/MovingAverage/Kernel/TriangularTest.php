@@ -2,7 +2,9 @@
 
 namespace Runalyze\Calculation\Math\MovingAverage\Kernel;
 
-class TriangularTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TriangularTest extends TestCase
 {
     public function testSomeValuesForWidth2()
     {

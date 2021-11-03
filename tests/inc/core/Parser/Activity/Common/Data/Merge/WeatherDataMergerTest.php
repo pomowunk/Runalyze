@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Parser\Activity\Data\Merge;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\WeatherData;
 use Runalyze\Parser\Activity\Common\Data\Merge\WeatherDataMerger;
 
-class WeatherDataMergerTest extends \PHPUnit_Framework_TestCase
+class WeatherDataMergerTest extends TestCase
 {
     /** @var WeatherData */
     protected $FirstData;
@@ -13,7 +14,7 @@ class WeatherDataMergerTest extends \PHPUnit_Framework_TestCase
     /** @var WeatherData */
     protected $SecondData;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->FirstData = new WeatherData();
         $this->SecondData = new WeatherData();
@@ -21,6 +22,8 @@ class WeatherDataMergerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatMergeWorksWithEmptyObjects()
     {
+        $this->expectNotToPerformAssertions();
+
         (new WeatherDataMerger($this->FirstData, $this->SecondData))->merge();
     }
 

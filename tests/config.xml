@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://phpunit.de/phpunit.xsd"
-         backupGlobals="false"
-         bootstrap="../tests/bootstrap.php"
-         colors="true"
-         verbose="true">
-	<php>
-		<server name="KERNEL_DIR" value="../app/" />
-	</php>
-	<testsuite name="PHPLOC">
-		<directory suffix="Test.php">../tests</directory>
-	</testsuite>
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+  backupGlobals="false"
+  bootstrap="../tests/bootstrap.php"
+  colors="true"
+  verbose="true"
+  cacheResultFile="../.build/test/phpunit.result.cache">
 
-	<filter>
-		<whitelist>
-			<directory suffix=".php">../inc</directory>
-		</whitelist>
-	</filter>
-<!--
-	<logging>
-		<log type="coverage-text" target="php://stdout"/>
-	</logging>
--->
+  <php>
+    <env name="KERNEL_CLASS" value="AppKernel"/>
+    <env name="APP_ENV" value="test"/>
+    <env name="SYMFONY_ENV" value="test"/>
+  </php>
+
+  <testsuite name="PHPLOC">
+    <directory suffix="Test.php">../tests</directory>
+  </testsuite>
+
+  <coverage cacheDirectory="../.build/coverage/cache">
+    <include>
+      <directory suffix=".php">../inc</directory>
+    </include>
+    <report>
+      <html outputDirectory="../.build/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+      <text outputFile="../.build/coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+    </report>
+  </coverage>
+
 </phpunit>

@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Mathematics\Distribution;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Distribution\TimeSeries;
 
-class TimeSeriesTest extends \PHPUnit_Framework_TestCase
+class TimeSeriesTest extends TestCase
 {
     public function testSimpleArray()
     {

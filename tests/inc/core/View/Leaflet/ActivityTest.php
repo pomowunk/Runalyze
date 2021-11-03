@@ -2,11 +2,12 @@
 
 namespace Runalyze\View\Leaflet;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Model\Trackdata\Entity;
 use Runalyze\Model\Trackdata\Pause;
 use Runalyze\View\Activity\FakeContext;
 
-class ActivityTest extends \PHPUnit_Framework_TestCase
+class ActivityTest extends TestCase
 {
 
     /**
@@ -14,6 +15,8 @@ class ActivityTest extends \PHPUnit_Framework_TestCase
      */
 	public function testThatMapWorksWithPausesButWithoutTimeArray()
     {
+        $this->expectNotToPerformAssertions();
+
 		$Context = FakeContext::outdoorContext();
         $Context->trackdata()->set(Entity::TIME, []);
         $Context->trackdata()->pauses()->add(new Pause(123, 10));

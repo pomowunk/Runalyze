@@ -2,11 +2,14 @@
 
 namespace Runalyze\Data\Weather;
 
-class WindDegreeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class WindDegreeTest extends TestCase
 {
-    /** @expectedException \InvalidArgumentException */
     public function testNonNumericValue()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new WindDegree('foobar');
     }
 

@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Velocity\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Velocity\Unit\SecondsPer100m;
 
-class SecondsPer100mTest extends \PHPUnit_Framework_TestCase
+class SecondsPer100mTest extends TestCase
 {
     public function testSomeEasyValues()
     {

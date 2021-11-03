@@ -2,7 +2,9 @@
 
 namespace Runalyze\Activity\PaceUnit;
 
-class MinPerKilometerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MinPerKilometerTest extends TestCase
 {
 	public function testSomePaces()
 	{

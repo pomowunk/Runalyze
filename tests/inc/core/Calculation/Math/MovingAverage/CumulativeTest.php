@@ -2,7 +2,9 @@
 
 namespace Runalyze\Calculation\Math\MovingAverage;
 
-class CumulativeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CumulativeTest extends TestCase
 {
     public function testSimpleExample()
     {

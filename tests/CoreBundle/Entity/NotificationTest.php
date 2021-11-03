@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
 
-class NotificationTest extends \PHPUnit_Framework_TestCase
+class NotificationTest extends TestCase
 {
     /** @var Notification */
     protected $Notification;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Notification = new Notification();
     }

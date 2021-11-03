@@ -2,13 +2,14 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Parser\Activity\Common\Exception\InvalidDataException;
 use Runalyze\Parser\Activity\Common\Filter\OutOfRangeValueFilter;
 
-class OutOfRangeValueFilterTest extends \PHPUnit_Framework_TestCase
+class OutOfRangeValueFilterTest extends TestCase
 {
     /** @var OutOfRangeValueFilter */
     protected $Filter;
@@ -16,7 +17,7 @@ class OutOfRangeValueFilterTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityDataContainer */
     protected $Container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Filter = new OutOfRangeValueFilter();
         $this->Container = new ActivityDataContainer();
@@ -24,6 +25,8 @@ class OutOfRangeValueFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyContainer()
     {
+        $this->expectNotToPerformAssertions();
+
         $this->Filter->filter($this->Container);
     }
 
@@ -48,10 +51,9 @@ class OutOfRangeValueFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testStrictMode()
     {
+        $this->expectException(InvalidDataException::class);
+
         $this->Container->ActivityData->Duration = 1234567.89;
-
-        $this->setExpectedException(InvalidDataException::class);
-
         $this->Filter->filter($this->Container, true);
     }
 }

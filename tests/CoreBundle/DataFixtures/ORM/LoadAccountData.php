@@ -4,13 +4,15 @@ namespace Runalyze\Bundle\CoreBundle\Tests\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface, ORMFixtureInterface
 {
     /** @var ContainerInterface|null */
     protected $Container;

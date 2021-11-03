@@ -2,17 +2,22 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Configuration;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList;
 
-class RunalyzeConfigurationListTest extends \PHPUnit_Framework_TestCase
+class RunalyzeConfigurationListTest extends TestCase
 {
     public function testConstructor()
     {
+        $this->expectNotToPerformAssertions();
+
         new RunalyzeConfigurationList();
     }
 
     public function testThatAllCategoriesAreAccessible()
     {
+        $this->expectNotToPerformAssertions();
+
         $config = new RunalyzeConfigurationList();
 
         $config->getActivityForm();

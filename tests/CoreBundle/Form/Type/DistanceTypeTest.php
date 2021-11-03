@@ -2,15 +2,16 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Form\Type\DistanceType;
 use Runalyze\Metrics\Distance\Unit\Kilometer;
 
-class DistanceTypeTest extends \PHPUnit_Framework_TestCase
+class DistanceTypeTest extends TestCase
 {
     /** @var DistanceType */
     protected $Type;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Type = new DistanceType(new Kilometer());
     }

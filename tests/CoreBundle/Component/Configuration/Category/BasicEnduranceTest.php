@@ -2,9 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Configuration\Category;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\Category\BasicEndurance;
 
-class BasicEnduranceTest extends \PHPUnit_Framework_TestCase
+class BasicEnduranceTest extends TestCase
 {
     public function testDaysToConsiderForWeeklyMileageAdaptedForFirstActivityDate()
     {

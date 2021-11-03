@@ -2,13 +2,14 @@
 
 namespace Runalyze\Data\Weather;
 
-class CardinalDirectionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CardinalDirectionTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNonNumericValue()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new CardinalDirection('foobar');
     }
 

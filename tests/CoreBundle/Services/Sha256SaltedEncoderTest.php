@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Services\Sha256SaltedEncoder;
 
-class Sha256SaltedEncoderTest extends \PHPUnit_Framework_TestCase
+class Sha256SaltedEncoderTest extends TestCase
 {
     /** @var Sha256SaltedEncoder */
     protected $Encoder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Encoder = new Sha256SaltedEncoder();
     }

@@ -2,10 +2,11 @@
 
 namespace Runalyze\Export\Share;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\View\Activity\FakeContext;
 use Runalyze\Model\Activity;
 
-class IFrameTest extends \PHPUnit_Framework_TestCase
+class IFrameTest extends TestCase
 {
 	public function checkFeasibility()
 	{
@@ -24,6 +25,8 @@ class IFrameTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCodeCanBeCreated()
     {
+        $this->expectNotToPerformAssertions();
+
         ob_start();
 
 		$Sharer = new IFrame(FakeContext::emptyContext());

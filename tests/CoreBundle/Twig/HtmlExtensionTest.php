@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Twig;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Twig\HtmlExtension;
 
-class HtmlExtensionTest extends \PHPUnit_Framework_TestCase
+class HtmlExtensionTest extends TestCase
 {
     /** @var HtmlExtension */
     protected $Html;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Html = new HtmlExtension();
     }

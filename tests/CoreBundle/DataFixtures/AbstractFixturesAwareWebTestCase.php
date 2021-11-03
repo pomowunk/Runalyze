@@ -5,6 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Tests\DataFixtures;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
@@ -14,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 abstract class AbstractFixturesAwareWebTestCase extends WebTestCase
 {
+    use FixturesTrait;
+    
     /** @var  Client */
     protected $Client;
 
@@ -26,26 +29,26 @@ abstract class AbstractFixturesAwareWebTestCase extends WebTestCase
     /** @var EntityManager */
     protected $EntityManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (null === $this->FixtureClasses) {
             $this->FixtureClasses = [
                 LoadAccountData::class
             ];
         }
+        
+        $this->EntityManager = $this->getContainer()->get('doctrine')->getManager();
+        $this->EntityManager->clear();
 
-        $this->Fixtures = $this->loadFixtures($this->FixtureClasses)->getReferenceRepository();
+        $this->Fixtures = $this->loadFixtures($this->FixtureClasses, false, 'default')->getReferenceRepository();
 
         $this->Client = $this->getContainer()->get('test.client');
         $this->Client->disableReboot();
 
-        $this->EntityManager = $this->getContainer()->get('doctrine')->getManager();
-        $this->EntityManager->clear();
-
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -61,6 +64,7 @@ abstract class AbstractFixturesAwareWebTestCase extends WebTestCase
     protected function getDefaultAccount()
     {
         return $this->Fixtures->getReference('account-default');
+        // return $this->EntityManager->getReference(Account::class, $this->Fixtures->getReference('account-default')->getId());
     }
 
     /**

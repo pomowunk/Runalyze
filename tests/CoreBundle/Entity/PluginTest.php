@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Plugin;
 
-class PluginTest extends \PHPUnit_Framework_TestCase
+class PluginTest extends TestCase
 {
     /** @var Plugin */
     protected $Plugin;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Plugin = new Plugin();
     }

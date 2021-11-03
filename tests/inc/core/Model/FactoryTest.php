@@ -2,11 +2,13 @@
 
 namespace Runalyze\Model;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @group dependsOn
  * @group dependsOnOldDatabase
  */
-class FactoryTest extends \PHPUnit_Framework_TestCase {
+class FactoryTest extends TestCase {
 
 	/**
 	 * @var Factory
@@ -23,7 +25,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $DB;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->DB = \DB::getInstance();
 		$this->truncateTables();
 		\Cache::clean();
@@ -34,7 +36,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->object->clearCache();
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		if (null !== $this->object) {
 			$this->object->clearCache();
 		}

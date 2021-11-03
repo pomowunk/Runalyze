@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Tool\Backup;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonImporter;
 use Runalyze\Configuration;
 
@@ -9,7 +10,8 @@ use Runalyze\Configuration;
  * @group dependsOn
  * @group dependsOnOldDatabase
  */
-class JsonImporterTest extends \PHPUnit_Framework_TestCase
+
+class JsonImporterTest extends TestCase
 {
     /** @var string */
     protected $Base;
@@ -23,7 +25,7 @@ class JsonImporterTest extends \PHPUnit_Framework_TestCase
     /** @var string */
     protected $Prefix = 'runalyze_';
 
-	protected function setUp()
+	protected function setUp(): void
     {
         $this->Base = __DIR__.'/../../../../testfiles/backup/';
 		$this->DB = \DB::getInstance();
@@ -31,7 +33,7 @@ class JsonImporterTest extends \PHPUnit_Framework_TestCase
 		$this->truncateTables();
 	}
 
-	protected function tearDown()
+	protected function tearDown(): void
     {
 		$this->truncateTables();
 	}
@@ -42,6 +44,7 @@ class JsonImporterTest extends \PHPUnit_Framework_TestCase
 		$this->DB->exec('DELETE FROM `runalyze_equipment_type`');
         $this->DB->exec('DELETE FROM `runalyze_tag`');
 		$this->DB->exec('DELETE FROM `runalyze_user`');
+		$this->DB->exec('DELETE FROM `runalyze_dataset`');
 
 		$this->DB->exec('DELETE FROM `runalyze_conf` WHERE `key`="TEST_CONF"');
 		$this->DB->exec('DELETE FROM `runalyze_plugin` WHERE `key`="RunalyzePluginTool_TEST"');

@@ -29,6 +29,18 @@ security:
     default:
       http_basic: ~
 
+doctrine_cache:
+  providers:
+    vendor_filesystem_metadata_cache:
+      type: array
+      namespace: doctrine_cache.ns.fsmeta
+    vendor_filesystem_result_cache:
+      type: array
+      namespace: doctrine_cache.ns.fsresult
+    vendor_filesystem_query_cache:
+      type: array
+      namespace: doctrine_cache.ns.fsquery
+
 doctrine:
   dbal:
     default_connection: default

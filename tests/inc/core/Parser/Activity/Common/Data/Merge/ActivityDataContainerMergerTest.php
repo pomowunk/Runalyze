@@ -2,12 +2,14 @@
 
 namespace Runalyze\Tests\Parser\Activity\Data\Merge;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Parser\Activity\Common\Data\Merge\ActivityDataContainerMerger;
 use Runalyze\Parser\Activity\Common\Data\Pause\Pause;
 use Runalyze\Parser\Activity\Common\Data\Round\Round;
+use Runalyze\View\Leaflet\Activity;
 
-class ActivityDataContainerMergerTest extends \PHPUnit_Framework_TestCase
+class ActivityDataContainerMergerTest extends TestCase
 {
     /** @var ActivityDataContainer */
     protected $FirstContainer;
@@ -15,7 +17,7 @@ class ActivityDataContainerMergerTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityDataContainer */
     protected $SecondContainer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->FirstContainer = new ActivityDataContainer();
         $this->SecondContainer = new ActivityDataContainer();
@@ -23,6 +25,8 @@ class ActivityDataContainerMergerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatMergeWorksWithEmptyObjects()
     {
+        $this->expectNotToPerformAssertions();
+
         new ActivityDataContainerMerger($this->FirstContainer, $this->SecondContainer);
     }
 

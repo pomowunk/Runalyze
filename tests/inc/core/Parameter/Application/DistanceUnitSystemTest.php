@@ -2,7 +2,9 @@
 
 namespace Runalyze\Parameter\Application;
 
-class DistanceUnitSystemTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DistanceUnitSystemTest extends TestCase
 {
 	public function testMetricSystem()
 	{

@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Mathematics\Distribution;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Distribution\EmpiricalDistribution;
 
-class EmpiricalDistributionTest extends \PHPUnit_Framework_TestCase
+class EmpiricalDistributionTest extends TestCase
 {
     public function testSimpleArray()
     {

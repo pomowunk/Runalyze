@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 
-class TrainingTest extends \PHPUnit_Framework_TestCase
+class TrainingTest extends TestCase
 {
     /** @var Training */
     protected $Activity;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Activity = new Training();
     }

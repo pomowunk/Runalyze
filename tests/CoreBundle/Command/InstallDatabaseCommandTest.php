@@ -20,7 +20,7 @@ class InstallDatabaseCommandTest extends KernelTestCase
     /** @var string */
     protected $DatabasePrefix;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         static::bootKernel(['environment' => 'test_empty']);
 
@@ -34,7 +34,7 @@ class InstallDatabaseCommandTest extends KernelTestCase
         $this->dropAllTables();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->dropAllTables();
 
@@ -45,13 +45,12 @@ class InstallDatabaseCommandTest extends KernelTestCase
     {
         if (null !== $this->Connection) {
             $stmt = $this->Connection->executeQuery('SHOW TABLES LIKE "'.$this->DatabasePrefix.'%"');
-            $stmt->setFetchMode(PDOConnection::FETCH_COLUMN, 0);
-            $tables = $stmt->fetchAll();
+            $tables = $stmt->fetchFirstColumn();
 
             if (!empty($tables)) {
-                $this->Connection->exec('SET foreign_key_checks = 0');
-                $this->Connection->executeQuery('DROP TABLE `'.implode($tables, '`, `').'`');
-                $this->Connection->exec('SET foreign_key_checks = 1');
+                $this->Connection->executeStatement('SET foreign_key_checks = 0');
+                $this->Connection->executeQuery('DROP TABLE `'.implode('`, `', $tables).'`');
+                $this->Connection->executeStatement('SET foreign_key_checks = 1');
             }
         }
     }
@@ -65,10 +64,10 @@ class InstallDatabaseCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
 
-        $this->assertEquals(23, $this->Connection->query(
+        $this->assertEquals(23, $this->Connection->executeQuery(
             'SHOW TABLES LIKE "'.$this->DatabasePrefix.'%"'
         )->rowCount());
 
-        $this->assertRegExp('/Database has been successfully initialized./', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/Database has been successfully initialized./', $commandTester->getDisplay());
     }
 }

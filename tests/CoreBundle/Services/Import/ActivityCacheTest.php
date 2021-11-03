@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Import;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Hrv;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
@@ -12,12 +13,12 @@ use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-class ActivityCacheTest extends \PHPUnit_Framework_TestCase
+class ActivityCacheTest extends TestCase
 {
     /** @var ActivityCache */
     protected $Cache;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Cache = new ActivityCache(
             new ArrayAdapter()

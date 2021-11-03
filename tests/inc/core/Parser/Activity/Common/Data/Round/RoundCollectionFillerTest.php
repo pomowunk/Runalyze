@@ -2,11 +2,12 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Data\Round;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Parser\Activity\Common\Data\Round\Round;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollection;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollectionFiller;
 
-class RoundCollectionFillerTest extends \PHPUnit_Framework_TestCase
+class RoundCollectionFillerTest extends TestCase
 {
     public function testEasyCompletionByDistanceArray()
     {
@@ -46,6 +47,8 @@ class RoundCollectionFillerTest extends \PHPUnit_Framework_TestCase
 
     public function testThatCompletionWithEmptyCollectionDoesNotFail()
     {
+        $this->expectNotToPerformAssertions();
+
         $collection = new RoundCollection();
 
         $filler = new RoundCollectionFiller($collection);

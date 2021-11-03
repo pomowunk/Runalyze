@@ -2,10 +2,11 @@
 
 namespace Runalyze\Activity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Configuration;
 use Runalyze\Parameter\Application\DistanceUnitSystem;
 
-class ElevationTest extends \PHPUnit_Framework_TestCase
+class ElevationTest extends TestCase
 {
 	public function testConstructor()
 	{

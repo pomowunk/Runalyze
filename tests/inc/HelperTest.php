@@ -1,6 +1,7 @@
 <?php
+use PHPUnit\Framework\TestCase;
 
-class HelperTest extends PHPUnit_Framework_TestCase
+class HelperTest extends TestCase
 {
 	public function testArrayTrim()
 	{

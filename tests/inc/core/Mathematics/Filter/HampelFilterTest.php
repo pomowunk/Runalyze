@@ -2,31 +2,30 @@
 
 namespace Runalyze\Tests\Mathematics\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Filter\HampelFilter;
 
-class HampelFilterTest extends \PHPUnit_Framework_TestCase
+class HampelFilterTest extends TestCase
 {
     /** @var HampelFilter */
     protected $Filter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Filter = new HampelFilter(3);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidWindowWidth()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new HampelFilter(0);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNonIntegerWindowWidth()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         new HampelFilter(3.14);
     }
 

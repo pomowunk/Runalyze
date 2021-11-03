@@ -2,10 +2,11 @@
 
 namespace Runalyze\Calculation\Activity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Model\Activity;
 use Runalyze\Model\Trackdata;
 
-class VerticalRatioCalculatorTest extends \PHPUnit_Framework_TestCase
+class VerticalRatioCalculatorTest extends TestCase
 {
 
 	public function testForActivity()

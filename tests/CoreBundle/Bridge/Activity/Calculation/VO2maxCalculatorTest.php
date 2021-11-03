@@ -2,11 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\VO2maxCalculator;
 use Runalyze\Bundle\CoreBundle\Entity\Route;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 
-class VO2maxCalculatorTest extends \PHPUnit_Framework_TestCase
+class VO2maxCalculatorTest extends TestCase
 {
     /** @var VO2maxCalculator */
     protected $Calculator;
@@ -14,7 +15,7 @@ class VO2maxCalculatorTest extends \PHPUnit_Framework_TestCase
     /** @var Training */
     protected $Activity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Calculator = new VO2maxCalculator();
         $this->Activity = new Training();
@@ -42,9 +43,9 @@ class VO2maxCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->setDataToActivity(2481, 10.0, 190);
         $this->Calculator->calculateFor($this->Activity, 200, 0, 0);
 
-        $this->assertEquals(50.0, $this->Activity->getVO2maxByTime(), '', 0.1);
-        $this->assertEquals(50.0, $this->Activity->getVO2max(), '', 0.5);
-        $this->assertEquals($this->Activity->getVO2max(), $this->Activity->getVO2maxWithElevation(), '', 0.01);
+        $this->assertEqualsWithDelta(50.0, $this->Activity->getVO2maxByTime(), 0.1);
+        $this->assertEqualsWithDelta(50.0, $this->Activity->getVO2max(), 0.5);
+        $this->assertEqualsWithDelta($this->Activity->getVO2max(), $this->Activity->getVO2maxWithElevation(), 0.01);
     }
 
     public function testCalculationForSimpleActivityAtLowerHeartRate()
@@ -52,7 +53,7 @@ class VO2maxCalculatorTest extends \PHPUnit_Framework_TestCase
         $this->setDataToActivity(2481, 10.0, 170);
         $this->Calculator->calculateFor($this->Activity, 200, 0, 0);
 
-        $this->assertEquals(50.0, $this->Activity->getVO2maxByTime(), '', 0.1);
+        $this->assertEqualsWithDelta(50.0, $this->Activity->getVO2maxByTime(), 0.1);
         $this->assertGreaterThan(55.0, $this->Activity->getVO2max());
     }
 

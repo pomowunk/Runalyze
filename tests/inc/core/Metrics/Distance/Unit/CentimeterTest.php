@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Distance\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Distance\Unit\Centimeter;
 
-class CentimeterTest extends \PHPUnit_Framework_TestCase
+class CentimeterTest extends TestCase
 {
     public function testSomeEasyValues()
     {

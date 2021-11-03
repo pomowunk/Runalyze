@@ -2,14 +2,15 @@
 
 namespace Runalyze\Tests\Metrics\Energy;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Energy\Energy;
 
-class EnergyTest extends \PHPUnit_Framework_TestCase
+class EnergyTest extends TestCase
 {
     /** @var Energy */
     protected $Energy;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Energy = new Energy();
     }

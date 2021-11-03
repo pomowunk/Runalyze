@@ -2,14 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Form\Type\DurationNullableType;
 
-class DurationNullableTypeTest extends \PHPUnit_Framework_TestCase
+class DurationNullableTypeTest extends TestCase
 {
     /** @var DurationNullableType */
     protected $Type;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->Type = new DurationNullableType();
     }

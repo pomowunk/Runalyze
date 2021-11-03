@@ -2,6 +2,7 @@
 
 namespace Runalyze\Calculation;
 
+use PHPUnit\Framework\TestCase;
 use League\Geotools\Coordinate\Coordinate;
 use League\Geotools\Geohash\Geohash;
 use Runalyze\Model\Activity;
@@ -10,8 +11,12 @@ use Runalyze\Model\Trackdata;
 use Runalyze\Util\LocalTime;
 use Runalyze\View\Activity\FakeContext;
 
-class NightDetectorTest extends \PHPUnit_Framework_TestCase
+class NightDetectorTest extends TestCase
 {
+    public function setUp() : void {
+        date_default_timezone_set('Europe/Berlin');
+    }
+    
     public function testEmptyDetector()
     {
         $Detector = new NightDetector();
@@ -21,9 +26,11 @@ class NightDetectorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($Detector->value());
     }
 
-    /** @expectedException \InvalidArgumentException */
     public function testInvalidTimestamp()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
+        
         $Detector = new NightDetector();
         $Detector->setFrom('foobar', new Coordinate([0.0, 0.0]));
     }

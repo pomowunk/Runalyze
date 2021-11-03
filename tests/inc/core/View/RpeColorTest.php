@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\View;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\View\RpeColor;
 
-class RpeColorTest extends \PHPUnit_Framework_TestCase
+class RpeColorTest extends TestCase
 {
     public function testEmptyObject()
     {

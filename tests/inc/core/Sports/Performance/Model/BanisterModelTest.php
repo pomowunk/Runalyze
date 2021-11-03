@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Sports\Performance\Model;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Sports\Performance\Model\BanisterModel;
 
-class BanisterTest extends \PHPUnit_Framework_TestCase
+class BanisterModelTest extends TestCase
 {
     public function testSingleWorkout()
     {

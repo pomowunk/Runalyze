@@ -1,8 +1,9 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\ConfigurationList;
 
-class ConfigurationListTest extends \PHPUnit_Framework_TestCase
+class ConfigurationListTest extends TestCase
 {
     public function testSimpleConstructor()
     {

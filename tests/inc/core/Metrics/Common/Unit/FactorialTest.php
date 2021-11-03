@@ -2,9 +2,10 @@
 
 namespace Runalyze\Tests\Metrics\Common\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Metrics\Common\Unit\Factorial;
 
-class FactorialTest extends \PHPUnit_Framework_TestCase
+class FactorialTest extends TestCase
 {
     public function testSomeEasyValues()
     {

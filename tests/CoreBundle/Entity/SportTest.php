@@ -2,17 +2,18 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Runalyze\Profile\Sport\Generic;
 use Runalyze\Profile\Sport\SportProfile;
 
-class SportTest extends \PHPUnit_Framework_TestCase
+class SportTest extends TestCase
 {
     /** @var Sport */
     protected $Sport;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Sport = new Sport();
     }

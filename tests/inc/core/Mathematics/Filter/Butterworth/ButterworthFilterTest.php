@@ -2,10 +2,11 @@
 
 namespace Runalyze\Tests\Mathematics\Filter\Butterworth;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Mathematics\Filter\Butterworth\ButterworthFilter;
 use Runalyze\Mathematics\Filter\Butterworth\Lowpass2ndOrderCoefficients;
 
-class ButterworthFilterTest extends \PHPUnit_Framework_TestCase
+class ButterworthFilterTest extends TestCase
 {
     public function testOneExample()
     {
@@ -21,10 +22,10 @@ class ButterworthFilterTest extends \PHPUnit_Framework_TestCase
         ]);
 
         for ($i = 0; $i < 10; ++$i) {
-            $this->assertEquals(
+            $this->assertEqualsWithDelta(
                 $expected[$i], $actual[$i],
-                sprintf('Actual values dot not match at index %u.', $i),
-                0.05
+                0.05,
+                sprintf('Actual values dot not match at index %u.', $i)
             );
         }
     }

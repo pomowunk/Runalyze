@@ -2,13 +2,14 @@
 
 namespace Runalyze\Tests\Parser\Activity\Common\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Parser\Activity\Common\Exception\InvalidDataException;
 use Runalyze\Parser\Activity\Common\Filter\InvalidRRIntervalFilter;
 
-class InvalidRRIntervalFilterTest extends \PHPUnit_Framework_TestCase
+class InvalidRRIntervalFilterTest extends TestCase
 {
     /** @var InvalidRRIntervalFilter */
     protected $Filter;
@@ -16,7 +17,7 @@ class InvalidRRIntervalFilterTest extends \PHPUnit_Framework_TestCase
     /** @var ActivityDataContainer */
     protected $Container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->Filter = new InvalidRRIntervalFilter();
         $this->Container = new ActivityDataContainer();
@@ -32,7 +33,6 @@ class InvalidRRIntervalFilterTest extends \PHPUnit_Framework_TestCase
     public function testSimpleExample()
     {
         $this->Container->RRIntervals = [723, 751, 0, 739, 760, 0, 747];
-
         $this->Filter->filter($this->Container);
 
         $this->assertEquals([723, 751, 739, 760, 747], $this->Container->RRIntervals);
@@ -41,7 +41,6 @@ class InvalidRRIntervalFilterTest extends \PHPUnit_Framework_TestCase
     public function testOnlyZeros()
     {
         $this->Container->RRIntervals = [0, 0, 0];
-
         $this->Filter->filter($this->Container);
 
         $this->assertEquals([], $this->Container->RRIntervals);
@@ -49,10 +48,9 @@ class InvalidRRIntervalFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testStrictMode()
     {
+        $this->expectException(InvalidDataException::class);
+
         $this->Container->RRIntervals = [469, 0, 471];
-
-        $this->setExpectedException(InvalidDataException::class);
-
         $this->Filter->filter($this->Container, true);
     }
 

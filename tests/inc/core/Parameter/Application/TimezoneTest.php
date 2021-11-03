@@ -2,14 +2,15 @@
 
 namespace Runalyze\Parameter\Application;
 
-class TimezoneTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TimezoneTest extends TestCase
 {
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidEnum()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         Timezone::getFullNameByEnum(-1);
     }
 
@@ -20,6 +21,8 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase
 
     public function testThatMappingIsCompleteAndValid()
     {
+        $this->expectNotToPerformAssertions();
+
         // We can't be sure which timezone database version is used
         $unknownTimezones = [];
 
@@ -47,11 +50,10 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidOriginalName()
     {
+    	$this->expectException(\InvalidArgumentException::class);
+
         Timezone::getEnumByOriginalName('Horsehead_Nebula/Magrathea');
     }
 

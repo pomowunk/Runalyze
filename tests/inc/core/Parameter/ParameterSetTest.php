@@ -2,14 +2,16 @@
 
 namespace Runalyze\Parameter;
 
-class ParameterSetTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ParameterSetTest extends TestCase {
 
 	/**
 	 * @var \Runalyze\Parameter\Set
 	 */
 	protected $object;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->object = new Set(array());
 	}
 

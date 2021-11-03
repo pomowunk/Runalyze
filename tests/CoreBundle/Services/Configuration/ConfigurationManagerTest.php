@@ -2,13 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Configuration;
 
+use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Conf;
 use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class ConfigurationManagerTest extends \PHPUnit_Framework_TestCase
+class ConfigurationManagerTest extends TestCase
 {
     public function testEmptyList()
     {
