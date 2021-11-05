@@ -4,7 +4,7 @@ parameters:
   database_prefix: runalyze_
   database_port: 3306
   database_name: runalyze
-  database_user: root
+  database_user: runalyze_test
   database_password:
   secret: please_change_this_secret
   update_disabled: no
@@ -33,6 +33,7 @@ parameters:
   smtp_security:
   smtp_username:
   smtp_password:
+  mail_localdomain:
   backup_storage_period: 5
   poster_storage_period: 5
   router.request_context.host: localhost

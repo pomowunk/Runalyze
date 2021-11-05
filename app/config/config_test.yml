@@ -6,7 +6,7 @@ parameters:
   database_prefix: runalyze_test_
   database_port: 3306
   database_name: runalyze_test
-  database_user: root
+  database_user: runalyze_test
   database_password:
 
 liip_functional_test:
