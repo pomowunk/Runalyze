@@ -1,0 +1,29 @@
+{% extends "GlossaryBundle::_base.html.twig" %}
+
+{% import 'GlossaryBundle::_macro/references.html.twig' as ref %}
+{% import 'GlossaryBundle::_macro/see_also.html.twig' as see %}
+
+{% block glossaryHeader %}
+    {% trans %}Monotony{% endtrans %}
+{% endblock %}
+
+{% block glossaryContent %}
+    <p class="text">
+        {% trans %}The training monotony is a method for evaluating the similarity of the daily training and is based on the variation of the daily TRIMP values over the last seven days. The lower the variation the higher the monotony. Results underneath 1.5 are considered as recommendable, results above 2.0 as critical. To recognise overtraining, one should bear training strain in mind as that value rates monotony and training load together.{% endtrans %}
+    </p>
+
+    <p class="text">
+        <em>{% trans %}Notice: This calculation is based on the sum of the *all day* TRIMP value. It is based on the overall strain made a day, no matter which kind of activity has been done.{% endtrans %}</em>
+    </p>
+
+    {{ see.seeAlsoHead() }}
+    {{ see.seeAlsoLink(path('glossary-trimp'), 'TRIMP') }}
+    {{ see.seeAlsoLink(path('glossary-atl'), 'ATL') }}
+    {{ see.seeAlsoLink(path('glossary-atl'), 'CTL') }}
+    {{ see.seeAlsoLink(path('glossary-training-strain'), 'Training strain'|trans) }}
+    {{ see.seeAlsoFoot() }}
+
+    {{ ref.referencesHead() }}
+    {{ ref.singleReferenceLink("http://fellrnr.com/wiki/Training_Monotony", "Fellrnr.com - Training Monotony") }}
+    {{ ref.referencesFoot() }}
+{% endblock %}

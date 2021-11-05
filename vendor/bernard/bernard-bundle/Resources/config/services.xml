@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="bernard.router" class="Bernard\Router\ContainerAwareRouter">
+            <argument type="service" id="service_container" />
+            <argument type="collection" /><!-- Receivers -->
+        </service>
+
+        <service id="bernard.consumer" class="Bernard\Consumer">
+            <argument type="service" id="bernard.router" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <service id="bernard.producer" class="Bernard\Producer">
+            <argument type="service" id="bernard.queue_factory" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <service id="bernard.queue_factory" class="Bernard\QueueFactory\PersistentFactory" public="false">
+            <argument type="service" id="bernard.driver" />
+            <argument type="service" id="bernard.serializer" />
+        </service>
+
+        <service id="bernard.normalizer" class="Normalt\Normalizer\AggregateNormalizer" public="false">
+            <argument type="collection" />
+        </service>
+
+        <service id="bernard.serializer" class="Bernard\Serializer" public="false">
+            <argument type="service" id="bernard.normalizer" />
+        </service>
+
+        <!-- Commands -->
+
+        <service id="bernard.command.consume" class="Bernard\Command\ConsumeCommand">
+            <argument type="service" id="bernard.consumer" />
+            <argument type="service" id="bernard.queue_factory" />
+        </service>
+
+        <service id="bernard.command.produce" class="Bernard\Command\ProduceCommand">
+            <argument type="service" id="bernard.producer" />
+        </service>
+
+        <!-- Listeners -->
+
+        <service id="bernard.listener.failure" class="Bernard\EventListener\FailureSubscriber">
+            <argument type="service" id="bernard.producer" />
+            <argument /><!-- Queue name -->
+        </service>
+
+        <service id="bernard.listener.logger" class="Bernard\EventListener\LoggerSubscriber">
+            <argument /><!-- Logger -->
+        </service>
+
+        <service id="bernard.listener.error_log" class="Bernard\EventListener\ErrorLogSubscriber" />
+
+        <service id="bernard.listener.doctrine_schema" class="Bernard\BernardBundle\EventListener\SchemaListener" public="false" />
+
+        <!-- Normalizers -->
+
+        <service id="bernard.normalizer.envelope" class="Bernard\Normalizer\EnvelopeNormalizer">
+            <tag name="bernard.normalizer" />
+        </service>
+
+        <service id="bernard.normalizer.plain_message" class="Bernard\Normalizer\PlainMessageNormalizer">
+            <tag name="bernard.normalizer" />
+        </service>
+
+        <service id="bernard.normalizer.default_message" class="Bernard\BernardBundle\Normalizer\DefaultMessageNormalizer">
+            <tag name="bernard.normalizer" />
+        </service>
+
+
+        <!-- Drivers -->
+
+        <service id="bernard.driver.doctrine" class="Bernard\Driver\DoctrineDriver" public="false">
+            <argument type="service" id="bernard.dbal.connection" />
+        </service>
+
+        <service id="bernard.driver.file" class="Bernard\Driver\FlatFileDriver" public="false">
+            <argument /><!-- Base directory -->
+        </service>
+
+        <service id="bernard.driver.phpamqp" class="Bernard\Driver\PhpAmqpDriver" public="false">
+            <argument /><!-- Connection -->
+            <argument /><!-- exchange -->
+            <argument /><!-- defaultMessageParams -->
+        </service>
+
+        <service id="bernard.driver.phpredis" class="Bernard\Driver\PhpRedisDriver" public="false">
+            <argument /><!-- Redis -->
+        </service>
+
+        <service id="bernard.driver.predis" class="Bernard\Driver\PredisDriver" public="false">
+            <argument /><!-- Predis client -->
+        </service>
+
+        <service id="bernard.driver.sqs" class="Bernard\Driver\SqsDriver" public="false">
+            <argument /><!-- SQS client-->
+            <argument /><!-- queue map -->
+            <argument /><!-- prefetch -->
+        </service>
+
+        <service id="bernard.driver.ironmq" class="Bernard\Driver\IronMqDriver" public="false">
+            <argument /><!-- IronMQ connection -->
+        </service>
+
+        <service id="bernard.driver.pheanstalk" class="Bernard\Driver\PheanstalkDriver" public="false">
+            <argument /><!-- Pheanstalk connection -->
+        </service>
+
+    </services>
+</container>

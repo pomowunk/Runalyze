@@ -1,0 +1,279 @@
+{% extends "PlaygroundBundle::base.html.twig" %}
+
+{% block body %}
+<div style="width:900px;margin-left:auto;margin-right:auto;text-align:center;">
+    <em>Settings:</em> &nbsp;
+    Delta [s] <span class="mono">delta={{ settings.delta }}</span> &nbsp;
+    Delta, pre [s] <span class="mono">deltaPre={{ settings.deltaPre }}</span> &nbsp;
+    Delta, after [s] <span class="mono">deltaAfter={{ settings.deltaAfter }}</span>
+    <br>
+    Delta, hr [bpm] <span class="mono">hrDelta={{ settings.hrDelta }}</span> &nbsp;
+    Begin [s] <span class="mono">skip={{ settings.skipBefore }}</span> &nbsp;
+    End [s] <span class="mono">end={{ settings.skipAfter }}</span> &nbsp;
+    Butterworth frequency <span class="mono">ff={{ settings.butterworthFF }}</span>
+    <br>
+    Correction factor [-] <span class="mono">cf={{ athlete.correctionFactor }}</span>
+</div>
+
+
+<div id="form-container" style="width:900px;margin-left:auto;margin-right:auto;text-align:center;">
+    <label>
+        <!--    
+        // 0.20  -> last 21 days count for >= 99%
+        // 0.15  -> last 29 days count for >= 99%
+        // 0.10  -> last 44 days count for >= 99%
+        // 0.075 -> last 30 days count for >= 90%
+        -->
+        <input id="estimation-ema-alpha" type="number" name="estimation-ema-alpha" value="0.15" min="0.01" max="0.50" step="0.01">
+        EMA alpha
+    </label>
+</div>
+
+<div id="chart" class="scatterplot d3js" style="text-align:center;"></div>
+
+<table class="zebra-style w100">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>date</th>
+        <th>km</th>
+        <th>duration</th>
+        <th>pace</th>
+        <th>prev. VO2max</th>
+        <th>new VO2max (median)</th>
+        <th>new VO2max (mean)</th>
+        <th>abs. error</th>
+        <th>mad</th>
+        <th>new VO2max (median, no GAP)</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for activity in data %}
+        <tr class="r">
+            <td><a target="_blank" href="{{ path('playground-new-vo2max-activity', {'id': activity.row.id}) }}">#{{ activity.row.id }}</a></td>
+            <td>{{ activity.row.time|date("m/d/Y") }}</td>
+            <td>{{ distance(activity.row.distance) }}</td>
+            <td>{{ activity.row.s|duration }}</td>
+            <td>{{ pace(activity.row.s / activity.row.distance) }}</td>
+            <td>{{ vo2max(activity.row.vo2max_with_elevation, conf) }}</td>
+            <td>{{ vo2max(activity.median, conf) }}</td>
+            <td>{{ vo2max(activity.mean, conf) }}</td>
+            <td>{{ activity.error|number_format(2) }}</td>
+            <td>{{ activity.mad|number_format(2) }}</td>
+            <td>{{ vo2max(activity.medianNoGap, conf) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+.error-bar {
+    display: none;
+}
+.error-bar path {
+    stroke: #c00;
+    stroke-opacity: .5;
+    stroke-width: 1;
+    stroke-dasharray: 2,6;
+    shape-rendering: crispEdges;
+}
+.vo2max-old circle {
+    fill: rgba(255, 0, 0, .5);
+    stroke: none;
+}
+.vo2max-new circle {
+    fill: #0c0;
+    stroke: none;
+}
+path.trend {
+    fill: none;
+    stroke: black;
+    stroke-opacity: 0.5;
+    stroke-width: 2;
+}
+path.trendarea {
+    fill: grey;
+    fill-opacity: 0.2;
+    stroke: none;
+}
+path.marker-line {
+    stroke: #999;
+    stroke-width: 1;
+}
+.label.light {
+    fill: #999;
+    font-size: 9px;
+}
+</style>
+<script>
+    // 0: js-timestamp, 1: old vo2max, 2: new vo2max 3: abs. error
+    // + 4: weight (by abs. error)
+    // + 5: vo2max trend w/o weight
+    // + 6: vo2max trend w weight
+    // + 7: error trend
+    // + 8: error wrt variance of vo2max values (for last 30 days)
+    var data = {{ jsonData|raw }}.reverse();
+
+    for (var i = 0; i < data.length; ++i) {
+        //data[i][2] *= 1 + 0.0714285714285714 / 2;
+
+        if (data[i][3] == 0.0) { // This means: only one valid segment
+            data[i][4] = 1 / (0.5 + 5.0);
+        } else {
+            data[i][4] = 1 / (0.5 + data[i][3]);
+        }
+    }
+
+    var movingAverage = function (data, indexPos, dataPos, newPos, alpha, deltaFactor) {
+        deltaFactor = deltaFactor || 86400000;
+        tau = - 1 / Math.log(1 - alpha);
+        avg = data[0][dataPos];
+        data[0][newPos] = avg;
+
+        for (var i = 1; i < data.length; ++i) {
+            var deltaT = (data[i][indexPos] - data[i - 1][indexPos]) / deltaFactor;
+            var alpha_ = 1 - Math.exp(-deltaT / tau);
+            avg = alpha_ * data[i][dataPos] + (1 - alpha_) * avg;
+            data[i][newPos] = avg;
+        }
+
+        return data;
+    };
+
+    var weightedMovingAverage = function (data, indexPos, weightPos, dataPos, newPos, alpha, deltaFactor) {
+        deltaFactor = deltaFactor || 86400000;
+        tau = - 1 / Math.log(1 - alpha);
+        avg = data[0][dataPos] * data[0][weightPos];
+        avgWeight = data[0][weightPos];
+        data[0][newPos] = avg / avgWeight;
+
+        for (var i = 1; i < data.length; ++i) {
+            var deltaT = (data[i][indexPos] - data[i - 1][indexPos]) / deltaFactor;
+            var alpha_ = 1 - Math.exp(-deltaT / tau);
+            avg = alpha_ * data[i][dataPos] * data[i][weightPos] + (1 - alpha_) * avg;
+            avgWeight = alpha_ * data[i][weightPos] + (1 - alpha_) * avgWeight;
+            data[i][newPos] = avg / avgWeight;
+        }
+
+        return data;
+    };
+
+    var plot = d3.runalyzeplot(data).size(1200, 500);
+        plot.margin({top: 20, right: 120, bottom: 60, left: 60});
+        plot.select("#chart");
+
+    var calculateAndPlot = function() {
+        var emaAlpha = $('#estimation-ema-alpha').val();
+
+        movingAverage(data, 0, 2, 5, emaAlpha);
+        weightedMovingAverage(data, 0, 4, 2, 6, emaAlpha);
+        movingAverage(data, 0, 3, 7, emaAlpha);
+    
+        for (var i = 0; i < data.length; ++i) {
+            var estimates = [];
+            for (var j = 0; j < data.length; ++j) {
+                if (data[j][0] <= data[i][0] && data[i][0] - data[j][0] <= 30 * 86400000) {
+                    estimates.push(data[j][2]);
+                }
+            }
+    
+            if (estimates.length > 1) {
+                data[i][8] = d3.variance(estimates) / Math.sqrt(estimates.length);
+            } else {
+                data[i][8] = 5.0;
+            }
+        }
+
+        plot.gridArea().selectAll('*').remove();
+        plot.plotArea().selectAll('*').remove();
+        plot.axesArea().selectAll('*').remove();
+        plot.svg().selectAll('.current-state').remove();
+
+        plot.xScale = d3.scaleLinear().range([0, plot.width()]).domain([d3.min(data, function(d) { return d[0]; }), d3.max(data, function(d) { return d[0]; })]).nice(d3.timeMonth);
+        plot.yScale = d3.scaleLinear().range([plot.height(), 0]).domain([d3.min(data, function(d) { return Math.min(d[1], d[2], 25); }), d3.max(data, function(d) { return Math.max(d[1], d[2], 75); })]).nice();
+        plot.yAxis = d3.axisLeft().scale(plot.yScale);
+
+        plot.xAxis.tickFormat(d3.timeFormat("%d.%m.%Y"));
+
+        plot.drawAxes();
+        plot.drawYGrid();
+        plot.drawXGrid();
+
+        plot.plotArea().append("g").attr("class", "vo2max-old")
+            .selectAll("scatter-dots")
+            .data(data)
+            .enter().append("svg:circle")
+            .attr("cx", plot.xMap)
+            .attr("cy", function (d) { return plot.yScale(d[1]); } )
+            .attr("r", 1);
+    
+        var errorBarArea = d3.area()
+            .x(plot.xMap)
+            .y0(function(d) {return plot.yScale(d[2] - d[3]); })
+            .y1(function(d) {return plot.yScale(d[2] + d[3]); });
+    
+        plot.plotArea().append('g').attr('class', 'error-bar')
+            .selectAll("path")
+            .data(data)
+            .enter().append("path")
+            .attr("d", function(d){return errorBarArea([d]);});
+    
+        plot.plotArea().append("g").attr("class", "vo2max-new")
+            .selectAll("scatter-dots-new")
+            .data(data)
+            .enter().append("svg:circle")
+            .attr("cx", plot.xMap)
+            .attr("cy", function (d) { return plot.yScale(d[2]); } )
+            .attr("fill-opacity", function (d) { return d[4]; } )
+            .attr("r", 3);
+    
+        var trends = plot.plotArea().append("g").attr("class", "trends");
+    
+        var trendline = d3.line()
+            .x(plot.xMap)
+            .y(function(d) { return plot.yScale(d[6]); })
+            .curve(d3.curveBasis);
+    
+        trends.append("path").datum(data).attr("class", "trend").attr("d", trendline);
+    
+        var trendlineWithError = d3.area()
+            .x(plot.xMap)
+            .y0(function(d) { return plot.yScale(d[6] + d[7] + d[8] / 2); })
+            .y1(function(d) { return plot.yScale(d[6] - d[7] - d[8] / 2); })
+            .curve(d3.curveBasis);
+    
+        trends.append("path").datum(data).attr("class", "trendarea").attr("d", trendlineWithError);
+    
+        if (data.length >= 2) {
+            var currStateX = plot.width() + 0.5,
+                currStateY = plot.yScale(data[data.length-1][6]) - 0.5,
+                currState = plot.svg().append("g").attr("class", "marker current-state").attr("transform", "translate("+currStateX+","+currStateY+")"),
+                currStateDiff = data[data.length-1][6] - data[data.length-2][6];
+        
+            currState.append("path")
+                .attr("d", d3.line().x(function(d){ return d[0]; }).y(function(d){ return d[1]; })([[0, 0], [16, 0]]))
+                .attr("class", "marker-line");
+            currState.append("text").attr("class", "label light").text("Current VO2max").attr("transform", "translate(18,3)").attr("dy", "-1.2em");
+            currState.append("text").text(data[data.length-1][6].toFixed(2)).attr("transform", "translate(28,3)").attr("font-weight", "bold");
+    
+            var triangle = { x: 21, y: 0, deg: 90, fill: 'black'};
+    
+            if (currStateDiff > 0.5) {
+                triangle = { x: 22, y: 1, deg: 0, fill: '#0c0'};
+            } else if (currStateDiff < -0.5) {
+                triangle = { x: 22, y: -1, deg: 180, fill: '#c00'};
+            }
+    
+            // TODO: comparison vs. last month and vs. last year
+            currState.append('path')
+                .attr('d', d3.symbol().type(d3.symbolTriangle).size(20)([1]))
+                .attr('fill', triangle.fill)
+                .attr('transform', "translate("+triangle.x+","+triangle.y+") rotate("+triangle.deg+")");
+        }
+    }
+
+    calculateAndPlot();
+
+    $('#estimation-ema-alpha').on('change', calculateAndPlot);
+</script>
+{% endblock %}
