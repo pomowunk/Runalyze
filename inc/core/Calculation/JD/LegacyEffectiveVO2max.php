@@ -29,7 +29,7 @@ class LegacyEffectiveVO2max
 
     /**
      * @param float $value [optional]
-     * @param \Runalyze\Calculation\JD\LegacyEffectiveVO2maxCorrector $corrector [optional]
+     * @param \Runalyze\Calculation\JD\LegacyEffectiveVO2maxCorrector|null $corrector [optional]
      */
     public function __construct($value = 0.0, LegacyEffectiveVO2maxCorrector $corrector = null)
     {
@@ -46,7 +46,7 @@ class LegacyEffectiveVO2max
     }
 
     /**
-     * @param \Runalyze\Calculation\JD\LegacyEffectiveVO2maxCorrector $corrector [optional]
+     * @param \Runalyze\Calculation\JD\LegacyEffectiveVO2maxCorrector|null $corrector [optional]
      */
     public function setCorrector(LegacyEffectiveVO2maxCorrector $corrector = null)
     {
@@ -91,7 +91,7 @@ class LegacyEffectiveVO2max
      */
     public function value()
     {
-        return number_format($this->exactValue(), self::$Precision);
+        return round($this->exactValue(), self::$Precision);
     }
 
     /**
@@ -112,7 +112,7 @@ class LegacyEffectiveVO2max
      */
     public function uncorrectedValue()
     {
-        return number_format($this->Value, self::$Precision);
+        return round($this->Value, self::$Precision);
     }
 
     /**
@@ -144,7 +144,7 @@ class LegacyEffectiveVO2max
             return 0;
         }
 
-        return round(60 * 1000 / $this->speed());
+        return (int)round(60 * 1000 / $this->speed());
     }
 
     /**
@@ -159,7 +159,7 @@ class LegacyEffectiveVO2max
             return 0;
         }
 
-        return round(60 * 1000 / ($percentage * $this->speed()));
+        return (int)round(60 * 1000 / ($percentage * $this->speed()));
     }
 
     /**

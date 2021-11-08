@@ -20,7 +20,7 @@ class Select extends \Runalyze\Parameter {
 
 	/**
 	 * Construct
-	 * @param string $default
+	 * @param mixed $default
 	 * @param array $options [optional]
 	 */
 	public function __construct($default, $options = array()) {
@@ -47,7 +47,7 @@ class Select extends \Runalyze\Parameter {
 
 	/**
 	 * Value allowed?
-	 * @param string $value
+	 * @param mixed $value
 	 * @return bool
 	 */
 	protected function valueIsAllowed($value) {

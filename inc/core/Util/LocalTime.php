@@ -145,7 +145,7 @@ class LocalTime extends \DateTime
     public function monthStart($asObject = false)
     {
         $Date = clone $this;
-        $Date->setDate($this->format('Y'), $this->format('m'), 1)->setTime(0, 0, 0);
+        $Date->setDate((int)$this->format('Y'), (int)$this->format('m'), 1)->setTime(0, 0, 0);
 
         return $asObject ? $Date : $Date->getTimestamp();
     }
@@ -158,7 +158,7 @@ class LocalTime extends \DateTime
     public function monthEnd($asObject = false)
     {
         $Date = clone $this;
-        $Date->setDate($this->format('Y'), $this->format('m') + 1, 0)->setTime(23, 59, 59);
+        $Date->setDate((int)$this->format('Y'), (int)$this->format('m') + 1, 0)->setTime(23, 59, 59);
 
         return $asObject ? $Date : $Date->getTimestamp();
     }
@@ -171,7 +171,7 @@ class LocalTime extends \DateTime
     public function yearStart($asObject = false)
     {
         $Date = clone $this;
-        $Date->setDate($this->format('Y'), 1, 1)->setTime(0, 0, 0);
+        $Date->setDate((int)$this->format('Y'), 1, 1)->setTime(0, 0, 0);
 
         return $asObject ? $Date : $Date->getTimestamp();
     }
@@ -184,7 +184,7 @@ class LocalTime extends \DateTime
     public function yearEnd($asObject = false)
     {
         $Date = clone $this;
-        $Date->setDate($this->format('Y'), 12, 31)->setTime(23, 59, 59);
+        $Date->setDate((int)$this->format('Y'), 12, 31)->setTime(23, 59, 59);
 
         return $asObject ? $Date : $Date->getTimestamp();
     }

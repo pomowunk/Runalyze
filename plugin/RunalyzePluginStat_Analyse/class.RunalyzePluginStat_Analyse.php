@@ -157,7 +157,7 @@ class RunalyzePluginStat_Analyse extends PluginStat {
 			$this->WhereTime = '';
 			$this->GroupTime = 'YEAR(FROM_UNIXTIME(`time`))';
 			$this->Timer= 'YEAR';
-			$this->TimerStart = START_YEAR;
+			$this->TimerStart = (int)START_YEAR;
 			$this->TimerEnd = YEAR;
 		} else {
 			$num = $this->showsLast6Months() ? 6 : 12;

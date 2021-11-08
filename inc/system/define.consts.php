@@ -20,7 +20,7 @@ define('DAY_IN_S', 86400);
  * Current year
  * @var int 
  */
-define('YEAR', date("Y"));
+define('YEAR', (int)date("Y"));
 
 /**
  * Default length for cutting strings

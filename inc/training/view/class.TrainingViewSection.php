@@ -38,7 +38,7 @@ abstract class TrainingViewSection {
 
 	/**
 	 * Constructor
-	 * @param \Runalyze\View\Activity\Context $Context
+	 * @param \Runalyze\View\Activity\Context|null $Context
 	 */
 	public function __construct(Context $Context = null) {
 		$this->Context = $Context;

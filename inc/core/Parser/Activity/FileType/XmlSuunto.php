@@ -151,7 +151,7 @@ class XmlSuunto extends AbstractSingleParser implements FileContentAwareParserIn
         }
 
         if (!empty($this->Header->Energy)) {
-            $this->Container->ActivityData->EnergyConsumption = round((int)$this->Header->Energy / 4184);
+            $this->Container->ActivityData->EnergyConsumption = (int)round((int)$this->Header->Energy / 4184);
         }
 
         if (!empty($this->Header->PoolLength)) {

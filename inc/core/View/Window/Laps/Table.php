@@ -111,7 +111,7 @@ class Table {
 
 	/**
 	 * @param \Runalyze\Activity\Pace $pace
-	 * @param \Runalyze\Activity\Duration $time
+	 * @param \Runalyze\Activity\Duration|null $time
 	 */
 	public function setAverage(Pace $pace, Duration $time = null) {
 		$this->AveragePace = $pace;

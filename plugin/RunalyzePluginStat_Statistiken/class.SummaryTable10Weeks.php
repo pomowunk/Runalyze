@@ -29,7 +29,7 @@ class SummaryTable10Weeks extends SummaryTable {
 	 * @return string
 	 */
 	protected function rowHead($index) {
-		$time  = $this->TimeEnd - ($index + 0.5)*7*DAY_IN_S;
+		$time  = (int)round($this->TimeEnd - ($index + 0.5) * 7 * DAY_IN_S);
 		$start = (new LocalTime($time))->weekstart(true);
 		$end   = (new LocalTime($time))->weekend(true);
 		$week  = Icon::$CALENDAR.' '.__('Week').' '.$start->week();

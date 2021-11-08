@@ -15,7 +15,7 @@ class KmPerHour extends AbstractDecimalUnit
 {
 	/**
 	 * Unit
-	 * @return string
+	 * @return int
 	 * @codeCoverageIgnore
 	 */
 	public function unit()

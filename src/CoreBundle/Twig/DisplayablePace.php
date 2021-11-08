@@ -39,6 +39,6 @@ class DisplayablePace extends DisplayableValue
         $minutes = floor($seconds / 60);
         $seconds -= $minutes * 60;
 
-        return ($isNegative ? '-' : '').$minutes.':'.str_pad($seconds, 2, '0', STR_PAD_LEFT);
+        return ($isNegative ? '-' : '').$minutes.':'.str_pad((string)$seconds, 2, '0', STR_PAD_LEFT);
     }
 }

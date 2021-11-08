@@ -96,7 +96,7 @@ class Activity extends LeafletRoute {
 	 * Construct new route
 	 * @param string $id
 	 * @param \Runalyze\Model\Route\Entity $route
-	 * @param \Runalyze\Model\Trackdata\Entity $trackdata [optional]
+	 * @param \Runalyze\Model\Trackdata\Entity|null $trackdata [optional]
 	 * @param bool $addIconsAndInfo [optional]
 	 * @throws \InvalidArgumentException
 	 */

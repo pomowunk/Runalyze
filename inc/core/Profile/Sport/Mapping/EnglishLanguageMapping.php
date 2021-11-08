@@ -2,7 +2,6 @@
 
 namespace Runalyze\Profile\Sport\Mapping;
 
-use Runalyze\Profile\Mapping\AbstractMapping;
 use Runalyze\Profile\Mapping\ToInternalMappingInterface;
 use Runalyze\Profile\Sport\SportProfile;
 

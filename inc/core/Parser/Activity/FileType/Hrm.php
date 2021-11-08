@@ -21,7 +21,7 @@ class Hrm extends AbstractSingleParser implements FileContentAwareParserInterfac
     /** @var string */
     protected $CurrentHeader = '';
 
-    /** @var int [s] */
+    /** @var float [s] */
     protected $TotalSplitsTime = 0;
 
     /** @var bool */

@@ -75,7 +75,7 @@ class HTML {
 			$html .= '<'.$tag.'></'.$tag.'>';
 
 		for ($m = 1; $m <= 12; $m++)
-			$html .= '<'.$tag.$width.'>'.Time::month($m, true).'</'.$tag.'>';
+			$html .= '<'.$tag.$width.'>'.Time::month((string)$m, true).'</'.$tag.'>';
 
 		if ($withTotal) {
 			$html .= '<'.$tag.$width.'>'.__('Total').'</'.$tag.'>';
@@ -150,7 +150,7 @@ class HTML {
 		if ($value < -$ignorance)
 			return '<span class="minus">'.$value.'</span>';
 
-		return $value;
+		return (string)$value;
 	}
 
 	/**

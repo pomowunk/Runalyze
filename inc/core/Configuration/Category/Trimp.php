@@ -20,7 +20,7 @@ use Ajax;
 class Trimp extends \Runalyze\Configuration\Category {
 	/**
 	 * Flag: recalculation triggered?
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $TRIGGERED = false;
 

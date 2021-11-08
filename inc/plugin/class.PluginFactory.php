@@ -3,6 +3,7 @@
  * This file contains class::PluginFactory
  * @package Runalyze\Plugin
  */
+
 /**
  * Plugin factory
  * @author Hannes Christiansen
@@ -107,7 +108,7 @@ class PluginFactory {
 
 		$plugins = self::Plugins();
 		foreach ($plugins as $k => $plugin) {
-			if ($plugin['type'] != PluginType::string($type)) {
+			if ($plugin['type'] != PluginType::string((int)$type)) {
 				unset($plugins[$k]);
 			}
 		}
@@ -253,7 +254,7 @@ class PluginFactory {
 	 * @param string $Pluginkey
 	 */
 	public function installPlugin($Pluginkey) {
-		$Plugin = new $Pluginkey( Plugin::$INSTALLER_ID );
+		$Plugin = new $Pluginkey(PluginInstaller::ID);
 		$Plugin->key = $Pluginkey;
 
 		return $Plugin->install();

@@ -426,9 +426,9 @@ class SearchResults {
 		}
 
 		if ($key == 'elevation') {
-			$value = (new Elevation())->setInPreferredUnit($value)->meter();
+			$value = (new Elevation())->setInPreferredUnit((int)$value)->meter();
 		} elseif ($key == 'distance') {
-			$value = (new Distance())->setInPreferredUnit($value)->kilometer();
+			$value = (new Distance())->setInPreferredUnit((int)$value)->kilometer();
         } elseif ($key == 'percentage_hilly') {
             $value *= 0.01;
 		} elseif ($key == 'vertical_oscillation' || $key == 'vertical_ratio') {
@@ -436,15 +436,15 @@ class SearchResults {
 		} elseif ($key == 'groundcontact_balance') {
 			$value *= 100;
 		} elseif ($key == 'stride_length') {
-			$value = (new StrideLength())->setInPreferredUnit($value)->cm();
+			$value = (new StrideLength())->setInPreferredUnit((int)$value)->cm();
 		} elseif ($key == 'temperature') {
-			$value = (new Temperature())->setInPreferredUnit($value)->celsius();
+			$value = (new Temperature())->setInPreferredUnit((int)$value)->celsius();
 		} elseif ($key == 'wind_speed') {
-			$value = (new WindSpeed())->setInPreferredUnit($value)->value();
+			$value = (new WindSpeed())->setInPreferredUnit((int)$value)->value();
 		} elseif (($key == 'vo2max' || $key == 'vo2max_with_elevation')) {
 			$value /= Configuration::Data()->vo2maxCorrectionFactor();
 		} elseif ($key == 'kcal') {
-			$value = (new Energy())->setInPreferredUnit($value)->kcal();
+			$value = (new Energy())->setInPreferredUnit((int)$value)->kcal();
 		} elseif ($key == 'fit_recovery_time') {
             $value *= 60;
         }
@@ -493,7 +493,7 @@ class SearchResults {
 			FormularValueParser::validatePost('date-to', FormularValueParser::$PARSER_DATE) &&
 			$_POST['date-to'] > 0
 		) {
-			$conditions[] = '`t`.`time` BETWEEN '.LocalTime::fromServerTime($_POST['date-from'])->getTimestamp().' AND '.(LocalTime::fromServerTime($_POST['date-to'])->getTimestamp()+DAY_IN_S);
+			$conditions[] = '`t`.`time` BETWEEN '.LocalTime::fromServerTime((int)$_POST['date-from'])->getTimestamp().' AND '.(LocalTime::fromServerTime((int)$_POST['date-to'])->getTimestamp()+DAY_IN_S);
 		}
 	}
 

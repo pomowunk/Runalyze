@@ -44,7 +44,7 @@ class Pace extends ActivitySeries {
 	protected $paceUnit;
 
 	/**
-	 * @var string
+	 * @var int
 	 */
 	protected $paceUnitEnum;
 
@@ -144,8 +144,8 @@ class Pace extends ActivitySeries {
 			$num = count($this->Data);
 			$sorted = $this->Data;
 			sort($sorted);
-			$min = 10 * 1000 * floor($sorted[round((self::$CUT_OUTLIER_PERCENTAGE / 2 / 100) * $num)] / 10 / 1000);
-			$max = 10 * 1000 * ceil($sorted[round((1 - self::$CUT_OUTLIER_PERCENTAGE / 2 / 100) * $num) - 1] / 10 / 1000);
+			$min = 10 * 1000 * floor($sorted[(int)round((self::$CUT_OUTLIER_PERCENTAGE / 2 / 100) * $num)] / 10 / 1000);
+			$max = 10 * 1000 * ceil($sorted[(int)round((1 - self::$CUT_OUTLIER_PERCENTAGE / 2 / 100) * $num) - 1] / 10 / 1000);
 		}
 
 		if ($max > 50 * 60 * 1000) {

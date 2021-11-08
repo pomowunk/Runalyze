@@ -47,7 +47,7 @@ class PersonalBest {
 	protected $Timestamp = null;
 
 	/**
-	 * @var array distance => pb
+	 * @var array<string, PersonalBest|float|false> distance => pb
 	 */
 	public static $PBs = array();
 
@@ -83,22 +83,22 @@ class PersonalBest {
 	 * new PersonalBest(3);
 	 * ...</pre>
 	 *
-	 * @param array $distances distances in [km]
+	 * @param float[] $distances distances in [km]
 	 * @param int $sportid sportid
-	 * @param \PDO $pdo [optional]
+	 * @param \PDO|null $pdo [optional]
 	 * @param boolean $withDetails [optional]
 	 * @return int number of fetches PBs
 	 */
 	public static function lookupDistances(array $distances, $sportid, PDO $pdo = null, $withDetails = false) {
 		foreach ($distances as $km) {
-			self::$PBs[(float)$km] = false;
+			self::$PBs[(string)(float)$km] = false;
 		}
 
 		$PDO = is_null($pdo) ? DB::getInstance() : $pdo;
 		$Data = $PDO->query(self::groupedQuery($distances, $sportid, $withDetails))->fetchAll();
 
 		foreach ($Data as $result) {
-			self::$PBs[(float)$result['official_distance']] = $withDetails ? $result : $result['pb'];
+			self::$PBs[(string)(float)$result['official_distance']] = $withDetails ? $result : $result['pb'];
 		}
 
 		return count($Data);
@@ -134,12 +134,12 @@ class PersonalBest {
 	/**
 	 * @param float $distance [km]
 	 * @param int $sportid Sportid for lookup
-	 * @param \PDO $pdo [optional]
+	 * @param \PDO|null $pdo [optional]
 	 * @param boolean $autoLookup [optional]
 	 * @param boolean $withDetails [optional]
 	 */
 	public function __construct($distance, $sportid, PDO $pdo = null, $autoLookup = true, $withDetails = false) {
-		$this->Distance = $distance;
+		$this->Distance = (float)$distance;
 		$this->PDO = is_null($pdo) ? DB::getInstance() : $pdo;
 		$this->SportId = $sportid;
 
@@ -159,11 +159,11 @@ class PersonalBest {
 		$this->ActivityID = null;
 		$this->Timestamp = null;
 
-		if (self::$USE_STATIC_CACHE && isset(self::$PBs[(float)$this->Distance])) {
-			if (is_array(self::$PBs[(float)$this->Distance])) {
-				$this->Time = self::$PBs[(float)$this->Distance]['pb'];
+		if (self::$USE_STATIC_CACHE && isset(self::$PBs[(string)(float)$this->Distance])) {
+			if (is_array(self::$PBs[(string)(float)$this->Distance])) {
+				$this->Time = self::$PBs[(string)(float)$this->Distance]['pb'];
 			} else {
-				$this->Time = self::$PBs[(float)$this->Distance];
+				$this->Time = self::$PBs[(string)(float)$this->Distance];
 			}
 		} else {
 			$this->Time = $this->PDO->query(
@@ -177,7 +177,7 @@ class PersonalBest {
 			if ($this->Time === null) {
 				$this->Time = false;
 			} elseif (self::$USE_STATIC_CACHE) {
-				self::$PBs[(float)$this->Distance] = $this->Time;
+				self::$PBs[(string)(float)$this->Distance] = $this->Time;
 			}
 		}
 
@@ -188,8 +188,8 @@ class PersonalBest {
 	 * @return \Runalyze\Activity\PersonalBest this-reference
 	 */
 	public function lookupWithDetails() {
-		if (self::$USE_STATIC_CACHE && isset(self::$PBs[(float)$this->Distance]) && is_array(self::$PBs[(float)$this->Distance])) {
-			$Data = self::$PBs[(float)$this->Distance];
+		if (self::$USE_STATIC_CACHE && isset(self::$PBs[(string)(float)$this->Distance]) && is_array(self::$PBs[(string)(float)$this->Distance])) {
+			$Data = self::$PBs[(string)(float)$this->Distance];
 		} else {
 			$Data = $this->PDO->query(
 				'SELECT r.`activity_id`, r.`official_time` as pb, tr.`time` FROM `'.PREFIX.'raceresult` as r '.
@@ -207,7 +207,7 @@ class PersonalBest {
 			$this->Time = $Data['pb'];
 
 			if (self::$USE_STATIC_CACHE) {
-				self::$PBs[(float)$this->Distance] = $Data;
+				self::$PBs[(string)(float)$this->Distance] = $Data;
 			}
 		} else {
 			$this->ActivityID = null;

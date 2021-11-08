@@ -3,12 +3,10 @@
 namespace Runalyze\Bundle\CoreBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Runalyze\Bundle\CoreBundle\Entity\Equipment;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
 use Runalyze\Bundle\CoreBundle\Form\ConfigurationManagerAwareTrait;
 use Runalyze\Bundle\CoreBundle\Form\TokenStorageAwareTypeTrait;
-use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;

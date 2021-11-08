@@ -71,7 +71,7 @@ class DataCollector {
 	/**
 	 * Construct collector
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
-	 * @param int $key
+	 * @param string $key
 	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(Trackdata $trackdata, $key) {
@@ -136,8 +136,7 @@ class DataCollector {
 	}
 
 	/**
-	 * Get next step for plot data
-	 * @return bool 
+	 * Get next step for plot data 
 	 */
 	protected function move() {
 		if ($this->KnowsDistance && $this->Precision->byDistance()) {
@@ -153,7 +152,7 @@ class DataCollector {
 	 */
 	protected function defineStepSize(Trackdata $trackdata) {
 		if ($this->Precision->byPoints() && $trackdata->num() > $this->Precision->numberOfPoints()) {
-			$this->Loop->setStepSize( round($trackdata->num() / $this->Precision->numberOfPoints ()) );
+			$this->Loop->setStepSize( (int)round($trackdata->num() / $this->Precision->numberOfPoints ()) );
 		} elseif ($this->Precision->byDistance()) {
 			$this->StepDistance = $this->Precision->distanceStep() / 1000;
 		}

@@ -69,7 +69,7 @@ class ActivityForm extends \Runalyze\Configuration\Category {
 	 * @param bool $flag
 	 */
 	public function update($Key, $flag) {
-		$this->object('FORMULAR_SHOW_'.$Key)->setFromString($flag);
+		$this->object('FORMULAR_SHOW_'.$Key)->set($flag);
 		$this->updateValue( $this->handle('FORMULAR_SHOW_'.$Key) );
 	}
 

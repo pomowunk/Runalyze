@@ -76,7 +76,7 @@ class GroundcontactBalance implements ValueInterface
 	 */
 	public function setPercent($percent)
 	{
-		$this->BasisPoint = 100*$percent;
+		$this->BasisPoint = (int)round(100 * $percent);
 
 		return $this;
 	}

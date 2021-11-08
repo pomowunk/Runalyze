@@ -67,7 +67,7 @@ class WeatherController extends Controller
             $latLng = explode(',', $request->query->get('latlng'));
 
             if (2 == count($latLng)) {
-                $location->setPosition($latLng[0], $latLng[1]);
+                $location->setPosition((float)$latLng[0], (float)$latLng[1]);
             }
         }
 

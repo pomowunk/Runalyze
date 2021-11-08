@@ -17,7 +17,7 @@ class Configuration
     private static $AccountID = null;
 
     /**
-     * @param mixed $accountid
+     * @param int|string|null $accountid
      */
     public static function loadAll($accountid = 'auto')
     {
@@ -46,7 +46,7 @@ class Configuration
     }
 
     /**
-     * @param mixed $accountid
+     * @param int|string $accountid
      * @throws \InvalidArgumentException
      */
     public static function resetConfiguration($accountid = 'auto')

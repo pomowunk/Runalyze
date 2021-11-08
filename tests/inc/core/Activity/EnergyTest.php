@@ -17,7 +17,7 @@ class EnergyTest extends TestCase
 	public function testSettingInPreferredUnit()
 	{
 		$this->assertEquals(100, (new Energy(0, new EnergyUnit(EnergyUnit::KCAL)))->setInPreferredUnit(100)->kcal());
-		$this->assertEquals(23, (new Energy(0, new EnergyUnit(EnergyUnit::KJ)))->setInPreferredUnit(100)->kcal());
+		$this->assertEquals(24, (new Energy(0, new EnergyUnit(EnergyUnit::KJ)))->setInPreferredUnit(100)->kcal());
 	}
 
 	public function testFromKilocalorie()

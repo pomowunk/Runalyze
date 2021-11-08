@@ -83,7 +83,7 @@ class GeneratePoster
      */
     public function buildCommand($type, $jsonDir, $year, Account $account, Sport $sport, $title, $backgroundColor, $trackColor, $textColor, $raceColor)
     {
-        $this->generateRandomFileName($account->getUsername(), $year);
+        $this->generateRandomFileName($account->getUsername(), (string)$year);
 
         $this->Parameter[] = '--json-dir '.$jsonDir;
         $this->Parameter[] = '--athlete '.$account->getUsername();

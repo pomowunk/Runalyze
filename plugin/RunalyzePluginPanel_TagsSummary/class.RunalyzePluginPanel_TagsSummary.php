@@ -59,8 +59,8 @@ class RunalyzePluginPanel_TagsSummary extends PluginPanel {
 
 		$Configuration->addValue($Sports);
 
-		if (isset($_GET['sport']) && isset($this->AllSports[$_GET['sport']])) {
-			$Configuration->object('sport')->setValue($_GET['sport']);
+		if (isset($_GET['sport']) && isset($this->AllSports[(int)$_GET['sport']])) {
+			$Configuration->object('sport')->setValue((int)$_GET['sport']);
 			$Configuration->update('sport');
 			Cache::delete(PluginConfiguration::CACHE_KEY);
 		}

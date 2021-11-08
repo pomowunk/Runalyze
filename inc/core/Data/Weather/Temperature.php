@@ -143,7 +143,7 @@ class Temperature {
 
 	/**
 	 * Value
-	 * @return null|int
+	 * @return null|float
 	 */
 	public function value() {
 		return $this->fromCelsiusTo($this->inCelsius, $this->unit);
@@ -167,7 +167,7 @@ class Temperature {
 			return $stringForUnknown;
 		}
 
-		return round($this->value());
+		return (string)round($this->value());
 	}
 
 	/**

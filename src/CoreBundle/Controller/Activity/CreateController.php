@@ -7,6 +7,7 @@ use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityPreview;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Entity\Route as EntityRoute;
+use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Form\ActivityType;
 use Runalyze\Bundle\CoreBundle\Form\MultiImporterType;
@@ -329,7 +330,9 @@ class CreateController extends Controller
     protected function getMainSport(Account $account)
     {
         $mainSportId = $this->get('app.configuration_manager')->getList()->getGeneral()->getMainSport();
-        $sport = $this->getDoctrine()->getRepository('CoreBundle:Sport')->findThisOrAny($mainSportId, $account);
+        /** @var SportRepository */
+        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
+        $sport = $sportRepository->findThisOrAny($mainSportId, $account);
 
         if (null === $sport || $account->getId() != $sport->getAccount()->getId()) {
             return null;

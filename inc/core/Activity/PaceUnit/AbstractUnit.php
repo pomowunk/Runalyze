@@ -15,7 +15,7 @@ abstract class AbstractUnit
 {
 	/**
 	 * Unit
-	 * @return string
+	 * @return int
 	 * @codeCoverageIgnore
 	 */
 	abstract public function unit();

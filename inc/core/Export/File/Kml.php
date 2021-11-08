@@ -7,7 +7,6 @@
 namespace Runalyze\Export\File;
 
 use League\Geotools\Coordinate\CoordinateInterface;
-use Runalyze\Configuration;
 use Runalyze\Model\Route;
 use Runalyze\Model\Trackdata;
 

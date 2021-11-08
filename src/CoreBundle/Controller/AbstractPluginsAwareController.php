@@ -5,6 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Controller;
 use Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats\AnalysisData;
 use Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats\AnalysisSelection;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Runalyze\Bundle\CoreBundle\Twig\ValueExtension;
 use Runalyze\Util\LocalTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -83,6 +84,7 @@ abstract class AbstractPluginsAwareController extends Controller
      */
     protected function getResponseForSportsPanel(Account $account, \Plugin $plugin)
     {
+        /** @var SportRepository */
         $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
         $today = (new LocalTime())->setTime(0, 0, 0);
 
@@ -90,8 +92,8 @@ abstract class AbstractPluginsAwareController extends Controller
             'isHidden' => $plugin->isHidden(),
             'pluginId' => $plugin->id(),
             'weekStatistics' => $sportRepository->getSportStatisticsSince($today->weekstart(), $account),
-            'monthStatistics' => $sportRepository->getSportStatisticsSince($today->setDate($today->format('Y'), $today->format('m'), 1)->getTimestamp(), $account),
-            'yearStatistics' => $sportRepository->getSportStatisticsSince($today->setDate($today->format('Y'), 1, 1)->getTimestamp(), $account),
+            'monthStatistics' => $sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), (int)$today->format('m'), 1)->getTimestamp(), $account),
+            'yearStatistics' => $sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), 1, 1)->getTimestamp(), $account),
             'totalStatistics' => $sportRepository->getSportStatisticsSince(null, $account)
         ]);
     }

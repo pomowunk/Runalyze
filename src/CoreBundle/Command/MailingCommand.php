@@ -156,10 +156,7 @@ class MailingCommand extends ContainerAwareCommand
     protected function validateTemplate($templateName)
     {
         $source = $this->getContainer()->getParameter('data_directory').'/views'.$this->customMailDirectory.$templateName;
-        if ((new Filesystem())->exists($source)) {
-            return true;
-        }
-
+        return (new Filesystem())->exists($source);
     }
 
     /**

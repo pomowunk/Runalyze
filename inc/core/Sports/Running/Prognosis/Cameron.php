@@ -55,7 +55,7 @@ class Cameron implements PrognosisInterface
         $meterReference = $this->ReferenceDistance * 1000.0;
         $meter = $distance * 1000.0;
 
-        return 60.0 * $minutes * ($meter / $meterReference) * ($this->factorFor($meterReference) / $this->factorFor($meter));
+        return (int)round(60.0 * $minutes * ($meter / $meterReference) * ($this->factorFor($meterReference) / $this->factorFor($meter)));
 	}
 
     /**

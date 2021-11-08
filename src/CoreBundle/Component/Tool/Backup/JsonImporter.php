@@ -239,7 +239,7 @@ class JsonImporter
 	/**
 	 * Prepare update statement
 	 * @param string $tableName
-	 * @return \PDOStatement
+	 * @return \PDOStatement|null
 	 */
 	private function prepareUpdateStatement($tableName)
     {

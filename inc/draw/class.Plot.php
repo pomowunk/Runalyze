@@ -547,7 +547,7 @@ class Plot {
 	/**
 	 * Set size for ticks on y-axis
 	 * @param int $axis
-	 * @param int $tickSize
+	 * @param float|null $tickSize
 	 * @param bool $decimals
 	 */
 	public function setYTicks($axis, $tickSize, $decimals = false) {

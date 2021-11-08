@@ -29,7 +29,7 @@ abstract class ActivityPlot {
 
 	/**
 	 * Plot
-	 * @var \Plot
+	 * @var Plot
 	 */
 	protected $Plot;
 

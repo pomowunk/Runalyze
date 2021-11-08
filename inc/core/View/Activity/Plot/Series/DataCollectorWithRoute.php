@@ -26,7 +26,7 @@ class DataCollectorWithRoute extends DataCollector {
 	/**
 	 * Construct collector
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
-	 * @param int $key
+	 * @param string $key
 	 * @param \Runalyze\Model\Route\Entity $route
 	 * @throws \InvalidArgumentException
 	 */
@@ -65,7 +65,6 @@ class DataCollectorWithRoute extends DataCollector {
 
 	/**
 	 * Get next step for plot data
-	 * @return bool 
 	 */
 	protected function move() {
 		parent::move();

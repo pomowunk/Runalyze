@@ -689,7 +689,7 @@ class Account implements AdvancedUserInterface, \Serializable, IdentifiableEntit
     }
 
     /**
-     * @param string $role
+     * @param int $role
      * @return $this
      */
     public function setRole($role)
@@ -700,7 +700,7 @@ class Account implements AdvancedUserInterface, \Serializable, IdentifiableEntit
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getRole()
     {

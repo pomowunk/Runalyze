@@ -46,7 +46,7 @@ class FileHandler
         $list = [];
 
         foreach ($finder as $file) {
-            $list[substr($file->getBasename(), strlen($account->getId()) + 1)] = $file->getSize();
+            $list[substr($file->getBasename(), strlen((string)$account->getId()) + 1)] = $file->getSize();
         }
 
         return $list;
@@ -69,7 +69,7 @@ class FileHandler
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-type', 'image/png');
             $response->headers->set('Content-Disposition', 'attachment; filename="'.basename($filename).'";');
-            $response->headers->set('Content-length', filesize($this->pathToImages().$filename));
+            $response->headers->set('Content-length', (string)filesize($this->pathToImages().$filename));
             $response->setContent(file_get_contents($this->pathToImages().$filename));
 
             return $response;

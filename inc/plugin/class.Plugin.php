@@ -5,7 +5,6 @@
  */
 
 use Runalyze\Configuration;
-use Runalyze\Error;
 
 /**
  * Abstract class for Plugins
@@ -323,10 +322,10 @@ abstract class Plugin {
 
 		if (isset($_GET['sport']))
 			if (is_numeric($_GET['sport']))
-				$this->sportid = $_GET['sport'];
+				$this->sportid = (int)$_GET['sport'];
 		if (isset($_GET['jahr']))
 			if (is_numeric($_GET['jahr']))
-				$this->year = $_GET['jahr'];
+				$this->year = (int)$_GET['jahr'];
 		if (isset($_GET['dat']))
 			$this->dat = $_GET['dat'];
 	}
@@ -387,7 +386,7 @@ abstract class Plugin {
 	 * @return int year, can be -1 for no year/comparison of all years
 	 */
 	protected function defaultYear() {
-		return date('Y');
+		return (int)date('Y');
 	}
 
 	/**
@@ -411,6 +410,7 @@ abstract class Plugin {
 		if (!empty($this->Configuration()->objects())) {
             return Ajax::window('<a href="' . self::$CONFIG_URL . '?id=' . $this->id() . $add_param . '">' . $name . '</a>', 'small');
         }
+		return '';
     }
 
 	/**

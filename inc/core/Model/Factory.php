@@ -370,7 +370,7 @@ class Factory {
 	 * All objects
 	 * @param string $tablename
 	 * @param \Closure $constructor
-	 * @return \Runalyze\Model\Entity[]
+	 * @return \Runalyze\Model\Entity[]|array
 	 */
 	public function allObjects($tablename, \Closure $constructor) {
 		$allObjects = array();

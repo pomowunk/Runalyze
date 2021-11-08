@@ -44,7 +44,7 @@ class NightDetector
         $isAfterSunset = $timestamp > date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $coordinate->getLatitude(), $coordinate->getLongitude(), self::ZENITH);
         $isBeforeSunrise = $timestamp < date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $coordinate->getLatitude(), $coordinate->getLongitude(), self::ZENITH);
 
-        $this->Value = $isAfterSunset || $isBeforeSunrise;
+        $this->Value = $isAfterSunset || $isBeforeSunrise ? 1 : 0;
 
         return $this;
     }
@@ -58,7 +58,7 @@ class NightDetector
     {
         if ($route->hasGeohashes() && $route->get(Route\Entity::STARTPOINT) != '') {
             // TODO use activity's offset if known
-            $timestamp = (new LocalTime($activity->timestamp()))->toServerTimestamp() + 0.5 * $activity->duration();
+            $timestamp = (int)round((new LocalTime($activity->timestamp()))->toServerTimestamp() + 0.5 * $activity->duration());
             $coordinate = (new Geohash())->decode($route->get(Route\Entity::STARTPOINT))->getCoordinate();
 
             $this->setFrom($timestamp, $coordinate);

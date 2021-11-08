@@ -47,7 +47,7 @@ class Energy implements ValueInterface {
 
 	/**
 	 * @param float $energy [kcal]
-	 * @param \Runalyze\Parameter\Application\EnergyUnit $preferredUnit
+	 * @param \Runalyze\Parameter\Application\EnergyUnit|null $preferredUnit
 	 */
 	public function __construct($energy = 0, EnergyUnit $preferredUnit = null) {
 		$this->PreferredUnit = (null !== $preferredUnit) ? $preferredUnit : Configuration::General()->energyUnit();
@@ -73,7 +73,7 @@ class Energy implements ValueInterface {
 	 * @return \Runalyze\Activity\Energy $this-reference
 	 */
 	public function set($energy) {
-		$this->Energy = (int)$energy;
+		$this->Energy = (int)round($energy);
 
 		return $this;
 	}
@@ -84,7 +84,7 @@ class Energy implements ValueInterface {
 	 * @return \Runalyze\Activity\Energy $this-reference
 	 */
 	public function setKJ($energy) {
-		$this->Energy = (int)($energy / self::KJ_MULTIPLIER);
+		$this->Energy = (int)round($energy / self::KJ_MULTIPLIER);
 		return $this;
 	}
 
@@ -135,7 +135,7 @@ class Energy implements ValueInterface {
 	 * @return int [kj]
 	 */
 	public function kj() {
-		return round($this->Energy * self::KJ_MULTIPLIER);
+		return (int)round($this->Energy * self::KJ_MULTIPLIER);
 	}
 
 	/**

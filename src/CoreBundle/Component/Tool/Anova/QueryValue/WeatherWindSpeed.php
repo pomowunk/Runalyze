@@ -4,7 +4,8 @@ namespace Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryValue;
 
 use Runalyze\Bundle\CoreBundle\Component\Configuration\UnitSystem;
 use Runalyze\Metrics\Cadence\Unit\AbstractCadenceUnit;
-use Runalyze\Metrics\GroundContactBalance;
+use Runalyze\Metrics\Common\Unit\None;
+use Runalyze\Metrics\Common\UnitInterface;
 
 class WeatherWindSpeed extends AbstractOneColumnValue
 {
@@ -15,7 +16,7 @@ class WeatherWindSpeed extends AbstractOneColumnValue
 
     /**
      * @param UnitSystem $unitSystem
-     * @return AbstractCadenceUnit
+     * @return AbstractCadenceUnit|UnitInterface
      */
     public function getValueUnit(UnitSystem $unitSystem)
     {

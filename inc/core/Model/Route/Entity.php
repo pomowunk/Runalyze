@@ -311,7 +311,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 	}
 
     /**
-     * @param array $geohashes
+     * @param string[] $geohashes
      */
     public function setGeohashesWithoutMinMaxRecalculation(array $geohashes)
     {
@@ -319,7 +319,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
     }
 
 	/**
-	 * @param array $geohashes
+	 * @param string[]|null $geohashes
 	 */
 	public function setMinMaxFromGeohashes(array $geohashes = null) {
 	    if (null === $geohashes) {
@@ -377,7 +377,8 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 	 * @return array Array with coordiantes: ['lat' => array, 'lng' => array]
 	 */
 	public function latitudesAndLongitudesFromGeohash() {
-		$Coordinates = array();
+		$Coordinates = ['lat' => [], 'lng' => []];
+		/** @var string[] */
 		$Geohashes = $this->Data[self::GEOHASHES];
 		$size = count($this->Data[self::GEOHASHES]);
 
@@ -460,7 +461,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 	}
 
 	/**
-	 * @param array $geohashes
+	 * @param string[] $geohashes
 	 * @return null|string
 	 */
 	protected function findFirstNonNullGeohash(array $geohashes) {

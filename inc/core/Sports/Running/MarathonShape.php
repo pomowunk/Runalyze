@@ -40,7 +40,7 @@ class MarathonShape
      * @param float $totalDistanceInTimePeriod [km]
      * @param float $totalWeightedRelativeLongJogPoints one point per week matches the target
      * @param int|null $numberOfDaysSinceFirstActivity
-     * @return int [0, inf)
+     * @return float [0, inf)
      */
     public function getShapeFor($totalDistanceInTimePeriod, $totalWeightedRelativeLongJogPoints, $numberOfDaysSinceFirstActivity = null)
     {

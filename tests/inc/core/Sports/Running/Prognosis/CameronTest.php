@@ -25,7 +25,7 @@ class CameronTest extends TestCase
         $this->Cameron->setReferenceResult(2.0, 14 * 60 + 20);
 
         $this->assertTrue($this->Cameron->areValuesValid());
-        $this->assertEqualsWithDelta(22.357 * 60, $this->Cameron->getSeconds(3.0), 0.1);
+        $this->assertEqualsWithDelta(22.357 * 60, $this->Cameron->getSeconds(3.0), 0.5);
     }
 
     public function testMyCurrentResult()

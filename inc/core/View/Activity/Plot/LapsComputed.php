@@ -54,7 +54,7 @@ class LapsComputed extends Laps {
 			}
 
 			$this->Labels[$i] = array($i, $label);
-			$Pace->setDistance($lap->distance()->kilometer())->setTime($lap->duration()->seconds());
+			$Pace->setDistance($lap->distance()->kilometer())->setTime((int)round($lap->duration()->seconds()));
 
 			if ($this->PaceUnit->isTimeFormat()) {
 				$this->Data[$i] = 1000 * round($Pace->secondsPerKm() * $this->PaceUnit->factorForUnit());
@@ -64,7 +64,7 @@ class LapsComputed extends Laps {
 		}
 
 		$avgPace = new PaceObject($context->activity()->duration(), $context->activity()->distance());
-		$this->achievedPace = $avgPace->secondsPerKm();
+		$this->achievedPace = (int)round($avgPace->secondsPerKm());
 		$this->Plot->Data[] = array('label' => $this->title, 'data' => $this->Data);
 	}
 

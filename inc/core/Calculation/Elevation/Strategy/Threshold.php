@@ -34,7 +34,7 @@ class Threshold extends AbstractStrategy
 
 	/**
 	 * Set epsilon
-	 * @param float $epsilon
+	 * @param int $epsilon
 	 */
 	public function setEpsilon($epsilon)
 	{

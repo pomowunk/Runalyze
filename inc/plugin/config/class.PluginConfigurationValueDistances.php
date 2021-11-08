@@ -25,9 +25,9 @@ class PluginConfigurationValueDistances extends PluginConfigurationValueArray {
 	 * @param string $Key
 	 * @param string $Label [optional]
 	 * @param string $Tooltip [optional]
-	 * @param string $DefaultValue [optional]
+	 * @param array $DefaultValue [optional]
 	 */
-	public function __construct($Key, $Label = '', $Tooltip = '', $DefaultValue = '') {
+	public function __construct($Key, $Label = '', $Tooltip = '', $DefaultValue = []) {
 		parent::__construct($Key, $Label, $Tooltip, $DefaultValue);
 
 		$this->DefaultValue = $this->roundAndTransformValues($this->DefaultValue, true, false);
@@ -93,7 +93,7 @@ class PluginConfigurationValueDistances extends PluginConfigurationValueArray {
 	public function getFormField() {
 		$Field = new FormularInput($this->Key, $this->formLabel(), $this->valueAsString(true));
 		$Field->setSize( FormularInput::$SIZE_FULL_INLINE );
-		$Field->addAttribute('maxlength', PluginConfigurationValue::MAXLENGTH);
+		$Field->addAttribute('maxlength', (string)PluginConfigurationValue::MAXLENGTH);
 
 		if ($this->unitSystem()->isImperial()) {
 			$Field->setUnit(FormularUnit::$MILES);

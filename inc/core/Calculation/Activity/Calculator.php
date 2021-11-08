@@ -141,6 +141,6 @@ class Calculator
         $Athlete = Context::Athlete();
         $Calculator = new Trimp\Calculator($Athlete, $data);
 
-        return round($Calculator->value());
+        return (int)round($Calculator->value());
     }
 }

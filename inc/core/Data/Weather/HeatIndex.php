@@ -11,8 +11,8 @@ class HeatIndex implements ValueInterface
     protected $HeatIndexTemperature;
 
 	/**
-	 * @param Activity\Temperature $temperature
-	 * @param Humidity $humidity
+	 * @param Activity\Temperature|null $temperature
+	 * @param Humidity|null $humidity
 	 */
     public function __construct(Activity\Temperature $temperature = null, Humidity $humidity = null)
     {

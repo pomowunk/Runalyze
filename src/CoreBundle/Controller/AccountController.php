@@ -106,9 +106,9 @@ class AccountController extends Controller
 
         if ($form->isSubmitted()) {
             /** @var Account|null $account */
-            $account = $this->getAccountRepository()->loadUserByUsername([
-                $request->request->get($form->getName())['username']
-            ]);
+            $account = $this->getAccountRepository()->loadUserByUsername(
+                (string)$request->request->get($form->getName())['username']
+            );
 
             if (null === $account) {
                 $form->get('username')->addError(new FormError($this->get('translator')->trans('The username is not known.')));

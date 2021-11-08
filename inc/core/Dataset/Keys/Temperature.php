@@ -66,8 +66,7 @@ class Temperature extends AbstractKey
 		) {
 			return \Runalyze\Activity\Temperature::format(
 				$context->activity()->weather()->temperature()->value(),
-				true,
-				false
+				true
 			);
 		}
 

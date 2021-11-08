@@ -26,7 +26,7 @@ class DataCollectorWithSwimdata extends DataCollector {
 	/**
 	 * Construct collector
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
-	 * @param int $key
+	 * @param string $key
 	 * @param \Runalyze\Model\Swimdata\Entity $swimdata
 	 * @throws \InvalidArgumentException
 	 */
@@ -65,7 +65,6 @@ class DataCollectorWithSwimdata extends DataCollector {
 
 	/**
 	 * Get next step for plot data
-	 * @return bool 
 	 */
 	protected function move() {
 		parent::move();

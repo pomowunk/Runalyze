@@ -142,7 +142,7 @@ class Query
 	 * @param int $timeEnd   default time()
 	 * @return array array with summary for given sportid and timerange
 	 */
-	public function fetchSummaryForSport($sportid, $timeStart = 0, $timeEnd = false)
+	public function fetchSummaryForSport($sportid, $timeStart = 0, $timeEnd = 0)
 	{
 		return $this->PDO->query(
 			'SELECT
@@ -167,7 +167,7 @@ class Query
 	 * @param int $timeEnd   default time()
 	 * @return array array with summary for each sportid and given timerange
 	 */
-	public function fetchSummaryForAllSport($timeStart = 0, $timeEnd = false)
+	public function fetchSummaryForAllSport($timeStart = 0, $timeEnd = 0)
 	{
 		return $this->PDO->query(
 			'SELECT
@@ -193,7 +193,7 @@ class Query
 	 * @param int $timeEnd   default time()
 	 * @return array array of summaries for different timeranges
 	 */
-	public function fetchSummaryForTimerange($sportid, $timerange = 604800, $timeStart = 0, $timeEnd = false)
+	public function fetchSummaryForTimerange($sportid, $timerange = 604800, $timeStart = 0, $timeEnd = 0)
 	{
 		$Query = '
 		        SELECT
@@ -324,7 +324,7 @@ class Query
 	 * @param string $asColumn optional column key that is used in returned data row
 	 * @return string
 	 */
-	protected function queryToSelectTimerange($timerange, $timeEnd = false, $asColumn = 'timerange')
+	protected function queryToSelectTimerange($timerange, $timeEnd = 0, $asColumn = 'timerange')
 	{
 		$timeEnd = $timeEnd ?: LocalTime::now();
 
@@ -339,10 +339,10 @@ class Query
 
 	/**
 	 * @param int $timeStart default: 0
-	 * @param int|bool $timeEnd default: LocalTime::now()
+	 * @param int $timeEnd default: LocalTime::now()
 	 * @return string
 	 */
-	protected function whereTimeIsBetween($timeStart = 0, $timeEnd = false)
+	protected function whereTimeIsBetween($timeStart = 0, $timeEnd = 0)
 	{
 		$timeEnd = $timeEnd ?: LocalTime::now();
 

@@ -10,7 +10,6 @@ use Runalyze\Parser\Activity\Common\Data\Round\Round;
 use Runalyze\Parser\Activity\Common\PauseDetectionCapableParserInterface;
 use Runalyze\Parser\Activity\Common\PauseDetectionCapableTrait;
 use Runalyze\Parser\Activity\Common\StrtotimeWithLocalTimezoneOffsetTrait;
-use Runalyze\Util\LocalTime;
 use SimpleXMLElement;
 
 class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableParserInterface
@@ -169,7 +168,7 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
     protected function parseTrackpoint(SimpleXMLElement &$trackPoint)
     {
         if ($this->DistancesAreEmpty) {
-            $trackPoint->addChild('DistanceMeters', 1000 * $this->distanceToTrackpoint($trackPoint));
+            $trackPoint->addChild('DistanceMeters', (string)(1000 * $this->distanceToTrackpoint($trackPoint)));
         }
 
         $thisBreakInMeter = (float)$trackPoint->DistanceMeters - $this->LastDistance;

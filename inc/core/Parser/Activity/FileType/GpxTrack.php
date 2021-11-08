@@ -96,7 +96,7 @@ class GpxTrack extends AbstractSingleParser
             $totalTime += strtotime((string)$this->Xml->trkseg[$seg]->trkpt[$numPoints-1]->time) - strtotime((string)$this->Xml->trkseg[$seg]->trkpt[0]->time);
         }
 
-        $this->LimitForPauses = round(self::$PAUSE_FACTOR_FROM_AVERAGE_INTERVAL * $totalTime / $totalPoints);
+        $this->LimitForPauses = (int)round(self::$PAUSE_FACTOR_FROM_AVERAGE_INTERVAL * $totalTime / $totalPoints);
     }
 
     protected function parseTrack()

@@ -31,12 +31,12 @@ class ConfigTabPlugins extends ConfigTab {
 	public function setFieldsetsAndFields() {
 		$Panels = new FormularFieldset( __('Panels') );
 		$Panels->addInfo( __('Panels are small statistics always shown on the right side.') );
-		$Panels->setHtmlCode($this->getCodeFor( PluginType::PANEL ));
+		$Panels->setHtmlCode($this->getCodeFor((string)PluginType::PANEL));
 		$Panels->setCollapsed();
 
 		$Stats = new FormularFieldset( __('Statistics') );
 		$Stats->addInfo( __('Normal statistics are shown below the activitiy log.') );
-		$Stats->setHtmlCode($this->getCodeFor( PluginType::STAT ));
+		$Stats->setHtmlCode($this->getCodeFor((string)PluginType::STAT));
 
 		$Install = new FormularFieldset( __('Install a new plugin') );
 		$Install->addInfo( __('New plugins can be installed here.') );
@@ -67,7 +67,7 @@ class ConfigTabPlugins extends ConfigTab {
 			<table class="zebra-style fullwidth more-padding">
 				<thead>
 					<tr class="top b">
-						<th colspan="3">'.PluginType::readableString($PluginType).'</th>
+						<th colspan="3">'.PluginType::readableString((int)$PluginType).'</th>
 						<th>'.__('Mode').'</th>
 						<th>'.__('Order').'</th>
 					</tr>
@@ -80,7 +80,7 @@ class ConfigTabPlugins extends ConfigTab {
 			if ($Plugin === false) {
 				$Code .= '
 					<tr class="unimportant">
-						<td class="b">'.$Plugin->key().'</td>
+						<td class="b">'.$Data['key'].'</td>
 						<td colspan="4">'.__('The plugin cannot be found.').'</td>
 					</tr>';
 			} else {

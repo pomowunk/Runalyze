@@ -42,13 +42,13 @@ class Temperature implements ValueInterface {
 	 * @param int $decimals [optional] number of decimals
 	 * @return string
 	 */
-	public static function format($temperature, $withUnit = true, $decimals = false) {
+	public static function format($temperature, $withUnit = true, $decimals = -1) {
 		return (new self($temperature))->string($withUnit, $decimals);
 	}
 
 	/**
 	 * @param float|null $temperature [°C]
-	 * @param \Runalyze\Parameter\Application\TemperatureUnit $preferredUnit
+	 * @param \Runalyze\Parameter\Application\TemperatureUnit|null $preferredUnit
 	 */
 	public function __construct($temperature = null, TemperatureUnit $preferredUnit = null) {
 		$this->PreferredUnit = (null !== $preferredUnit) ? $preferredUnit : Configuration::General()->temperatureUnit();
@@ -118,7 +118,7 @@ class Temperature implements ValueInterface {
 	 * @param bool|int $decimals [optional] number of decimals
 	 * @return string
 	 */
-	public function string($withUnit = true, $decimals = false) {
+	public function string($withUnit = true, $decimals = -1) {
 		if ($this->PreferredUnit->isFahrenheit()) {
 			return $this->stringFahrenheit($withUnit, $decimals);
 		}
@@ -178,12 +178,12 @@ class Temperature implements ValueInterface {
 	 * @param bool|int $decimals [optional] number of decimals
 	 * @return string with unit
 	 */
-	public function stringCelsius($withUnit = true, $decimals = false) {
+	public function stringCelsius($withUnit = true, $decimals = -1) {
 		if ($this->isEmpty()) {
 			return '';
 		}
 
-		$decimals = ($decimals === false) ? self::$DefaultDecimals : $decimals;
+		$decimals = ($decimals < 0) ? self::$DefaultDecimals : $decimals;
 
 		return number_format($this->Temperature, $decimals, '.', '').($withUnit ? '&nbsp;'.TemperatureUnit::CELSIUS : '');
 	}
@@ -194,12 +194,12 @@ class Temperature implements ValueInterface {
 	 * @param bool|int $decimals [optional] number of decimals
 	 * @return string with unit
 	 */
-	public function stringFahrenheit($withUnit = true, $decimals = false) {
+	public function stringFahrenheit($withUnit = true, $decimals = -1) {
 		if ($this->isEmpty()) {
 			return '';
 		}
 
-		$decimals = ($decimals === false) ? self::$DefaultDecimals : $decimals;
+		$decimals = ($decimals < 0) ? self::$DefaultDecimals : $decimals;
 
 		return number_format($this->fahrenheit(), $decimals, '.', '').($withUnit ? '&nbsp;'.TemperatureUnit::FAHRENHEIT : '');
 	}

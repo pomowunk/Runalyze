@@ -9,7 +9,6 @@ namespace Runalyze\View\Dataset;
 use Runalyze\Dataset\Configuration;
 use Runalyze\Dataset\Context;
 use Runalyze\Dataset\Keys;
-use Runalyze\Profile\View\DatasetPrivacyProfile;
 use Runalyze\View\Tooltip;
 
 /**
@@ -65,7 +64,7 @@ class Table {
 	}
 
 	/**
-	 * @param string $icon optional icon instead of text
+	 * @param string|false $icon optional icon instead of text
 	 * @return string
 	 */
 	public function codeForColumnLabels($icon = false)

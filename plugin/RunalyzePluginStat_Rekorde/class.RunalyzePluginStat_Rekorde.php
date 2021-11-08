@@ -148,32 +148,38 @@ class RunalyzePluginStat_Rekorde extends PluginStat {
 		// Years
 		if ($this->year == -1) {
 			echo '<tr class="r"><td class="c b">'.__('per year').'</td>';
+			$yearsAdded = 0;
 			foreach ($this->years as $i => $year) {
 				$link = DataBrowserLinker::yearLink(Distance::format($year['km']), $year['time'], false);
 				echo '<td class="small"><span title="'.$year['year'].'">'.$link.'</span></td>';
+				$yearsAdded++;
 			}
-			for (; $i < 9; $i++)
+			for ($i = $yearsAdded; $i < 10; $i++)
 				echo HTML::emptyTD();
 			echo '</tr>';
 		}
 
 		// Months
 		echo '<tr class="r"><td class="c b">'.__('per month').'</td>';
+		$monthsAdded = 0;
 		foreach ($this->months as $i => $month) {
 			$link = DataBrowserLinker::monthLink(Distance::format($month['km']), $month['time'], false);
 			echo '<td class="small"><span title="'.Time::month($month['month']).' '.$month['year'].'">'.$link.'</span></td>';
+			$monthsAdded++;
 		}
-		for (; $i < 9; $i++)
+		for ($i = $monthsAdded; $i < 10; $i++)
 			echo HTML::emptyTD();
 		echo '</tr>';
 
 		// Weeks
 		echo '<tr class="r"><td class="c b">'.__('per week').'</td>';
+		$weeksAdded = 0;
 		foreach ($this->weeks as $i => $week) {
 			$link = DataBrowserLinker::weekLink(Distance::format($week['km']), $week['time'], false);
 			echo '<td class="small"><span title="'.__('Week').' '.$week['week'].' '.$week['year'].'">'.$link.'</span></td>';
+			$weeksAdded++;
 		}
-		for (; $i < 9; $i++)
+		for ($i = $weeksAdded; $i < 10; $i++)
 			echo HTML::emptyTD();
 		echo '</tr>';
 

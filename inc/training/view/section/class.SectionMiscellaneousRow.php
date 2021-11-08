@@ -369,7 +369,7 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 				$lookup = new Lookup($table, $athlete->age());
 
 				if ($this->Context->raceResult()->officialDistance() >= $lookup->getMinimalDistance()) {
-					$ageGrade = $lookup->getAgeGrade($raceResult->officialDistance(), $raceResult->officialTime(), date('Y') - date('Y', $this->Context->activity()->timestamp()));
+					$ageGrade = $lookup->getAgeGrade((float)$raceResult->officialDistance(), (int)$raceResult->officialTime(), (int)date('Y') - (int)date('Y', $this->Context->activity()->timestamp()));
 					$ageGradeIcon = new View\Icon('fa-info-circle');
 					$ageGradeIcon->setTooltip(
 						__('Age standard').': '.Duration::format($ageGrade->getAgeStandard()).', '.

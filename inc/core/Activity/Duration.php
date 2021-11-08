@@ -104,7 +104,7 @@ class Duration {
 		$splitDays = explode('d ', $split[0]);
 
 		if (isset($splitDays[1])) {
-			$this->Time += 86400 * $splitDays[0];
+			$this->Time += 86400 * (int)$splitDays[0];
 			$splitDays[0] = $splitDays[1];
 		}
 
@@ -184,11 +184,11 @@ class Duration {
 	 */
 	protected function formatString($format, $decimals = 2) {
 		if (substr($format, -1) == 'u') {
-			$fraction = str_pad(round(fmod($this->Time, 1) * pow(10, $decimals)), $decimals, '0', STR_PAD_LEFT);
+			$fraction = str_pad((string)round(fmod($this->Time, 1) * pow(10, $decimals)), $decimals, '0', STR_PAD_LEFT);
 			return $this->formatString(substr($format, 0, -1)).$fraction;
 		}
 
-		$time = DateTime::createFromFormat('!U', (int)round($this->Time, $decimals), new DateTimeZone('UTC'));
+		$time = DateTime::createFromFormat('!U', (string)round($this->Time), new DateTimeZone('UTC'));
 
 		if ($time === false) {
 			throw new \InvalidArgumentException('Can\'t format time (t = '.((int)round($this->Time)).').');
@@ -196,10 +196,10 @@ class Duration {
 
 		if ($format == self::FORMAT_WITH_HOURS) {
 			/* we need to compute the hours ourselves, since DateTime outputs %G as [0..24) */
-			$sec = $time->format("U");
-			$s=$sec % 60;
-			$m=(($sec-$s) / 60) % 60;
-			$h=floor($sec / 3600);
+			$sec = (int)round((int)$time->format("U"));
+			$s = $sec % 60;
+			$m = (($sec-$s) / 60) % 60;
+			$h = (int)floor($sec / 3600);
 			return $h.":".substr("0".$m,-2).":".substr("0".$s,-2);
 		} else
 			return $time->format($format);

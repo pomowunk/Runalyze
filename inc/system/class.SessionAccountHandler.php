@@ -108,11 +108,11 @@ class SessionAccountHandler {
 
 	/**
 	 * Get timezone of current user
-	 * @return string
+	 * @return int
 	 */
 	public static function getTimezone() {
 		if (!isset(self::$Account['timezone'])) {
-			return '';
+			return -1;
 		}
 
 		return self::$Account['timezone'];

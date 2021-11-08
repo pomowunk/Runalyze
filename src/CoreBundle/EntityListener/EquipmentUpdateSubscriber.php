@@ -3,10 +3,8 @@
 namespace Runalyze\Bundle\CoreBundle\EntityListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Doctrine\ORM\PersistentCollection;
 use Runalyze\Bundle\CoreBundle\Entity\Equipment;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
@@ -89,7 +87,7 @@ class EquipmentUpdateSubscriber implements EventSubscriber
         $unitOfWork = $args->getEntityManager()->getUnitOfWork();
 
         foreach (array_merge($removedEquipment, $newEquipment, $unchangedEquipment) as $equipment) {
-            $unitOfWork->computeChangeSet($metaData, $equipment);
+            $unitOfWork->recomputeSingleEntityChangeSet($metaData, $equipment);
         }
     }
 }

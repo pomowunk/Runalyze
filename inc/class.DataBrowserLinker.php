@@ -16,8 +16,8 @@ class DataBrowserLinker {
 	/**
 	 * Get a ajax-link to a specified DataBrowser
 	 * @param string $name Name to be displayed as link
-	 * @param int $startTimestampInNoTimezone Timestamp for first date in browser
-	 * @param int $endTimestampInNoTimezone Timestamp for last date in browser
+	 * @param int|null $startTimestampInNoTimezone Timestamp for first date in browser
+	 * @param int|null $endTimestampInNoTimezone Timestamp for last date in browser
 	 * @param string $title title for the link
 	 * @param string $rel
 	 * @return string HTML-link
@@ -26,7 +26,7 @@ class DataBrowserLinker {
 		if (FrontendShared::$IS_SHOWN)
 			return DataBrowserShared::getLink($name, $startTimestampInNoTimezone, $endTimestampInNoTimezone, $title = '');
 
-		$href = 'call/call.DataBrowser.display.php?start='.$startTimestampInNoTimezone.'&end='.$endTimestampInNoTimezone;
+		$href = 'call/call.DataBrowser.display.php?start='.($startTimestampInNoTimezone ?: '').'&end='.($endTimestampInNoTimezone ?: '');
 
 		return Ajax::link($name, 'data-browser-inner', $href, $rel, $title, 'Pace.restart()');
 	}

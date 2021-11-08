@@ -7,6 +7,7 @@ use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityPreview;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
+use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Form\ActivityType;
@@ -59,7 +60,9 @@ class EditController extends Controller
                 $raceResult = (new Raceresult())->fillFromActivity($activity);
                 $activity->setRaceresult($raceResult);
             } elseif (!$form->get('is_race')->getData() && $activity->hasRaceresult()) {
-                $this->getDoctrine()->getRepository('CoreBundle:Raceresult')->delete($activity->getRaceresult());
+                /** @var RaceresultRepository */
+                $raceResultRepository = $this->getDoctrine()->getRepository('CoreBundle:Raceresult');
+                $raceResultRepository->delete($activity->getRaceresult());
                 $activity->setRaceresult(null);
             }
 

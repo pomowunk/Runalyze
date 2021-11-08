@@ -62,7 +62,7 @@ class KmlExtended extends AbstractSingleParser implements FileContentAwareParser
     protected function parseTimeSteps()
     {
         $startTime = $this->Container->Metadata->getTimestamp();
-        $DstCorrector = date('I') - date('I', $startTime);
+        $DstCorrector = (int)date('I') - (int)date('I', $startTime);
 
         foreach ($this->Xml->xpath('//when') as $step) {
             $time = strtotime((string)$step);

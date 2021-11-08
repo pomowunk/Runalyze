@@ -21,7 +21,6 @@ use Runalyze\Parser\Activity\Common\Data\Metadata;
 use Runalyze\Parser\Activity\Common\Data\WeatherData;
 use Runalyze\Profile\Sport\Mapping\EnglishLanguageMapping;
 use Runalyze\Profile\Sport\SportProfile;
-use Runalyze\Profile\Weather\Mapping\EnglishTextMapping;
 
 class ActivityDataContainerToActivityContextConverter
 {
@@ -68,7 +67,7 @@ class ActivityDataContainerToActivityContextConverter
 
     /**
      * @param ActivityDataContainer $container
-     * @param Account $account
+     * @param Account|null $account
      * @return Training
      */
     public function getActivityFor(ActivityDataContainer $container, Account $account = null)
@@ -92,7 +91,7 @@ class ActivityDataContainerToActivityContextConverter
 
     /**
      * @param ActivityDataContainer $container
-     * @param Account $account
+     * @param Account|null $account
      * @return ActivityContext
      */
     public function getContextFor(ActivityDataContainer $container, Account $account = null)

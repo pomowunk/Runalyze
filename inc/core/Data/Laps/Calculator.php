@@ -94,7 +94,7 @@ class Calculator
 
 	/**
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
-	 * @param \Runalyze\Model\Route\Entity $route
+	 * @param \Runalyze\Model\Route\Entity|null $route
 	 */
 	public function calculateFrom(Trackdata\Entity $trackdata, Route\Entity $route = null)
 	{
@@ -212,7 +212,7 @@ class Calculator
 	protected function readLap()
 	{
 		$Lap = new Lap(
-			$this->TrackdataLoop->difference(Trackdata\Entity::TIME),
+			(int)round($this->TrackdataLoop->difference(Trackdata\Entity::TIME)),
 			$this->TrackdataLoop->difference(Trackdata\Entity::DISTANCE)
 		);
 
@@ -302,7 +302,7 @@ class Calculator
 		$vo2max = new Calculation\JD\LegacyEffectiveVO2max();
         $vo2max->fromPaceAndHR(
 			$distance,
-			$Lap->duration()->seconds(),
+			(int)round($Lap->duration()->seconds()),
 			$Lap->HRavg()->inHRmax() / 100
 		);
 

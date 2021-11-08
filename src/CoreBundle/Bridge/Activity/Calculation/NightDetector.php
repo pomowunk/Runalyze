@@ -21,7 +21,7 @@ class NightDetector
         // TODO use activity's offset if known
         $detector = new \Runalyze\Calculation\NightDetector();
         $detector->setFrom(
-            (new LocalTime($activity->getTime()))->toServerTimestamp() + 0.5 * $activity->getS(),
+            (new LocalTime($activity->getTime()))->toServerTimestamp() + (int)round(0.5 * $activity->getS()),
             (new Geohash())->decode($activity->getRoute()->getStartpoint())->getCoordinate()
         );
 

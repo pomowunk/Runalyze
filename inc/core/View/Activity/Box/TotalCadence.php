@@ -5,7 +5,6 @@
  */
 
 namespace Runalyze\View\Activity\Box;
-use Runalyze\Configuration;
 use Runalyze\Profile\Sport\SportProfile;
 
 /**

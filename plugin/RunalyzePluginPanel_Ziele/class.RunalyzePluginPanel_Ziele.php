@@ -411,20 +411,20 @@ class RunalyzePluginPanel_Ziele extends PluginPanel
 		$kmend = new DateTime();
 		$kmend->setTime(0, 0, 0);
 		$now = new DateTime("now");
-		$kmstart->setISODate(date('Y'), 27, 1);
+		$kmstart->setISODate((int)date('Y'), 27, 1);
 
 		if ($kmstart > $now) {
-			$kmstart->setISODate(date('Y'), 1, 1);
-			$kmend->setISODate(date('Y'), 26, 7);
+			$kmstart->setISODate((int)date('Y'), 1, 1);
+			$kmend->setISODate((int)date('Y'), 26, 7);
 		} else {
-			$weeks = date('W', strtotime(date('Y') . '-12-31'));
-			$kmend->setISODate(date('Y'), $weeks == 53 ? 53 : 52, 7);
+			$weeks = (int)date('W', strtotime(date('Y') . '-12-31'));
+			$kmend->setISODate((int)date('Y'), $weeks == 53 ? 53 : 52, 7);
 		}
 
 		// Zeitraeume fuer die Prognosen.
 		$timeset['woche'] = array('name' => __('Week'), 'start' => (new DateTime)->setTimestamp(Time::weekstart(time())), 'end' => (new DateTime)->setTimestamp(Time::weekend(time())));
 		$timeset['mon'] = array('name' => __('Month'), 'start' => new DateTime(date("Y-m-01")), 'end' => new Datetime(date('Y-m-t')));
-		$timeset['hj'] = array('name' => __('Half-Year'), 'start' => new DateTime(date('m') < 7 ? date("Y-01-01") : date("Y-07-01")), 'end' => new Datetime(date('m') < 7 ? date("Y-06-30") : date('Y-12-31')));
+		$timeset['hj'] = array('name' => __('Half-Year'), 'start' => new DateTime((int)date('m') < 7 ? date("Y-01-01") : date("Y-07-01")), 'end' => new Datetime((int)date('m') < 7 ? date("Y-06-30") : date('Y-12-31')));
 		$timeset['saison'] = array('name' => __('Season'), 'start' => $kmstart, 'end' => $kmend, 'note' => __('Note: Season means the current season in the german &quot;kmspiel&quot;'));
 		$timeset['jahr'] = array('name' => __('Year'), 'start' => new DateTime(date("Y-01-01")), 'end' => new Datetime(date('Y-12-31')));
 

@@ -120,7 +120,7 @@ class SportFactory {
 
 	/**
 	 * Name of sport
-	 * @param string $sportid
+	 * @param int $sportid
 	 * @return string
 	 */
 	public static function name($sportid) {

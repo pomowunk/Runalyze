@@ -6,6 +6,8 @@
 
 namespace Runalyze\Model;
 
+use \Runalyze\Model\Loopable;
+
 /**
  * Loop through object
  *
@@ -40,13 +42,13 @@ abstract class Loop
 
 	/**
 	 * Object
-	 * @var \Runalyze\Model\Loopable
+	 * @var Loopable
 	 */
 	protected $Object;
 
 	/**
 	 * Construct
-	 * @param \Runalyze\Model\Loopable $object
+	 * @param Loopable $object
 	 */
 	public function __construct(Loopable $object)
 	{
@@ -174,7 +176,7 @@ abstract class Loop
 
 	/**
 	 * Move pointer to
-	 * @param enum $key
+	 * @param string $key
 	 * @param float $target to move
 	 * @throws \InvalidArgumentException
 	 */
@@ -197,7 +199,7 @@ abstract class Loop
 	/**
 	 * Current value
 	 * @param string $key
-	 * @return int
+	 * @return mixed
 	 */
 	public function current($key)
 	{
@@ -281,7 +283,7 @@ abstract class Loop
 			return 0;
 		}
 
-		return $this->sum($key) / ($this->Index - $this->LastIndex + (int)($this->LastIndex == 0));
+		return $this->sum($key) / ($this->Index - $this->LastIndex + ($this->LastIndex == 0 ? 1 : 0));
 	}
 
 	/**
@@ -305,7 +307,7 @@ abstract class Loop
 	 */
 	public function sliceObject()
 	{
-		if ($this->Object instanceof Runalyze\Model\Entity)
+		if ($this->Object instanceof \Runalyze\Model\Entity && !is_subclass_of($this->Object, \Runalyze\Model\Entity::class))
 		{
 			throw new \RuntimeException('This object cannot be sliced.');
 		}

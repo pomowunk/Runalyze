@@ -206,7 +206,7 @@ class RunalyzePluginPanel_Prognose extends PluginPanel {
 
 		if ($this->Prognosis->areValuesValid()) {
 			$prognosis = new Duration($this->Prognosis->getSeconds($distance));
-			$pace = new Pace($prognosis->seconds(), $distance, SportFactory::getSpeedUnitFor(Configuration::General()->runningSport()));
+			$pace = new Pace((int)round($prognosis->seconds()), $distance, SportFactory::getSpeedUnitFor(Configuration::General()->runningSport()));
 			$prognosisString = $prognosis->string(Duration::FORMAT_AUTO, 0);
 		} else {
 			$prognosisString = '-';

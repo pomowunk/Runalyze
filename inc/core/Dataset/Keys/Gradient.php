@@ -29,7 +29,7 @@ class Gradient extends AbstractKey
 
 	/**
 	 * Database key
-	 * @return string
+	 * @return string|string[]
 	 */
 	public function column()
 	{

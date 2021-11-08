@@ -164,9 +164,9 @@ class CsvWahoo extends AbstractSingleParser implements FileContentAwareParserInt
         $this->Container->ContinuousData->Altitude[] = (int)$this->currentValue(['disp_altitude', 'gps_altitude']);
         $this->Container->ContinuousData->HeartRate[] = (int)$this->currentValue(['hr_heartrate']);
         $this->Container->ContinuousData->Power[] = (int)$this->currentValue(['pwr_instpwr']);
-        $this->Container->ContinuousData->Cadence[] = (int)($this->currentValue(['cad_cadence', 'ma_cadence', 'pwr_cadence']) / 2); // stored in [spm]
-        $this->Container->ContinuousData->GroundContactTime[] = (int)($this->currentValue(['ma_gct']) * 1000); // stored in [s]
-        $this->Container->ContinuousData->VerticalOscillation[] = (int)($this->currentValue(['ma_vertosc']) * 1000); // stored in [m]
+        $this->Container->ContinuousData->Cadence[] = (int)round($this->currentValue(['cad_cadence', 'ma_cadence', 'pwr_cadence']) / 2); // stored in [spm]
+        $this->Container->ContinuousData->GroundContactTime[] = (int)round($this->currentValue(['ma_gct']) * 1000); // stored in [s]
+        $this->Container->ContinuousData->VerticalOscillation[] = (int)round($this->currentValue(['ma_vertosc']) * 1000); // stored in [m]
         $this->Container->ContinuousData->Temperature[] = (int)$this->currentValue(['disp_temperature']);
     }
 

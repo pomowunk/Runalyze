@@ -67,7 +67,7 @@ abstract class TrainingViewSectionRowTabbedPlot extends TrainingViewSectionRow {
 	 * Add right content
 	 * @param string $key
 	 * @param string $title
-	 * @param string $content
+	 * @param ActivityPlot|string $content
 	 */
 	final protected function addRightContent($key, $title, $content) {
 		$this->RightContent[$key] = $content;

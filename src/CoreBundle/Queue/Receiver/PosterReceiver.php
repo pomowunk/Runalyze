@@ -10,11 +10,9 @@ use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\InkscapeConverter
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\RsvgConverter;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GeneratePoster;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
 use Runalyze\Bundle\CoreBundle\Entity\NotificationRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;

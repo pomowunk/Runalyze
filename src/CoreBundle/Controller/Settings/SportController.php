@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Controller\Settings;
 
+use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
@@ -68,6 +69,7 @@ class SportController extends Controller
      */
     public function typeAddAction(Request $request, $sportid, Account $account)
     {
+        /** @var EntityManager */
         $em = $this->getDoctrine()->getManager();
         $type = new Type();
         $type->setAccount($account);

@@ -222,7 +222,7 @@ class Splits {
 	 * @return string
 	 */
 	private function formatKM($km) {
-		return number_format(Helper::CommaToPoint($km), 3, '.', '');
+		return number_format((float)Helper::CommaToPoint((string)$km), 3, '.', '');
 	}
 
 	/**

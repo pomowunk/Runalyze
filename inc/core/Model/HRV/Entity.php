@@ -71,7 +71,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable {
 
 	/**
 	 * Ignore a key while checking for emptiness
-	 * @param string $key enum
+	 * @param string $key
 	 * @return boolean
 	 */
 	protected function ignoreNonEmptyValue($key) {
@@ -83,7 +83,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable {
 	 * 
 	 * Remark: This method may throw index offsets.
 	 * @param int $index
-	 * @param int $key string
+	 * @param string $key
 	 * @return mixed
 	 */
 	public function at($index, $key) {

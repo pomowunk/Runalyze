@@ -76,7 +76,7 @@ class VerticalRatio implements ValueInterface
 	 */
 	public function setPercent($percent)
 	{
-		$this->Permille = 10*$percent;
+		$this->Permille = (int)round(10 * $percent);
 
 		return $this;
 	}

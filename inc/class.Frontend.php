@@ -4,9 +4,11 @@
  * @package Runalyze\Frontend
  */
 
+use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Configuration;
 use Runalyze\Timezone;
 use Symfony\Component\Yaml\Yaml;
+use \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * Frontend class for setting up everything
@@ -27,7 +29,7 @@ use Symfony\Component\Yaml\Yaml;
 class Frontend {
 	/**
 	 * Symfony token storage for user
-	 * @var null|\Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
+	 * @var TokenStorage|null
 	 */
 	protected $symfonyToken = null;
 
@@ -46,7 +48,7 @@ class Frontend {
 	 * Runalyze is not usable without setting up the environment with this class.
 	 *
 	 * @param bool $hideHeaderAndFooter By default a html-header is directly shown
-	 * @param null|\Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage $symfonyToken
+	 * @param TokenStorage|null $symfonyToken
 	 */
 	public function __construct($hideHeaderAndFooter = false, $symfonyToken = null) {
 		$this->symfonyToken = $symfonyToken;
@@ -167,7 +169,7 @@ class Frontend {
 		new SessionAccountHandler();
 
 		if (!is_null($this->symfonyToken) && $this->symfonyToken->getToken()->getUser() != 'anon.') {
-			/** @var \Runalyze\Bundle\CoreBundle\Entity\Account $user */
+			/** @var Account $user */
 		    $user = $this->symfonyToken->getToken()->getUser();
 
 		    SessionAccountHandler::setAccount(array(

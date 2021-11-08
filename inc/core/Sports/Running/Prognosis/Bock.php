@@ -93,7 +93,7 @@ class Bock implements PrognosisInterface
     {
         $seconds = $this->K * pow($distance, $this->E);
 
-        return ($distance > 3.0) ? round($seconds) : $seconds;
+        return (int)round($seconds);
     }
 
     /** @return float */

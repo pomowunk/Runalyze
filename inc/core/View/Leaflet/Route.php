@@ -73,7 +73,7 @@ class Route {
 
 	/**
 	 * ID
-	 * @return int
+	 * @return string
 	 */
 	final public function id() {
 		return $this->id;

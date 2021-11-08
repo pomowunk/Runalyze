@@ -13,7 +13,7 @@ trait GuessUnknownValuesTrait
 
     /**
      * @param int[]|null $altitudes [m]
-     * @param int $unknownValue
+     * @param int|false $unknownValue
      */
     public function guessUnknown(array &$altitudes = null, $unknownValue = -32768)
     {

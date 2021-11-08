@@ -28,20 +28,22 @@ class WindSpeedType extends AbstractUnitBasedType
         parent::buildView($view, $form, $options);
 
         $view->vars['attr']['min'] = 0;
-        $view->vars['attr']['data-base-unit-factor'] = $this->ModelUnit->getDividendFromBaseUnit() / $this->Unit->getDividendFromBaseUnit();
+        /** @var AbstractPaceInDecimalFormatUnit */
+        $baseUnit = $this->Unit;
+        $view->vars['attr']['data-base-unit-factor'] = $this->ModelUnit->getDividendFromBaseUnit() / $baseUnit->getDividendFromBaseUnit();
     }
 
     public function transform($value)
     {
         if (null !== $value) {
             if (0 == (int)$value) {
-                return 0;
+                return '0';
             }
 
-            $value = $this->ModelUnit->toBaseUnit((int)$value);
+            $value = (string)$this->ModelUnit->toBaseUnit((int)$value);
         }
 
-        return null === $value ? null : (int)round($this->Unit->fromBaseUnit($value));
+        return null === $value ? null : (string)round($this->Unit->fromBaseUnit($value));
     }
 
     public function reverseTransform($value)

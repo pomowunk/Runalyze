@@ -3,6 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal\Data;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\PluginConfRepository;
 use Runalyze\Util\LocalTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -31,7 +32,9 @@ class RaceResultsController extends Controller
         $result = [];
         $races = $this->getRaceResultRepository()->findAllWithActivityStats($account);
         $ageGradeLookup = $this->get('app.age_grade_lookup')->getLookup() ?: $this->get('app.age_grade_lookup')->getDefaultLookup();
-        $funIds = $this->getDoctrine()->getRepository('CoreBundle:PluginConf')->getAllActivityIdsOfFunRaces($account);
+        /** @var PluginConfRepository */
+        $pluginconfRepository = $this->getDoctrine()->getRepository('CoreBundle:PluginConf');
+        $funIds = $pluginconfRepository->getAllActivityIdsOfFunRaces($account);
 
         foreach ($races as $race) {
             $ageGrade = $ageGradeLookup->getAgeGrade(

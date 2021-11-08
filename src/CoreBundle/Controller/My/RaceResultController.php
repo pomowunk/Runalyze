@@ -5,7 +5,9 @@ namespace Runalyze\Bundle\CoreBundle\Controller\My;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
+use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
+use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Runalyze\Metrics\LegacyUnitConverter;
 use Runalyze\Sports\Running\VO2max\Estimation\DanielsGilbertFormula;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,8 +39,10 @@ class RaceResultController extends Controller
      */
     public function raceresultFormAction($activityId, Account $account, Request $request)
     {
+        /** @var TrainingRepository */
+        $trainingRepository = $this->getDoctrine()->getRepository('CoreBundle:Training');
         /** @var null|Training $activity */
-        $activity = $this->getDoctrine()->getRepository('CoreBundle:Training')->findForAccount($activityId, $account->getId());
+        $activity = $trainingRepository->findForAccount($activityId, $account->getId());
 
         if (null === $activity) {
             throw $this->createAccessDeniedException();
@@ -107,9 +111,11 @@ class RaceResultController extends Controller
         $ageStandardVO2max = array_map(function($kilometer, $seconds) use ($danielsGilbertFormula) {
             return $danielsGilbertFormula->estimateFromRaceResult($kilometer, $seconds);
         }, $distances, $ageStandardTimes);
+        /** @var SportRepository */
+        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
 
         return $this->render('my/raceresult/performance_chart.html.twig', [
-            'runningSportId' => $this->getDoctrine()->getRepository('CoreBundle:Sport')->findRunningFor($account)->getId(),
+            'runningSportId' => $sportRepository->findRunningFor($account)->getId(),
             'mainDistances' => $distances,
             'mainDistanceTicks' => $distanceTicks,
             'ageStandardTimes' => $ageStandardTimes,

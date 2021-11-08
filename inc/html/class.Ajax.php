@@ -19,9 +19,9 @@ class Ajax {
 
 	/**
 	 * ID for plugin to reload, can be empty to reload all plugins
-	 * @var int
+	 * @var int|null
 	 */
-	public static $RELOAD_PLUGIN_ID = '';
+	public static $RELOAD_PLUGIN_ID = null;
 
 	/**
 	 * Enum: Reload flag - no reload
@@ -127,7 +127,7 @@ class Ajax {
 			case self::$RELOAD_ALL:
 				return self::wrapJS('Runalyze.reloadContent();');
 			case self::$RELOAD_PLUGINS:
-				return self::wrapJS('Runalyze.reloadAllPlugins('.self::$RELOAD_PLUGIN_ID.');');
+				return self::wrapJS('Runalyze.reloadAllPlugins('.(self::$RELOAD_PLUGIN_ID??='').');');
 			case self::$RELOAD_DATABROWSER_AND_TRAINING:
 				return self::wrapJS('Runalyze.reloadDataBrowserAndTraining();');
 			case self::$RELOAD_TRAINING:
@@ -167,7 +167,7 @@ class Ajax {
 	 * Get html-code for jquery-tooltip
 	 * @param string $html
 	 * @param string $tooltip
-	 * @param boolean $atLeft [optional] can be 'atRight'
+	 * @param string|boolean $atLeft [optional] can be 'atRight'
 	 * @param boolean $onlyAttributes [optional]
 	 * @return string
 	 */
@@ -363,7 +363,7 @@ class Ajax {
 	 * @param array $input
 	 * @param array $funcs
 	 * @param int $level
-	 * @return string
+	 * @return string|array
 	 */
 	public static function json_encode_jsfunc($input, $funcs = array(), $level = 0) {
 		foreach($input as $key => $value) {
@@ -372,7 +372,7 @@ class Ajax {
 				$input[$key] = $ret[0];
 				$funcs = $ret[1];
 			} elseif (substr($value,0,8) == 'function' || substr($value,0,13) == 'RunalyzePlot.') {
-                  $func_key = "#".uniqid(rand(), true)."#";
+                  $func_key = "#".uniqid((string)rand(), true)."#";
                   $funcs[$func_key] = $value;
                   $input[$key] = $func_key;
 			}

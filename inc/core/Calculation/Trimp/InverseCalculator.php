@@ -27,7 +27,7 @@ class InverseCalculator {
 
 	/**
 	 * Value
-	 * @var int
+	 * @var float
 	 */
 	protected $value;
 
@@ -35,7 +35,7 @@ class InverseCalculator {
 	 * Construct
 	 * @param \Runalyze\Athlete $Athlete
 	 * @param int $heartRate [bpm]
-	 * @param int $trimp value to reach
+	 * @param float $trimp value to reach
 	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(\Runalyze\Athlete $Athlete, $heartRate, $trimp) {
@@ -54,7 +54,7 @@ class InverseCalculator {
 	 * Calculation is done for HR in [bpm] and time is transformed from [s] to [min].
 	 * 
 	 * @param int $bpm [bpm]
-	 * @param int $trimp value to reach
+	 * @param float $trimp value to reach
 	 */
 	protected function calculate($bpm, $trimp) {
 		$Factor = new Factor($this->Athlete->gender());
@@ -70,7 +70,7 @@ class InverseCalculator {
 
 	/**
 	 * Value
-	 * @return int
+	 * @return float
 	 */
 	public function value() {
 		return $this->value;

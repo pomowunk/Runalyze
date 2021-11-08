@@ -23,6 +23,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Bernard\Message\DefaultMessage;
+use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 
 class ToolsController extends Controller
 {
@@ -129,7 +131,9 @@ class ToolsController extends Controller
      */
     public function anovaAction(Request $request, Account $account)
     {
-        $data = AnovaData::getDefault($this->getDoctrine()->getRepository('CoreBundle:Sport')->findAllFor($account), []);
+        /** @var SportRepository */
+        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
+        $data = AnovaData::getDefault($sportRepository->findAllFor($account), []);
 
         $form = $this->createForm(AnovaType::class, $data, [
             'action' => $this->generateUrl('tools-anova')
@@ -165,7 +169,9 @@ class ToolsController extends Controller
      */
     public function trendAnalysisAction(Request $request, Account $account)
     {
-        $data = TrendAnalysisData::getDefault($this->getDoctrine()->getRepository('CoreBundle:Sport')->findAllFor($account), []);
+        /** @var SportRepository */
+        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
+        $data = TrendAnalysisData::getDefault($sportRepository->findAllFor($account), []);
 
         $form = $this->createForm(TrendAnalysisType::class, $data, [
             'action' => $this->generateUrl('tools-trend-analysis')
@@ -200,11 +206,9 @@ class ToolsController extends Controller
      */
     public function posterAction(Request $request, Account $account)
     {
-        $numberOfActivities = $this->getDoctrine()->getRepository('CoreBundle:Training')->getNumberOfActivitiesFor($account, (int)2017, (int)2);
-
         $form = $this->createForm(PosterType::class, [
             'postertype' => ['heatmap'],
-            'year' => date('Y') - 1,
+            'year' => (int)date('Y') - 1,
             'title' => ' '
         ]);
         $form->handleRequest($request);
@@ -212,7 +216,9 @@ class ToolsController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $request->request->get($form->getName());
 
-            $numberOfActivities = $this->getDoctrine()->getRepository('CoreBundle:Training')->getNumberOfActivitiesFor($account, (int)$formdata['year'], (int)$formdata['sport']);
+            /** @var TrainingRepository */
+            $trainingRepository = $this->getDoctrine()->getRepository('CoreBundle:Training');
+            $numberOfActivities = $trainingRepository->getNumberOfActivitiesFor($account, (int)$formdata['year'], (int)$formdata['sport']);
             if ($numberOfActivities <= 1) {
                 $this->addFlash('error', $this->get('translator')->trans('There are not enough activities to generate a poster. Please change your selection.'));
             } else {

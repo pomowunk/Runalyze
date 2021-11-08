@@ -125,11 +125,11 @@ class DataBrowser {
 				$this->TimestampEnd   = (new LocalTime)->weekend();
 			}
 		} else {
-			$this->TimestampStart = $_GET['start'];
-			$this->TimestampEnd   = $_GET['end'];
+			$this->TimestampStart = (int)$_GET['start'];
+			$this->TimestampEnd   = (int)$_GET['end'];
 		}
 
-		$this->DayCount = round(($this->TimestampEnd - $this->TimestampStart) / 86400);
+		$this->DayCount = (int)round(($this->TimestampEnd - $this->TimestampStart) / 86400);
 	}
 
 	/**
@@ -269,7 +269,7 @@ class DataBrowser {
 	 * @return string
 	 */
 	protected function getCurrentLink() {
-		return DataBrowserLinker::link('<i class="fa fa-fw fa-circle"></i>', '', '', __('today'));
+		return DataBrowserLinker::link('<i class="fa fa-fw fa-circle"></i>', null, null, __('today'));
 	}
 
 	/**

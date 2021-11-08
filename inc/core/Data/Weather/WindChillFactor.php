@@ -42,6 +42,7 @@ class WindChillFactor implements ValueInterface
     public function set($temperature)
     {
         $this->AdjustedTemperature->set($temperature);
+        return $this;
     }
 
     /**

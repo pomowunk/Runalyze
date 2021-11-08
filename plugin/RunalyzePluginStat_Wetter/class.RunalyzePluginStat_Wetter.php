@@ -64,8 +64,8 @@ class RunalyzePluginStat_Wetter extends PluginStat {
 		$Configuration = new PluginConfiguration($this->id());
 		$Configuration->addValue($Types);
 
-		if (isset($_GET['dat']) && isset($this->AllTypes[$_GET['dat']])) {
-			$Configuration->object('equipment_type')->setValue($_GET['dat']);
+		if (isset($_GET['dat']) && isset($this->AllTypes[(int)$_GET['dat']])) {
+			$Configuration->object('equipment_type')->setValue((int)$_GET['dat']);
 			$Configuration->update('equipment_type');
 			Cache::delete(PluginConfiguration::CACHE_KEY);
 		}
@@ -87,7 +87,7 @@ class RunalyzePluginStat_Wetter extends PluginStat {
 
 			foreach ($this->AllTypes as $id => $name) {
 				$active = ($id == $this->EquipmentTypeId);
-				$LinkList[] = '<li'.($active ? ' class="active"' : '').'>'.$this->getInnerLink($name, false, false, $id).'</li>';
+				$LinkList[] = '<li'.($active ? ' class="active"' : '').'>'.$this->getInnerLink($name, 0, 0, (string)$id).'</li>';
 			}
 		}
 
@@ -187,7 +187,7 @@ class RunalyzePluginStat_Wetter extends PluginStat {
 		require_once __DIR__.'/MonthwiseTable.php';
 
 		$num = $this->showsLast6Months() ? 6 : 12;
-		$offset = $this->showsTimeRange() ? date('m') - $num - 1 + 12 : -1;
+		$offset = $this->showsTimeRange() ? (int)date('m') - $num - 1 + 12 : -1;
 
 		$Table = new \Runalyze\Plugin\Stat\Wetter\MonthwiseTable(
 			DB::getInstance(),

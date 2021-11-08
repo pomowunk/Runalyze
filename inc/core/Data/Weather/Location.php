@@ -97,6 +97,7 @@ class Location {
 	    if ($this->hasPosition()) {
 			return (new Geohash)->encode(new Coordinate(array((float)$this->lat(), (float)$this->lon())), 12)->getGeohash();
 	    }
+		return '';
 	}
 
 	/**
@@ -136,7 +137,7 @@ class Location {
 
 	/**
 	 * Has location name?
-	 * @return string
+	 * @return bool
 	 */
 	public function hasLocationName() {
 		return (strlen($this->LocationName) > 0);

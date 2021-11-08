@@ -4,7 +4,6 @@ namespace Runalyze\Bundle\CoreBundle\Services\Configuration;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
-use Runalyze\Bundle\CoreBundle\Form\Settings\PrivacyData;
 
 class ConfigurationUpdater
 {
@@ -78,7 +77,7 @@ class ConfigurationUpdater
 
     /**
      * @param Account $account
-     * @param int $shape [0, inf)
+     * @param float $shape [0, inf)
      */
     public function updateMarathonShape(Account $account, $shape)
     {
@@ -87,7 +86,7 @@ class ConfigurationUpdater
 
     /**
      * @param Account $account
-     * @param int $atl [0, inf)
+     * @param float $atl [0, inf)
      */
     public function updateMaximalAtl(Account $account, $atl)
     {
@@ -96,7 +95,7 @@ class ConfigurationUpdater
 
     /**
      * @param Account $account
-     * @param int $ctl [0, inf)
+     * @param float $ctl [0, inf)
      */
     public function updateMaximalCtl(Account $account, $ctl)
     {
@@ -105,7 +104,7 @@ class ConfigurationUpdater
 
     /**
      * @param Account $account
-     * @param int $trimp [0, inf)
+     * @param float $trimp [0, inf)
      */
     public function updateMaximalTrimp(Account $account, $trimp)
     {

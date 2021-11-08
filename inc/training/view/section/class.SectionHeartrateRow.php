@@ -49,10 +49,10 @@ class SectionHeartrateRow extends TrainingViewSectionRowTabbedPlot {
 	 */
 	protected function addAverageHeartrate() {
 		if ($this->Context->activity()->hrAvg() > 0) {
-			$this->BoxedValues[] = new BoxedValue($this->Context->dataview()->hrAvg()->inBPM(), 'bpm', __('avg.').' '.__('Heart rate'));
+			$this->BoxedValues[] = new BoxedValue((string)$this->Context->dataview()->hrAvg()->inBPM(), 'bpm', __('avg.').' '.__('Heart rate'));
 
 			if ($this->Context->dataview()->hrMax()->canShowInHRmax()) {
-				$this->BoxedValues[] = new BoxedValue($this->Context->dataview()->hrAvg()->inPercent(), '&#37;', __('avg.').' '.__('Heart rate'));
+				$this->BoxedValues[] = new BoxedValue((string)$this->Context->dataview()->hrAvg()->inPercent(), '&#37;', __('avg.').' '.__('Heart rate'));
 			}
 		}
 	}

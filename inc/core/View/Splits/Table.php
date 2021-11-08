@@ -49,7 +49,7 @@ class Table {
 	protected $achievedPaceActive;
 
 	/**
-	 * @var string enum
+	 * @var int
 	 */
 	protected $PaceUnit;
 
@@ -61,7 +61,7 @@ class Table {
 
 	/**
 	 * @param \Runalyze\Model\Activity\Splits\Entity $splits
-	 * @param int $legacyPaceUnitEnum enum
+	 * @param int $legacyPaceUnitEnum
 	 */
 	public function __construct(Splits\Entity $splits, $legacyPaceUnitEnum = PaceUnit::MIN_PER_KM) {
 		$this->Splits = $splits;
@@ -117,7 +117,7 @@ class Table {
 	 * @param int $demandedPace
 	 */
 	public function setDemandedPace($demandedPace) {
-		$this->demandedPace = new Pace(round($demandedPace), 1, $this->PaceUnit);
+		$this->demandedPace = new Pace($demandedPace, 1, $this->PaceUnit);
 	}
 
 	/**

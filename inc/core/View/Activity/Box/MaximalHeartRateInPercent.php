@@ -38,7 +38,7 @@ class MaximalHeartRateInPercent extends MaximalHeartRate
     protected function value(HeartRate $heartRate)
 	{
         if ($heartRate->inBPM() > 0 && $heartRate->canShowInHRmax()) {
-            return $heartRate->inPercent();
+            return (string)$heartRate->inPercent();
         }
 
         return '-';

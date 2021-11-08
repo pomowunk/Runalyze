@@ -37,7 +37,7 @@ class Laps {
 	/**
 	 * @param array $distances
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
-	 * @param \Runalyze\Model\Route\Entity $route
+	 * @param \Runalyze\Model\Route\Entity|null $route
 	 */
 	public function calculateFrom(array $distances, Trackdata\Entity $trackdata, Route\Entity $route = null) {
 		$Calculator = new Calculator($this);
@@ -49,7 +49,7 @@ class Laps {
 	/**
 	 * @param array $times
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
-	 * @param \Runalyze\Model\Route\Entity $route
+	 * @param \Runalyze\Model\Route\Entity|null $route
 	 */
 	public function calculateFromTimes(array $times, Trackdata\Entity $trackdata, Route\Entity $route = null) {
 		$Calculator = new Calculator($this);

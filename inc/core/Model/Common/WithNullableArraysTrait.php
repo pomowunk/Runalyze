@@ -2,14 +2,13 @@
 
 namespace Runalyze\Model\Common;
 
-use Runalyze\Model\Entity;
+use Runalyze\Model\Activity\Entity;
 
 trait WithNullableArraysTrait
 {
     public function ensureArraysToBeNotNull()
     {
-        /** @var Entity $this */
-        foreach (static::allDatabaseProperties() as $key) {
+        foreach (Entity::allDatabaseProperties() as $key) {
             if ($this->isArray($key) && null === $this->get($key)) {
                 $this->set($key, []);
             }
@@ -18,8 +17,7 @@ trait WithNullableArraysTrait
 
     public function ensureArraysToBeNullIfEmpty()
     {
-        /** @var Entity $this */
-        foreach (static::allDatabaseProperties() as $key) {
+        foreach (Entity::allDatabaseProperties() as $key) {
             if ($this->isArray($key) && empty($this->get($key))) {
                 $this->set($key, null);
             }

@@ -100,15 +100,15 @@ class PersonalBestTest extends TestCase {
 
 		$this->assertEquals(3, PersonalBest::lookupDistances(array(1, 3.1, 5), self::SPORTID, $this->PDO));
 
-		$PDO = new \PDO('sqlite::memory:');
-
-		$PB1k = new PersonalBest(1, self::SPORTID, $PDO, true);
-		$PB3k = new PersonalBest("3.1", self::SPORTID, $PDO, true);
-		$PB5k = new PersonalBest(5, self::SPORTID, $PDO, true);
+		$PB1k = new PersonalBest(1, self::SPORTID, $this->PDO, true);
+		$PB3k = new PersonalBest("3.1", self::SPORTID, $this->PDO, true);
+		$PB5k = new PersonalBest(5, self::SPORTID, $this->PDO, true);
 
 		$this->assertEquals( 180, $PB1k->seconds());
 		$this->assertEquals( 600, $PB3k->seconds());
 		$this->assertEquals(1100, $PB5k->seconds());
+		
+		PersonalBest::deactivateStaticCache();
 	}
 
 	public function testMultiLookupWithDetails() {
@@ -124,11 +124,9 @@ class PersonalBestTest extends TestCase {
 
 		$this->assertEquals(3, PersonalBest::lookupDistances(array(1, 3.1, 5), self::SPORTID, $this->PDO, true));
 
-		$PDO = new \PDO('sqlite::memory:');
-
-		$PB1k = new PersonalBest(1, self::SPORTID, $PDO, true, true);
-		$PB3k = new PersonalBest("3.1", self::SPORTID, $PDO, true, true);
-		$PB5k = new PersonalBest(5, self::SPORTID, $PDO, true);
+		$PB1k = new PersonalBest(1, self::SPORTID, $this->PDO, true, true);
+		$PB3k = new PersonalBest("3.1", self::SPORTID, $this->PDO, true, true);
+		$PB5k = new PersonalBest(5, self::SPORTID, $this->PDO, true);
 		$PB5k->lookupWithDetails();
 
 		$this->assertEquals(  180, $PB1k->seconds());
@@ -137,6 +135,8 @@ class PersonalBestTest extends TestCase {
 		$this->assertEquals($date, $PB3k->timestamp());
 		$this->assertEquals( 1100, $PB5k->seconds());
 		$this->assertEquals($date, $PB5k->timestamp());
+		
+		PersonalBest::deactivateStaticCache();
 	}
 
 	public function testMultiLookupWithDetailsForIdenticalResults() {
@@ -149,13 +149,13 @@ class PersonalBestTest extends TestCase {
 
 		$this->assertEquals(1, PersonalBest::lookupDistances(array(1.0), self::SPORTID, $this->PDO, true));
 
-		$PDO = new \PDO('sqlite::memory:');
-
-		$PB = new PersonalBest(1, self::SPORTID, $PDO, true, true);
+		$PB = new PersonalBest(1, self::SPORTID, $this->PDO, true, true);
 
 		$this->assertEquals(180, $PB->seconds());
 		$this->assertEquals($date1, $PB->timestamp());
 		$this->assertEquals($first, $PB->activityId());
+		
+		PersonalBest::deactivateStaticCache();
 	}
 
 }

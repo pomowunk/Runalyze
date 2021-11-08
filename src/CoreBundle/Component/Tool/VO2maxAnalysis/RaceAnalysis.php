@@ -159,7 +159,7 @@ class RaceAnalysis
     /**
      * @param float $vo2max [ml/kg/min]
      * @param float $distance [km]
-     * @return float [s]
+     * @return int [s]
      */
     protected function prognosisInSecondsFor($vo2max, $distance)
     {

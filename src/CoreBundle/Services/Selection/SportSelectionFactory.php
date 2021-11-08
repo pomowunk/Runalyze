@@ -2,7 +2,6 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Selection;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\TokenStorageAwareServiceTrait;

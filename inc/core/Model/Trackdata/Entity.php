@@ -261,9 +261,11 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 	 * Fix distance array
 	 */
 	protected function fixDistanceArray() {
-		foreach ($this->Data[self::DISTANCE] as $i => $dist) {
+		/** @var float[] */
+		$distanceArray =& $this->Data[self::DISTANCE];
+		foreach ($distanceArray as $i => $dist) {
 			if ($i > 0 && $dist == 0) {
-				$this->Data[self::DISTANCE][$i] = $this->Data[self::DISTANCE][$i - 1];
+				$distanceArray[$i] = $distanceArray[$i - 1];
 			}
 		}
 	}
@@ -456,11 +458,13 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 	 * @return int
 	 */
 	public function totalTime() {
-		if (empty($this->Data[self::TIME])) {
+		/** @var int[] */
+		$timeArray =& $this->Data[self::TIME];
+		if (empty($timeArray)) {
 			return 0;
 		}
 
-		return $this->Data[self::TIME][$this->numberOfPoints-1];
+		return $timeArray[$this->numberOfPoints-1];
 	}
 
 	/**
@@ -473,10 +477,12 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 
 	/**
 	 * Total distance
-	 * @return int
+	 * @return float
 	 */
 	public function totalDistance() {
-		return $this->Data[self::DISTANCE][$this->numberOfPoints-1];
+		/** @var float[] */
+		$distanceArray =& $this->Data[self::DISTANCE];
+		return empty($distanceArray) ? 0.0 : $distanceArray[$this->numberOfPoints-1];
 	}
 
 	/**

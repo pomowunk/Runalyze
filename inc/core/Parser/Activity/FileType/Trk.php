@@ -40,7 +40,7 @@ class Trk extends AbstractSingleParser implements FileContentAwareParserInterfac
     {
         $this->Container->Metadata->setTimestamp(
             $this->StartTime,
-            round((new \DateTime())->setTimestamp($this->StartTime)->getOffset() / 60)
+            (int)round((new \DateTime())->setTimestamp($this->StartTime)->getOffset() / 60)
         );
     }
 
@@ -105,8 +105,8 @@ class Trk extends AbstractSingleParser implements FileContentAwareParserInterfac
         $this->Container->ContinuousData->Time[] = $time;
         $this->Container->ContinuousData->Latitude[] = $latitude;
         $this->Container->ContinuousData->Longitude[] = $longitude;
-        $this->Container->ContinuousData->Altitude[] = ($num > 7 && $values[7] != '-1') ? round($values[7]) : 0;
-        $this->Container->ContinuousData->Temperature[] = ($num > 14 && $values[14] != '-1') ? round($values[14]) : 0;
-        $this->Container->ContinuousData->HeartRate[] = ($num > 17 && $values[17] != '-1') ? round($values[17]) : 0;
+        $this->Container->ContinuousData->Altitude[] = ($num > 7 && $values[7] != '-1') ? (int)round((float)$values[7]) : 0;
+        $this->Container->ContinuousData->Temperature[] = ($num > 14 && $values[14] != '-1') ? (int)$values[14] : 0;
+        $this->Container->ContinuousData->HeartRate[] = ($num > 17 && $values[17] != '-1') ? (int)$values[17] : 0;
     }
 }

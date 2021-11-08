@@ -103,15 +103,15 @@ class CsvEpson extends AbstractSingleParser implements FileContentAwareParserInt
                                 break;
 
                             case 'TrainingTime':
-                                $this->Container->ActivityData->Duration = $values[$i];
+                                $this->Container->ActivityData->Duration = (int)$values[$i];
                                 break;
 
                             case 'Distance':
-                                $this->Container->ActivityData->Distance = $values[$i] / 1000;
+                                $this->Container->ActivityData->Distance = (int)round((int)$values[$i] / 1000);
                                 break;
 
                             case 'Temperature':
-                                $this->Container->WeatherData->Temperature = $values[$i];
+                                $this->Container->WeatherData->Temperature = (int)$values[$i];
                                 break;
                         }
                     }
@@ -122,7 +122,7 @@ class CsvEpson extends AbstractSingleParser implements FileContentAwareParserInt
 
             $this->Container->Metadata->setTimestamp(
                 strtotime($startDay.' '.$startTime.' UTC'),
-                round((strtotime($startDay.' '.$startTime.' UTC') - strtotime($startDay.' '.$startTime)) / 60)
+                (int)round((strtotime($startDay.' '.$startTime.' UTC') - strtotime($startDay.' '.$startTime)) / 60)
             );
         }
     }
@@ -139,7 +139,7 @@ class CsvEpson extends AbstractSingleParser implements FileContentAwareParserInt
             foreach ($this->TmpData as $i => $label) {
                 switch ($label) {
                     case 'Calorie':
-                        $this->Container->ActivityData->EnergyConsumption = $values[$i];
+                        $this->Container->ActivityData->EnergyConsumption = (int)$values[$i];
                         break;
                 }
             }
@@ -176,19 +176,19 @@ class CsvEpson extends AbstractSingleParser implements FileContentAwareParserInt
             case 'GpsTime':
                 $this->Container->ContinuousData->Time = array_map(function ($value) {
                     $parts = explode(':', $value);
-                    return 3600 * $parts[0] + 60 * $parts[1] + $parts[2];
+                    return 3600 * (int)$parts[0] + 60 * (int)$parts[1] + (int)$parts[2];
                 }, $values);
                 break;
 
             case 'GpsLatitude':
                 $this->Container->ContinuousData->Latitude = array_map(function ($value) {
-                    return $value / 1000000;
+                    return (int)$value / 1000000;
                 }, $values);
                 break;
 
             case 'GpsLongitude':
                 $this->Container->ContinuousData->Longitude = array_map(function ($value) {
-                    return $value / 1000000;
+                    return (int)$value / 1000000;
                 }, $values);
                 break;
         }
@@ -212,13 +212,13 @@ class CsvEpson extends AbstractSingleParser implements FileContentAwareParserInt
 
             case 'GraphPitch':
                 $this->Container->ContinuousData->Cadence = array_map(function ($value) {
-                    return round($value / 2);
+                    return round((int)$value / 2);
                 }, $values);
                 break;
 
             case 'GraphDistance':
                 $this->Container->ContinuousData->Distance = array_map(function ($value) {
-                    return $value / 1000;
+                    return (int)$value / 1000;
                 }, $values);
                 break;
 
@@ -248,7 +248,7 @@ class CsvEpson extends AbstractSingleParser implements FileContentAwareParserInt
             $values = explode(',', $line);
 
             $this->Container->Rounds->add(
-                new Round($values[$this->TmpData[1]] / 1000, $values[$this->TmpData[0]])
+                new Round((int)$values[$this->TmpData[1]] / 1000, (int)$values[$this->TmpData[0]])
             );
         }
     }

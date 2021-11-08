@@ -191,9 +191,9 @@ final class Keys extends AbstractEnum
     const AVG_PRONATION_EXCURSION = 59;
 
     /**
-	 * @var array|null
+	 * @var array<int, string>
 	 */
-	private static $ClassNames = null;
+	private static $ClassNames = [];
 
 	/**
 	 * @var array instances of key objects
@@ -221,7 +221,7 @@ final class Keys extends AbstractEnum
 	 */
 	public static function get($keyid)
 	{
-		if (null === self::$ClassNames) {
+		if (empty(self::$ClassNames)) {
 			self::generateClassNamesArray();
 		}
 

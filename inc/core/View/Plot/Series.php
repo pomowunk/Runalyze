@@ -47,7 +47,7 @@ class Series {
 	protected $UnitFactor = 1;
 
 	/**
-	 * @var int
+	 * @var float|false
 	 */
 	protected $TickSize = false;
 
@@ -123,7 +123,7 @@ class Series {
 
 	/**
 	 * Set properties
-	 * @param \Plot $Plot
+	 * @param Plot $Plot
 	 * @param int $yAxis
 	 * @param bool $addAnnotations [optional]
 	 */

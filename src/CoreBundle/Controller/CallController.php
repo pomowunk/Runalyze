@@ -89,7 +89,7 @@ class CallController extends Controller
         	default:
         		if (substr($_GET['key'], 0, 5) == 'show-') {
         			$key = substr($_GET['key'], 5);
-        			\Runalyze\Configuration::ActivityForm()->update($key, $_GET['value']);
+        			\Runalyze\Configuration::ActivityForm()->update($key, (bool)$_GET['value']);
         		}
         }
 

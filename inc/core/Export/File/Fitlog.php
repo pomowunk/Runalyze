@@ -121,17 +121,17 @@ class Fitlog extends AbstractFileExporter
 
         do {
             $Point = $Track->addChild('pt');
-            $Point->addAttribute('tm', $Trackdata->time());
+            $Point->addAttribute('tm', (string)$Trackdata->time());
 
             if (null !== $Route) {
-                $Point->addAttribute('lat', $Route->latitude());
-                $Point->addAttribute('lon', $Route->longitude());
-                $Point->addAttribute('ele', $Route->current(Route\Entity::ELEVATIONS_ORIGINAL));
+                $Point->addAttribute('lat', (string)$Route->latitude());
+                $Point->addAttribute('lon', (string)$Route->longitude());
+                $Point->addAttribute('ele', (string)$Route->current(Route\Entity::ELEVATIONS_ORIGINAL));
                 $Route->nextStep();
             }
 
             if ($hasHeartrate) {
-                $Point->addAttribute('hr', $Trackdata->current(Trackdata\Entity::HEARTRATE));
+                $Point->addAttribute('hr', (string)$Trackdata->current(Trackdata\Entity::HEARTRATE));
             }
         } while ($Trackdata->nextStep());
     }

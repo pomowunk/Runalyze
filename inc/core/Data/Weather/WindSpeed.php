@@ -34,7 +34,7 @@ class WindSpeed implements ValueInterface
     /**
      * Wind speed
      * @param float|null $kilometerPerHour [km/h]
-     * @param \Runalyze\Parameter\Application\DistanceUnitSystem $unitSystem
+     * @param \Runalyze\Parameter\Application\DistanceUnitSystem|null $unitSystem
      */
     public function __construct($kilometerPerHour = null, DistanceUnitSystem $unitSystem = null)
     {

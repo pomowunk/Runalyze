@@ -2,8 +2,6 @@
 
 namespace Runalyze\Parser\Activity\Common\Data;
 
-use Runalyze\Profile\Weather\Source\WeatherSourceProfile;
-
 class WeatherData
 {
     /** @var string */
@@ -30,7 +28,7 @@ class WeatherData
     /**
      * @var null|int
      *
-     * @see WeatherSourceProfile
+     * @see Runalyze\Profile\Weather\Source\WeatherSourceProfile
      */
     public $Source = null;
 

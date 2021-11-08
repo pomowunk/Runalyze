@@ -106,7 +106,7 @@ class PDOforRunalyze extends PDO {
 	public function deleteByID($table, $ID) {
 		$table = str_replace(PREFIX, '', $table);
 
-		return $this->query('DELETE FROM `'.PREFIX.$table.'` WHERE `id`='.(int)$ID.' LIMIT 1');
+		return $this->query('DELETE FROM `'.PREFIX.$table.'` WHERE `id`='.(int)$ID.' LIMIT 1')->fetchAll(PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -146,10 +146,10 @@ class PDOforRunalyze extends PDO {
 	 * Escapes and inserts the given $values to the $columns in $table
 	 *
 	 * This methods always adds the accountid (unless something is inserted to the account table)
-	 * @param $table   string without PREFIX
-	 * @param $columns array
-	 * @param $values  array
-	 * @return int       ID of inserted row
+	 * @param string $table   without PREFIX
+	 * @param array $columns
+	 * @param array $values
+	 * @return mixed  ID of inserted row
 	 */
 	public function insert($table, $columns, $values) {
 		$table = str_replace(PREFIX, '', $table);
@@ -199,7 +199,7 @@ class PDOforRunalyze extends PDO {
 		} else if ($values === null || $values == 'NULL') {
 			$values = 'NULL';
 		} else if (!is_numeric($values) || $forceAsString) {
-			$values = $this->quote($values);
+			$values = $this->quote((string)$values);
 
 			if ($quotes === false && substr($values, 0, 1) == "'" && substr($values, -1) == "'" && strlen($values) > 2) {
 				$values = substr($values, 1, -1);

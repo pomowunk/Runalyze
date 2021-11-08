@@ -76,8 +76,8 @@ class Split extends StringObject {
 
 		$Duration = new Duration(substr(strrchr($string, self::SEPARATOR), 1));
 
-		$this->Distance = strstr($string, self::SEPARATOR, true);
-		$this->Time = $Duration->seconds();
+		$this->Distance = (float)strstr($string, self::SEPARATOR, true);
+		$this->Time = (int)round($Duration->seconds());
 	}
 
 	/**

@@ -28,7 +28,7 @@ abstract class AbstractKey
 	 * Database column
 	 *
 	 * Warning: Summary mode must be 'NO' (or a special one which can handle multiple keys) if an array is returned.
-	 * @return string|array
+	 * @return string|string[]
 	 */
 	abstract public function column();
 

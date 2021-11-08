@@ -16,7 +16,7 @@ define('START_TIME', Helper::getStartTime());
  * Year of the first training
  * @var int
  */
-define('START_YEAR', date("Y", START_TIME));
+define('START_YEAR', (int)date("Y", START_TIME));
 
 /**
  * Class for all helper-functions previously done by functions.php
@@ -42,7 +42,7 @@ class Helper {
 	 * @return int
 	 */
 	public static function floorFor($numberToRound, $roundForInt) {
-		return $roundForInt * floor($numberToRound / $roundForInt);
+		return (int)round($roundForInt * floor($numberToRound / $roundForInt));
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Helper {
 	 * @return int
 	 */
 	public static function ceilFor($numberToRound, $roundForInt) {
-		return $roundForInt * ceil($numberToRound / $roundForInt);
+		return (int)round($roundForInt * ceil($numberToRound / $roundForInt));
 	}
 
 	/**
@@ -219,7 +219,7 @@ class Helper {
 
 /**
  * Trimmer function for array_walk
- * @param array $value
+ * @param string $value
  */
 function trimValuesForArray(&$value) {
 	$value = trim($value);

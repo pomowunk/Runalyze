@@ -97,7 +97,7 @@ class HeartRate {
 	 * @return int
 	 */
 	public function inBPM() {
-		return round($this->value);
+		return (int)round($this->value);
 	}
 
 	/**
@@ -105,7 +105,7 @@ class HeartRate {
 	 * @return int
 	 */
 	public function inHRmax() {
-		return round(100 * $this->value / $this->Athlete->maximalHR());
+		return (int)round(100 * $this->value / $this->Athlete->maximalHR());
 	}
 
 	/**
@@ -113,7 +113,7 @@ class HeartRate {
 	 * @return int
 	 */
 	public function inHRrest() {
-		return round(100 * ($this->value - $this->Athlete->restingHR()) / ($this->Athlete->maximalHR() - $this->Athlete->restingHR()));
+		return (int)round(100 * ($this->value - $this->Athlete->restingHR()) / ($this->Athlete->maximalHR() - $this->Athlete->restingHR()));
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
+use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Language;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -28,6 +29,7 @@ class UserLocaleListener
      */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
+        /** @var Account */
         $user = $event->getAuthenticationToken()->getUser();
 
         if (null !== $user->getLanguage()) {

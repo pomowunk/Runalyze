@@ -21,6 +21,6 @@ class ElevationType extends AbstractUnitBasedType
 
     public function reverseTransform($value)
     {
-        return parent::reverseTransform($value * 1000.00);
+        return parent::reverseTransform((string)($value * 1000.00));
     }
 }

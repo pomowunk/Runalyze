@@ -3,6 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,13 +24,14 @@ class PanelController extends Controller
      */
     public function sportStatAction(Request $request, Account $account)
     {
+        /** @var SportRepository */
         $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
         $today = (new LocalTime())->setTime(0, 0, 0);
 
         return new JsonResponse( [
             'weekStatistics' => $sportRepository->getSportStatisticsSince($today->weekstart(), $account, true),
-            'monthStatistics' => $sportRepository->getSportStatisticsSince($today->setDate($today->format('Y'), $today->format('m'), 1)->getTimestamp(), $account, true),
-            'yearStatistics' => $sportRepository->getSportStatisticsSince($today->setDate($today->format('Y'), 1, 1)->getTimestamp(), $account, true),
+            'monthStatistics' => $sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), (int)$today->format('m'), 1)->getTimestamp(), $account, true),
+            'yearStatistics' => $sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), 1, 1)->getTimestamp(), $account, true),
             'totalStatistics' => $sportRepository->getSportStatisticsSince(null, $account, true)
         ]);
     }

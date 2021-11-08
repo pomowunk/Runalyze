@@ -397,31 +397,31 @@ class FitActivity extends AbstractSingleParser
         $this->mapDeveloperFieldsToNativeFieldsFor($this->DeveloperFieldMappingForSession);
 
         if (isset($this->Values['total_timer_time'])) {
-            $this->Container->ActivityData->Duration += round($this->Values['total_timer_time'][0] / 1e3);
+            $this->Container->ActivityData->Duration += round((int)$this->Values['total_timer_time'][0] / 1e3);
         }
 
         if (isset($this->Values['total_elapsed_time'])) {
-            $this->Container->ActivityData->ElapsedTime += round($this->Values['total_elapsed_time'][0] / 1e3);
+            $this->Container->ActivityData->ElapsedTime += round((int)$this->Values['total_elapsed_time'][0] / 1e3);
         }
 
         if (isset($this->Values['total_distance'])) {
-            $this->Container->ActivityData->Distance += round($this->Values['total_distance'][0] / 1e5, 3);
+            $this->Container->ActivityData->Distance += round((int)$this->Values['total_distance'][0] / 1e5, 3);
         }
 
         if (isset($this->Values['total_calories'])) {
-            $this->Container->ActivityData->EnergyConsumption += $this->Values['total_calories'][0];
+            $this->Container->ActivityData->EnergyConsumption += (int)$this->Values['total_calories'][0];
         }
 
         if (isset($this->Values['total_strokes'])) {
-            $this->Container->ActivityData->TotalStrokes = $this->Values['total_strokes'][0];
+            $this->Container->ActivityData->TotalStrokes = (int)$this->Values['total_strokes'][0];
         }
 
         if (isset($this->Values['avg_swimming_cadence'])) {
-            $this->Container->ActivityData->AvgCadence = $this->Values['avg_swimming_cadence'][0];
+            $this->Container->ActivityData->AvgCadence = (int)$this->Values['avg_swimming_cadence'][0];
         }
 
         if (isset($this->Values['pool_length'])) {
-            $this->Container->ActivityData->PoolLength = $this->Values['pool_length'][0];
+            $this->Container->ActivityData->PoolLength = (int)$this->Values['pool_length'][0];
         }
 
         if (isset($this->Values['sport'])) {
@@ -429,8 +429,8 @@ class FitActivity extends AbstractSingleParser
             $this->Container->Metadata->setSportName($this->Values['sport'][1]);
         }
 
-        if (isset($this->Values['total_training_effect']) && $this->Values['total_training_effect'][0] >= 10.0 && $this->Values['total_training_effect'][0] <= 50.0) {
-            $this->Container->FitDetails->TrainingEffect = $this->Values['total_training_effect'][0] / 10;
+        if (isset($this->Values['total_training_effect']) && (int)$this->Values['total_training_effect'][0] >= 10.0 && (int)$this->Values['total_training_effect'][0] <= 50.0) {
+            $this->Container->FitDetails->TrainingEffect = (int)$this->Values['total_training_effect'][0] / 10;
         }
     }
 
@@ -461,7 +461,7 @@ class FitActivity extends AbstractSingleParser
     protected function readUndocumentedDataBlob140()
     {
         if (isset($this->Values['unknown17'])) {
-            $this->Container->FitDetails->PerformanceConditionEnd = 100 + (float)$this->Values['unknown17'][1];
+            $this->Container->FitDetails->PerformanceConditionEnd = 100 + (int)$this->Values['unknown17'][1];
 
             if (null === $this->Container->FitDetails->PerformanceCondition && null !== $this->Container->FitDetails->HrvAnalysis) {
                 $this->Container->FitDetails->PerformanceCondition = $this->Container->FitDetails->HrvAnalysis;
@@ -589,8 +589,8 @@ class FitActivity extends AbstractSingleParser
 
         $this->Container->ContinuousData->Latitude[] = isset($this->Values['position_lat']) ? substr($this->Values['position_lat'][1], 0, -4) : null;
         $this->Container->ContinuousData->Longitude[] = isset($this->Values['position_long']) ? substr($this->Values['position_long'][1], 0, -4) : null;
-        $this->Container->ContinuousData->Altitude[] = isset($this->Values['altitude']) && $this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null;
-        $this->Container->ContinuousData->Distance[] = isset($this->Values['distance']) ? $this->Values['distance'][0] / 1e5 : end($this->Container->ContinuousData->Distance);
+        $this->Container->ContinuousData->Altitude[] = isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null;
+        $this->Container->ContinuousData->Distance[] = isset($this->Values['distance']) ? (int)$this->Values['distance'][0] / 1e5 : end($this->Container->ContinuousData->Distance);
         $this->Container->ContinuousData->HeartRate[] = isset($this->Values['heart_rate']) ? (int)$this->Values['heart_rate'][0] : null;
         $this->Container->ContinuousData->Cadence[] = isset($this->Values['cadence']) ? (int)$this->Values['cadence'][0] : null;
         $this->Container->ContinuousData->Power[] = isset($this->Values['power']) ? (int)$this->Values['power'][0] : null;
@@ -600,12 +600,12 @@ class FitActivity extends AbstractSingleParser
         $this->Container->ContinuousData->Time[] = $time;
 
         //Running Dynamics
-        $this->Container->ContinuousData->GroundContactTime[] = isset($this->Values['stance_time']) ? round($this->Values['stance_time'][0]/10) : (
-            isset($this->Values['stance_time_left']) && isset($this->Values['stance_time_right']) ? round(($this->Values['stance_time_left'][0] + $this->Values['stance_time_right'][0]) / 2 / 10) : null
+        $this->Container->ContinuousData->GroundContactTime[] = isset($this->Values['stance_time']) ? round((int)$this->Values['stance_time'][0]/10) : (
+            isset($this->Values['stance_time_left']) && isset($this->Values['stance_time_right']) ? round(((int)$this->Values['stance_time_left'][0] + (int)$this->Values['stance_time_right'][0]) / 2 / 10) : null
         );
-        $this->Container->ContinuousData->VerticalOscillation[] = isset($this->Values['vertical_oscillation']) ? round($this->Values['vertical_oscillation'][0] / 10) : null;
+        $this->Container->ContinuousData->VerticalOscillation[] = isset($this->Values['vertical_oscillation']) ? round((int)$this->Values['vertical_oscillation'][0] / 10) : null;
         $this->Container->ContinuousData->GroundContactBalance[] = isset($this->Values['stance_time_balance']) ? (int)$this->Values['stance_time_balance'][0] : (
-            isset($this->Values['stance_time_left']) && isset($this->Values['stance_time_right']) ? round(10000 * $this->Values['stance_time_left'][0] / ($this->Values['stance_time_left'][0] + $this->Values['stance_time_right'][0])) : null
+            isset($this->Values['stance_time_left']) && isset($this->Values['stance_time_right']) ? round(10000 * (int)$this->Values['stance_time_left'][0] / ((int)$this->Values['stance_time_left'][0] + (int)$this->Values['stance_time_right'][0])) : null
         );
 
         // Fit developer fields
@@ -615,14 +615,14 @@ class FitActivity extends AbstractSingleParser
         $this->Container->ContinuousData->TotalHaemoglobin_2[] = isset($this->Values['thb_1']) ? (int)$this->Values['thb_1'][0] : null;
 
         // RunScribe fields
-        $this->Container->ContinuousData->ImpactGsLeft[] = isset($this->Values['impact_gs_left']) ? round($this->Values['impact_gs_left'][0], 1) : null;
-        $this->Container->ContinuousData->ImpactGsRight[] = isset($this->Values['impact_gs_right']) ? round($this->Values['impact_gs_right'][0], 1) : null;
-        $this->Container->ContinuousData->BrakingGsLeft[] = isset($this->Values['braking_gs_left']) ? round($this->Values['braking_gs_left'][0], 1) : null;
-        $this->Container->ContinuousData->BrakingGsRight[] = isset($this->Values['braking_gs_right']) ? round($this->Values['braking_gs_right'][0], 1) : null;
+        $this->Container->ContinuousData->ImpactGsLeft[] = isset($this->Values['impact_gs_left']) ? round((float)$this->Values['impact_gs_left'][0], 1) : null;
+        $this->Container->ContinuousData->ImpactGsRight[] = isset($this->Values['impact_gs_right']) ? round((float)$this->Values['impact_gs_right'][0], 1) : null;
+        $this->Container->ContinuousData->BrakingGsLeft[] = isset($this->Values['braking_gs_left']) ? round((float)$this->Values['braking_gs_left'][0], 1) : null;
+        $this->Container->ContinuousData->BrakingGsRight[] = isset($this->Values['braking_gs_right']) ? round((float)$this->Values['braking_gs_right'][0], 1) : null;
         $this->Container->ContinuousData->FootstrikeTypeLeft[] = isset($this->Values['fs_type_left']) ? (int)$this->Values['fs_type_left'][0] : null;
         $this->Container->ContinuousData->FootstrikeTypeRight[] = isset($this->Values['fs_type_right']) ? (int)$this->Values['fs_type_right'][0] : null;
-        $this->Container->ContinuousData->PronationExcursionLeft[] = isset($this->Values['pronation_left']) ? round($this->Values['pronation_left'][0], 1) : null;
-        $this->Container->ContinuousData->PronationExcursionRight[] = isset($this->Values['pronation_right']) ? round($this->Values['pronation_right'][0], 1) : null;
+        $this->Container->ContinuousData->PronationExcursionLeft[] = isset($this->Values['pronation_left']) ? round((float)$this->Values['pronation_left'][0], 1) : null;
+        $this->Container->ContinuousData->PronationExcursionRight[] = isset($this->Values['pronation_right']) ? round((float)$this->Values['pronation_right'][0], 1) : null;
 
         if ($time === $last) {
             $this->mergeRecord();
@@ -668,10 +668,10 @@ class FitActivity extends AbstractSingleParser
         $values = explode(',', $this->Values['compressed_speed_distance'][1]);
 
         if (count($values) == 3) {
-            $speed100 = $values[0] | (($values[1] & 0x0F) << 8);
+            $speed100 = (int)$values[0] | (((int)$values[1] & 0x0F) << 8);
 
-            $distance16 = ($values[1] >> 4) | ($values[2] << 4);
-            $distance16diff = ($distance16 - $this->CompressedLastDistance16) & 0x0FFF;
+            $distance16 = ((int)$values[1] >> 4) | ((int)$values[2] << 4);
+            $distance16diff = ($distance16 - (int)$this->CompressedLastDistance16) & 0x0FFF;
             $this->CompressedTotalDistance16 += $distance16diff;
             $this->CompressedLastDistance16 = $distance16;
 
@@ -679,7 +679,7 @@ class FitActivity extends AbstractSingleParser
             $this->Values['distance'][0] = 100 * $this->CompressedTotalDistance16 / 16.0;
         }
 
-        return round($this->CompressedTotalTime);
+        return (int)round($this->CompressedTotalTime);
     }
 
     protected function readLap()

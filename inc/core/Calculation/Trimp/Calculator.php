@@ -55,7 +55,7 @@ class Calculator {
 
 	/**
 	 * Value
-	 * @var int
+	 * @var float
 	 */
 	protected $value;
 
@@ -102,7 +102,7 @@ class Calculator {
 
 	/**
 	 * Value
-	 * @return int
+	 * @return float
 	 */
 	public function value() {
 		return $this->value;

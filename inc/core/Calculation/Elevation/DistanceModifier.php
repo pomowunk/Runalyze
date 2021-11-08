@@ -55,7 +55,7 @@ class DistanceModifier {
 *@param float $distance [optional] [km]
 	 * @param int $up [optional] [m]
 	 * @param int $down [optional] [m]
-	 * @param \Runalyze\Configuration\Category\VO2max $config [optional]
+	 * @param \Runalyze\Configuration\Category\VO2max|null $config [optional]
 	 */
 	public function __construct($distance = 0, $up = 0, $down = 0, Configuration\Category\VO2max $config = null) {
 		if (!is_null($config)) {

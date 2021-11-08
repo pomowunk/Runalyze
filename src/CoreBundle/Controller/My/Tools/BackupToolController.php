@@ -2,9 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\Controller\My\Tools;
 
-use Bernard\Message\DefaultMessage;
+use Bernard\Message\PlainMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\RouteRepository;
+use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Form\Tools\BackupExportType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -69,15 +71,19 @@ class BackupToolController extends Controller
      */
     public function backupAction(Account $account, Request $request)
     {
-        $lockedRoutes = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Route')->accountHasLockedRoutes($account);
-        $hasLockedTrainings = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Training')->accountHasLockedTrainings($account);
+        /** @var RouteRepository */
+        $routeRepository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Route');
+        $lockedRoutes = $routeRepository->accountHasLockedRoutes($account);
+        /** @var TrainingRepository */
+        $trainingRepository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Training');
+        $hasLockedTrainings = $trainingRepository->accountHasLockedTrainings($account);
 
         $form = $this->createForm(BackupExportType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $request->request->get($form->getName());
-            $this->get('bernard.producer')->produce(new DefaultMessage('userBackup', [
+            $this->get('bernard.producer')->produce(new PlainMessage('userBackup', [
                 'accountid' => $account->getId(),
                 'export-type' => $formdata['fileFormat']
             ]));

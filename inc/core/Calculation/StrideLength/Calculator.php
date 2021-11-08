@@ -85,7 +85,7 @@ class Calculator {
 		$Series = new TimeSeries($this->Strides, $this->Trackdata->time());
 		$Series->calculateStatistic();
 
-		return round($Series->mean());
+		return (int)round($Series->mean());
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Calculator {
 	 */
 	public static function forActivity(Activity\Entity $activity) {
 		if ($activity->cadence() > 0 && $activity->duration() > 0) {
-			$value = round($activity->distance() * 1000 * 100 / ($activity->cadence() * 2 / 60 * $activity->duration()));
+			$value = (int)round($activity->distance() * 1000 * 100 / ($activity->cadence() * 2 / 60 * $activity->duration()));
 
 			if ($value <= 255) {
 				return $value;

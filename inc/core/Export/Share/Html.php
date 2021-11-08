@@ -54,7 +54,7 @@ class Html extends AbstractSnippetSharer
 
         $CodeField = new FormularTextarea('code', __('Code'), $Code);
         $CodeField->addCSSclass('fullwidth');
-        $CodeField->addAttribute('rows', 8);
+        $CodeField->addAttribute('rows', (string)8);
 
         $FieldsetCode = new FormularFieldset( __('HTML-Code') );
         $FieldsetCode->addField( $CodeField );

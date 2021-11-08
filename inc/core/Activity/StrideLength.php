@@ -41,7 +41,7 @@ class StrideLength implements ValueInterface
 
 	/**
 	 * @param int $centimeter
-	 * @param \Runalyze\Parameter\Application\DistanceUnitSystem $unitSystem
+	 * @param \Runalyze\Parameter\Application\DistanceUnitSystem|null $unitSystem
 	 */
 	public function __construct($centimeter = 0, DistanceUnitSystem $unitSystem = null)
 	{
@@ -126,7 +126,7 @@ class StrideLength implements ValueInterface
 	 */
 	public function value()
 	{
-		return round($this->Centimeter);
+		return (int)round($this->Centimeter);
 	}
 
 	/**
@@ -134,7 +134,7 @@ class StrideLength implements ValueInterface
 	 */
 	public function cm()
 	{
-		return round($this->Centimeter);
+		return (int)round($this->Centimeter);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class StrideLength implements ValueInterface
 	}
 
 	/**
-	 * @return int [mixed unit]
+	 * @return float [mixed unit]
 	 */
 	public function valueInPreferredUnit()
 	{

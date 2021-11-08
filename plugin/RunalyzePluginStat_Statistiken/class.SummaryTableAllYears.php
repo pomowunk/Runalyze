@@ -23,7 +23,7 @@ class SummaryTableAllYears extends SummaryTable {
 		$this->Timerange = 366*DAY_IN_S;
 		$this->TimeEnd = (new LocalTime)->yearEnd();
 		$this->TimeStart = (new LocalTime(START_TIME))->yearStart();
-		$this->AdditionalColumns = 1 * ($this->Sportid == Configuration::General()->runningSport());
+		$this->AdditionalColumns = $this->Sportid == Configuration::General()->runningSport() ? 1 : 0;
 	}
 
 	/**
@@ -32,9 +32,9 @@ class SummaryTableAllYears extends SummaryTable {
 	 * @return string
 	 */
 	protected function rowHead($index) {
-		$timestampInMiddelOfYear = $this->TimeEnd - ($index + 0.5)*366*DAY_IN_S;
+		$timestampInMiddleOfYear = (int)round($this->TimeEnd - ($index + 0.5) * 366 * DAY_IN_S);
 
-		return DataBrowserLinker::yearLink(date('Y', $timestampInMiddelOfYear), $timestampInMiddelOfYear);
+		return DataBrowserLinker::yearLink(date('Y', $timestampInMiddleOfYear), $timestampInMiddleOfYear);
 	}
 
 	/**
@@ -50,9 +50,9 @@ class SummaryTableAllYears extends SummaryTable {
 				$weekFactor  = ((int)$now->format('z') + 1) / 7;
 				$monthFactor = ((int)$now->format('z') + 1) / 30.4;
 			} else {
-                $numberOfDaysInYear = date('z', mktime(0, 0, 0, 12, 31, (int)$data['timerange'] + START_YEAR)) + 1;
+                $numberOfDaysInYear = (int)date('z', mktime(0, 0, 0, 12, 31, (int)$data['timerange'] + START_YEAR)) + 1;
 
-                if ((int)$data['timerange'] == (date('Y') - START_YEAR) && $startTime->format('Y') == START_YEAR) {
+                if ((int)$data['timerange'] == ((int)date('Y') - START_YEAR) && (int)$startTime->format('Y') == START_YEAR) {
                     $weekFactor = ($numberOfDaysInYear - (int)$startTime->format('z')) / 7;
                     $monthFactor = ($numberOfDaysInYear - (int)$startTime->format('z')) / 30.4;
                 } else {

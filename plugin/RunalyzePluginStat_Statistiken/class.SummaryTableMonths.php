@@ -15,32 +15,32 @@ use Runalyze\Util\LocalTime;
  */
 class SummaryTableMonths extends SummaryTable {
 	/**
-	 * @var enum
+	 * @var int
 	 */
 	const MODE_LAST_6 = 0;
 
 	/**
-	 * @var enum
+	 * @var int
 	 */
 	const MODE_LAST_12 = 1;
 
 	/**
-	 * @var enum
+	 * @var int
 	 */
 	const MODE_ALL = 2;
 
 	/**
-	 * @var enum
+	 * @var int
 	 */
 	const MODE_YEAR = 3;
 
 	/**
-	 * @var enum
+	 * @var int
 	 */
 	protected $Mode = 0;
 
 	/**
-	 * @param enum $mode
+	 * @param int $mode
 	 */
 	public function setMode($mode) {
 		$this->Mode = $mode;
@@ -55,14 +55,14 @@ class SummaryTableMonths extends SummaryTable {
 		switch ($this->Mode) {
 			case self::MODE_LAST_6:
 				$this->Title = __('Last 6 months');
-				$this->TimeEnd = LocalTime::mktime(23, 59, 59, date('m')+1, 0, date('Y'));
-				$this->TimeStart = LocalTime::mktime(0, 0, 1, date('m')-6, 1, date('Y'));
+				$this->TimeEnd = LocalTime::mktime(23, 59, 59, (int)date('m')+1, 0, (int)date('Y'));
+				$this->TimeStart = LocalTime::mktime(0, 0, 1, (int)date('m')-6, 1, (int)date('Y'));
 				break;
 
 			case self::MODE_LAST_12:
 				$this->Title = __('Last 12 months');
-				$this->TimeEnd = LocalTime::mktime(23, 59, 59, date('m')+1, 0, date('Y'));
-				$this->TimeStart = LocalTime::mktime(0, 0, 1, date('m')-12, 1, date('Y'));
+				$this->TimeEnd = LocalTime::mktime(23, 59, 59, (int)date('m')+1, 0, (int)date('Y'));
+				$this->TimeStart = LocalTime::mktime(0, 0, 1, (int)date('m')-12, 1, (int)date('Y'));
 				break;
 
 			case self::MODE_ALL:
@@ -72,7 +72,7 @@ class SummaryTableMonths extends SummaryTable {
 				break;
 
 			case self::MODE_YEAR:
-				$this->Title = $this->Year;
+				$this->Title = (string)$this->Year;
 				$this->TimeEnd = LocalTime::mktime(23, 59, 59, 12, 31, $this->Year);
 				$this->TimeStart = LocalTime::mktime(0, 0, 1, 1, 1, $this->Year);
 				break;
@@ -85,7 +85,7 @@ class SummaryTableMonths extends SummaryTable {
 	 * @return string
 	 */
 	protected function rowHead($index) {
-		$midOfTimerange = $this->TimeEnd - ($index + 0.5)*31*DAY_IN_S;
+		$midOfTimerange = (int)round($this->TimeEnd - ($index + 0.5) * 31 * DAY_IN_S);
 		$month = date('m', $midOfTimerange);
 
 		return DataBrowserLinker::monthLink(Time::month($month), $midOfTimerange);

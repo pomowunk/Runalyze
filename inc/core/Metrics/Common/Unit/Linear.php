@@ -3,7 +3,6 @@
 namespace Runalyze\Metrics\Common\Unit;
 
 use Runalyze\Metrics\Common\FormattableUnitInterface;
-use Runalyze\Metrics\Common\UnitConversionByFactorTrait;
 use Runalyze\Metrics\Common\UnitInterface;
 
 class Linear implements UnitInterface, FormattableUnitInterface

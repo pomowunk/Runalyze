@@ -2,7 +2,6 @@
 
 namespace Runalyze\Metrics\Velocity\Unit;
 
-use Runalyze\Parameter\Application\PaceUnit;
 use Runalyze\Common\Enum\AbstractEnum;
 use Runalyze\Common\Enum\AbstractEnumFactoryTrait;
 use Runalyze\Util\InterfaceChoosable;

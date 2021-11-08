@@ -86,6 +86,8 @@ class Timezone implements InterfaceChoosable
      */
     private static function listPrettyTimezones(array $timezoneOffsets, array $timezoneEnum)
     {
+        $timezoneList = [];
+
         foreach ($timezoneOffsets as $offset => $timezones) {
             foreach ($timezones as $timezone) {
                 $offsetPrefix = $offset < 0 ? '-' : '+';

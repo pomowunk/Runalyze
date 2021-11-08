@@ -23,7 +23,7 @@ class MaximalHeartRateInBPM extends MaximalHeartRate
     protected function value(HeartRate $heartRate)
 	{
         if ($heartRate->inBPM() > 0) {
-            return $heartRate->inBPM();
+            return (string)$heartRate->inBPM();
         }
 
         return '-';

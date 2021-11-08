@@ -26,7 +26,7 @@ class Dataset implements AccountRelatedEntityInterface
     private $account;
 
     /**
-     * @var bool
+     * @var int
      *
      * @ORM\Column(name="keyid", type="tinyint", options={"unsigned":true})
      * @ORM\Id
@@ -82,7 +82,7 @@ class Dataset implements AccountRelatedEntityInterface
     }
 
     /**
-     * @param string $keyId
+     * @param int $keyId
      *
      * @return $this
      */
@@ -94,7 +94,7 @@ class Dataset implements AccountRelatedEntityInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getKeyId()
     {

@@ -91,7 +91,7 @@ class Distance extends AbstractKey
 			return 0;
 		}
 
-		return round(100*($currentDistance - $previousDistance) / $previousDistance, 1);
+		return (int)round(100*($currentDistance - $previousDistance) / $previousDistance, 1);
 	}
 
 	/**

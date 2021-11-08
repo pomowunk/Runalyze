@@ -30,7 +30,7 @@ class BeaufortScale implements ValueInterface
 
 	/**
 	 * Wind condition
-	 * @param \Runalyze\Data\Weather\WindSpeed $windSpeed
+	 * @param \Runalyze\Data\Weather\WindSpeed|null $windSpeed
 	 */
 	public function __construct(WindSpeed $windSpeed = null)
 	{

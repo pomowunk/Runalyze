@@ -6,7 +6,6 @@
 
 namespace Runalyze\View\Leaflet;
 
-use Runalyze\View;
 use Runalyze\Configuration;
 
 /**

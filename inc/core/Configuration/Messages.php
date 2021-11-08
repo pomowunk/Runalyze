@@ -41,12 +41,12 @@ class Messages {
 	/**
 	 * Add message: value recalculated
 	 * @param string $what
-	 * @param string $newValue
-	 * @param string $oldValue
+	 * @param mixed $newValue
+	 * @param mixed $oldValue
 	 */
 	public static function addValueRecalculated($what, $newValue, $oldValue) {
 		self::addInfo(
-			sprintf( __('%s has been recalculated. New value: <strong>%s</strong> (old value: %s)'), $what, $newValue, $oldValue)
+			sprintf( __('%s has been recalculated. New value: <strong>%s</strong> (old value: %s)'), $what, (string)$newValue, (string)$oldValue)
 		);
 	}
 

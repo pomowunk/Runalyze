@@ -114,11 +114,11 @@ class TableZonesPace extends TableZonesAbstract {
 		if ($this->PaceUnit->isDecimalFormat()) {
 			$dividend = $this->PaceUnit->dividendForUnit();
 
-			return $paceInSeconds > $dividend ? 0 : $dividend / floor($dividend / $paceInSeconds);
+			return $paceInSeconds > $dividend ? 0 : (int)round($dividend / floor($dividend / $paceInSeconds));
 		}
 
 		$factor = $this->PaceUnit->factorForUnit();
 
-		return round(30 * floor($factor * $paceInSeconds / 30) / $factor);
+		return (int)round(30 * floor($factor * $paceInSeconds / 30) / $factor);
 	}
 }

@@ -45,7 +45,7 @@ class RunalyzePluginStat_Tag extends PluginStat {
 		$AllTags = DB::getInstance()->query('SELECT `id`, `tag` FROM `'.PREFIX.'tag` WHERE `accountid`="'.SessionAccountHandler::getId().'" ORDER BY `tag` ASC')->fetchAll();
 
 		foreach ($AllTags as $data) {
-			$this->AllTags[$data['id']] = $data['tag'];
+			$this->AllTags[(int)$data['id']] = $data['tag'];
 		}
 
 		$Tags = new PluginConfigurationValueSelect('tag', __('Tag to analyze'));
@@ -88,7 +88,7 @@ class RunalyzePluginStat_Tag extends PluginStat {
 	 */
 	private function getToolbarNavigationLinks() {
 		if (empty($this->AllTags)) {
-			return '';
+			return [];
 		}
 
 		$LinkList = array();
@@ -96,7 +96,7 @@ class RunalyzePluginStat_Tag extends PluginStat {
 
 		foreach ($this->AllTags as $id => $name) {
 			$active = ($id == $this->TagId);
-		    $LinkList[] = '<li'.($active ? ' class="active"' : '').'>'.$this->getInnerLink($name, false, false, $id).'</li>';
+		    $LinkList[] = '<li'.($active ? ' class="active"' : '').'>'.$this->getInnerLink($name, 0, 0, $id).'</li>';
 		}
 
 		$LinkList[] = '</ul></li>';

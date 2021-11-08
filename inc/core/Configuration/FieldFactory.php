@@ -6,6 +6,8 @@
 
 namespace Runalyze\Configuration;
 
+use FormularField;
+use FormularInput;
 use Runalyze\Parameter\Boolean;
 use Runalyze\Parameter\Select;
 use Runalyze\Parameter\SelectRow;
@@ -18,9 +20,9 @@ use Runalyze\Parameter\SelectRow;
 class FieldFactory {
 	/**
 	 * Add field
-	 * @param \Runalyze\Configuration\Handle $Handle
+	 * @param Handle $Handle
 	 * @param array $options
-	 * @return \FormularField
+	 * @return FormularField|FormularInput
 	 */
 	public function FieldFor(Handle $Handle, array $options = array()) {
 		$options = array_merge(array(
@@ -42,9 +44,9 @@ class FieldFactory {
 
 	/**
 	 * Create a field
-	 * @param \Runalyze\Configuration\Handle $Handle
+	 * @param Handle $Handle
 	 * @param string $label
-	 * @return \FormularField
+	 * @return FormularField|FormularInput
 	 */
 	private function createFieldFor(Handle $Handle, $label) {
 		$Parameter = $Handle->object();
@@ -72,7 +74,7 @@ class FieldFactory {
 
 	/**
 	 * Set attributes to field
-	 * @param \FormularField $Field
+	 * @param FormularField|FormularInput $Field
 	 * @param array $options
 	 */
 	private function setAttributesToField(\FormularField $Field, array &$options) {

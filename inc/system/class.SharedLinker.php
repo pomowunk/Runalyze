@@ -113,7 +113,7 @@ class SharedLinker {
 	 * @return string
 	 */
 	private static function idToUrl($id) {
-		return base_convert((int)$id, 10, 35);
+		return base_convert((string)$id, 10, 35);
 	}
 
 	/**

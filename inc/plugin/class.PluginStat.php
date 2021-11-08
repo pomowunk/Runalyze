@@ -250,7 +250,7 @@ abstract class PluginStat extends Plugin {
 
 	/**
 	 * Get links for all sports
-	 * @return array
+	 * @return string
 	 */
 	private function getSportLinksAsList() {
 		$Links = '';
@@ -285,8 +285,8 @@ abstract class PluginStat extends Plugin {
 			$Links .= '<li'.(12 == $this->year ? ' class="active"' : '').'>'.$this->getInnerLink(__('Last 12 months'), $this->sportid, 12, $this->dat).'</li>';
 		}
 
-		for ($x = date("Y"); $x >= START_YEAR; $x--) {
-			$Links .= '<li'.($x==$this->year ? ' class="active"' : '').'>'.$this->getInnerLink($x, $this->sportid, $x, $this->dat).'</li>';
+		for ($x = (int)date("Y"); $x >= START_YEAR; $x--) {
+			$Links .= '<li'.($x==$this->year ? ' class="active"' : '').'>'.$this->getInnerLink((string)$x, $this->sportid, $x, $this->dat).'</li>';
 		}
 
 		return $Links;
@@ -305,7 +305,7 @@ abstract class PluginStat extends Plugin {
 			return __('Last 12 months');
 		}
 
-		return $this->year;
+		return (string)$this->year;
 	}
 
 	/**
@@ -339,10 +339,10 @@ abstract class PluginStat extends Plugin {
 			echo '<th>'.__('In total').'</th>';
 		} else {
 			$num = $this->showsLast6Months() ? 6 : 12;
-			$add = $this->showsTimeRange() ? date('m') - $num - 1 + 12 : -1;
+			$add = $this->showsTimeRange() ? (int)date('m') - $num - 1 + 12 : -1;
 
 			for ($i = 1; $i <= 12; $i++) {
-				echo '<th'.$width.'>'.Time::month(($i + $add)%12 + 1, true).'</th>';
+				echo '<th'.$width.'>'.Time::month((string)(($i + $add)%12 + 1), true).'</th>';
 			}
 		}
 	}

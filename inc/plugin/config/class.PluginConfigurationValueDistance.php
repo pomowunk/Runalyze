@@ -40,10 +40,10 @@ class PluginConfigurationValueDistance extends PluginConfigurationValueFloat {
 	 */
 	public function valueAsString($transformValue = false) {
 		if ($transformValue) {
-			return round($this->value() * $this->unitSystem()->distanceToPreferredUnitFactor(), self::PRECISION);
+			return (string)round($this->value() * $this->unitSystem()->distanceToPreferredUnitFactor(), self::PRECISION);
 		}
 
-		return round($this->value(), self::PRECISION);
+		return (string)round($this->value(), self::PRECISION);
 	}
 
 	/**

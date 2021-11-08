@@ -60,7 +60,7 @@ class Pace {
 	public function fromMinPerKm($string) {
 		$Duration = new Duration($string);
 
-		$this->setTime($Duration->seconds())->setDistance(1);
+		$this->setTime((int)round($Duration->seconds()))->setDistance(1);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class Pace {
 	 *
 	 * This is for example what is saved in sports configuration.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function unitEnum() {
 		return $this->UnitObject->unit();
@@ -159,7 +159,7 @@ class Pace {
 	 * @return string e.g. '12,5', '4:51'
 	 */
 	public function value() {
-		return $this->UnitObject->format($this->secondsPerKm());
+		return $this->UnitObject->format((int)round($this->secondsPerKm()));
 	}
 
 	/**
@@ -194,7 +194,7 @@ class Pace {
 	 * @return string
 	 */
 	public function asUnit(PaceUnit\AbstractUnit $Unit) {
-		return $Unit->format($this->secondsPerKm());
+		return $Unit->format((int)round($this->secondsPerKm()));
 	}
 
 	/**
@@ -230,7 +230,7 @@ class Pace {
 			return '';
 		}
 
-		$comparisonInSecondsPerKm = $this->UnitObject->compare($this->secondsPerKm(), $other->secondsPerKm());
+		$comparisonInSecondsPerKm = $this->UnitObject->compare((int)round($this->secondsPerKm()), (int)round($other->secondsPerKm()));
 		$isPositive = ($comparisonInSecondsPerKm >= 0);
 
 		if ($comparisonInSecondsPerKm == 0 && $this->UnitObject->isTimeFormat()) {

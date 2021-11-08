@@ -75,13 +75,13 @@ class VerticalRatioCalculator {
 		}
 
 		if (!$this->Trackdata->has(Trackdata\Entity::TIME)) {
-			return round(array_sum($this->VerticalRatio) / $this->Trackdata->num());
+			return (int)round(array_sum($this->VerticalRatio) / $this->Trackdata->num());
 		}
 
 		$Series = new TimeSeries($this->VerticalRatio, $this->Trackdata->time());
 		$Series->calculateStatistic();
 
-		return round($Series->mean());
+		return (int)round($Series->mean());
 	}
 
 	/**
@@ -92,7 +92,7 @@ class VerticalRatioCalculator {
 	 */
 	public static function forActivity(Activity\Entity $activity) {
 		if ($activity->verticalOscillation() > 0 && $activity->strideLength() > 0) {
-			return round(100 * $activity->verticalOscillation() / $activity->strideLength());
+			return (int)round(100 * $activity->verticalOscillation() / $activity->strideLength());
 		}
 
 		return null;

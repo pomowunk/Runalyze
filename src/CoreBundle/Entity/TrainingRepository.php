@@ -444,7 +444,7 @@ class TrainingRepository extends EntityRepository
      * @param VO2max $configuration
      * @param int $sportId
      * @param int $timestamp
-     * @return int [0, inf)
+     * @return float [0, inf)
      */
     public function calculateVO2maxShape(Account $account, VO2max $configuration, $sportId, $timestamp)
     {
@@ -481,7 +481,7 @@ class TrainingRepository extends EntityRepository
      * @param int $sportId
      * @param int $timestamp
      * @param int|null $timestampOfFirstActivity
-     * @return int [0, inf)
+     * @return float [0, inf)
      */
     public function calculateMarathonShape(Account $account, BasicEndurance $configuration, $effectiveVO2max, $sportId, $timestamp, $timestampOfFirstActivity = null)
     {

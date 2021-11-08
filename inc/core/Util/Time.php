@@ -25,7 +25,7 @@ class Time {
 			$time_2 = time();
 		}
 
-		return floor(abs(($time_1 - $time_2)/(3600*24)));
+		return (int)floor(abs(($time_1 - $time_2)/(3600*24)));
 	}
 
 	/**
@@ -63,7 +63,7 @@ class Time {
 			}
 		}
 
-		return mktime(0, 0, 0, date('m', $time), date('d', $time) - $w, date('Y', $time));
+		return mktime(0, 0, 0, (int)date('m', $time), (int)date('d', $time) - $w, (int)date('Y', $time));
 	}
 
 	/**
@@ -74,7 +74,7 @@ class Time {
 	public static function weekend($time) {
 		$start = self::weekstart($time);
 
-		return mktime(23, 59, 50, date('m', $start), date('d', $start) + 6, date('Y', $start));
+		return mktime(23, 59, 50, (int)date('m', $start), (int)date('d', $start) + 6, (int)date('Y', $start));
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Time {
 	 * @codeCoverageIgnore
 	 */
 	public static function weekday($w, $short = false) {
-		switch ($w%7) {
+		switch ((int)$w % 7) {
 			case 0: return $short ? __('Sun') : __('Sunday');
 			case 1: return $short ? __('Mon') : __('Monday');
 			case 2: return $short ? __('Tue') : __('Tuesday');
@@ -105,7 +105,7 @@ class Time {
 	 * @codeCoverageIgnore
 	 */
 	public static function month($m, $short = false) {
-		switch ($m % 12) {
+		switch ((int)$m % 12) {
 			case 1: return $short ? __('Jan') : __('January');
 			case 2: return $short ? __('Feb') : __('February');
 			case 3: return $short ? __('Mar') : __('March');

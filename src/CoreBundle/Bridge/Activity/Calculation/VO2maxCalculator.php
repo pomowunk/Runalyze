@@ -52,7 +52,7 @@ class VO2maxCalculator
      */
     protected function estimateVO2maxByTime()
     {
-        return $this->EstimationFormula->estimateFromRaceResult($this->Activity->getDistance(), $this->Activity->getS());
+        return $this->EstimationFormula->estimateFromRaceResult($this->Activity->getDistance(), (int)round($this->Activity->getS()));
     }
 
     /**

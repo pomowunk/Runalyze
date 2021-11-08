@@ -89,7 +89,7 @@ class Athlete
      */
     public function age()
     {
-        return (null !== $this->birthyear) ? date("Y") - $this->birthyear : null;
+        return (null !== $this->birthyear) ? (int)date("Y") - $this->birthyear : null;
     }
 
     /**

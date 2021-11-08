@@ -6,8 +6,6 @@
 
 namespace Runalyze\Export\File;
 
-use League\Geotools\Coordinate\Coordinate;
-use League\Geotools\Geohash\Geohash;
 use Runalyze\Model\Route;
 use Runalyze\Model\Trackdata;
 use Runalyze\Util\LocalTime;
@@ -103,18 +101,18 @@ class Gpx extends AbstractFileExporter
             $Trackpoint->addChild('time', $this->timeToString($Starttime + $Trackdata->time()));
 
             if (abs($coordinate->getLatitude()) > 1e-5 || abs($coordinate->getLongitude()) > 1e-5) {
-                $Trackpoint->addAttribute('lat', $coordinate->getLatitude());
-                $Trackpoint->addAttribute('lon', $coordinate->getLongitude());
+                $Trackpoint->addAttribute('lat', (string)$coordinate->getLatitude());
+                $Trackpoint->addAttribute('lon', (string)$coordinate->getLongitude());
             }
 
             if ($hasElevation) {
-                $Trackpoint->addChild('ele', $Route->current(Route\Entity::ELEVATIONS_ORIGINAL));
+                $Trackpoint->addChild('ele', (string)$Route->current(Route\Entity::ELEVATIONS_ORIGINAL));
             }
 
             if ($hasHeartrate) {
                 $ext = $Trackpoint->addChild('extensions');
                 $tpe = $ext->addChild('gpxtpx:TrackPointExtension','','http://www.garmin.com/xmlschemas/TrackPointExtension/v1');
-                $tpe->addChild('gpxtpx:hr',  $Trackdata->current(Trackdata\Entity::HEARTRATE));
+                $tpe->addChild('gpxtpx:hr',  (string)$Trackdata->current(Trackdata\Entity::HEARTRATE));
             }
         } while ($Trackdata->nextStep() && $Route->nextStep());
     }

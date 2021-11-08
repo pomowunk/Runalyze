@@ -4,6 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Runalyze\Export\Share\Facebook;
@@ -34,14 +35,16 @@ class SharedController extends Controller
     public function sharedTrainingAction($activityHash, Request $request)
     {
         /** @var null|Training $activity */
-        $activity = $this->getDoctrine()->getRepository('CoreBundle:Training')->find((int)base_convert((string)$activityHash, 35, 10));
+        $activity = $this->getTrainingRepository()->find((int)base_convert((string)$activityHash, 35, 10));
 
         if (null === $activity || !$activity->isPublic()) {
             return $this->render('shared/invalid_activity.html.twig');
         }
 
         $_GET['user'] = $activity->getAccount()->getUsername();
-        $account = $this->getDoctrine()->getRepository('CoreBundle:Account')->findByUsername($activity->getAccount()->getUsername());
+        /** @var AccountRepository */
+        $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
+        $account = $accountRepository->findByUsername($activity->getAccount()->getUsername());
         $publicList = $this->get('app.configuration_manager')->getList($account)->getPrivacy()->isListPublic();
 
         $Frontend = new \FrontendShared(true);
@@ -87,8 +90,10 @@ class SharedController extends Controller
      * @Route("/athlete/{username}", name="shared-athlete")
      */
     public function sharedUserAction($username, Request $request) {
+        /** @var AccountRepository */
+        $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
         /** @var null|Account $account */
-        $account = $this->getDoctrine()->getRepository('CoreBundle:Account')->findByUsername($username);
+        $account = $accountRepository->findByUsername($username);
         $privacy = $this->get('app.configuration_manager')->getList($account)->getPrivacy();
 
         if (null === $account || !$privacy->isListPublic()) {
@@ -107,7 +112,7 @@ class SharedController extends Controller
         }
 
         if ($privacy->isListWithStatistics()) {
-            $accountStatistics = $this->getDoctrine()->getRepository('CoreBundle:Training')->getAccountStatistics($account);
+            $accountStatistics = $this->getTrainingRepository()->getAccountStatistics($account);
             $legacyStatistics = new \FrontendSharedStatistics();
         } else {
             $accountStatistics = null;
@@ -127,8 +132,10 @@ class SharedController extends Controller
      * @Route("/athlete/{username}/feed", name="shared-athlete-feed")
      */
     public function publicUserFeedAction($username) {
+        /** @var AccountRepository */
+        $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
         /** @var null|Account $account */
-        $account = $this->getDoctrine()->getRepository('CoreBundle:Account')->findByUsername($username);
+        $account = $accountRepository->findByUsername($username);
         $privacy = $this->get('app.configuration_manager')->getList($account)->getPrivacy();
 
         $feed = $this->get('app.activity.feed');

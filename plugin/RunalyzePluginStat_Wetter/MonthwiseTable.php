@@ -115,7 +115,7 @@ class MonthwiseTable
 		echo '<th></th>';
 
 		for ($i = 1; $i <= 12; $i++) {
-			echo '<th width="7.5%">'.Time::month(($i + $this->MonthOffsetForHeader)%12 + 1, true).'</th>';
+			echo '<th width="7.5%">'.Time::month((string)(($i + $this->MonthOffsetForHeader)%12 + 1), true).'</th>';
 		}
 
 		echo '</thead>';

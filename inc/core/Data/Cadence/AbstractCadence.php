@@ -6,6 +6,8 @@
 
 namespace Runalyze\Data\Cadence;
 
+use Ajax;
+
 /**
  * Abstract class for cadence
  * 

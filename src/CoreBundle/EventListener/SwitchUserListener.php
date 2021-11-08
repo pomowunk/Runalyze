@@ -1,13 +1,13 @@
 <?php
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
-use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Psr\Log\LoggerInterface;
+use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -122,7 +122,8 @@ class SwitchUserListener implements ListenerInterface
         if (null !== $this->logger) {
             $this->logger->info('Attempting to switch to user.', array('username' => $username));
         }
-
+        
+        /** @var Account */
         $user = $this->provider->loadUserByUsername($username);
         if ($user->getAllowSupport() === false) {
             throw new AccessDeniedException('User does not allow access to his account (allow_support)');

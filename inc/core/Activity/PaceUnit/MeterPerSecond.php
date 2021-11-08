@@ -15,7 +15,7 @@ class MeterPerSecond extends AbstractDecimalUnit
 {
 	/**
 	 * Unit
-	 * @return string
+	 * @return int
 	 * @codeCoverageIgnore
 	 */
 	public function unit()

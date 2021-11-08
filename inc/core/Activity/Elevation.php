@@ -41,7 +41,7 @@ class Elevation implements ValueInterface
 
 	/**
 	 * @param int $meter
-	 * @param \Runalyze\Parameter\Application\DistanceUnitSystem $unitSystem
+	 * @param \Runalyze\Parameter\Application\DistanceUnitSystem|null $unitSystem
 	 */
 	public function __construct($meter = 0, DistanceUnitSystem $unitSystem = null)
 	{
@@ -115,7 +115,7 @@ class Elevation implements ValueInterface
 	 */
 	public function value()
 	{
-		return round($this->Meter);
+		return (int)round($this->Meter);
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Elevation implements ValueInterface
 	 */
 	public function meter()
 	{
-		return round($this->Meter);
+		return (int)round($this->Meter);
 	}
 
 	/**
@@ -131,7 +131,7 @@ class Elevation implements ValueInterface
 	 */
 	public function feet()
 	{
-		return round($this->Meter * DistanceUnitSystem::FEET_MULTIPLIER / 1000);
+		return (int)round($this->Meter * DistanceUnitSystem::FEET_MULTIPLIER / 1000);
 	}
 
 	/**

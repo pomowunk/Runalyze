@@ -65,7 +65,7 @@ class CompleteEquipment extends AbstractEquipment
 			$names = array();
 
 			foreach (array_unique($ids) as $id) {
-				$names[] = $Factory->equipment($id)->name();
+				$names[] = $Factory->equipment((int)$id)->name();
 			}
 
 			$Icon = new \Runalyze\View\Icon('fa-cubes');

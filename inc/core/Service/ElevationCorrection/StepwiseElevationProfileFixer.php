@@ -29,7 +29,7 @@ class StepwiseElevationProfileFixer
     /**
      * Smooth elevation profile if it's composed of constant groups
      *
-     * @param array $elevations
+     * @param array|null $elevations
      * @param array $distances
      * @return array
      */

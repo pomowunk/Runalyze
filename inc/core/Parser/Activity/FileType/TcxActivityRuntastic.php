@@ -19,17 +19,17 @@ class TcxActivityRuntastic extends TcxActivity
     {
         parent::parseGeneralValues();
 
-        $this->Container->ActivityData->Duration = (string)$this->Xml->Lap->TotalTimeSeconds;
+        $this->Container->ActivityData->Duration = (float)$this->Xml->Lap->TotalTimeSeconds;
     }
 
     protected function parseTrackpoint(SimpleXMLElement &$trackPoint)
     {
         if ($this->DistancesAreEmpty) {
-            $trackPoint->addChild('DistanceMeters', 1000 * $this->distanceToTrackpoint($trackPoint));
+            $trackPoint->addChild('DistanceMeters', (string)(1000 * $this->distanceToTrackpoint($trackPoint)));
         }
 
         if (!empty($trackPoint->HeartRateBpm)) {
-            $this->LastValidHR = round((int)$trackPoint->HeartRateBpm->Value);
+            $this->LastValidHR = (int)$trackPoint->HeartRateBpm->Value;
         }
 
         $this->Container->ContinuousData->Time[] = $this->strtotime((string)$trackPoint->Time) - $this->Container->Metadata->getTimestamp();
@@ -64,7 +64,7 @@ class TcxActivityRuntastic extends TcxActivity
         $lastTime = $this->Container->ContinuousData->Time[$this->LastActiveIndex];
 
         if ($currDist > $lastDist) {
-            return round( ($currTime - $lastTime) / ($currDist - $lastDist) );
+            return (int)round(($currTime - $lastTime) / ($currDist - $lastDist));
         }
 
         return 0;

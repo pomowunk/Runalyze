@@ -76,7 +76,7 @@ class CsvTest extends AbstractActivityParserTestCase
         $this->assertEqualsWithDelta(1.086, $this->Container->ActivityData->Distance, 0.001);
         $this->assertEqualsWithDelta(147, $this->Container->ActivityData->AvgHeartRate, 0.5);
         $this->assertEqualsWithDelta(82, $this->Container->ActivityData->AvgCadence, 0.5);
-        $this->assertEqualsWithDelta(300, $this->Container->ActivityData->AvgGroundContactTime, 0.5);
+        $this->assertEqualsWithDelta(300, $this->Container->ActivityData->AvgGroundContactTime, 0.6);
         $this->assertEqualsWithDelta(75, $this->Container->ActivityData->AvgVerticalOscillation, 0.5);
 
         $this->assertNotEmpty($this->Container->ContinuousData->Time);

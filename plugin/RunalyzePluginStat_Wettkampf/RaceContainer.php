@@ -39,7 +39,7 @@ class RaceContainer {
 
 	/**
 	 *
-	 * @param PDO $pdo [optional]
+	 * @param PDO|null $pdo [optional]
 	 * @param int $sportId
 	 */
 	public function __construct($sportId, PDO $pdo = null) {

@@ -27,7 +27,7 @@ class Weather extends AbstractKey
 
 	/**
 	 * Database key
-	 * @return string
+	 * @return string[]
 	 */
 	public function column()
 	{

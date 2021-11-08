@@ -105,21 +105,21 @@ class XmlPolarExercise extends AbstractSingleParser
 
                 switch ((string)$sample->type) {
                     case 'HEARTRATE':
-                        $this->Container->ContinuousData->HeartRate = $data;
+                        $this->Container->ContinuousData->HeartRate = array_map('intval', $data);
                         break;
 
                     case 'ALTITUDE':
-                        $this->Container->ContinuousData->Altitude = $data;
+                        $this->Container->ContinuousData->Altitude = array_map('intval', $data);
                         break;
 
                     case 'DISTANCE':
                         $this->Container->ContinuousData->Distance = array_map(function($m) {
-                            return $m / 1000;
+                            return (float)$m / 1000;
                         }, $data);
                         break;
 
                     case 'RUN_CADENCE':
-                        $this->Container->ContinuousData->Cadence = $data;
+                        $this->Container->ContinuousData->Cadence = array_map('intval', $data);
                         break;
                 }
             }

@@ -311,8 +311,8 @@ class RunalyzePluginStat_Strecken extends PluginStat {
 	private static function submenuForYear($sportid, $year) {
 		$Code = '<li'.(-1 == $year ? ' class="active"' : '').'>'.self::linkToRoutenet(__('All years'), $sportid, -1).'</li>';
 
-		for ($y = date("Y"); $y >= START_YEAR; $y--) {
-			$Code .= '<li'.($y == $year ? ' class="active"' : '').'>'.self::linkToRoutenet($y, $sportid, $y).'</li>';
+		for ($y = (int)date("Y"); $y >= START_YEAR; $y--) {
+			$Code .= '<li'.($y == $year ? ' class="active"' : '').'>'.self::linkToRoutenet((string)$y, $sportid, $y).'</li>';
 		}
 
 		return $Code;

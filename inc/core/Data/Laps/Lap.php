@@ -70,12 +70,12 @@ class Lap {
 	protected $HRmax = null;
 
 	/**
-	 * @var int [m]
+	 * @var int|false [m]
 	 */
 	protected $ElevationUp = false;
 
 	/**
-	 * @var int [m]
+	 * @var int|false [m]
 	 */
 	protected $ElevationDown = false;
 
@@ -174,7 +174,7 @@ class Lap {
 	 */
 	public function pace() {
 		if (null === $this->LapPace) {
-			$this->LapPace = new Pace($this->LapDuration->seconds(), $this->LapDistance->kilometer());
+			$this->LapPace = new Pace((int)round($this->LapDuration->seconds()), $this->LapDistance->kilometer());
 		}
 
 		return $this->LapPace;

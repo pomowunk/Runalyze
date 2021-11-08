@@ -10,6 +10,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Component\Activity\Tool\BestSubSegmentsStatistics;
 use Runalyze\Bundle\CoreBundle\Component\Activity\Tool\TimeSeriesStatistics;
 use Runalyze\Bundle\CoreBundle\Component\Activity\VO2maxCalculationDetailsDecorator;
+use Runalyze\Bundle\CoreBundle\Entity\TrackdataRepository;
 use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Runalyze\Service\ElevationCorrection\StepwiseElevationProfileFixer;
@@ -146,7 +147,9 @@ class ViewController extends Controller
      */
     public function timeSeriesInfoAction($id, Account $account)
     {
-        $trackdata = $this->getDoctrine()->getRepository('CoreBundle:Trackdata')->findByActivity($id, $account);
+        /** @var TrackdataRepository */
+        $trackdataRepository = $this->getDoctrine()->getRepository('CoreBundle:Trackdata');
+        $trackdata = $trackdataRepository->findByActivity($id, $account);
 
         if (null === $trackdata) {
             return $this->render('activity/tool/not_possible.html.twig');
@@ -175,7 +178,9 @@ class ViewController extends Controller
      */
     public function subSegmentInfoAction(Training $activity, Account $account)
     {
-        $this->checkThatEntityBelongsToActivity($activity, $account);
+        /** @var TrackdataRepository */
+        $trackdataRepository = $this->getDoctrine()->getRepository('CoreBundle:Trackdata');
+        $trackdata = $trackdataRepository->findByActivity($id, $account);
 
         if (!$activity->hasTrackdata()) {
             return $this->render('activity/tool/not_possible.html.twig');

@@ -13,6 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\DatasetRepository;
+use Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository;
+use Runalyze\Bundle\CoreBundle\Entity\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Runalyze\Bundle\CoreBundle\Form\Settings\AccountType;
@@ -153,7 +156,9 @@ class SettingsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $dataset = $em->getRepository('CoreBundle:Dataset')->findAllFor($account);
+        /** @var DatasetRepository */
+        $datasetRepository = $em->getRepository('CoreBundle:Dataset');
+        $dataset = $datasetRepository->findAllFor($account);
 
         $form = $this->createForm(DatasetCollectionType::class, ['datasets' => $dataset]);
         $form->handleRequest($request);
@@ -181,8 +186,10 @@ class SettingsController extends Controller
     {
         $Frontend = new \Frontend(true, $this->get('security.token_storage'));
 
+        /** @var DatasetRepository */
+        $datasetRepository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Dataset');
         /** @var Dataset[] $dataset */
-        $dataset = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Dataset')->findAllFor($account);
+        $dataset = $datasetRepository->findAllFor($account);
         $missingKeyObjects = array_flip(RunalyzeDataset\Keys::getEnum());
         $numberOfExistingKeys = count($dataset);
 
@@ -287,7 +294,9 @@ class SettingsController extends Controller
      */
     protected function exampleTagID(Account $account)
     {
-        $tag = $this->getDoctrine()->getRepository('CoreBundle:Tag')->findBy(['account' => $account->getId()], null, 1);
+        /** @var TagRepository */
+        $tagRepository = $this->getDoctrine()->getRepository('CoreBundle:Tag');
+        $tag = $tagRepository->findBy(['account' => $account->getId()], null, 1);
 
         if ($tag) {
             return (string)$tag[0]->getId();
@@ -302,7 +311,9 @@ class SettingsController extends Controller
     protected function exampleEquipmentIDs(Account $account)
     {
         $ids = [];
-        $equipment = $this->getDoctrine()->getRepository('CoreBundle:Equipment')->findBy(['account' => $account->getId()], null, 2);
+        /** @var EquipmentRepository */
+        $equipmentRepository = $this->getDoctrine()->getRepository('CoreBundle:Equipment');
+        $equipment = $equipmentRepository->findBy(['account' => $account->getId()], null, 2);
 
         if (is_array($equipment)) {
             foreach ($equipment as $element) {

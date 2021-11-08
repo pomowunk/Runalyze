@@ -53,7 +53,7 @@ class BulkInserter
 	/**
 	 * Insert
 	 * @param array $values
-	 * @return int last inserted ID
+	 * @return int|string last inserted ID
 	 */
 	public function insert(array $values)
     {

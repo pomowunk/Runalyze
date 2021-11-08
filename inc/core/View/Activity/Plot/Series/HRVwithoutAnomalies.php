@@ -8,7 +8,6 @@ namespace Runalyze\View\Activity\Plot\Series;
 
 use Runalyze\Calculation\HRV\Calculator;
 use Runalyze\Model;
-use Runalyze\View\Activity;
 
 /**
  * Plot for: heart rate variability without anomalies

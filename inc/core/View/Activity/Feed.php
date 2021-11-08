@@ -141,7 +141,7 @@ class Feed
         }
 
         $content .= '<br><b>'.$this->Translator->trans('Date') . '</b>: '.(new LocalTime($activity->getTime()))->format('d.m.Y');
-        $content .= '<br><b>'.$this->Translator->trans('Duration') . '</b>: '.(new \DateTime())->setTimezone(new \DateTimeZone("UTC"))->setTimestamp($activity->getS())->format('H:i:s');
+        $content .= '<br><b>'.$this->Translator->trans('Duration') . '</b>: '.(new \DateTime())->setTimezone(new \DateTimeZone("UTC"))->setTimestamp((int)round($activity->getS()))->format('H:i:s');
 
         if ($activity->getDistance()) {
             $content .= '<br><b>' . $this->Translator->trans('Distance') . '</b>: ' . $valueDecorator->distance($activity->getDistance());
@@ -153,7 +153,7 @@ class Feed
         }
 
         if ($activity->isPublic()) {
-            $content .= '<br><a href="'.$this->UrlGenerator->generate('shared-activity', ['activityHash' => base_convert((int)$activity->getId(), 10, 35)], UrlGeneratorInterface::ABSOLUTE_URL);
+            $content .= '<br><a href="'.$this->UrlGenerator->generate('shared-activity', ['activityHash' => base_convert((string)$activity->getId(), 10, 35)], UrlGeneratorInterface::ABSOLUTE_URL);
 	        $content .= '?utm_medium=feed&utm_campaign=feed">'.$this->Translator->trans('View full activity').'</a>';
         }
 
@@ -174,7 +174,7 @@ class Feed
         $item->withAuthor($activity->getAccount()->getUsername());
 
         if ($activity->isPublic()) {
-            $item->withUrl($this->UrlGenerator->generate('shared-activity', array('activityHash' => base_convert((int)$activity->getId(), 10, 35)), UrlGeneratorInterface::ABSOLUTE_URL).'?utm_medium=feed&utm_campaign=feed');
+            $item->withUrl($this->UrlGenerator->generate('shared-activity', array('activityHash' => base_convert((string)$activity->getId(), 10, 35)), UrlGeneratorInterface::ABSOLUTE_URL).'?utm_medium=feed&utm_campaign=feed');
         }
 
         $this->FeedBuilder->withItem($item);
@@ -193,7 +193,7 @@ class Feed
             $title .= ' ('. $activity->getType()->getName().')';
         }
 
-        $title .= ': '. (new \DateTime())->setTimezone(new \DateTimeZone("UTC"))->setTimestamp($activity->getS())->format('H:i:s').'h';
+        $title .= ': '. (new \DateTime())->setTimezone(new \DateTimeZone("UTC"))->setTimestamp((int)round($activity->getS()))->format('H:i:s').'h';
 
         if ($activity->getDistance() > 0) {
             $title .= ' - '.str_replace('&nbsp;', ' ', $valueDecorator->distance($activity->getDistance()));

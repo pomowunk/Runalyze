@@ -17,7 +17,7 @@ class MinPer100y extends AbstractTimeUnit
 {
 	/**
 	 * Unit
-	 * @return string
+	 * @return int
 	 * @codeCoverageIgnore
 	 */
 	public function unit()

@@ -56,14 +56,14 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional] number of decimals
 	 * @return string
 	 */
-	public static function format($km, $withUnit = true, $decimals = false)
+	public static function format($km, $withUnit = true, $decimals = -1)
 	{
 		return (new self($km))->string($withUnit, $decimals);
 	}
 
 	/**
 	 * @param float $km
-	 * @param \Runalyze\Parameter\Application\DistanceUnitSystem $unitSystem
+	 * @param \Runalyze\Parameter\Application\DistanceUnitSystem|null $unitSystem
 	 */
 	public function __construct($km = 0, DistanceUnitSystem $unitSystem = null)
 	{
@@ -87,7 +87,7 @@ class Distance implements ValueInterface {
 	 */
 	public function set($km)
 	{
-		$this->Kilometer = (float)str_replace(',', '.', $km);
+		$this->Kilometer = $km;
 
 		return $this;
 	}
@@ -99,7 +99,7 @@ class Distance implements ValueInterface {
 	 */
 	public function setMiles($miles)
 	{
-		$this->Kilometer = (float)str_replace(',', '.', $miles) / DistanceUnitSystem::MILE_MULTIPLIER;
+		$this->Kilometer = $miles / DistanceUnitSystem::MILE_MULTIPLIER;
 
 		return $this;
 	}
@@ -143,7 +143,7 @@ class Distance implements ValueInterface {
 	 */
 	public function meter()
 	{
-		return round($this->Kilometer * 1000);
+		return (int)round($this->Kilometer * 1000);
 	}
 
 	/**
@@ -161,7 +161,7 @@ class Distance implements ValueInterface {
 	 */
 	public function yards()
 	{
-		return round($this->Kilometer * DistanceUnitSystem::YARD_MULTIPLIER);
+		return (int)round($this->Kilometer * DistanceUnitSystem::YARD_MULTIPLIER);
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Distance implements ValueInterface {
 	 */
 	public function feet()
 	{
-		return round($this->Kilometer * DistanceUnitSystem::FEET_MULTIPLIER);
+		return (int)round($this->Kilometer * DistanceUnitSystem::FEET_MULTIPLIER);
 	}
 
 	/**
@@ -204,7 +204,7 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional] number of decimals
 	 * @return string
 	 */
-	public function string($withUnit = true, $decimals = false)
+	public function string($withUnit = true, $decimals = -1)
 	{
 		if ($this->UnitSystem->isImperial()) {
 			return $this->stringMiles($withUnit, $decimals);
@@ -219,7 +219,7 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional] number of decimals
 	 * @return string
 	 */
-	public function stringAuto($withUnit = true, $decimals = false)
+	public function stringAuto($withUnit = true, $decimals = -1)
 	{
 		if ($this->Kilometer <= 1.0 || $this->Kilometer == 1.5 || $this->Kilometer == 3.0) {
 			return $this->stringMeter($withUnit, $decimals);
@@ -238,9 +238,9 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional]
 	 * @return string with unit
 	 */
-	public function stringKilometer($withUnit = true, $decimals = false)
+	public function stringKilometer($withUnit = true, $decimals = -1)
 	{
-		if ($decimals === false) {
+		if ($decimals < 0) {
 			$decimals = self::$DefaultDecimals;
 		}
 
@@ -253,7 +253,7 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional]
 	 * @return string with unit
 	 */
-	public function stringMeter($withUnit = true, $decimals = false)
+	public function stringMeter($withUnit = true, $decimals = -1)
 	{
 		return number_format($this->Kilometer * 1000, 0, '', '.').($withUnit ? DistanceUnitSystem::METER : '');
 	}
@@ -264,7 +264,7 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional]
 	 * @return string with unit
 	 */
-	public function stringFeet($withUnit = true, $decimals = false)
+	public function stringFeet($withUnit = true, $decimals = -1)
 	{
 		return number_format($this->Kilometer * DistanceUnitSystem::FEET_MULTIPLIER, 0, '', '.').($withUnit ? '&nbsp;'.DistanceUnitSystem::FEET : '');
 	}
@@ -275,7 +275,7 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional]
 	 * @return string with unit
 	 */
-	public function stringYards($withUnit = true, $decimals = false)
+	public function stringYards($withUnit = true, $decimals = -1)
 	{
 		return number_format($this->Kilometer * DistanceUnitSystem::YARD_MULTIPLIER, 0, '', '.').($withUnit ? '&nbsp;'.DistanceUnitSystem::YARDS : '');
 	}
@@ -286,9 +286,9 @@ class Distance implements ValueInterface {
 	 * @param int $decimals [optional]
 	 * @return string with unit
 	 */
-	public function stringMiles($withUnit = true, $decimals = false)
+	public function stringMiles($withUnit = true, $decimals = -1)
 	{
-		if ($decimals === false) {
+		if ($decimals < 0) {
 			$decimals = self::$DefaultDecimals;
 		}
 

@@ -26,7 +26,7 @@ if (count($Data) == 1)
 
 if (!empty($Data)) {
 	foreach ($Data as $D) {
-		$Weights[$D['time'].'000'] = $Weight->set($D['weight'])->valueInPreferredUnit();
+		$Weights[$D['time'].'000'] = (float)$Weight->set($D['weight'])->valueInPreferredUnit();
 		$HRrests[$D['time'].'000'] = (int)$D['pulse_rest'];
 	}
 }

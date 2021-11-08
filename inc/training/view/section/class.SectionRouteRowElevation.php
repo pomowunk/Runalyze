@@ -75,7 +75,7 @@ class SectionRouteRowElevation extends TrainingViewSectionRow {
             );
 
             $this->BoxedValues[] = new BoxedValue(
-                round(100 * $this->Context->activity()->percentageHilly()),
+                (string)round(100 * $this->Context->activity()->percentageHilly()),
                 '&#37;',
                 __('Percentage hilly')
             );

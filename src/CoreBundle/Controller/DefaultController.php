@@ -9,6 +9,8 @@ use Runalyze\Bundle\CoreBundle\Form\RegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +47,7 @@ class DefaultController extends AbstractPluginsAwareController
 
         $panelsContent = $this->getResponseForAllEnabledPanels($request, $account)->getContent();
 
-        include '../dashboard.php';
+        include $this->getParameter('kernel.root_dir').'/../dashboard.php';
 
         return $this->render('legacy_end.html.twig');
     }
@@ -148,11 +150,13 @@ class DefaultController extends AbstractPluginsAwareController
      */
     protected function collectStatistics()
     {
-        $repository = $this->getDoctrine()->getRepository('CoreBundle:Account');
-        $numUser =  $repository->getAmountOfActivatedUsers();
+        /** @var AccountRepository */
+        $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
+        $numUser =  $accountRepository->getAmountOfActivatedUsers();
 
-        $repository = $this->getDoctrine()->getRepository('CoreBundle:Training');
-        $numDistance =  $repository->getAmountOfLoggedKilometers();
+        /** @var TrainingRepository */
+        $trainingRepository = $this->getDoctrine()->getRepository('CoreBundle:Training');
+        $numDistance =  $trainingRepository->getAmountOfLoggedKilometers();
 
         return ['user' => (int)$numUser, 'distance' => Distance::format($numDistance)];
     }
@@ -196,6 +200,7 @@ class DefaultController extends AbstractPluginsAwareController
      */
     public function unsubscribeMailAction($mail, $hash)
     {
+        /** @var AccountRepository */
         $repo = $this->getDoctrine()->getRepository('CoreBundle:Account');
         $account = $repo->findOneBy(array('mail' => $mail));
 
@@ -211,6 +216,7 @@ class DefaultController extends AbstractPluginsAwareController
      */
     public function unsubscribeMailConfirmAction($mail, $hash)
     {
+        /** @var AccountRepository */
         $repo = $this->getDoctrine()->getRepository('CoreBundle:Account');
         $account = $repo->findOneBy(array('mail' => $mail));
 

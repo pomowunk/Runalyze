@@ -15,14 +15,14 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
 class Raceresult implements AccountRelatedEntityInterface
 {
     /**
-     * @var int [km]
+     * @var float [km]
      *
      * @ORM\Column(name="official_distance", type="casted_decimal_2", precision=6, scale=2, nullable=true)
      */
     private $officialDistance;
 
     /**
-     * @var int [s]
+     * @var float [s]
      *
      * @ORM\Column(name="official_time", type="casted_decimal_2", precision=8, scale=2, nullable=false)
      */

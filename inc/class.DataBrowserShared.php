@@ -48,7 +48,7 @@ class DataBrowserShared extends DataBrowser {
 		$this->TimestampStart = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : LocalTime::fromString('first day of this month 00:00:00')->getTimestamp();
 		$this->TimestampEnd   = isset($_GET['end']) && is_numeric($_GET['end']) ? $_GET['end'] : LocalTime::fromString('last day of this month 23:59:59')->getTimestamp();
 
-		$this->DayCount = round(($this->TimestampEnd - $this->TimestampStart) / 86400);
+		$this->DayCount = (int)round(($this->TimestampEnd - $this->TimestampStart) / 86400);
 	}
 
 	/**
@@ -85,13 +85,13 @@ class DataBrowserShared extends DataBrowser {
 	/**
 	 * Get a ajax-link to a specified DataBrowser
 	 * @param string $name Name to be displayed as link
-	 * @param int $start Timestamp for first date in browser
-	 * @param int $end Timestamp for last date in browser
+	 * @param int|null $start Timestamp for first date in browser
+	 * @param int|null $end Timestamp for last date in browser
 	 * @param string $title title for the link
 	 * @return string HTML-link
 	 */
 	public static function getLink($name, $start, $end, $title = '') {
-		$href = self::getBaseUrl().'?start='.$start.'&end='.$end;
+		$href = self::getBaseUrl().'?start='.($start ?: '').'&end='.($end ?: '');
 
 		return Ajax::link($name, 'publicList', $href, '', $title);
 	}
