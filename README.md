@@ -45,6 +45,14 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* If there are technical trouble (while creating the tmp-folder, moving files ...) a HTTP state 500 is returned.
 	* Additional infos and the output of the "runalyze:activity:bulk-import" are set in the response content as "Content-Type: text/plain"
 	* Example curl to use: curl -k -u "<runalyze-account>:<pwd>" -H "Accept-Language: de,en" -X POST https://<domain>/api/import/activity -F 'file1=@afile.fit' -F 'file2=@another.fit' [-w 'HttpCode: %{http_code}\n']
+* 2021-11-05: Add tests(-folder) from the archived repository to ensure dependency changes
+	1. database preperation script `tests/scripts/preparetests.sh` (one time action per DB instance)
+	2. wrapper script for all tests `tests/scripts/runtests.sh`
+	* some tests has errors (i think is caused by the usage of PHP7); see `runtests.sh` for expected failures
+	* `tests` folder can be excluded for production environment
+* 2021-11-09: Upgrade dependencies to newer/recent versions
+	* only deps where none or only few code changes necessary
+	* changes affected composer-files, vendor folder, database migrations, tests
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
