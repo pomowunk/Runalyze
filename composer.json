@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "symfony/symfony": "^3.4.49",
         "sensio/framework-extra-bundle": "^3.0",
         "twig/twig": "^1.44.5",
@@ -14,7 +14,7 @@
         "nojacko/email-validator": "~1.0",
         "league/geotools": "^0.7.0",
         "swiftmailer/swiftmailer": "@stable",
-        "phpfastcache/phpfastcache": "^3.0.23",
+        "phpfastcache/phpfastcache": "^8.0",
         "twig/extensions": "^1.3",
         "doctrine/doctrine-bundle": "1.6.*",
         "doctrine/orm": "^2.5",

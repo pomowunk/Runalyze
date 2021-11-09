@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8822f87341cffdd9345455a51687177b",
+    "content-hash": "0c4626ce131c752da152dfa381bb5b60",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3050,26 +3050,55 @@
         },
         {
             "name": "phpfastcache/phpfastcache",
-            "version": "3.1.1",
+            "version": "8.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPSocialNetwork/phpfastcache.git",
-                "reference": "53241bf437488c4bcfceccb054595d344cf343a3"
+                "reference": "c413ffd8185564db3d670e20f9135497be9ebe85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/53241bf437488c4bcfceccb054595d344cf343a3",
-                "reference": "53241bf437488c4bcfceccb054595d344cf343a3",
+                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/c413ffd8185564db3d670e20f9135497be9ebe85",
+                "reference": "c413ffd8185564db3d670e20f9135497be9ebe85",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.1.0"
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.3",
+                "psr/cache": "~1.0.0",
+                "psr/simple-cache": "~1.0.0"
+            },
+            "conflict": {
+                "doctrine/couchdb": "*"
+            },
+            "require-dev": {
+                "ext-gettext": "*",
+                "league/climate": "^3.5"
+            },
+            "suggest": {
+                "ext-apc": "*",
+                "ext-couchbase": "*",
+                "ext-couchbase_v3": "*",
+                "ext-intl": "*",
+                "ext-leveldb": "*",
+                "ext-memcache": "*",
+                "ext-memcached": "*",
+                "ext-redis": "*",
+                "ext-sqlite": "*",
+                "ext-wincache": "*",
+                "ext-xcache": "*",
+                "mongodb/mongodb": "^1.9",
+                "phpfastcache/couchdb": "~1.0.0",
+                "phpfastcache/phpssdb": "~1.0.0",
+                "predis/predis": "^1.1"
             },
             "type": "library",
             "autoload": {
-                "files": [
-                    "phpfastcache.php"
-                ]
+                "psr-4": {
+                    "Phpfastcache\\": "lib/Phpfastcache/",
+                    "Phpfastcache\\Tests\\": "tests/lib/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3077,36 +3106,65 @@
             ],
             "authors": [
                 {
+                    "name": "Georges.L",
+                    "email": "contact@geolim4.com",
+                    "homepage": "https://github.com/Geolim4",
+                    "role": "Actual Project Manager/Developer"
+                },
+                {
                     "name": "Khoa Bui",
                     "email": "khoaofgod@gmail.com",
-                    "homepage": "http://www.phpfastcache.com",
-                    "role": "Developer"
+                    "homepage": "https://www.phpfastcache.com",
+                    "role": "Former Project Developer/Original Creator"
                 }
             ],
-            "description": "PHP Cache Class - Supported Redis, Cookie, Predis, APC, MemCached, WinCache, Files, PDO, Reduce mySQL Call by Caching",
-            "homepage": "http://www.phpfastcache.com",
+            "description": "PHP Abstract Cache Class - Reduce your database call using cache system. PhpFastCache handles a lot of drivers such as Apc(u), Cassandra, CouchBase, Couchdb, Mongodb, Files, (P)redis, Leveldb, Memcache(d), Ssdb, Sqlite, Wincache, Xcache, Zend Data Cache.",
+            "homepage": "https://www.phpfastcache.com",
             "keywords": [
-                "APC Cache",
+                "LevelDb",
+                "abstract",
                 "apc",
+                "apcu",
                 "cache",
                 "cache class",
                 "caching",
+                "cassandra",
                 "cookie",
+                "couchbase",
+                "couchdb",
                 "files cache",
                 "memcache",
                 "memcached",
+                "mongodb",
                 "mysql cache",
                 "pdo cache",
                 "php cache",
                 "predis",
                 "redis",
-                "wincache"
+                "ssdb",
+                "wincache",
+                "xcache",
+                "zend",
+                "zend data cache",
+                "zend disk cache",
+                "zend memory cache",
+                "zend server"
             ],
             "support": {
                 "issues": "https://github.com/PHPSocialNetwork/phpfastcache/issues",
-                "source": "https://github.com/PHPSocialNetwork/phpfastcache/tree/3.1.1"
+                "source": "https://github.com/PHPSocialNetwork/phpfastcache/tree/8.0.8"
             },
-            "time": "2016-02-03T22:06:21+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/geolim4",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/geolim4",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-08-18T01:26:03+00:00"
         },
         {
             "name": "predis/predis",
@@ -7721,7 +7779,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">7.0"
+        "php": ">=7.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

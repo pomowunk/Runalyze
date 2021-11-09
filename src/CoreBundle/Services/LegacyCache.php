@@ -2,12 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services;
 
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Files\Config;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class LegacyCache
 {
-	/** @var \phpFastCache */
+	/** @var \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface */
     public static $cache;
 
     /**
@@ -15,11 +17,11 @@ class LegacyCache
      */
 	public function __construct($path)
     {
-		\phpFastCache::setup("storage", "files");
-        \phpFastCache::setup("path", $path);
-        \phpFastCache::setup("securityKey", "cache");
-
-		self::$cache = new \phpFastCache;
+		$config = new Config();
+		$config->setPath($path);
+		$config->setSecurityKey('cache');
+        $config->setItemDetailedDate(true);
+		self::$cache = CacheManager::Files($config);
 	}
 
     /**
@@ -30,9 +32,7 @@ class LegacyCache
 	public function delete($keyword, $accountId = false) {
 	    $accountId = false === $accountId ? '' : (string)$accountId;
 
-	    if (self::$cache->isExisting($keyword.(string)$accountId)) {
-            return self::$cache->delete($keyword.(string)$accountId);
-        }
+        self::$cache->deleteItem($keyword . (string)($accountId ?: ''));
 
         return false;
 	}

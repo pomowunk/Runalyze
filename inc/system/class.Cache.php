@@ -1,4 +1,8 @@
 <?php
+
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Files\Config;
+
 /**
  * Class: Cache - Wrapper for PHPFastCache
  * @author Michael Pohl
@@ -29,51 +33,53 @@ class Cache {
 	 */
 	public $footer_sent = true;
 
-	/** @var \phpFastCache */
+	/** @var \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface */
     public static $cache;
 
 	/**
 	 * Prohibit creating an object from outside
 	 */
 	public function __construct() {
-		phpFastCache::setup("storage", "files");
-		phpFastCache::setup("path", FRONTEND_PATH."../".self::PATH);
-		phpFastCache::setup("securityKey", "cache");
-		self::$cache = new phpFastCache;
+		$config = new Config();
+		$config->setPath(FRONTEND_PATH."../".self::PATH);
+		$config->setSecurityKey('cache');
+        $config->setItemDetailedDate(true);
+		self::$cache = CacheManager::Files($config);
+	}
+
+	/**
+	 * Set Cache
+	 */
+	public static function set($keyword, $data, $time, $nousercache = 0) {
+		$key = $keyword;
+		if($nousercache == 0) { 
+			$key .= (string)SessionAccountHandler::getId();
+		}
+		$cacheItem = self::$cache->getItem($key);
+		$cacheItem->set($data);
+		$cacheItem->expiresAfter($time);
+		self::$cache->save($cacheItem);
 	}
 
 	/**
 	 * Get Cache
 	 */
-	public static function set($keyword, $data, $time, $nousercache = 0) {
-            if($nousercache == 0) { 
-                $key = $keyword.SessionAccountHandler::getId();
-                self::$cache->set($key, $data, $time);
-            } else {
-                self::$cache->set($keyword,$data, $time);
-            }
-        }
-
-	/**
-	 * Set Cache
-	 */
 	public static function get($keyword, $nousercache = 0) {
 		if ($nousercache == 0 && !in_array($keyword, self::$ignoreKeywords)) {
-            $key = $keyword . SessionAccountHandler::getId();
-			$cachedobj = self::$cache->getinfo($key);
+            $cacheItem = self::$cache->getItem($keyword . SessionAccountHandler::getId());
 			$lastcacheclean = self::$LASTCLEAN;
 			if ($lastcacheclean === null) {
-				$lastcacheclean = self::$cache->get('LASTCLEAN' . SessionAccountHandler::getId());
-				$lastcacheclean = $lastcacheclean ? : 0;
+				$lastcacheclean = self::$cache->getItem('LASTCLEAN' . SessionAccountHandler::getId())->get();
+				$lastcacheclean = $lastcacheclean ?: 0;
 				self::$LASTCLEAN = $lastcacheclean;
 			}
-			if (isset($cachedobj['write_time']) && $cachedobj['write_time'] > $lastcacheclean) {
-				return $cachedobj['value'];
+			if ($cacheItem->getModificationDate()->getTimestamp() > $lastcacheclean) {
+				return $cacheItem->get();
 			} else {
 				return null;
 			}
 		} else {
-			return self::$cache->get($keyword);
+			return self::$cache->getItem($keyword)->get();
 		}
 	}
 
@@ -82,12 +88,12 @@ class Cache {
 	 */
 	public static function delete($keyword, $nousercache = 0) {
 	    if (!in_array($keyword, self::$ignoreKeywords)) {
-            if ($nousercache == 0) {
-                return self::$cache->delete($keyword . SessionAccountHandler::getId());
-            } else {
-                return self::$cache->delete($keyword);
-            }
-        }
+			$key = $keyword;
+			if($nousercache == 0) { 
+				$key .= (string)SessionAccountHandler::getId();
+			}
+			self::$cache->deleteItem($keyword);
+		}
 	}
 
 	/**
@@ -97,9 +103,11 @@ class Cache {
 		self::$LASTCLEAN = time();
 
 		if (SessionAccountHandler::getId() === null) {
-			self::$cache->clean();
+			self::$cache->clear();
 		} else {
-			self::$cache->set('LASTCLEAN' . SessionAccountHandler::getId(), self::$LASTCLEAN);
+			$cacheItem = self::$cache->getItem('LASTCLEAN' . SessionAccountHandler::getId());
+			$cacheItem->set(self::$LASTCLEAN);
+			self::$cache->save($cacheItem);
 		}
 	}
 
@@ -107,10 +115,10 @@ class Cache {
 	 * is existing?
 	 */
 	public static function is($keyword, $nousercache = 0) {
+		$key = $keyword;
 		if ($nousercache == 0) { 
-			return self::$cache->isExisting($keyword.SessionAccountHandler::getId());
-		} else {
-			return self::$cache->isExisting($keyword);
+			$key .= (string)SessionAccountHandler::getId();
 		}
+		return self::$cache->getItem($key)->isHit();
 	}
 }
