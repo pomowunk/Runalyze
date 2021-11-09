@@ -15,7 +15,7 @@ class DatabaseCacheTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockForResponse(WeatherData $data = null)
     {
-        $mock = $this->getMock(DatabaseCacheInterface::class);
+        $mock = $this->createMock(DatabaseCacheInterface::class);
         $mock->method('getCachedWeatherDataFor')
             ->willReturn($data);
 

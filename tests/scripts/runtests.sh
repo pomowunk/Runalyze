@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# based on the combinations of https://github.com/Runalyze/Runalyze/blob/support/4.3.x/.travis.yml
+
+# before_script:
+cp app/config/default_config.yml data/config.yml
+
+# tests
 echo '----------------------------- import -----------------------------------------------'
 vendor/bin/phpunit --colors -c tests/config.xml --group "import" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase"
 

@@ -5,12 +5,12 @@ DB_USER="-urunalyze_test"
 
 # base is https://github.com/Runalyze/Runalyze/blob/support/4.3.x/.travis.yml
 
-# apt-get install --no-install-recommends mariadb-client
-
-# before_script:
-cp app/config/default_config.yml data/config.yml
+apt-get update
+apt-get install --no-install-recommends mariadb-client
 
 # create/update database
+echo "Create testdatabase. Enter root password."
+
 mysql -uroot -p $DB_HOST -e \
 'DROP DATABASE IF EXISTS runalyze_unittest; DROP DATABASE IF EXISTS runalyze_test;
  SET @@global.sql_mode = TRADITIONAL; CREATE DATABASE runalyze_unittest; CREATE DATABASE runalyze_test;
