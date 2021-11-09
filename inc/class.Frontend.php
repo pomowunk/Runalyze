@@ -98,10 +98,9 @@ class Frontend {
 	 */
 	private function initConfig() {
 		$this->yamlConfig = array_merge(
-			Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/config.yml'))['parameters'],
+			Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/config_shared.yml'))['parameters'],
             Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/expert_config.yml'))['parameters'],
-            Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/default_config.yml'))['parameters'],
-			Yaml::parse(file_get_contents(FRONTEND_PATH.'/../data/config.yml'))['parameters']
+            Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/config.yml'))['parameters']
 		);
 
         define('DARKSKY_API_KEY', $this->yamlConfig['darksky_api_key']);

@@ -7,13 +7,19 @@ php.ini
 
 #Runalyze
 web/assets/v2.x/img/backgrounds/My-*
-data/config.yml
 data/sessions/sess*
 data/timezone.sqlite
 *.mo
 inc/locale/*.po
 web/app_dev.php
 /.htaccess
+
+#config
+app/config/config.yml
+app/config/config_prod.yml
+app/config/config_dev.yml
+app/config/config_test.yml
+app/config/config_test_empty.yml
 
 #composer
 composer.phar
@@ -31,6 +37,5 @@ npm-debug.log
 /var/
 !/var/cache/.gitkeep
 !/var/logs/.gitkeep
-/app/config/config_test.yml
 
 !.gitkeep

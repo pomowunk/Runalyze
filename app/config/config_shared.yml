@@ -3,9 +3,8 @@ imports:
   - { resource: security.yml }
   - { resource: services.yml }
   - { resource: queue.yml }
-  - { resource: default_config.yml }
   - { resource: expert_config.yml }
-  - { resource: ../../data/config.yml }
+  - { resource: config.yml }
 
 framework:
   secret: '%secret%'
