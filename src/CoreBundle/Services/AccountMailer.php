@@ -44,7 +44,7 @@ class AccountMailer
     public function sendMailTo(Account $account, $subject, $template, array $templateData)
     {
         $template = $this->customLanguageTemplates($template, $account->getLanguage());
-        $message = \Swift_Message::newInstance($subject)
+        $message = (new \Swift_Message($subject))
             ->setTo([$account->getMail() => $account->getUsername()])
             ->setFrom($this->Sender);
         $message->setBody($this->Twig->render($template, $templateData), 'text/html');
@@ -64,7 +64,7 @@ class AccountMailer
         $content .= 'Mail: '.$account->getMail()."\n";
         $content .= 'Message:'."\n".$customText;
 
-        $message = \Swift_Message::newInstance($subject)
+        $message = (new \Swift_Message($subject))
             ->setTo($mailTo)
             ->setFrom($this->Sender)
             ->setReplyTo([$account->getMail() => $account->getUsername()]);

@@ -2,7 +2,7 @@
 
 namespace Runalyze\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Entity\Route;
@@ -28,12 +28,12 @@ class Version20171104230424 extends AbstractMigration implements ContainerAwareI
     /** @var NegativeDistanceStepFilter */
     protected $NegativeDistanceStepFilter;
 
-    public function isTransactional()
+    public function isTransactional() : bool
     {
         return false;
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema) : void
     {
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.entity_manager');
@@ -237,7 +237,7 @@ class Version20171104230424 extends AbstractMigration implements ContainerAwareI
             ->getQuery()->getSingleScalarResult();
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema) : void
     {
     }
 }

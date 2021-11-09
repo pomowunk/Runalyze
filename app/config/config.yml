@@ -122,6 +122,7 @@ doctrine_migrations:
     dir_name: "%kernel.root_dir%/DoctrineMigrations"
     namespace: Runalyze\Migrations
     table_name: '%database_prefix%migration_versions'
+    column_name: 'version'
     name: RUNALYZE Migrations
 
 monolog:

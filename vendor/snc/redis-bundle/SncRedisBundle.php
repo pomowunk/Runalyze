@@ -11,6 +11,7 @@
 
 namespace Snc\RedisBundle;
 
+use Snc\RedisBundle\DependencyInjection\Compiler\ClientLocatorPass;
 use Snc\RedisBundle\DependencyInjection\Compiler\LoggingPass;
 use Snc\RedisBundle\DependencyInjection\Compiler\MonologPass;
 use Snc\RedisBundle\DependencyInjection\Compiler\SwiftMailerPass;
@@ -31,18 +32,6 @@ class SncRedisBundle extends Bundle
         $container->addCompilerPass(new LoggingPass());
         $container->addCompilerPass(new MonologPass());
         $container->addCompilerPass(new SwiftMailerPass());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function shutdown()
-    {
-        // Close session handler connection to avoid using up all available connection slots in tests
-        if ($this->container->has('snc_redis.session.handler')) {
-            if (!method_exists($this->container, 'initialized') || $this->container->initialized('snc_redis.session.handler')) {
-                $this->container->get('snc_redis.session.handler')->close();
-            }
-        }
+        $container->addCompilerPass(new ClientLocatorPass());
     }
 }

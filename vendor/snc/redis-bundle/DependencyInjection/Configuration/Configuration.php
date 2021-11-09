@@ -11,13 +11,16 @@
 
 namespace Snc\RedisBundle\DependencyInjection\Configuration;
 
+use Doctrine\Common\Cache\PredisCache;
+use Doctrine\Common\Cache\RedisCache;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Config\Definition\BaseNode;
+use function method_exists;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * RedisBundle configuration class.
- *
  * @author Henrik Westphal <henrik.westphal@gmail.com>
  */
 class Configuration implements ConfigurationInterface
@@ -57,10 +60,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('connection_wrapper')->defaultValue('Snc\RedisBundle\Client\Predis\Connection\ConnectionWrapper')->end()
                         ->scalarNode('phpredis_client')->defaultValue('Redis')->end()
                         ->scalarNode('phpredis_connection_wrapper')->defaultValue('Snc\RedisBundle\Client\Phpredis\Client')->end()
+                        ->scalarNode('phpredis_clusterclient')->defaultValue('RedisCluster')->end()
+                        ->scalarNode('phpredis_clusterclient_connection_wrapper')->defaultValue('Snc\RedisBundle\Client\Phpredis\ClientCluster')->end()
                         ->scalarNode('logger')->defaultValue('Snc\RedisBundle\Logger\RedisLogger')->end()
                         ->scalarNode('data_collector')->defaultValue('Snc\RedisBundle\DataCollector\RedisDataCollector')->end()
-                        ->scalarNode('doctrine_cache_phpredis')->defaultValue('Doctrine\Common\Cache\RedisCache')->end()
-                        ->scalarNode('doctrine_cache_predis')->defaultValue('Doctrine\Common\Cache\PredisCache')->end()
+                        // class_exists are here for BC with doctrine/cache < 2
+                        ->scalarNode('doctrine_cache_phpredis')->defaultValue(class_exists(RedisCache::class) ? RedisCache::class : RedisAdapter::class)->end()
+                        ->scalarNode('doctrine_cache_predis')->defaultValue(class_exists(PredisCache::class) ? PredisCache::class : RedisAdapter::class)->end()
                         ->scalarNode('monolog_handler')->defaultValue('Monolog\Handler\RedisHandler')->end()
                         ->scalarNode('swiftmailer_spool')->defaultValue('Snc\RedisBundle\SwiftMailer\RedisSpool')->end()
                     ->end()
@@ -84,33 +90,41 @@ class Configuration implements ConfigurationInterface
      */
     private function addClientsSection(ArrayNodeDefinition $rootNode)
     {
-        $loggingDefault = (version_compare(phpversion('redis'), '4.0.0') >= 0 ? false : $this->debug);
-
         $rootNode
             ->fixXmlConfig('client')
             ->children()
                 ->arrayNode('clients')
                     ->useAttributeAsKey('alias', false)
+                    ->beforeNormalization()
+                        ->always()
+                        ->then(function ($v) {
+                            if (is_iterable($v)) {
+                                foreach ($v as $name => &$client) {
+                                    if (!isset($client['alias'])) {
+                                        $client['alias'] = $name;
+                                    }
+                                }
+                            }
+
+                            return $v;
+                        })
+                    ->end()
                     ->prototype('array')
                         ->fixXmlConfig('dsn')
                         ->children()
-                            ->scalarNode('type')->isRequired()
-                                ->validate()
-                                    ->ifTrue(function($v) { return !in_array($v, array('predis', 'phpredis')); })
-                                    ->thenInvalid('The redis client type %s is invalid.')
-                                ->end()
-                            ->end()
+                            ->scalarNode('type')->isRequired()->end()
                             ->scalarNode('alias')->isRequired()->end()
-                            ->booleanNode('logging')->defaultValue($loggingDefault)->end()
+                            ->booleanNode('logging')->defaultValue($this->debug)->end()
                             ->arrayNode('dsns')
                                 ->isRequired()
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
-                                    ->ifString()->then(function($v) { return (array) $v; })
+                                    ->ifString()->then(function ($v) {
+                                        return (array) $v;
+                                    })
                                 ->end()
                                 ->prototype('variable')->end()
                             ->end()
-                            ->scalarNode('alias')->isRequired()->end()
                             ->arrayNode('options')
                                 ->addDefaultsIfNotSet()
                                 ->children()
@@ -121,12 +135,12 @@ class Configuration implements ConfigurationInterface
                                     ->booleanNode('iterable_multibulk')->defaultFalse()->end()
                                     ->booleanNode('throw_errors')->defaultTrue()->end()
                                     ->scalarNode('serialization')->defaultValue('default')->end()
-                                    ->scalarNode('profile')->defaultValue('default')
-                                    ->end()
+                                    ->scalarNode('profile')->defaultValue('default')->end()
                                     ->scalarNode('cluster')->defaultNull()->end()
                                     ->scalarNode('prefix')->defaultNull()->end()
                                     ->enumNode('replication')->values(array(true, false, 'sentinel'))->end()
                                     ->scalarNode('service')->defaultNull()->end()
+                                    ->enumNode('slave_failover')->values(array('none', 'error', 'distribute', 'distribute_slaves'))->end()
                                     ->arrayNode('parameters')
                                         ->canBeUnset()
                                         ->children()
@@ -186,7 +200,9 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->arrayNode('entity_managers')
                                 ->defaultValue(array())
-                                ->beforeNormalization()->ifString()->then(function($v) { return (array) $v; })->end()
+                                ->beforeNormalization()->ifString()->then(function ($v) {
+                                    return (array) $v;
+                                })->end()
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()
@@ -194,7 +210,9 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->arrayNode('document_managers')
                                 ->defaultValue(array())
-                                ->beforeNormalization()->ifString()->then(function($v) { return (array) $v; })->end()
+                                ->beforeNormalization()->ifString()->then(function ($v) {
+                                    return (array) $v;
+                                })->end()
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()
@@ -252,6 +270,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('profiler_storage')
+                    ->setDeprecated(...$this->getProfilerStorageDeprecationMessage())
                     ->canBeUnset()
                     ->children()
                         ->scalarNode('client')->isRequired()->end()
@@ -259,5 +278,24 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+    /**
+     * Keep compatibility with symfony/config < 5.1
+     *
+     * The signature of method NodeDefinition::setDeprecated() has been updated to
+     * NodeDefinition::setDeprecation(string $package, string $version, string $message).
+     *
+     * @return array
+     */
+    private function getProfilerStorageDeprecationMessage(): array
+    {
+        $message = 'Redis profiler storage is not available anymore since Symfony 4.4';
+
+        if (method_exists(BaseNode::class, 'getDeprecation')) {
+            return ['snc/redis-bundle', '3.2.0', $message];
+        }
+
+        return [$message];
     }
 }

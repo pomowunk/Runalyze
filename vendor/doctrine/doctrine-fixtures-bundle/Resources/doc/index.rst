@@ -3,72 +3,62 @@ DoctrineFixturesBundle
 
 Fixtures are used to load a "fake" set of data into a database that can then
 be used for testing or to help give you some interesting data while you're
-developing your application. This bundle makes creating fixtures *easy*, and
-supports the `ORM`_ (MySQL, PostgreSQL, SQLite, etc.) and `ODM`_ (MongoDB, etc.).
+developing your application.
 
-Setup and Configuration
------------------------
+This bundle is compatible with any database supported by `Doctrine ORM`_
+(MySQL, PostgreSQL, SQLite, etc.). If you are using MongoDB, you must use
+`DoctrineMongoDBBundle`_ instead.
 
-Step 1: Download the Bundle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Installation
+------------
 
-Open a command console, enter your project directory and run the
-following command to download the latest stable version of this bundle:
+In Symfony 4 or higher applications that use `Symfony Flex`_, open a command
+console, enter your project directory and run the following command:
 
-.. code-block:: bash
+.. code-block:: terminal
 
-    composer require --dev doctrine/doctrine-fixtures-bundle
+    $ composer require --dev orm-fixtures
 
-This command assumes you have Composer installed globally, as explained
-in the `installation chapter`_ of the Composer documentation.
+Starting from Symfony 4.0, Flex should be used by default and register the
+bundle for you, and in that case you can skip to the next section and start
+writing fixtures.
 
-Step 2: Enable the Bundle
-~~~~~~~~~~~~~~~~~~~~~~~~~
+In Symfony 3 applications (or when not using Symfony Flex), run this other
+command instead:
 
-Next, add the following line to ``app/AppKernel.php`` to enable the
-bundle for the ``dev`` and ``test`` environments only:
+.. code-block:: terminal
 
-.. code-block:: php
+    $ composer require --dev doctrine/doctrine-fixtures-bundle
+
+You will also need to enable the bundle. In Symfony 3 and earlier applications,
+update the ``AppKernel`` class::
 
     // app/AppKernel.php
+
     // ...
-
-    class AppKernel extends Kernel
-    {
-        public function registerBundles()
-        {
-            // ...
-            if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
-                // ...
-                $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-            }
-
-            return $bundles;
-        }
-
+    // registerBundles()
+    if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
         // ...
+        $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
     }
 
 Writing Fixtures
 ----------------
 
 Data fixtures are PHP classes where you create objects and persist them to the
-database. By default, these classes live in ``src/AppBundle/DataFixtures/ORM/``
-(``src/AppBundle/DataFixtures/MongoDB/`` when using ODM).
+database.
 
-Imagine that you want to add some ``Product`` objects to you database. No problem!
-Just create a fixtures class and start adding products!
+Imagine that you want to add some ``Product`` objects to your database. No problem!
+Create a fixtures class and start adding products::
 
-.. code-block:: php
+    // src/DataFixtures/AppFixtures.php
+    namespace App\DataFixtures;
 
-    // src/AppBundle/DataFixtures/ORM/Fixtures.php
-    namespace AppBundle\DataFixtures\ORM;
-
-    use AppBundle\Entity\Product;
+    use App\Entity\Product;
     use Doctrine\Bundle\FixturesBundle\Fixture;
-    use Doctrine\Common\Persistence\ObjectManager;
+    use Doctrine\Persistence\ObjectManager;
 
-    class Fixtures extends Fixture
+    class AppFixtures extends Fixture
     {
         public function load(ObjectManager $manager)
         {
@@ -84,68 +74,63 @@ Just create a fixtures class and start adding products!
         }
     }
 
-That's it! Inside ``load()``, create and persist as many objects as you want.
-
-.. tip::
-
-    You can also create multiple fixtures classes. See :ref:`multiple-files`.
-
 Loading Fixtures
 ----------------
 
 Once your fixtures have been written, load them by executing this command:
 
-.. code-block:: bash
+.. code-block:: terminal
 
     # when using the ORM
     $ php bin/console doctrine:fixtures:load
-
-    # when using the ODM
-    $ php bin/console doctrine:mongodb:fixtures:load
 
 .. caution::
 
     By default the ``load`` command **purges the database**, removing all data
     from every table. To append your fixtures' data add the ``--append`` option.
 
-This command looks inside the ``DataFixtures/ORM/`` (or ``DataFixtures/MongoDB/``)
-directory of each bundle and executes all the classes that implement the
-``FixtureInterface`` (for example, those extending from ``Fixture``).
+This command looks for all services tagged with ``doctrine.fixture.orm``. If you're
+using the `default service configuration`_, any class that implements ``ORMFixtureInterface``
+(for example, those extending from ``Fixture``) will automatically be registered
+with this tag.
 
-These are the options that you can add to the command:
+To see other options for the command, run:
 
-* ``--fixtures=/path/to/fixture`` to make the command load only the fixtures
-  defined in that directory (which can be any directory, not only the standard
-  ``DataFixtures/ORM/`` directory). This option can be set repeatedly to load
-  fixtures from several directories;
-* ``--append`` to make the command append data instead of deleting it before
-  loading the fixtures;
-* ``--em=manager_name`` (``--dm=manager_name``) to define explicitly the entity
-  manager or document manager to use when loading the data.
+.. code-block:: terminal
 
-Using the Container in the Fixtures
------------------------------------
+    $ php bin/console doctrine:fixtures:load --help
+
+Accessing Services from the Fixtures
+------------------------------------
 
 In some cases you may need to access your application's services inside a fixtures
-class. No problem! The container is available via the ``$this->container`` property
-on your fixture class:
+class. No problem! Your fixtures class is a service, so you can use normal dependency
+injection::
 
-.. code-block:: php
+    // src/DataFixtures/AppFixtures.php
+    use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-    // src/AppBundle/DataFixtures/ORM/Fixtures.php
-
-    // ...
-    public function load(ObjectManager $manager)
+    class AppFixtures extends Fixture
     {
-        $user = new User();
-        $user->setUsername('admin');
+        private $encoder;
 
-        $encoder = $this->container->get('security.password_encoder');
-        $password = $encoder->encodePassword($user, 'pass_1234');
-        $user->setPassword($password);
+        public function __construct(UserPasswordEncoderInterface $encoder)
+        {
+            $this->encoder = $encoder;
+        }
 
-        $manager->persist($user);
-        $manager->flush();
+        // ...
+        public function load(ObjectManager $manager)
+        {
+            $user = new User();
+            $user->setUsername('admin');
+
+            $password = $this->encoder->encodePassword($user, 'pass_1234');
+            $user->setPassword($password);
+
+            $manager->persist($user);
+            $manager->flush();
+        }
     }
 
 .. _multiple-files:
@@ -167,26 +152,26 @@ Sharing Objects between Fixtures
 When using multiple fixtures files, you can reuse PHP objects across different
 files thanks to the **object references**. Use the ``addReference()`` method to
 give a name to any object and then, use the ``getReference()`` method to get the
-exact same object via its name:
+exact same object via its name::
 
-.. code-block:: php
-
-    // src/AppBundle/DataFixtures/ORM/UserFixtures.php
+    // src/DataFixtures/UserFixtures.php
     // ...
     class UserFixtures extends Fixture
     {
+        public const ADMIN_USER_REFERENCE = 'admin-user';
+
         public function load(ObjectManager $manager)
         {
             $userAdmin = new User('admin', 'pass_1234');
             $manager->persist($userAdmin);
             $manager->flush();
 
-            // other fixtures can get this object using the 'admin-user' name
-            $this->addReference('admin-user', $userAdmin);
+            // other fixtures can get this object using the UserFixtures::ADMIN_USER_REFERENCE constant
+            $this->addReference(self::ADMIN_USER_REFERENCE, $userAdmin);
         }
     }
 
-    // src/AppBundle/DataFixtures/ORM/GroupFixtures.php
+    // src/DataFixtures/GroupFixtures.php
     // ...
     class GroupFixtures extends Fixture
     {
@@ -194,7 +179,7 @@ exact same object via its name:
         {
             $userGroup = new Group('administrators');
             // this reference returns the User object created in UserFixtures
-            $userGroup->addUser($this->getReference('admin-user'));
+            $userGroup->addUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
 
             $manager->persist($userGroup);
             $manager->flush();
@@ -212,14 +197,13 @@ Loading the Fixture Files in Order
 
 Instead of defining the exact order in which all fixture files must be loaded,
 Doctrine uses a smarter approach to ensure that some fixtures are loaded before
-others. Just add the ``getDependencies()`` method to your fixtures class
-and return an array of the fixture classes that must be loaded before
-this one:
+others. Implement the ``DependentFixtureInterface`` and add a new
+``getDependencies()`` method to your fixtures class. This will return
+an array of the fixture classes that must be loaded before this one::
 
-.. code-block:: php
+    // src/DataFixtures/UserFixtures.php
+    namespace App\DataFixtures;
 
-    // src/AppBundle/DataFixtures/ORM/UserFixtures.php
-    namespace AppBundle\DataFixtures\ORM;
     // ...
     class UserFixtures extends Fixture
     {
@@ -227,17 +211,15 @@ this one:
         {
             // ...
         }
-
-        // No need to define getDependencies() here because this fixture
-        // doesn't need any other fixture loaded before
     }
 
-    // src/AppBundle/DataFixtures/ORM/GroupFixtures.php
-    namespace AppBundle\DataFixtures\ORM;
+    // src/DataFixtures/GroupFixtures.php
+    namespace App\DataFixtures;
     // ...
-    use AppBundle\DataFixtures\ORM\UserFixtures;
+    use App\DataFixtures\UserFixtures;
+    use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-    class GroupFixtures extends Fixture
+    class GroupFixtures extends Fixture implements DependentFixtureInterface
     {
         public function load(ObjectManager $manager)
         {
@@ -246,12 +228,155 @@ this one:
 
         public function getDependencies()
         {
-            return array(
+            return [
                 UserFixtures::class,
-            );
+            ];
         }
     }
 
-.. _`ORM`: http://symfony.com/doc/current/doctrine.html
-.. _`ODM`: http://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/index.html
+Fixture Groups: Only Executing Some Fixtures
+--------------------------------------------
+
+By default, *all* of your fixture classes are executed. If you only want
+to execute *some* of your fixture classes, you can organize them into
+groups.
+
+The simplest way to organize a fixture class into a group is to
+make your fixture implement ``FixtureGroupInterface``:
+
+.. code-block:: diff
+
+    // src/DataFixtures/UserFixtures.php
+
+    + use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+
+    - class UserFixtures extends Fixture
+    + class UserFixtures extends Fixture implements FixtureGroupInterface
+    {
+        // ...
+
+    +     public static function getGroups(): array
+    +     {
+    +         return ['group1', 'group2'];
+    +     }
+    }
+
+To execute all of your fixtures for a given group, pass the ``--group``
+option:
+
+.. code-block:: terminal
+
+    $ php bin/console doctrine:fixtures:load --group=group1
+
+    # or to execute multiple groups
+    $ php bin/console doctrine:fixtures:load --group=group1 --group=group2
+
+Alternatively, instead of implementing the ``FixtureGroupInterface``,
+you can also tag your service with ``doctrine.fixture.orm`` and add
+an extra ``group`` option set to a group your fixture should belong to.
+
+Regardless of groups defined in the fixture or the service definition, the
+fixture loader always adds the short name of the class as a separate group so
+you can load a single fixture at a time. In the example above, you can load the
+fixture using the ``UserFixtures`` group:
+
+.. code-block:: terminal
+
+    $ php bin/console doctrine:fixtures:load --group=UserFixtures
+
+.. _`ORM`: https://symfony.com/doc/current/doctrine.html
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
+.. _`Symfony Flex`: https://symfony.com/doc/current/setup/flex.html
+.. _`default service configuration`: https://symfony.com/doc/current/service_container.html#service-container-services-load-example
+
+
+Specifying purging behavior
+---------------------------
+
+By default all previously existing data is purged using ``DELETE FROM table`` statements. If you prefer to use
+``TRUNCATE table`` statements for purging, use ``--purge-with-truncate``.
+
+If you want to exclude a set of tables from being purged, e.g. because your schema comes with pre-populated,
+semi-static data, pass the option ``--purge-exclusions``. Specify ``--purge-exclusions`` multiple times to exclude
+multiple tables.
+
+You can also customize purging behavior significantly more and implement a custom purger plus a custom purger factory::
+
+    // src/Purger/CustomPurger.php
+    namespace App\Purger;
+
+    use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
+
+    // ...
+    class CustomPurger implements PurgerInterface
+    {
+        public function purge() : void
+        {
+            // ...
+        }
+    }
+
+    // src/Purger/CustomPurgerFactory.php
+    namespace App\Purger;
+    // ...
+    use Doctrine\Bundle\FixturesBundle\Purger\PurgerFactory;
+
+    class CustomPurgerFactory implements PurgerFactory
+    {
+        public function createForEntityManager(?string $emName, EntityManagerInterface $em, array $excluded = [], bool $purgeWithTruncate = false) : PurgerInterface
+        {
+            return new CustomPurger($em);
+        }
+    }
+
+The next step is to register our custom purger factory and specify its alias.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+        services:
+            App\Purger\CustomPurgerFactory:
+                tags:
+                    - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <container xmlns="http://symfony.com/schema/dic/services"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/dic/services
+                https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+            <services>
+                <service id="App\Purger\CustomPurgerFactory">
+                    <tag name="doctrine.fixtures.purger_factory" alias="my_purger"/>
+                </service>
+            </services>
+        </container>
+
+    .. code-block:: php
+
+        // config/services.php
+        namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+        use App\Purger\CustomerPurgerFactory;
+
+        return function(ContainerConfigurator $configurator) : void {
+            $services = $configurator->services();
+
+            $services->set(CustomerPurgerFactory::class)
+                ->tag('doctrine.fixtures.purger_factory', ['alias' => 'my_purger'])
+            ;
+        };
+
+With the ``--purger`` option we can now specify to use ``my_purger`` instead of the ``default`` purger.
+
+.. code-block:: terminal
+
+    $ php bin/console doctrine:fixtures:load --purger=my_purger
+
+.. _`Doctrine ORM`: https://symfony.com/doc/current/doctrine.html
+.. _`DoctrineMongoDBBundle`: https://github.com/doctrine/DoctrineMongoDBBundle

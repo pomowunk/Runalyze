@@ -1,4 +1,4 @@
-# RedisBundle ![project status](https://img.shields.io/maintenance/yes/2018.svg) [![build status](https://secure.travis-ci.org/snc/SncRedisBundle.png?branch=master)](https://secure.travis-ci.org/snc/SncRedisBundle) #
+# RedisBundle
 
 ## About ##
 
@@ -67,7 +67,7 @@ snc_redis:
             type: predis
             alias: default
             dsn: redis://localhost
-            logging: %kernel.debug%
+            logging: '%kernel.debug%'
         cache:
             type: predis
             alias: cache
@@ -89,17 +89,10 @@ snc_redis:
                 - redis://localhost/5?weight=1
 ```
 
-In your controllers you can now access all your configured clients:
-
-``` php
-<?php
-$redis = $this->container->get('snc_redis.default');
-$val = $redis->incr('foo:bar');
-$redis_cluster = $this->container->get('snc_redis.cluster');
-$val = $redis_cluster->get('ab:cd');
-$val = $redis_cluster->get('ef:gh');
-$val = $redis_cluster->get('ij:kl');
-```
+In your code you can now access all your configured clients using dependency
+injection or service locators. The services are named `snc_redis.` followed by
+the alias name, ie. `snc_redis.default` or `snc_redis.cluster` in the example
+above.
 
 A setup using `predis` master-slave replication could look like this:
 
@@ -147,6 +140,23 @@ If you use a password, it must be in the password parameter and must
 be omitted from the DSNs. Also make sure to use the sentinel port number
 (26379 by default) in the DSNs, and not the default Redis port.
 You can find more information about this on [Configuring Sentinel](https://redis.io/topics/sentinel#configuring-sentinel).
+
+A setup using `RedisCluster` from `phpredis`  could look like this:
+
+``` yaml
+snc_redis:
+    clients:
+        default:
+            type: phpredis
+            alias: default
+            dsn:
+                - redis://localhost:7000
+                - redis://localhost:7001
+                - redis://localhost:7002
+            options:
+                cluster: true
+```
+
 
 ### Sessions ###
 
@@ -304,20 +314,28 @@ swiftmailer:
         type: redis
 ```
 
-### Profiler storage ###
+### Symfony Cache Pools ###
 
-To store your profiler data in Redis for Symfony 3 add following to your config:
+If you want to use one of the client connections for the Symfony App Cache or a Symfony Cache Pool, just use its service name as a cache pool provider:
 
-``` yaml
-snc_redis:
-    ...
-    profiler_storage:
-        client: profiler_storage
-        ttl: 3600
+```yaml
+framework:
+    cache:
+        app: cache.adapter.redis
+        # app cache from client config as default adapter/provider
+        default_redis_provider: snc_redis.default
+        pools:
+            some-pool.cache:
+                adapter: cache.adapter.redis
+                # a specific provider, e.g. if you have a snc_redis.clients.cache
+                provider: snc_redis.cache
 ```
 
-This will overwrite the `profiler.storage` service.
-Prior to [Symfony 3.0 support for Redis was built-in](http://symfony.com/doc/current/profiler/storage.html).
+### Profiler storage ###
+
+:warning: this feature is not supported anymore since Symfony 4.4 and will be automatically disabled if you are using Symfony 4.4.
+
+>As the profiler must only be used on non-production servers, the file storage is more than enough and no other implementations will ever be supported. 
 
 ### Complete configuration example ###
 
@@ -328,16 +346,11 @@ snc_redis:
             type: predis
             alias: default
             dsn: redis://localhost
-            logging: %kernel.debug%
+            logging: '%kernel.debug%'
         cache:
             type: predis
             alias: cache
             dsn: redis://localhost/1
-            logging: true
-        profiler_storage:
-            type: predis
-            alias: profiler_storage
-            dsn: redis://localhost/2
             logging: false
         cluster:
             type: predis
@@ -355,8 +368,7 @@ snc_redis:
                 read_write_timeout: 30
                 iterable_multibulk: false
                 throw_errors: true
-                cluster: Snc\RedisBundle\Client\Predis\Connection\PredisCluster
-                replication: false
+                cluster: predis
     session:
         client: default
         prefix: foo
@@ -382,12 +394,24 @@ snc_redis:
     swiftmailer:
         client: default
         key: swiftmailer
-    profiler_storage:
-        client: profiler_storage
-        ttl: 3600
 ```
 
-## Troubleshooting ##
+## Usage with `symfony/web-profiler-bundle`
+
+If you are using [`symfony/web-profiler-bundle`](https://github.com/symfony/web-profiler-bundle)
+and want to inspect commands sent by a configured Redis client, logging needs to be enabled for that client.
+
+``` yaml
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://localhost/
+            logging: '%kernel.debug%'
+```
+
+## Troubleshooting
 
 If cache warmup fails for prod because a redis server is not available,
 try to install [`symfony/proxy-manager-bridge`](https://symfony.com/doc/master/service_container/lazy_services.html):

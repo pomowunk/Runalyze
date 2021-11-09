@@ -14,12 +14,14 @@ namespace Sensio\Bundle\FrameworkExtraBundle\Tests\EventListener;
 use Sensio\Bundle\FrameworkExtraBundle\EventListener\PsrResponseListener;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Tests\Fixtures\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  * @requires PHP 5.4
  */
-class PsrResponseListenerTest extends \PHPUnit_Framework_TestCase
+class PsrResponseListenerTest extends \PHPUnit\Framework\TestCase
 {
     public function testConvertsControllerResult()
     {
@@ -32,7 +34,7 @@ class PsrResponseListenerTest extends \PHPUnit_Framework_TestCase
     public function testDoesNotConvertControllerResult()
     {
         $listener = new PsrResponseListener(new HttpFoundationFactory());
-        $event = $this->createEventMock(array());
+        $event = $this->createEventMock([]);
         $event->expects($this->never())->method('setResponse');
 
         $listener->onKernelView($event);
@@ -45,16 +47,17 @@ class PsrResponseListenerTest extends \PHPUnit_Framework_TestCase
 
     private function createEventMock($controllerResult)
     {
+        $eventClass = class_exists(ViewEvent::class) ? ViewEvent::class : GetResponseForControllerResultEvent::class;
+
         $event = $this
-            ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent')
+            ->getMockBuilder($eventClass)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
+
         $event
             ->expects($this->any())
             ->method('getControllerResult')
-            ->will($this->returnValue($controllerResult))
-        ;
+            ->willReturn($controllerResult);
 
         return $event;
     }

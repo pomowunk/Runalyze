@@ -11,8 +11,10 @@
 
 namespace Snc\RedisBundle\Client\Predis\Connection;
 
+use Predis\Connection\NodeConnectionInterface;
 use Predis\Connection\Factory;
 use Snc\RedisBundle\Logger\RedisLogger;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * ConnectionFactory
@@ -30,6 +32,11 @@ class ConnectionFactory extends Factory
     protected $logger;
 
     /**
+     * @var Stopwatch|null
+     */
+    protected $stopwatch;
+
+    /**
      * Sets the logger
      *
      * @param RedisLogger $logger A RedisLogger instance
@@ -37,6 +44,11 @@ class ConnectionFactory extends Factory
     public function setLogger(RedisLogger $logger = null)
     {
         $this->logger = $logger;
+    }
+
+    public function setStopwatch(?Stopwatch $stopwatch)
+    {
+        $this->stopwatch = $stopwatch;
     }
 
     /**
@@ -52,6 +64,8 @@ class ConnectionFactory extends Factory
 
     /**
      * {@inheritdoc}
+     *
+     * @return NodeConnectionInterface
      */
     public function create($parameters)
     {
@@ -61,12 +75,16 @@ class ConnectionFactory extends Factory
         /** @var ConnectionWrapper $connection */
         $connection = parent::create($parameters);
 
-        if ($connection->getParameters()->logging) {
-            if (null !== $this->wrapper) {
-                $wrapper = $this->wrapper;
-                $connection = new $wrapper($connection);
-                $connection->setLogger($this->logger);
-            }
+        if (null === $this->wrapper) {
+            return $connection;
+        }
+
+        $wrapper = $this->wrapper;
+        $connection = new $wrapper($connection);
+        $connection->setLogger($this->logger);
+
+        if ($this->stopwatch) {
+            $connection->setStopwatch($this->stopwatch);
         }
 
         return $connection;

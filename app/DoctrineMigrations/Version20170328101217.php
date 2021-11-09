@@ -2,7 +2,7 @@
 
 namespace Runalyze\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -21,7 +21,7 @@ class Version20170328101217 extends AbstractMigration implements ContainerAwareI
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema) : void
     {
         $prefix = $this->container->getParameter('database_prefix');
 
@@ -42,7 +42,7 @@ class Version20170328101217 extends AbstractMigration implements ContainerAwareI
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema) : void
     {
         $prefix = $this->container->getParameter('database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` MODIFY `speed` varchar(10) NOT NULL DEFAULT "min/km"');

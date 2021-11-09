@@ -10,6 +10,4 @@ return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
     'PicoFeed' => array($vendorDir . '/p3k/picofeed/lib'),
-    'JMS\\TranslationBundle' => array($vendorDir . '/jms/translation-bundle'),
-    'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
 );

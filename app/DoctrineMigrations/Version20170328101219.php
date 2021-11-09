@@ -2,7 +2,7 @@
 
 namespace Runalyze\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Runalyze\Profile\Sport\SportProfile;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -21,7 +21,7 @@ class Version20170328101219 extends AbstractMigration implements ContainerAwareI
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema) : void
     {
         $prefix = $this->container->getParameter('database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` ADD `internal_sport_id` TINYINT NULL AFTER `default_typeid`, ADD `is_main` tinyint(1) unsigned NOT NULL DEFAULT 0 AFTER `default_typeid`');
@@ -45,7 +45,7 @@ class Version20170328101219 extends AbstractMigration implements ContainerAwareI
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema) : void
     {
         $prefix = $this->container->getParameter('database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` DROP INDEX `unique_internal_id`');

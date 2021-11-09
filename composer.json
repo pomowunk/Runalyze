@@ -7,31 +7,31 @@
     "prefer-stable": true,
     "require": {
         "php": "~5.6|~7",
-        "symfony/symfony": "3.4.2",
-        "sensio/framework-extra-bundle": "^3.0",
-        "twig/twig": "1.35",
-        "monolog/monolog": "^1.20",
+        "symfony/symfony": "~3.4.49",
+        "sensio/framework-extra-bundle": "~5.4",
+        "twig/twig": "~1.44.5",
+        "monolog/monolog": "^1.26",
         "nojacko/email-validator": "~1.0",
-        "league/geotools": "^0.7.0",
-        "swiftmailer/swiftmailer": "@stable",
-        "phpfastcache/phpfastcache": "3.0.23",
-        "twig/extensions": "^1.3",
-        "doctrine/doctrine-bundle": "1.6.*",
-        "doctrine/orm": "^2.5",
-        "symfony/monolog-bundle": "~2.4",
-        "doctrine/doctrine-migrations-bundle": "^1.0",
-        "doctrine/doctrine-cache-bundle": "^1.3",
-        "runalyze/dem-reader": "^1.0",
+        "league/geotools": "^0.8.0",
+        "swiftmailer/swiftmailer": "~6.3",
+        "phpfastcache/phpfastcache": "~3",
+        "twig/extensions": "^1.5",
+        "doctrine/doctrine-bundle": "~1.12",
+        "doctrine/orm": "^2.7",
+        "symfony/monolog-bundle": "~3.5",
+        "doctrine/doctrine-migrations-bundle": "^2.0",
+        "doctrine/doctrine-cache-bundle": "^1.4",
+        "runalyze/dem-reader": "^1.1",
         "runalyze/age-grade": "^1.2",
-        "symfony/swiftmailer-bundle": "2.6.*",
-        "beberlei/doctrineextensions": "~1.0",
-        "jms/translation-bundle": "~1.4.4",
+        "symfony/swiftmailer-bundle": "^3.2",
+        "beberlei/doctrineextensions": "~1.3",
+        "jms/translation-bundle": "~1.6",
         "bernard/bernard-bundle": "^2.0.0",
         "runalyze/gpxtrackposter": "^1.0.0",
         "runalyze/glossary": "dev-master",
-        "snc/redis-bundle": "2.*",
+        "snc/redis-bundle": "^3.5",
         "predis/predis": "^1.0",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "^7.0",
         "p3k/picofeed": "@stable",
         "runalyze/translations": "dev-master"
     },
@@ -48,10 +48,9 @@
         }
     },
     "require-dev": {
-        "runalyze/playground": "dev-master",
         "liip/functional-test-bundle": "^1.7",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
-        "phpunit/phpunit": "4.8.*"
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpunit/phpunit": "5.7.*"
     },
     "repositories": [
         {
@@ -65,5 +64,9 @@
                     "reference": "8b337ca89e1cf9552dc0bbb08d8b81bc55335c45"
                 }
             }
-        }]
+        }],
+    "config": {
+        "preferred-install": "dist",
+        "cache-dir": "./tests/cache"
+    }
 }

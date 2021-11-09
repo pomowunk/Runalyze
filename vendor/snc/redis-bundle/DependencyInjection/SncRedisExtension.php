@@ -11,17 +11,26 @@
 
 namespace Snc\RedisBundle\DependencyInjection;
 
+
+use Doctrine\Common\Cache\RedisCache;
+use Snc\RedisBundle\Command\RedisBaseCommand;
 use Snc\RedisBundle\DependencyInjection\Configuration\Configuration;
 use Snc\RedisBundle\DependencyInjection\Configuration\RedisDsn;
 use Snc\RedisBundle\DependencyInjection\Configuration\RedisEnvDsn;
-use Symfony\Component\DependencyInjection\Alias;
+use Snc\RedisBundle\Factory\PredisParametersFactory;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Snc\RedisBundle\Factory\PhpredisClientFactory;
+use Predis\Command\Processor\KeyPrefixProcessor;
+use Symfony\Component\HttpKernel\Kernel;
 
 class SncRedisExtension extends Extension
 {
@@ -71,10 +80,13 @@ class SncRedisExtension extends Extension
         if (isset($config['profiler_storage'])) {
             $this->loadProfilerStorage($config, $container, $loader);
         }
+
+        $container->registerForAutoconfiguration(RedisBaseCommand::class)
+            ->addTag('snc_redis.command');
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getNamespace()
     {
@@ -82,7 +94,7 @@ class SncRedisExtension extends Extension
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getXsdValidationBasePath()
     {
@@ -118,12 +130,19 @@ class SncRedisExtension extends Extension
 
         $client['dsns'] = array_map($dsnResolver, $client['dsns']);
 
+        if (method_exists($container, 'resolveEnvPlaceholders')) {
+            $client['type'] = $container->resolveEnvPlaceholders($client['type'], true);
+        }
+
         switch ($client['type']) {
             case 'predis':
                 $this->loadPredisClient($client, $container);
                 break;
             case 'phpredis':
                 $this->loadPhpredisClient($client, $container);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The redis client type %s is invalid.', $client['type']));
                 break;
         }
     }
@@ -139,15 +158,6 @@ class SncRedisExtension extends Extension
         if (null === $client['options']['cluster']) {
             unset($client['options']['cluster']);
         } else {
-            unset($client['options']['replication']);
-        }
-
-        if (isset($client['options']['replication']) && false === $client['options']['replication']) {
-            @trigger_error(
-                'Option "replication" with value "false" is deprecated since 2.1.9, to be removed in 3.0. Please choose a valid value or remove this option.',
-                E_USER_DEPRECATED
-            );
-
             unset($client['options']['replication']);
         }
 
@@ -190,7 +200,7 @@ class SncRedisExtension extends Extension
         $profileDef->setPublic(false);
         if (null !== $client['options']['prefix']) {
             $processorId = sprintf('snc_redis.client.%s_processor', $client['alias']);
-            $processorDef = new Definition('Predis\Command\Processor\KeyPrefixProcessor');
+            $processorDef = new Definition(KeyPrefixProcessor::class);
             $processorDef->setArguments(array($client['options']['prefix']));
             $container->setDefinition($processorId, $processorDef);
             $profileDef->addMethodCall('setProcessor', array(new Reference($processorId)));
@@ -204,7 +214,7 @@ class SncRedisExtension extends Extension
         $optionDef->addArgument($client['options']);
         $container->setDefinition($optionId, $optionDef);
         $clientDef = new Definition($container->getParameter('snc_redis.client.class'));
-        $clientDef->setPublic(true);
+        $clientDef->setPublic(false);
         $clientDef->addTag('snc_redis.client', array('alias' => $client['alias']));
         if (1 === $connectionCount && !isset($client['options']['cluster']) && !isset($client['options']['replication'])) {
             $clientDef->addArgument(new Reference(sprintf('snc_redis.connection.%s_parameters.%s', $connectionAliases[0], $client['alias'])));
@@ -216,12 +226,8 @@ class SncRedisExtension extends Extension
             $clientDef->addArgument($connections);
         }
 
-        $clientDefId = sprintf('snc_redis.%s', $client['alias']);
-        $clientAliasId = sprintf('snc_redis.%s_client', $client['alias']);
-
         $clientDef->addArgument(new Reference($optionId));
-        $container->setDefinition($clientDefId, $clientDef);
-        $container->setAlias($clientAliasId, $clientDefId);
+        $container->setDefinition(sprintf('snc_redis.%s', $client['alias']), $clientDef);
     }
 
     /**
@@ -239,7 +245,7 @@ class SncRedisExtension extends Extension
 
         $parameterDef = new Definition($parametersClass);
         $parameterDef->setPublic(false);
-        $parameterDef->setFactory(array('Snc\RedisBundle\Factory\PredisParametersFactory', 'create'));
+        $parameterDef->setFactory(array(PredisParametersFactory::class, 'create'));
         $parameterDef->addArgument($connection);
         $parameterDef->addArgument($parametersClass);
         $parameterDef->addArgument((string) $dsn);
@@ -258,58 +264,57 @@ class SncRedisExtension extends Extension
     protected function loadPhpredisClient(array $client, ContainerBuilder $container)
     {
         $connectionCount = count($client['dsns']);
+        $hasClusterOption = null !== $client['options']['cluster'];
 
-        if (1 !== $connectionCount) {
-            throw new \RuntimeException('Support for RedisArray is not yet implemented.');
+        if ($connectionCount > 1 && !$hasClusterOption) {
+            throw new \LogicException(sprintf('\RedisArray is not supported yet but \RedisCluster is: set option "cluster" to true to enable it.'));
         }
 
-        /** @var \Snc\RedisBundle\DependencyInjection\Configuration\RedisDsn $dsn */
-        $dsn = $client['dsns'][0];
-
-        $phpRedisVersion = phpversion('redis');
-        if (version_compare($phpRedisVersion, '4.0.0') >= 0 && $client['logging']) {
-            $client['logging'] = false;
-            @trigger_error(sprintf('Redis logging is not supported on PhpRedis %s and has been automatically disabled, disable logging in config to suppress this warning', $phpRedisVersion), E_USER_WARNING);
+        if ($hasClusterOption) {
+            $phpredisClientClass =
+                $client['logging']
+                    ? $container->getParameter('snc_redis.phpredis_clusterclient_connection_wrapper.class')
+                    : $container->getParameter('snc_redis.phpredis_clusterclient.class');
+        } else {
+            $phpredisClientClass =
+                $client['logging']
+                ? $container->getParameter('snc_redis.phpredis_connection_wrapper.class')
+                : $container->getParameter('snc_redis.phpredis_client.class');
         }
 
-        $phpredisClientclass = $container->getParameter('snc_redis.phpredis_client.class');
-        if ($client['logging']) {
-            $phpredisClientclass = $container->getParameter('snc_redis.phpredis_connection_wrapper.class');
+        $phpredisDef = new Definition($phpredisClientClass);
+        $factoryDefinition = new Definition(
+            PhpredisClientFactory::class, [
+                new Reference('snc_redis.logger'),
+            ]
+        );
+
+        if ($container->getParameter('kernel.debug')) {
+            $factoryDefinition->addArgument(new Reference('debug.stopwatch', ContainerInterface::NULL_ON_INVALID_REFERENCE));
         }
-        $phpredisDef = new Definition($phpredisClientclass);
-        $phpredisDef->setFactory(array(
-            new Definition('Snc\RedisBundle\Factory\PhpredisClientFactory', array(new Reference('snc_redis.logger'))),
-            'create'
-        ));
-        $phpredisDef->addArgument($phpredisClientclass);
-        $phpredisDef->addArgument((string) $dsn);
+
+        $phpredisDef->setFactory([$factoryDefinition, 'create']);
+        $phpredisDef->addArgument($phpredisClientClass);
+        $phpredisDef->addArgument(array_map('strval', $client['dsns']));
         $phpredisDef->addArgument($client['options']);
         $phpredisDef->addArgument($client['alias']);
         $phpredisDef->addTag('snc_redis.client', array('alias' => $client['alias']));
         $phpredisDef->setPublic(false);
-        
+
         // Older version of phpredis extension do not support lazy loading
         $minimumVersionForLazyLoading = '4.1.1';
+        $phpRedisVersion = phpversion('redis');
         $supportsLazyServices = version_compare($phpRedisVersion, $minimumVersionForLazyLoading, '>=');
         $phpredisDef->setLazy($supportsLazyServices);
         if (!$supportsLazyServices) {
             @trigger_error(
-                sprintf('Lazy loading Redis is not supported on PhpRedis %s. Please update to PhpRedis %s or higher.', $phpRedisVersion, $minimumVersionForLazyLoading), 
+                sprintf('Lazy loading Redis is not supported on PhpRedis %s. Please update to PhpRedis %s or higher.', $phpRedisVersion, $minimumVersionForLazyLoading),
                 E_USER_WARNING
-            );    
+            );
         }
 
-        $phpredisId = sprintf('snc_redis.phpredis.%s', $client['alias']);
-        $phpredisAliasId = sprintf('snc_redis.%s_client', $client['alias']);
-        $phpredisAliasId2 = sprintf('snc_redis.%s', $client['alias']);
-
+        $phpredisId = sprintf('snc_redis.%s', $client['alias']);
         $container->setDefinition($phpredisId, $phpredisDef);
-        $container->setAlias($phpredisAliasId2, new Alias($phpredisId, true));
-        $alias = $container->setAlias($phpredisAliasId, $phpredisId);
-
-        if (method_exists($alias, 'setDeprecated')) {
-            $alias->setDeprecated(true, '"%alias_id%" service is deprecated since 2.1.10, to be removed in 3.0. Please use "'.$phpredisAliasId2.'" instead.');
-        }
     }
 
     /**
@@ -349,43 +354,40 @@ class SncRedisExtension extends Extension
     protected function loadDoctrine(array $config, ContainerBuilder $container)
     {
         foreach ($config['doctrine'] as $name => $cache) {
+            if (empty($cache['entity_managers']) && empty($cache['document_managers'])) {
+                throw new InvalidConfigurationException(sprintf('Enabling the doctrine %s section requires it to reference either an entity manager or document manager', $name));
+            }
+
             if ('second_level_cache' === $name) {
                 $name = 'second_level_cache.region_cache_driver';
             }
-            $definitionFunction = null;
-            switch ($config['clients'][$cache['client']]['type']) {
-                case 'predis':
-                    $definitionFunction = function ($client, $cache) use ($container) {
-                        $def = new Definition($container->getParameter('snc_redis.doctrine_cache_predis.class'));
-                        $def->addArgument($client);
-                        if ($cache['namespace']) {
-                            $def->addMethodCall('setNamespace', array($cache['namespace']));
-                        }
 
-                        return $def;
-                    };
-                    break;
-                case 'phpredis':
-                    $definitionFunction = function ($client, $cache) use ($container) {
-                        $def = new Definition($container->getParameter('snc_redis.doctrine_cache_phpredis.class'));
-                        $def->addMethodCall('setRedis', array($client));
-                        if ($cache['namespace']) {
-                            $def->addMethodCall('setNamespace', array($cache['namespace']));
-                        }
+            $definitionFunction = function ($client, $cache) use ($container, $config): Definition {
+                $cacheClassParam = 'snc_redis.doctrine_cache_' . $config['clients'][$cache['client']]['type'] . '.class';
+                if (RedisAdapter::class === $container->getParameter($cacheClassParam)) {
+                    return new Definition(RedisAdapter::class, [$client, $cache['namespace'] ?? '']);
+                }
 
-                        return $def;
-                    };
-                    break;
-            }
+                $def = new Definition($container->getParameter($cacheClassParam), [$client]);
+                if ($cache['namespace']) {
+                    $def->addMethodCall('setNamespace', [$cache['namespace']]);
+                }
+
+                return $def;
+            };
 
             $client = new Reference(sprintf('snc_redis.%s', $cache['client']));
             foreach ($cache['entity_managers'] as $em) {
+                $id = sprintf('snc_redis.doctrine.orm.%s_%s', $em, $name);
                 $def = call_user_func_array($definitionFunction, array($client, $cache));
-                $container->setDefinition(sprintf('doctrine.orm.%s_%s', $em, $name), $def);
+                $container->setDefinition($id, $def);
+                $container->setAlias(sprintf('doctrine.orm.%s_%s', $em, $name), $id);
             }
             foreach ($cache['document_managers'] as $dm) {
+                $id = sprintf('snc_redis.doctrine_mongodb.odm.%s_%s', $dm, $name);
                 $def = call_user_func_array($definitionFunction, array($client, $cache));
-                $container->setDefinition(sprintf('doctrine_mongodb.odm.%s_%s', $dm, $name), $def);
+                $container->setDefinition($id, $def);
+                $container->setAlias(sprintf('doctrine_mongodb.odm.%s_%s', $dm, $name), $id);
             }
         }
     }
@@ -398,11 +400,7 @@ class SncRedisExtension extends Extension
      */
     protected function loadMonolog(array $config, ContainerBuilder $container)
     {
-        if ('phpredis' === $config['clients'][$config['monolog']['client']]['type']) {
-            $ref = new Reference(sprintf('snc_redis.phpredis.%s', $config['monolog']['client']));
-        } else {
-            $ref = new Reference(sprintf('snc_redis.%s', $config['monolog']['client']));
-        }
+        $ref = new Reference(sprintf('snc_redis.%s', $config['monolog']['client']));
 
         $def = new Definition($container->getParameter('snc_redis.monolog_handler.class'), array(
             $ref,
@@ -440,6 +438,12 @@ class SncRedisExtension extends Extension
      */
     protected function loadProfilerStorage(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
+        if (Kernel::VERSION_ID >= 40400) {
+            @trigger_error('Redis profiler storage is not available anymore since Symfony 4.4. The option has been disabled automatically.', E_USER_WARNING);
+
+            return;
+        }
+
         $loader->load('profiler_storage.xml');
 
         $container->setParameter('snc_redis.profiler_storage.client', $config['profiler_storage']['client']);
@@ -450,6 +454,9 @@ class SncRedisExtension extends Extension
         $container->setAlias('snc_redis.profiler_storage.client', $client);
     }
 
+    /**
+     * @return ConfigurationInterface
+     */
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
         return new Configuration($container->getParameter('kernel.debug'));

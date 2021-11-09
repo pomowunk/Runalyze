@@ -1,137 +1,162 @@
 <?php
 
-/*
- * This file is part of the Doctrine Fixtures Bundle
- *
- * The code was originally distributed inside the Symfony framework.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- * (c) Doctrine Project
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace Doctrine\Bundle\FixturesBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\Bundle\FixturesBundle\DependencyInjection\CompilerPass\PurgerFactoryCompilerPass;
+use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
+use Doctrine\Bundle\FixturesBundle\Purger\ORMPurgerFactory;
+use Doctrine\Bundle\FixturesBundle\Purger\PurgerFactory;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Sharding\PoolingShardConnection;
-use InvalidArgumentException;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+use function assert;
+use function implode;
+use function sprintf;
+use function trigger_error;
+
+use const E_USER_DEPRECATED;
 
 /**
  * Load data fixtures from bundles.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Jonathan H. Wage <jonwage@gmail.com>
  */
 class LoadDataFixturesDoctrineCommand extends DoctrineCommand
 {
+    /** @var SymfonyFixturesLoader */
+    private $fixturesLoader;
+
+    /** @var PurgerFactory[] */
+    private $purgerFactories;
+
+    /**
+     * @param PurgerFactory[] $purgerFactories
+     */
+    public function __construct(SymfonyFixturesLoader $fixturesLoader, ?ManagerRegistry $doctrine = null, array $purgerFactories = [])
+    {
+        if ($doctrine === null) {
+            @trigger_error(sprintf(
+                'Argument 2 of %s() expects an instance of %s, not passing it will throw a \TypeError in DoctrineFixturesBundle 4.0.',
+                __METHOD__,
+                ManagerRegistry::class
+            ), E_USER_DEPRECATED);
+        }
+
+        parent::__construct($doctrine);
+
+        $this->fixturesLoader  = $fixturesLoader;
+        $this->purgerFactories = $purgerFactories;
+    }
+
     protected function configure()
     {
         $this
             ->setName('doctrine:fixtures:load')
-            ->setDescription('Load data fixtures to your database.')
-            ->addOption('fixtures', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The directory to load data fixtures from.')
+            ->setDescription('Load data fixtures to your database')
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures instead of deleting all data from the database first.')
+            ->addOption('group', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Only load fixtures that belong to this group')
             ->addOption('em', null, InputOption::VALUE_REQUIRED, 'The entity manager to use for this command.')
+            ->addOption('purger', null, InputOption::VALUE_REQUIRED, 'The purger to use for this command', 'default')
+            ->addOption('purge-exclusions', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'List of database tables to ignore while purging')
             ->addOption('shard', null, InputOption::VALUE_REQUIRED, 'The shard connection to use for this command.')
             ->addOption('purge-with-truncate', null, InputOption::VALUE_NONE, 'Purge data by using a database-level TRUNCATE statement')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command loads data fixtures from your bundles:
+The <info>%command.name%</info> command loads data fixtures from your application:
 
   <info>php %command.full_name%</info>
 
-You can also optionally specify the path to fixtures with the <info>--fixtures</info> option:
+Fixtures are services that are tagged with <comment>doctrine.fixture.orm</comment>.
 
-  <info>php %command.full_name% --fixtures=/path/to/fixtures1 --fixtures=/path/to/fixtures2</info>
+If you want to append the fixtures instead of flushing the database first you can use the <comment>--append</comment> option:
 
-If you want to append the fixtures instead of flushing the database first you can use the <info>--append</info> option:
+  <info>php %command.full_name%</info> <comment>--append</comment>
 
-  <info>php %command.full_name% --append</info>
+By default Doctrine Data Fixtures uses DELETE statements to drop the existing rows from the database.
+If you want to use a TRUNCATE statement instead you can use the <comment>--purge-with-truncate</comment> flag:
 
-By default Doctrine Data Fixtures uses DELETE statements to drop the existing rows from
-the database. If you want to use a TRUNCATE statement instead you can use the <info>--purge-with-truncate</info> flag:
+  <info>php %command.full_name%</info> <comment>--purge-with-truncate</comment>
 
-  <info>php %command.full_name% --purge-with-truncate</info>
+To execute only fixtures that live in a certain group, use:
+
+  <info>php %command.full_name%</info> <comment>--group=group1</comment>
+
 EOT
         );
     }
 
+    /**
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var $doctrine \Doctrine\Common\Persistence\ManagerRegistry */
-        $doctrine = $this->getContainer()->get('doctrine');
-        $em = $doctrine->getManager($input->getOption('em'));
+        $ui = new SymfonyStyle($input, $output);
 
-        if ($input->isInteractive() && !$input->getOption('append')) {
-            if (!$this->askConfirmation($input, $output, '<question>Careful, database will be purged. Do you want to continue y/N ?</question>', false)) {
-                return;
+        $em = $this->getDoctrine()->getManager($input->getOption('em'));
+        assert($em instanceof EntityManagerInterface);
+
+        if (! $input->getOption('append')) {
+            if (! $ui->confirm(sprintf('Careful, database "%s" will be purged. Do you want to continue?', $em->getConnection()->getDatabase()), ! $input->isInteractive())) {
+                return 0;
             }
         }
 
         if ($input->getOption('shard')) {
-            if (!$em->getConnection() instanceof PoolingShardConnection) {
-                throw new \LogicException(sprintf("Connection of EntityManager '%s' must implement shards configuration.", $input->getOption('em')));
+            if (! $em->getConnection() instanceof PoolingShardConnection) {
+                throw new LogicException(sprintf(
+                    'Connection of EntityManager "%s" must implement shards configuration.',
+                    $input->getOption('em')
+                ));
             }
 
             $em->getConnection()->connect($input->getOption('shard'));
         }
 
-        $dirOrFile = $input->getOption('fixtures');
-        if ($dirOrFile) {
-            $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
-        } else {
-            /** @var $kernel \Symfony\Component\HttpKernel\KernelInterface */
-            $kernel = $this->getApplication()->getKernel();
-            $paths = array($kernel->getRootDir().'/DataFixtures/ORM');
-            foreach ($kernel->getBundles() as $bundle) {
-                $paths[] = $bundle->getPath().'/DataFixtures/ORM';
+        $groups   = $input->getOption('group');
+        $fixtures = $this->fixturesLoader->getFixtures($groups);
+        if (! $fixtures) {
+            $message = 'Could not find any fixture services to load';
+
+            if (! empty($groups)) {
+                $message .= sprintf(' in the groups (%s)', implode(', ', $groups));
             }
+
+            $ui->error($message . '.');
+
+            return 1;
         }
 
-        $loader = new DataFixturesLoader($this->getContainer());
-        foreach ($paths as $path) {
-            if (is_dir($path)) {
-                $loader->loadFromDirectory($path);
-            } elseif (is_file($path)) {
-                $loader->loadFromFile($path);
-            }
+        if (! isset($this->purgerFactories[$input->getOption('purger')])) {
+            $ui->warning(sprintf(
+                'Could not find purger factory with alias "%1$s", using default purger. Did you forget to register the %2$s implementation with tag "%3$s" and alias "%1$s"?',
+                $input->getOption('purger'),
+                PurgerFactory::class,
+                PurgerFactoryCompilerPass::PURGER_FACTORY_TAG
+            ));
+            $factory = new ORMPurgerFactory();
+        } else {
+            $factory = $this->purgerFactories[$input->getOption('purger')];
         }
-        $fixtures = $loader->getFixtures();
-        if (!$fixtures) {
-            throw new InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
-            );
-        }
-        $purger = new ORMPurger($em);
-        $purger->setPurgeMode($input->getOption('purge-with-truncate') ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE);
+
+        $purger   = $factory->createForEntityManager(
+            $input->getOption('em'),
+            $em,
+            $input->getOption('purge-exclusions'),
+            $input->getOption('purge-with-truncate')
+        );
         $executor = new ORMExecutor($em, $purger);
-        $executor->setLogger(function ($message) use ($output) {
-            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
+        $executor->setLogger(static function ($message) use ($ui): void {
+            $ui->text(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
         $executor->execute($fixtures, $input->getOption('append'));
-    }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param string          $question
-     * @param bool            $default
-     *
-     * @return bool
-     */
-    private function askConfirmation(InputInterface $input, OutputInterface $output, $question, $default)
-    {
-        $questionHelper = $this->getHelperSet()->get('question');
-        $question = new ConfirmationQuestion($question, $default);
-
-        return $questionHelper->ask($input, $output, $question);
+        return 0;
     }
 }
