@@ -5194,7 +5194,7 @@
             "version_normalized": "1.0.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/laufhannes/GpxTrackPoster.git",
+                "url": "https://github.com/codeproducer198/GpxTrackPoster.git",
                 "reference": "8b337ca89e1cf9552dc0bbb08d8b81bc55335c45"
             },
             "type": "library",

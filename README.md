@@ -53,6 +53,7 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2021-11-09: Upgrade dependencies to newer/recent versions
 	* only deps where none or only few code changes necessary
 	* changes affected composer-files, vendor folder, database migrations, tests
+	* Clone `laufhannes/GpxTrackPoster` to `codeproducer198/GpxTrackPoster` and use this dependency (commit from Mar 11, 2017)
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
