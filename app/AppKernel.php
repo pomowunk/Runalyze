@@ -32,7 +32,6 @@ class AppKernel extends \Symfony\Component\HttpKernel\Kernel
         if ('dev' == $this->getEnvironment()) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Runalyze\Bundle\PlaygroundBundle\PlaygroundBundle();
         } elseif ('test' == substr($this->getEnvironment(), 0, 4)) {
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
@@ -60,8 +59,6 @@ class AppKernel extends \Symfony\Component\HttpKernel\Kernel
             $routes->import('@WebProfilerBundle/Resources/config/routing/profiler.xml', '/_profiler');
     	    $routes->import('@TwigBundle/Resources/config/routing/errors.xml', '/_error');
             $routes->add('/_trans', '@JMSTranslationBundle/Controller/TranslateController');
-
-            $routes->import('@PlaygroundBundle/Resources/config/routing.yml', '/_playground');
     	}
 
         $routes->import('@CoreBundle/Controller', '/', 'annotation');
