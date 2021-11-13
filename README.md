@@ -50,10 +50,13 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	2. wrapper script for all tests `tests/scripts/runtests.sh`
 	* some tests has errors (i think is caused by the usage of PHP7); see `runtests.sh` for expected failures
 	* `tests` folder can be excluded for production environment
-* 2021-11-09: Upgrade dependencies to newer/recent versions
+* 2021-11-09: Upgrade PHP dependencies to newer/recent versions
 	* only deps where none or only few code changes necessary
 	* changes affected composer-files, vendor folder, database migrations, tests
 	* Clone `laufhannes/GpxTrackPoster` to `codeproducer198/GpxTrackPoster` and use this dependency (commit from Mar 11, 2017)
+* 2021-11-14: Upgrade web dependencies to newer/recent versions
+	* only javascript deps where no error occur while the resource build or the app works
+	* changes affected `bower.json`, `web/vendor` folder
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
