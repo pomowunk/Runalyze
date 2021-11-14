@@ -15,11 +15,13 @@ class DefaultController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             return $this->render($view, [
-                'urlClass' => 'class="window"'
+                'extends' => 'base_logged_in.twig',
+                'urlClass' => ''
             ]);
         }
 
         return $this->render($view, [
+            'extends' => 'base_not_logged_in.html.twig',
             'urlClass' => 'class="external"'
         ]);
     }

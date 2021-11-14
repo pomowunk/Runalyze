@@ -57,6 +57,8 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2021-11-14: Upgrade web dependencies to newer/recent versions
 	* only javascript deps where no error occur while the resource build or the app works
 	* changes affected `bower.json`, `web/vendor` folder
+* 2021-11-14: Upgrade to a newer Runalyze Glossary version (fixed commit-id dev-master#d7e2540bf51dc1aabe4dbdce85af96e8203311b6)
+	* Seems the last version which works with the v4.3.0
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

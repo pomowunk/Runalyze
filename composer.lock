@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab95fc6bde01fb001bdd4473e2ed1f96",
+    "content-hash": "4f085d442c56b8a290071c7baba4b2ff",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4119,12 +4119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Runalyze/glossary.git",
-                "reference": "06a5bfc6a74a8d2d969b342c3132900d881aed65"
+                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/06a5bfc6a74a8d2d969b342c3132900d881aed65",
-                "reference": "06a5bfc6a74a8d2d969b342c3132900d881aed65",
+                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
+                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
                 "shasum": ""
             },
             "require": {

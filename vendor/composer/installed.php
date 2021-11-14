@@ -586,8 +586,8 @@
         'psr/cache-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '^1.0',
+                0 => '^1.0',
+                1 => '1.0',
             ),
         ),
         'psr/container' => array(
@@ -677,8 +677,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -693,8 +693,8 @@
         'psr/simple-cache-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '^1.0',
+                0 => '^1.0',
+                1 => '1.0',
             ),
         ),
         'ralouphie/getallheaders' => array(
@@ -750,7 +750,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => '06a5bfc6a74a8d2d969b342c3132900d881aed65',
+            'reference' => 'd7e2540bf51dc1aabe4dbdce85af96e8203311b6',
             'dev_requirement' => false,
         ),
         'runalyze/gpxtrackposter' => array(

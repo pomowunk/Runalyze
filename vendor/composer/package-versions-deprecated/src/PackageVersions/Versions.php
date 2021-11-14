@@ -93,7 +93,7 @@ final class Versions
   'runalyze/GpxTrackPoster' => '1.0.2@8b337ca89e1cf9552dc0bbb08d8b81bc55335c45',
   'runalyze/age-grade' => '1.2.0@945b3d2a40ec398342137aa57dec97271af475c8',
   'runalyze/dem-reader' => 'v1.1.0@acc7a48e3b90cd8ea8c07cf620c69b46d1095a1f',
-  'runalyze/glossary' => 'dev-master@06a5bfc6a74a8d2d969b342c3132900d881aed65',
+  'runalyze/glossary' => 'dev-master@d7e2540bf51dc1aabe4dbdce85af96e8203311b6',
   'runalyze/translations' => 'dev-master@6068b54251c4b10da17380b937f56b521fd6656c',
   'sensio/framework-extra-bundle' => 'v5.4.1@585f4b3a1c54f24d1a8431c729fc8f5acca20c8a',
   'snc/redis-bundle' => '3.5.2@2ab0f17a10a3fb1bb9a5446e36267d10f468f100',

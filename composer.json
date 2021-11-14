@@ -28,7 +28,7 @@
         "jms/translation-bundle": "~1.6",
         "bernard/bernard-bundle": "^2.0.0",
         "runalyze/gpxtrackposter": "^1.0.0",
-        "runalyze/glossary": "dev-master",
+        "runalyze/glossary": "dev-master#d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
         "snc/redis-bundle": "^3.5",
         "predis/predis": "^1.0",
         "guzzlehttp/guzzle": "^7.0",

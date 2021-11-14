@@ -5290,12 +5290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Runalyze/glossary.git",
-                "reference": "06a5bfc6a74a8d2d969b342c3132900d881aed65"
+                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/06a5bfc6a74a8d2d969b342c3132900d881aed65",
-                "reference": "06a5bfc6a74a8d2d969b342c3132900d881aed65",
+                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
+                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
                 "shasum": ""
             },
             "require": {

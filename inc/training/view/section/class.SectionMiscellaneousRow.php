@@ -387,7 +387,7 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	}
 
     protected function getGlossaryLink($text, $glossary) {
-        return '<a class="window left" href="glossary/' . $glossary . '"><i class="fa fa-question-circle-o"/></a>&nbsp;' . $text;
+        return '<a class="window left" href="glossary/' . $glossary . '"><i class="fa fa-question-circle-o"></i></a>&nbsp;' . $text;
     }
 
 	/**
