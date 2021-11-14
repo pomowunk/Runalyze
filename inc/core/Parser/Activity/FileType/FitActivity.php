@@ -548,14 +548,12 @@ class FitActivity extends AbstractSingleParser
                     $creator = $this->Container->Metadata->getCreator();
 
                     // TODO: this may need more device and firmware specific conditions
-                    if (
-                        substr($creator, 0, 5) == 'fr630' ||
-                        substr($creator, 0, 7) == 'fr735xt' ||
-                        substr($creator, 0, 6) == 'fenix3' ||
-                        substr($creator, 0, 6) == 'fenix5'
-                    ) {
-                        if ((int)$this->Values['data'][1] >= 0 && (int)$this->Values['data'][1] <= 255) {
-                            $this->Container->FitDetails->PerformanceCondition = (int)$this->Values['data'][1];
+                    if ($this->hasPerformanceCondition($creator) && is_numeric($this->Values['data'][1])) {
+                        $v = (int)$this->Values['data'][1];
+                        if ($v >= 0 && $v <= 255) {
+                            // must set the original value around 100, because the UI substracts 100 - see class.SectionMiscellaneousRow.php
+                            // (and there is inc/core/Parser/Activity/Common/Filter/OutOfRangeValueFilter.php)
+                            $this->Container->FitDetails->PerformanceCondition = $v;
                         }
                     } else {
                         $this->Container->FitDetails->HrvAnalysis = (int)$this->Values['data'][1];
@@ -591,6 +589,31 @@ class FitActivity extends AbstractSingleParser
             } elseif ($thisTimestamp > $this->LastStopTimestamp) {
                 $this->PauseInSeconds += $thisTimestamp - $this->LastStopTimestamp;
             }
+        }
+    }
+
+    /**
+     * TSC: list of devices which support Performance Condition
+     * Mapping number to device see https://github.com/Runalyze/devices/blob/master/src/Mapping/GarminFitSdkMapping.php
+     */
+    protected function hasPerformanceCondition($creator) {
+        if (substr($creator, 0, 5) == 'fr630' || substr($creator, 0, 7) == 'fr735xt' || substr($creator, 0, 6) == 'fenix3' || substr($creator, 0, 6) == 'fenix5' || // original old values (for test purposes)
+            $creator == '2156' || $creator == '2310' || $creator == '2311' ||                       // GARMIN_FORERUNNER_630
+            $creator == '2886' || $creator == '3003' || $creator == '2888' || $creator == '3004' || // GARMIN_FORERUNNER_645
+            $creator == '2691' || $creator == '2833' ||                                             // GARMIN_FORERUNNER_935
+            $creator == '3113' || $creator == '3441' ||                                             // GARMIN_FORERUNNER_945
+            $creator == '2158' || $creator == '2533' || $creator == '2534' || $creator == '2158' || $creator == '2533' || $creator == '2534' || // GARMIN_FORERUNNER_735_X_T
+            $creator == '2050' || $creator == '2188' || $creator == '2293' || $creator == '2407' || $creator == '2408' || $creator == '2189' || // GARMIN_FENIX_3...
+            $creator == '2375' || $creator == '2432' || $creator == '2413' || $creator == '2473' || $creator == '2474' || $creator == '2475' || // GARMIN_FENIX_3...
+            $creator == '2476' || $creator == '2477' ||                                                                                         // GARMIN_FENIX_3...
+            $creator == '2697' || $creator == '3110' || $creator == '2796' || $creator == '2797' || $creator == '2544' || $creator == '2604' || // GARMIN_FENIX_5...
+            $creator == '2798' || $creator == '3089' || $creator == '3135' || $creator == '2900' || $creator == '3134' || $creator == '3111' || // GARMIN_FENIX_5...
+            $creator == '3287' || $creator == '3288' || $creator == '3289' || $creator == '3290' || $creator == '3291' || $creator == '3512' || // GARMIN_FENIX_6...
+            $creator == '3513' || $creator == '3514' || $creator == '3515' || $creator == '3516'                                                // GARMIN_FENIX_6...
+            ) {
+            return true;
+        } else {
+            return false;
         }
     }
 

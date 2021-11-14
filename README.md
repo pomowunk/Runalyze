@@ -59,6 +59,14 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* changes affected `bower.json`, `web/vendor` folder
 * 2021-11-14: Upgrade to a newer Runalyze Glossary version (fixed commit-id dev-master#d7e2540bf51dc1aabe4dbdce85af96e8203311b6)
 	* Seems the last version which works with the v4.3.0
+* 2021-11-14: Garmins _Performance Condition_ is now saved in the purpose column for the newest watches
+	* _Performance Condition_ in the "fit detail" section of an selected activity is now also displayed as a value between -20/+20
+	* Supported watches are: Forerunner 640 & 645 & 935 & 945 & 735, Fenix 3 & 5 & 6
+	* Caution: the search page still uses values based on 100; if you search for "+5" use "105" ;-)
+	* The value is stored so far in the column `runalyze_training.fit_hrv_analysis`; to fix your database you can use this sqls to move the values to `fit_performance_condition`:
+	`update runalyze_training set fit_performance_condition = fit_hrv_analysis where fit_performance_condition is null and fit_hrv_analysis is not null and fit_performance_condition_end is not null;`
+	and
+	`update runalyze_training set fit_hrv_analysis = null where fit_performance_condition = fit_hrv_analysis is not null and fit_performance_condition_end is not null;`
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

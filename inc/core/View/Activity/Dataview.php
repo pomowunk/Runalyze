@@ -364,10 +364,14 @@ class Dataview
      */
     public function fitPerformanceCondition()
     {
-        $start = null !== $this->Activity->fitPerformanceCondition() ? $this->fitPerformanceConditionStart() : '-';
-        $end = null !== $this->Activity->fitPerformanceConditionEnd() ? $this->fitPerformanceConditionEnd() : '-';
+        $start = null !== $this->Activity->fitPerformanceCondition() ? $this->fitPerformanceConditionStart() : '0';
+        $end = null !== $this->Activity->fitPerformanceConditionEnd() ? $this->fitPerformanceConditionEnd() : '0';
 
-        return $this->formatTwoPartValue($start, $end);
+        if ($start !== '0' || $end !== '0') {
+            return $this->formatTwoPartValue($start, $end);
+        } else {
+            return '';
+        }
     }
 
     /**

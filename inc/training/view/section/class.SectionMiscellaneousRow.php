@@ -374,8 +374,10 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
         $this->addToTable($details, 'Recovery time (h):', ($this->Context->activity()->fitRecoveryTime() != null ? round($this->Context->activity()->fitRecoveryTime() / 60, 1) : '-'), $c);
         $this->addToTable($details, 'New lactate treshhold (bpm):', ($this->Context->activity()->fitLactateThresholdHR() != null ? $this->Context->activity()->fitLactateThresholdHR() : '-'), $c);
         $this->addToTable($details, $this->getGlossaryLink('HVR Heart-Rate Variability:', 'hrv'), ($this->Context->activity()->fitHRVscore() != null ? $this->Context->activity()->fitHRVscore() : '-'), $c);
-        $this->addToTable($details, $this->getGlossaryLink('Performance condition:', 'performance-condition'), ($this->Context->activity()->fitPerformanceCondition() != null ? $this->Context->activity()->fitPerformanceCondition() : '-'), $c);
-        $this->addToTable($details, $this->getGlossaryLink('Performance cond. end:', 'performance-condition'), ($this->Context->activity()->fitPerformanceConditionEnd() != null ? $this->Context->activity()->fitPerformanceConditionEnd() - 100 : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Performance condition:', 'performance-condition'),
+            ($this->Context->activity()->fitPerformanceCondition() != null ? sprintf('%+d', $this->Context->activity()->fitPerformanceCondition() - 100) : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Performance cond. end:', 'performance-condition'),
+            ($this->Context->activity()->fitPerformanceConditionEnd() != null ? sprintf('%+d', $this->Context->activity()->fitPerformanceConditionEnd() - 100) : '-'), $c);
         $this->addToTable($details, $this->getGlossaryLink('Aerob training effect:', 'training-effect'), ($this->Context->activity()->fitTrainingEffect() != null ? $this->Context->activity()->fitTrainingEffect() : '-'), $c);
         $this->addToTable($details, $this->getGlossaryLink('Anaerob training effect:', 'training-effect'), ($this->Context->activity()->fitAnaerobicTrainingEffect() != null ? $this->Context->activity()->fitAnaerobicTrainingEffect() : '-'), $c);
         $this->addToTable($details, 'Creator:', ($this->Context->activity()->creator() != null ? $this->Context->activity()->creator() : '-'), $c);
