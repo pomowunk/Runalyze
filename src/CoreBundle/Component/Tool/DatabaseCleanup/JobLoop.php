@@ -3,9 +3,12 @@
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\DatabaseCleanup;
 
 use Runalyze\Calculation\Activity\Calculator;
+use Runalyze\Calculation\Power\CyclingPowerCalculator;
+use Runalyze\Calculation\Power\RunningPowerCalculator;
 use Runalyze\Model\Activity;
 use Runalyze\Model\Trackdata;
 use Runalyze\Model\Route;
+use Runalyze\Profile\Sport\SportProfile;
 
 class JobLoop extends Job
 {
@@ -20,6 +23,9 @@ class JobLoop extends Job
 
     /** @var string */
     const TRIMP = 'activityTrimp';
+
+    /** @var string */
+    const POWER = 'activityPower';
 
     /** @var array */
     protected $ElevationResults = [];
@@ -62,17 +68,23 @@ class JobLoop extends Job
                 $calculateVO2max = ($Data['sportid'] == $this->RunningSportId);
 
                 if ($this->isRequested(self::ELEVATION) && $this->isRequested(self::ELEVATION_OVERWRITE)) {
-                    $Update->bindValue(':elevation', $this->elevationsFor($Data)[0]);
+                    $Update->bindValue(':elevation', $this->elevationsFor($Data)[0], \PDO::PARAM_INT);
                 }
 
                 if ($this->isRequested(self::VO2MAX)) {
-                    $Update->bindValue(':vo2max', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRate() : 0);
-                    $Update->bindValue(':vo2max_by_time', $calculateVO2max ? $Calculator->estimateVO2maxByTime() : 0);
-                    $Update->bindValue(':vo2max_with_elevation', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRateWithElevation() : 0);
+                    $Update->bindValue(':vo2max', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRate() : null, \PDO::PARAM_INT);
+                    $Update->bindValue(':vo2max_by_time', $calculateVO2max ? $Calculator->estimateVO2maxByTime() : null, \PDO::PARAM_INT);
+                    $Update->bindValue(':vo2max_with_elevation', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRateWithElevation() : null, \PDO::PARAM_INT);
                 }
 
                 if ($this->isRequested(self::TRIMP)) {
-                    $Update->bindValue(':trimp', $Calculator->calculateTrimp());
+                    $Update->bindValue(':trimp', $Calculator->calculateTrimp(), \PDO::PARAM_INT);
+                }
+
+                if ($this->isRequested(self::POWER)) {
+                    $avg_power = $this->recalculatePower($Data);
+                    $Update->bindValue(':power', $avg_power, \PDO::PARAM_INT);
+                    $Update->bindValue(':is_power_calculated', $avg_power ? 1 : null, \PDO::PARAM_INT);
                 }
 
                 $Update->bindValue(':id', $Data['id']);
@@ -133,7 +145,7 @@ class JobLoop extends Job
         $Set = $this->updateSet();
 
         foreach ($Set as $i => $key) {
-            $Set[$i] = '`'.$key.'`=:'.$key;
+            $Set[$i] = "`$key`=IFNULL(:$key, `$key`)";
         }
 
         $Query = 'UPDATE `'.$this->DatabasePrefix.'training` SET '.implode(',', $Set).' WHERE `id`=:id LIMIT 1';
@@ -162,6 +174,11 @@ class JobLoop extends Job
             $Set[] = 'trimp';
         }
 
+        if ($this->isRequested(self::POWER)) {
+            $Set[] = 'power';
+            $Set[] = 'is_power_calculated';
+        }
+
         return $Set;
     }
 
@@ -180,15 +197,71 @@ class JobLoop extends Job
 				`'.$this->DatabasePrefix.'training`.`s`,
 				`'.$this->DatabasePrefix.'training`.`pulse_avg`,
 				`'.$this->DatabasePrefix.'training`.`elevation` as `training_elevation`,
+				`'.$this->DatabasePrefix.'training`.`power`,
+				`'.$this->DatabasePrefix.'training`.`is_power_calculated`,
 				`'.$this->DatabasePrefix.'route`.`elevation`,
 				`'.$this->DatabasePrefix.'route`.`elevation_up`,
 				`'.$this->DatabasePrefix.'route`.`elevation_down`,
 				`'.$this->DatabasePrefix.'trackdata`.`time` as `trackdata_time`,
 				`'.$this->DatabasePrefix.'trackdata`.`heartrate` as `trackdata_heartrate`
+			'.(!$this->isRequested(self::POWER) ? '' : '
+				,
+				`'.$this->DatabasePrefix.'trackdata`.`distance` as `trackdata_distance`,
+				IFNULL(
+					`'.$this->DatabasePrefix.'route`.`elevations_corrected`,
+					`'.$this->DatabasePrefix.'route`.`elevations_original`
+				) as `route_elevation`,
+				`'.$this->DatabasePrefix.'sport`.`internal_sport_id`
+			').'
 			FROM `'.$this->DatabasePrefix.'training`
-			LEFT JOIN `'.$this->DatabasePrefix.'trackdata` ON `'.$this->DatabasePrefix.'trackdata`.`activityid` = `'.$this->DatabasePrefix.'training`.`id`
-			LEFT JOIN `'.$this->DatabasePrefix.'route` ON `'.$this->DatabasePrefix.'route`.`id` = `'.$this->DatabasePrefix.'training`.`routeid`
+			LEFT JOIN `'.$this->DatabasePrefix.'trackdata`
+				ON `'.$this->DatabasePrefix.'trackdata`.`activityid` = `'.$this->DatabasePrefix.'training`.`id`
+			LEFT JOIN `'.$this->DatabasePrefix.'route`
+				ON `'.$this->DatabasePrefix.'route`.`id` = `'.$this->DatabasePrefix.'training`.`routeid`
+			LEFT JOIN `'.$this->DatabasePrefix.'sport`
+				ON `'.$this->DatabasePrefix.'sport`.`accountid` = '.$this->AccountId.'
+				AND `'.$this->DatabasePrefix.'sport`.`id` = `'.$this->DatabasePrefix.'training`.`sportid`
 			WHERE `'.$this->DatabasePrefix.'training`.`accountid` = '.$this->AccountId
         );
+    }
+    
+    /**
+     * @param array $data
+     * @return int|null average power
+     */
+    protected function recalculatePower(array $data)
+    {
+        if (!empty($data['power']) && empty($data['is_power_calculated'])){
+            return;
+        }
+
+        if($data['internal_sport_id'] == SportProfile::CYCLING || $data['internal_sport_id'] == SportProfile::RUNNING) {
+            $trackdata = new Trackdata\Entity([
+                Trackdata\Entity::TIME => $data['trackdata_time'],
+                Trackdata\Entity::DISTANCE => $data['trackdata_distance']
+            ]);
+            if (empty($data['route_elevation'])){
+                $route = new Route\Entity([]);
+            } else {
+                $route = new Route\Entity([
+                    Route\Entity::ELEVATIONS_CORRECTED => array_map('intval', explode('|', $data['route_elevation']))
+                ]);
+            }
+
+            if ($data['internal_sport_id'] == SportProfile::CYCLING) {
+                $calculator = new CyclingPowerCalculator($trackdata, $route);
+            } else {
+                $calculator = new RunningPowerCalculator($trackdata, $route);
+            }
+
+            $calculator->calculate();
+
+            $update_trackpower = $this->PDO->prepare('UPDATE `'.$this->DatabasePrefix.'trackdata` SET `power`=:power WHERE `activityid`=:id LIMIT 1');
+            $update_trackpower->bindValue(':power', implode('|', $calculator->powerData()), \PDO::PARAM_STR);
+            $update_trackpower->bindValue(':id', $data['id'], \PDO::PARAM_INT);
+            $update_trackpower->execute();
+
+            return $calculator->average();
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Tests\Component\Tool\DatabaseCleanup;
 use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Tool\DatabaseCleanup\JobLoop;
 use Runalyze\Configuration;
+use Runalyze\Profile\Sport\SportProfile;
 
 /**
  * @group dependsOn
@@ -21,6 +22,7 @@ class JobLoopTest extends TestCase
 		$this->PDO->exec('TRUNCATE TABLE `runalyze_route`');
 		$this->PDO->exec('TRUNCATE TABLE `runalyze_trackdata`');
 		$this->PDO->exec('DELETE FROM `runalyze_training`');
+		$this->PDO->exec('DELETE FROM `runalyze_sport`');
 	}
 
 	protected function tearDown(): void
@@ -28,6 +30,7 @@ class JobLoopTest extends TestCase
 		$this->PDO->exec('TRUNCATE TABLE `runalyze_route`');
 		$this->PDO->exec('TRUNCATE TABLE `runalyze_trackdata`');
 		$this->PDO->exec('DELETE FROM `runalyze_training`');
+		$this->PDO->exec('DELETE FROM `runalyze_sport`');
 	}
 
 	public function testNoLoopForSingleActivity()
@@ -51,15 +54,19 @@ class JobLoopTest extends TestCase
 	public function testCompleteLoopForSingleActivity()
     {
 		$this->PDO->exec(
-			'INSERT INTO `runalyze_training` (`id`, `distance`, `s`, `pulse_avg`, `sportid`, `accountid`, `time`) '.
-			'VALUES (1, 10, 3600, 150, '.Configuration::General()->runningSport().', 0, 1477839906)'
+			'INSERT INTO `runalyze_training` (`id`, `distance`, `s`, `pulse_avg`, `sportid`, `accountid`, `time`, `routeid`) '.
+			'VALUES (1, 10, 3600, 150, '.Configuration::General()->runningSport().', 0, 1477839906, 1)'
 		);
+		$this->PDO->exec('INSERT INTO `runalyze_route` (`id`, `elevation`, `elevation_up`, `elevation_down`, `elevations_corrected`, `accountid`) VALUES (1, 123, 123, 123, "0|123|0", 0)');
+		$this->PDO->exec('INSERT INTO `runalyze_trackdata` (`activityid`, `time`, `distance`, `accountid`) VALUES (1, "0|1800|3600", "0|5|10", 0)');
+		$this->PDO->exec('INSERT INTO `runalyze_sport` (`id`, `internal_sport_id`, `name`, `power`, `accountid`) VALUES ('.Configuration::General()->runningSport().', '.SportProfile::RUNNING.', "tempsport", 1, 0)');
 
 		$Loop = new JobLoop([
             JobLoop::ELEVATION => true,
             JobLoop::ELEVATION_OVERWRITE => true,
             JobLoop::VO2MAX => true,
-            JobLoop::TRIMP => true
+            JobLoop::TRIMP => true,
+			JobLoop::POWER => true
         ], $this->PDO, 0, 'runalyze_');
 		$Loop->run();
 
@@ -68,6 +75,10 @@ class JobLoopTest extends TestCase
 		$this->assertNotEquals(0, $data['vo2max_by_time']);
 		$this->assertNotEquals(0, $data['vo2max_with_elevation']);
 		$this->assertNotEquals(0, $data['trimp']);
+		$this->assertNotEquals(0, $data['power']);
+		
+		$trackdata = $this->PDO->query('SELECT `power` FROM `runalyze_trackdata` WHERE `activityid`=1 AND `accountid`=0 LIMIT 1')->fetch();
+		$this->assertNotEmpty($trackdata['power']);
 	}
 
 	public function testOverwriteElevation()

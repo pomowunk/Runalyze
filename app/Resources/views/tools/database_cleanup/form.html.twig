@@ -1,7 +1,7 @@
 {% extends 'tools/database_cleanup/base.html.twig' %}
 
 {% block toolContent %}
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'ajax no-automatic-reload'}, 'action': url('tools-cleanup')}) }}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'ajax no-automatic-reload', 'id': 'cleanup'}, 'action': url('tools-cleanup')}) }}
 
         <div class="padding-5">
             <label>
@@ -51,8 +51,8 @@
         </div>
 
         <div class="padding-5">
-                {{ form_widget(form.mode[1]) }}
-                {{ form_label(form.mode[1]) }}
+            {{ form_widget(form.mode[1]) }}
+            {{ form_label(form.mode[1]) }}
 
             <div class="radio-content transparent-70" data-radio="loop">
                 <div class="margin-10">
@@ -72,12 +72,16 @@
                         </div>
                     </div>
                     <div class="checkbox">
-                            {{ form_widget(form.activityVO2max) }}
-                            {{ form_label(form.activityVO2max, 'Recalculate effective %VO2max% values'|trans({'%VO2max%': 'VO<sub>2</sub>max'}) ) }}
+                        {{ form_widget(form.activityVO2max) }}
+                        {{ form_label(form.activityVO2max, 'Recalculate effective %VO2max% values'|trans({'%VO2max%': 'VO<sub>2</sub>max'}) ) }}
                     </div>
                     <div class="checkbox">
-                            {{ form_widget(form.activityTrimp) }}
-                            {{ form_label(form.activityTrimp, 'Recalculate TRIMP values'|trans) }}
+                        {{ form_widget(form.activityTrimp) }}
+                        {{ form_label(form.activityTrimp, 'Recalculate TRIMP values'|trans) }}
+                    </div>
+                    <div class="checkbox">
+                        {{ form_widget(form.activityPower) }}
+                        {{ form_label(form.activityPower, 'Recalculate estimated power values'|trans) }}
                     </div>
                 </div>
             </div>

@@ -34,6 +34,7 @@ class DatabaseCleanupType extends AbstractType
             ->add('activityElevation', CheckboxType::class, $notRequiredOptions)
             ->add('activityElevationOverwrite', CheckboxType::class, $notRequiredOptions)
             ->add('activityVO2max', CheckboxType::class, $notRequiredOptions)
-            ->add('activityTrimp', CheckboxType::class, $notRequiredOptions);
+            ->add('activityTrimp', CheckboxType::class, $notRequiredOptions)
+            ->add('activityPower', CheckboxType::class, $notRequiredOptions);
     }
 }
