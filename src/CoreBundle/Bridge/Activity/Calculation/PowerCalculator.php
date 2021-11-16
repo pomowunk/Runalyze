@@ -3,7 +3,8 @@
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
 use Runalyze\Bundle\CoreBundle\Entity\Training;
-use Runalyze\Calculation\Power\Calculator;
+use Runalyze\Calculation\Power\CyclingPowerCalculator;
+use Runalyze\Calculation\Power\RunningPowerCalculator;
 use Runalyze\Model\Route;
 use Runalyze\Model\Trackdata;
 use Runalyze\Profile\Sport\AbstractSport;
@@ -14,7 +15,7 @@ class PowerCalculator
     protected $AthleteWeight = 75.0;
 
     /** @var float [kg] */
-    protected $BikeWeight = 0.0;
+    protected $EquipmentWeight = 0.0;
 
     /** @var Training */
     protected $Activity;
@@ -22,13 +23,13 @@ class PowerCalculator
     /**
      * @param Training $activity
      * @param float $athleteWeight [kg]
-     * @param float $bikeWeight [kg]
+     * @param float $equipmentWeight [kg]
      */
-    public function calculateFor(Training $activity, $athleteWeight = 75.0, $bikeWeight = 0.0)
+    public function calculateFor(Training $activity, $athleteWeight = 75.0, $equipmentWeight = 0.0)
     {
         $this->Activity = $activity;
         $this->AthleteWeight = $athleteWeight;
-        $this->BikeWeight = $bikeWeight;
+        $this->EquipmentWeight = $equipmentWeight;
 
         if ($this->hasActivityPowerDataFromDevice()) {
             return;
@@ -69,7 +70,7 @@ class PowerCalculator
      */
     protected function canCalculatePowerForSport(AbstractSport $sport)
     {
-        return $sport->isCycling();
+        return $sport->isCycling() || $sport->isRunning();
     }
 
     /**
@@ -111,17 +112,21 @@ class PowerCalculator
      */
     protected function calculatePower()
     {
-        $calculator = new Calculator(
-            new Trackdata\Entity([
-                Trackdata\Entity::TIME => $this->Activity->getTrackdata()->getTime(),
-                Trackdata\Entity::DISTANCE => $this->Activity->getTrackdata()->getDistance()
-            ]),
-            new Route\Entity([
-                Route\Entity::ELEVATIONS_CORRECTED => $this->Activity->getRoute()->getElevations()
-            ])
-        );
+        $trackdata = new Trackdata\Entity([
+            Trackdata\Entity::TIME => $this->Activity->getTrackdata()->getTime(),
+            Trackdata\Entity::DISTANCE => $this->Activity->getTrackdata()->getDistance()
+        ]);
+        $route = new Route\Entity([
+            Route\Entity::ELEVATIONS_CORRECTED => $this->Activity->getRoute()->getElevations()
+        ]);
+        
+        if ($this->Activity->getSport()->getInternalSport()->isCycling()) {
+            $calculator = new CyclingPowerCalculator($trackdata, $route);
+        } else {
+            $calculator = new RunningPowerCalculator($trackdata, $route);
+        }
 
-        $calculator->calculate($this->AthleteWeight + $this->BikeWeight);
+        $calculator->calculate($this->AthleteWeight + $this->EquipmentWeight);
 
         return [
             $calculator->powerData(),

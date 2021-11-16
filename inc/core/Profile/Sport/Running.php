@@ -41,7 +41,7 @@ class Running extends AbstractSport
 
     public function hasPower()
     {
-        return false;
+        return true;
     }
 
     public function isOutside()

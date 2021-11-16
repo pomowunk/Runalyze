@@ -210,9 +210,9 @@ class ActivityAdapter
 
     /**
      * @param float|int|null $athleteWeight [kg]
-     * @param float|int|null $bikeWeight [kg]
+     * @param float|int|null $equipmentWeight [kg]
      */
-    public function calculatePower($athleteWeight = null, $bikeWeight = null)
+    public function calculatePower($athleteWeight = null, $equipmentWeight = null)
     {
         $calculator = new PowerCalculator();
         $calculator->calculateFor($this->Activity);
