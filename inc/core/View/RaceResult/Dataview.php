@@ -170,8 +170,8 @@ class Dataview
 		$placeString = $place.'.';
 
 		if (null !== $participants) {
-
-			$Tooltip = new Tooltip(sprintf($sprintfString, $participants).' '.sprintf(__('(first %u%%)'), 100*$place/$participants));
+			$place_percent = $participants > 0 ? ' '.sprintf(__('(first %u%%)'), 100*$place/$participants) : '';
+			$Tooltip = new Tooltip(sprintf($sprintfString, $participants).$place_percent);
 			$Tooltip->wrapAround($placeString);
 		}
 
