@@ -44,7 +44,7 @@ if (!defined('GEONAMES_USERNAME'))
 	define('GEONAMES_USERNAME', 'runalyze');
 
 if (!defined('SQLITE_MOD_SPATIALITE'))
-	define('SQLITE_MOD_SPATIALITE', 'libspatialite.so.5');
+	define('SQLITE_MOD_SPATIALITE', 'mod_spatialite.so');
 
 if (!defined('DAY_IN_S'))
 	define('DAY_IN_S', 86400);
@@ -70,7 +70,7 @@ SessionAccountHandler::setAccount(array(
 ));
 // Define RUNALYZE_TEST_TZ_LOOKUP
 try {
-    $lookup = new \Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'libspatialite.so.5');
+    $lookup = new \Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'mod_spatialite.so');
     $lookup->getTimezoneForCoordinate(13.41, 52.52);
 
 	define('RUNALYZE_TEST_TZ_LOOKUP', true);

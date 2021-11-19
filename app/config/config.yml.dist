@@ -24,7 +24,7 @@ parameters:
   rsvg_path: /usr/bin/rsvg-convert
   inkscape_path: /usr/bin/inkscape
   ttbin_path: ../call/perl/ttbincnv
-  sqlite_mod_spatialite: libspatialite.so.5
+  sqlite_mod_spatialite: mod_spatialite.so
   mail_sender:
   mail_name:
   smtp_host: localhost

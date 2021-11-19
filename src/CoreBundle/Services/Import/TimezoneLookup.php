@@ -7,7 +7,7 @@ class TimezoneLookup
     /** @var string sqlite-file with time zone database */
     protected $PathToTimeZoneDatabase;
 
-    /** @var string depends on os, linux default: libspatialite.so.5 */
+    /** @var string depends on os, linux default: mod_spatialite */
     protected $SpatialiteExtensionName;
 
     /** @var \SQLite3|null|false */

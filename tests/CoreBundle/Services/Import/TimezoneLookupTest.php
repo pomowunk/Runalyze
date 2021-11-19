@@ -19,12 +19,12 @@ class TimezoneLookupTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->Lookup = new TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'libspatialite.so.5');
+        $this->Lookup = new TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'mod_spatialite.so');
     }
 
     public function testSilenceConstructor()
     {
-        $lookup = new TimezoneLookup('here/is/no/timezone/database.sqlite', 'libspatialite.so.5');
+        $lookup = new TimezoneLookup('here/is/no/timezone/database.sqlite', 'mod_spatialite.so');
         $lookup->silentExceptions();
 
         $this->assertFalse($lookup->isPossible());
@@ -35,7 +35,7 @@ class TimezoneLookupTest extends TestCase
     {
         $this->expectException(TimezoneLookupException::class);
 
-        $lookup = new TimezoneLookup('here/is/no/timezone/database.sqlite', 'libspatialite.so.5');
+        $lookup = new TimezoneLookup('here/is/no/timezone/database.sqlite', 'mod_spatialite.so');
         $lookup->isPossible();
     }
 
