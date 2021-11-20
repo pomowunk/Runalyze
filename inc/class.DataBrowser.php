@@ -156,6 +156,10 @@ class DataBrowser {
 		}
 		if (\Runalyze\Configuration::DataBrowser()->reverseMode()) {
 		    $this->Days = array_reverse($this->Days);
+			foreach ($this->Days as &$day) {
+				$day['trainings'] = array_reverse($day['trainings']);
+				$day['shorts'] = array_reverse($day['shorts']);
+			}
         }
 	}
 
