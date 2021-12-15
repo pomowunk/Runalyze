@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# "vendor/bin/phpunit" not executable because the x permission is not set when the container is build from the zip file, so use the call via php 
+# PHPUNIT=vendor/bin/phpunit
+PHPUNIT="php vendor/phpunit/phpunit/phpunit"
+
 # based on the combinations of https://github.com/Runalyze/Runalyze/blob/support/4.3.x/.travis.yml
 
 # before_script:
@@ -7,7 +11,7 @@ cp app/config/default_config.yml data/config.yml
 
 # tests
 echo '----------------------------- import -----------------------------------------------'
-vendor/bin/phpunit --colors -c tests/config.xml --group "import" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase"
+$PHPUNIT --colors -c tests/config.xml --group "import" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase"
 
 #..E.FF..........................F......FEF.....................  63 / 109 ( 57%)
 #........F....F.....................F...E..E...
@@ -16,7 +20,7 @@ vendor/bin/phpunit --colors -c tests/config.xml --group "import" --exclude-group
 #Tests: 109, Assertions: 5688, Errors: 4, Failures: 8.
 
 echo '----------------------------- requiresKernel,requiresDoctrine,requiresClient -------'
-vendor/bin/phpunit --colors -c tests/config.xml --group "requiresKernel,requiresDoctrine,requiresClient" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase"
+$PHPUNIT --colors -c tests/config.xml --group "requiresKernel,requiresDoctrine,requiresClient" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase"
 
 #........................................................F........ 65 / 83 ( 78%)
 #...............F..
@@ -25,7 +29,7 @@ vendor/bin/phpunit --colors -c tests/config.xml --group "requiresKernel,requires
 #Tests: 83, Assertions: 305, Failures: 2.
 
 echo '----------------------------- default,dependsOn,requiresSqlite ---------------------'
-vendor/bin/phpunit --colors -c tests/config.xml --group "default,dependsOn,requiresSqlite" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase,import,requiresKernel,requiresDoctrine,requiresClient"
+$PHPUNIT --colors -c tests/config.xml --group "default,dependsOn,requiresSqlite" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase,import,requiresKernel,requiresDoctrine,requiresClient"
 
 #................................................F........F...   61 / 1132 (  5%)
 #.........E...........................................F.......  122 / 1132 ( 10%)
