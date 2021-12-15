@@ -510,19 +510,19 @@ class FitActivity extends AbstractSingleParser
 
     protected function readUndocumentedDataBlob140()
     {
-        if (isset($this->Values['unknown17'])) {
-            $this->Container->FitDetails->PerformanceConditionEnd = 100 + (float)$this->Values['unknown17'][1];
+        if (isset($this->Values['performance_condition_end'])) {
+            $this->Container->FitDetails->PerformanceConditionEnd = 100 + (float)$this->Values['performance_condition_end'][1];
         }
 
         // #TSC: set recovery time (in minutes) from 140er unknown9, if not already set
         // thanks to: https://github.com/GoldenCheetah/GoldenCheetah/blob/master/src/FileIO/FitRideFile.cpp line 844
-        if (is_null($this->Container->FitDetails->RecoveryTime) && isset($this->Values['unknown9'])) {
-            $this->Container->FitDetails->RecoveryTime = round((int)$this->Values['unknown9'][1], 0);
+        if (is_null($this->Container->FitDetails->RecoveryTime) && isset($this->Values['recovery_time'])) {
+            $this->Container->FitDetails->RecoveryTime = round((int)$this->Values['recovery_time'][1], 0);
         }
 
         // #TSC: set Running Lactate Threshold Heart Rate, (in bpm) from 140er unknown14
-        if (isset($this->Values['unknown14'])) {
-            $lthr = (int)$this->Values['unknown14'][1];
+        if (isset($this->Values['lactate_threshold_hr_bpm'])) {
+            $lthr = (int)$this->Values['lactate_threshold_hr_bpm'][1];
             if ($lthr > 0 && $lthr <= 250) {
                 $this->Container->FitDetails->LactateThresholdHR = $lthr;
             }

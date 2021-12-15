@@ -3646,6 +3646,8 @@ sub named_type_value {
      133 => +{'name' => 'avg_stance_time_balance', 'scale' => 100, 'unit' => '%'},
      134 => +{'name' => 'avg_step_length', 'scale' => 10, 'unit' => 'mm'},
      137 => +{'name' => 'total_anaerobic_training_effect', 'scale' => 10},
+     192 => +{'name' => 'self_evaluation_felt', 'unit' => '0=1, 25=2, 50=3, 75=4, 100=5'}, # Selbsteinschaetzung/Gefuehl; 1='Sehr schwach' bis 5='Sehr stark'
+     193 => +{'name' => 'self_evaluation_perceived effort', 'scale' => 10}, # Selbsteinschaetzung/Anstrengung; 1 - Sehr leicht, 2 - Leicht, 3 - Maessig, 4 - Etwas schwer, 5-6 - Schwer, 7-8 - Sehr schwer, 9 - Aeusserst schwer, 10 - Maximum
    },
 
    'lap' => +{
@@ -3879,7 +3881,11 @@ sub named_type_value {
      83 => +{'name' => 'vertical_ratio', 'scale' => 100, 'unit' => '%'},
      84 => +{'name' => 'stance_time_balance', 'scale' => 100, 'unit' => '%'},
      85 => +{'name' => 'step_length', 'scale' => 10, 'unit' => 'mm'},
+     90 => +{'name' => 'perf_cond'}, # performance condition / Leistungszustand
+     108 => +{'name' => 'respiration_rate', 'scale' => 100, 'unit' => 'pm'}, # RESPIRATIONRATE / per-minute
      112 => +{'name' => 'time_standing', 'scale' => 1000, 'unit' => 's'},
+     114 => +{'name' => 'mtb_dynamics_grit'}, # MTB Dynamics - Grit
+     115 => +{'name' => 'mtb_dynamics_flow'}, # MTB Dynamics - Flow
    },
 
    'event' => +{
@@ -3969,7 +3975,7 @@ sub named_type_value {
      20 => +{'name' => 'ant_transmission_type'},
      21 => +{'name' => 'ant_device_number'},
      22 => +{'name' => 'ant_network', 'type_name' => 'ant_network'},
-     24 => +{'name' => 'unknown24'}, # unknown UINT32Z
+     24 => +{'name' => 'equipment_id'}, # UINT32Z: equipment ID
      25 => +{'name' => 'source_type', 'type_name' => 'source_type'},
      27 => +{'name' => 'product_name'},
    },
@@ -4897,15 +4903,15 @@ $mesg_name_vs_num = $named_type{mesg_num};
      6 => +{'name' => 'unknown6'}, # unknown SINT32
      7 => +{'name' => 'unknown7'}, # unknown SINT32
      8 => +{'name' => 'unknown8'}, # unknown UINT8
-     9 => +{'name' => 'unknown9'}, # unknown UINT16
+     9 => +{'name' => 'recovery_time'}, # unknown UINT16
      10 => +{'name' => 'unknown10'}, # unknown UINT16
      11 => +{'name' => 'unknown11'}, # unknown ENUM
      12 => +{'name' => 'unknown12'}, # unknown ENUM
      13 => +{'name' => 'unknown13'}, # unknown UINT8
-     14 => +{'name' => 'unknown14'}, # unknown UINT16
+     14 => +{'name' => 'lactate_threshold_hr_bpm'}, # unknown UINT16
      15 => +{'name' => 'unknown15'}, # unknown UINT16
      16 => +{'name' => 'unknown16'}, # unknown UINT16
-     17 => +{'name' => 'unknown17'}, # unknown SINT8
+     17 => +{'name' => 'performance_condition_end'}, # SINT8: positive and negative values allowed
      18 => +{'name' => 'unknown18'}, # unknown UINT8
      19 => +{'name' => 'unknown19'}, # unknown UINT8
    },
