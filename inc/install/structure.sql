@@ -305,6 +305,8 @@ CREATE TABLE IF NOT EXISTS `runalyze_trackdata` (
   `footstrike_type_right` longtext,
   `pronation_excursion_left` longtext,
   `pronation_excursion_right` longtext,
+  `performance_condition` longtext,
+  `respiration_rate` longtext,
   `pauses` text,
   `lock` tinyint(1) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

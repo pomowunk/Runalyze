@@ -130,21 +130,32 @@ class Loop extends \Runalyze\Model\Loop {
 
             $lastTime = $this->Object->at($this->LastIndex, Entity::TIME);
             $totalTime = 0;
-            $sum = 0;
+            $sum = null;
 
             for ($i = $this->LastIndex + 1; $i <= $this->Index; ++$i) {
                 $currentTime = $this->Object->at($i, Entity::TIME);
-                $totalTime += $currentTime - $lastTime;
 
-                $sum += $this->Object->at($i, $key) * ($currentTime - $lastTime);
+                // #TSC check if we have a value -> if not don't summarize/avg and set not the total time
+                // this functionality builds the avg of an timerange for the plot. if we have no "full" values for the given timerange, we must
+                // build the avg with a "limited" totalTime; the goal is to show the plot-line only for "not null values".
+                $val = $this->Object->at($i, $key);
+                if ($val !== null && is_numeric($val)) {
+                    $sum += $val * ($currentTime - $lastTime);
+                    $totalTime += $currentTime - $lastTime;
+                }
                 $lastTime = $currentTime;
             }
 
-            if (0 == $totalTime) {
-                return $sum / ($this->Index - $this->LastIndex);
+            if ($sum !== null) {
+                if (0 == $totalTime) {
+                    return $sum / ($this->Index - $this->LastIndex);
+                } else {
+                    return $sum / $totalTime;
+                }
+            } else {
+                // for the considered timerange we have no values, return null instead of a wrong 0 - which leads in a 0-line wrong plot
+                return null;
             }
-
-            return $sum / $totalTime;
         }
 
         return parent::average($key);

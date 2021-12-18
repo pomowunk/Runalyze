@@ -164,6 +164,20 @@ class Trackdata implements AccountRelatedEntityInterface
     private $pronationExcursionRight;
 
     /**
+     * @var array|null [n]
+     *
+     * @ORM\Column(name="performance_condition", type="pipe_array", nullable=true)
+     */
+    private $performanceCondition;
+
+    /**
+     * @var array|null [pm]
+     *
+     * @ORM\Column(name="respiration_rate", type="pipe_array", nullable=true)
+     */
+    private $respirationRate;
+
+    /**
      * @var \Runalyze\Parser\Activity\Common\Data\Pause\PauseCollection
      *
      * @ORM\Column(name="pauses", type="runalyze_pause_array", length=65535, nullable=true)
@@ -846,6 +860,62 @@ class Trackdata implements AccountRelatedEntityInterface
     }
 
     /**
+     * @param array|null $performanceCondition [n]
+     *
+     * @return $this
+     */
+    public function setPerformanceCondition(array $performanceCondition = null)
+    {
+        $this->performanceCondition = $performanceCondition;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null [n]
+     */
+    public function getPerformanceCondition()
+    {
+        return $this->performanceCondition;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPerformanceCondition()
+    {
+        return null !== $this->performanceCondition;
+    }
+
+    /**
+     * @param array|null $respirationRate [pm]
+     *
+     * @return $this
+     */
+    public function setRespirationRate(array $respirationRate = null)
+    {
+        $this->respirationRate = $respirationRate;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null [n]
+     */
+    public function getRespirationRate()
+    {
+        return $this->respirationRate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasRespirationRate()
+    {
+        return null !== $this->respirationRate;
+    }
+
+    /**
      * @param \Runalyze\Parser\Activity\Common\Data\Pause\PauseCollection $pauses
      *
      * @return $this
@@ -959,6 +1029,8 @@ class Trackdata implements AccountRelatedEntityInterface
             (null === $this->footstrikeTypeRight && empty($this->footstrikeTypeRight)) &&
             (null === $this->pronationExcursionLeft && empty($this->pronationExcursionLeft)) &&
             (null === $this->pronationExcursionRight && empty($this->pronationExcursionRight)) &&
+            (null === $this->performanceCondition && empty($this->performanceCondition)) &&
+            (null === $this->respirationRate && empty($this->respirationRate)) &&
             $this->pauses->isEmpty()
         );
     }
@@ -991,6 +1063,8 @@ class Trackdata implements AccountRelatedEntityInterface
             Model\Trackdata\Entity::FOOTSTRIKE_TYPE_RIGHT => $this->footstrikeTypeRight,
             Model\Trackdata\Entity::PRONATION_EXCURSION_LEFT => $this->pronationExcursionLeft,
             Model\Trackdata\Entity::PRONATION_EXCURSION_RIGHT => $this->pronationExcursionRight,
+            Model\Trackdata\Entity::PERFORMANCE_CONDITION => $this->performanceCondition,
+            Model\Trackdata\Entity::RESPIRATION_RATE => $this->respirationRate,
 
             // Legacy model does still use the pauses object
             //Model\Trackdata\Entity::PAUSES => $this->pauses

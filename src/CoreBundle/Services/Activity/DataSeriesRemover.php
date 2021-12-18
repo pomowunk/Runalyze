@@ -59,6 +59,12 @@ class DataSeriesRemover
     const KEY_TRACKDATA_PRONATION_EXCURSION_RIGHT = 'pronation_excursion_right';
 
     /** @var string */
+    const KEY_TRACKDATA_PERFOMANCE_CONDITION = 'performance_condition';
+
+    /** @var string */
+    const KEY_TRACKDATA_RESPIRATION_RATE = 'respiration_rate';
+
+    /** @var string */
     const KEY_TRACKDATA_MUSCLE_OXYGENATION = 'smo2';
 
     /** @var string */
@@ -171,6 +177,14 @@ class DataSeriesRemover
 
         if (isset($keys[self::KEY_TRACKDATA_TEMPERATURE]) && $trackData->hasTemperature()) {
             $trackData->setTemperature(null);
+        }
+
+        if (isset($keys[self::KEY_TRACKDATA_PERFOMANCE_CONDITION]) && $trackData->hasPerformanceCondition()) {
+            $trackData->setPerformanceCondition(null);
+        }
+
+        if (isset($keys[self::KEY_TRACKDATA_RESPIRATION_RATE]) && $trackData->hasRespirationRate()) {
+            $trackData->setRespirationRate(null);
         }
 
         $this->handleTrackDataForRunScribeKeys($keys, $activity);
@@ -342,6 +356,14 @@ class DataSeriesRemover
 
         if ($trackData->hasTemperature()) {
             $choices['Temperature'] = self::KEY_TRACKDATA_TEMPERATURE;
+        }
+
+        if ($trackData->hasPerformanceCondition()) {
+            $choices['Leistungszustand'] = self::KEY_TRACKDATA_PERFOMANCE_CONDITION;
+        }
+
+        if ($trackData->hasRespirationRate()) {
+            $choices['Atemfrequenz'] = self::KEY_TRACKDATA_RESPIRATION_RATE;
         }
 
         return $choices;

@@ -321,6 +321,8 @@ class ActivityDataContainerToActivityContextConverter
         $trackData->setFootstrikeTypeRight($container->ContinuousData->FootstrikeTypeRight ?: null);
         $trackData->setPronationExcursionLeft($container->ContinuousData->PronationExcursionLeft ?: null);
         $trackData->setPronationExcursionRight($container->ContinuousData->PronationExcursionRight ?: null);
+        $trackData->setPerformanceCondition($container->ContinuousData->PerformanceCondition ?: null);
+        $trackData->setRespirationRate($container->ContinuousData->RespirationRate ?: null);
 
         if ($trackData->isEmpty()) {
             return null;

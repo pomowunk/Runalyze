@@ -42,7 +42,9 @@ class ContinuousDataConverter
             Trackdata\Entity::FOOTSTRIKE_TYPE_LEFT => $this->Data->FootstrikeTypeLeft,
             Trackdata\Entity::FOOTSTRIKE_TYPE_RIGHT => $this->Data->FootstrikeTypeRight,
             Trackdata\Entity::PRONATION_EXCURSION_LEFT => $this->Data->PronationExcursionLeft,
-            Trackdata\Entity::PRONATION_EXCURSION_RIGHT => $this->Data->PronationExcursionRight
+            Trackdata\Entity::PRONATION_EXCURSION_RIGHT => $this->Data->PronationExcursionRight,
+            Trackdata\Entity::PERFORMANCE_CONDITION => $this->Data->PerformanceCondition,
+            Trackdata\Entity::RESPIRATION_RATE => $this->Data->RespirationRate
         ]);
     }
 

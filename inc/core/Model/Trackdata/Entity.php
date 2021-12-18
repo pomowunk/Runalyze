@@ -170,6 +170,17 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
      */
     const PRONATION_EXCURSION_RIGHT = 'pronation_excursion_right';
 
+    /**
+     * Key: performance condition
+     * @var string
+     */
+    const PERFORMANCE_CONDITION = 'performance_condition';
+
+    /**
+     * Key: respiration rate
+     * @var string
+     */
+    const RESPIRATION_RATE = 'respiration_rate';
 
     /**
 	 * Key: pauses
@@ -314,6 +325,8 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 			self::FOOTSTRIKE_TYPE_RIGHT,
 			self::PRONATION_EXCURSION_LEFT,
 			self::PRONATION_EXCURSION_RIGHT,
+			self::PERFORMANCE_CONDITION,
+			self::RESPIRATION_RATE,
 			self::PAUSES
 		);
 	}
@@ -369,6 +382,8 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
             case self::FOOTSTRIKE_TYPE_RIGHT:
             case self::PRONATION_EXCURSION_LEFT:
             case self::PRONATION_EXCURSION_RIGHT:
+            case self::PERFORMANCE_CONDITION:
+            case self::RESPIRATION_RATE:
 			case self::PAUSES:
 				return true;
 		}
@@ -696,6 +711,22 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
             !empty($this->Data[self::FOOTSTRIKE_TYPE_RIGHT]) ||
             !empty($this->Data[self::PRONATION_EXCURSION_LEFT]) ||
             !empty($this->Data[self::PRONATION_EXCURSION_RIGHT]);
+    }
+
+    /**
+     * Get performance condition
+     * @return array unit: [n]
+     */
+    public function performanceCondition() {
+        return $this->Data[self::PERFORMANCE_CONDITION];
+    }
+
+    /**
+     * Get respiration rate
+     * @return array unit: [perMinute]
+     */
+    public function respirationRate() {
+        return $this->Data[self::RESPIRATION_RATE];
     }
 
 	/**

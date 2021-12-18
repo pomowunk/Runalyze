@@ -79,6 +79,12 @@ class ContinuousData
     /** @var float[] [°] */
     public $PronationExcursionRight = [];
 
+    /** @var int[] [n] */
+    public $PerformanceCondition = [];
+
+    /** @var float[] [pm] */
+    public $RespirationRate = [];
+
     /** @var array [%ooL] */
     public $LeftRightBalance = [];
 
@@ -122,6 +128,8 @@ class ContinuousData
             'FootstrikeTypeRight',
             'PronationExcursionLeft',
             'PronationExcursionRight',
+            'PerformanceCondition',
+            'RespirationRate',
             'LeftRightBalance',
             'Strokes',
             'StrokeType'

@@ -67,11 +67,18 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	`update runalyze_training set fit_performance_condition = fit_hrv_analysis where fit_performance_condition is null and fit_hrv_analysis is not null and fit_performance_condition_end is not null;`
 	and
 	`update runalyze_training set fit_hrv_analysis = null where fit_performance_condition = fit_hrv_analysis is not null and fit_performance_condition_end is not null;`
+* 2021-12-19: Add Garmins _Performance Condition_ and _Respiration Rate_ from the FIT activity files to new database-continuous-data columns and show it as diagrams
+	* Store _Performance Condition_ (not the single "start" and "end" value of the _FIT details_) in `runalyze_trackdata.performance_condition` while importing FIT file
+	* Store _Respiration Rate_ in `runalyze_trackdata.respiration_rate` while importing FIT file
+	* Show _Performance Condition_ as line diagram in the _Miscellaneous_ panel if available
+	* Show _Respiration Rate_ as line diagram in the _HVR_ panel if available (resp-rate is only available for me with my Fenix 6 if i use a _HRM-Run_ sensor)
+	* Do same fixes to diagrams so not every time-tick needs a value (needed for _Performance Condition_ because tracking starts from one kilometer)
+	* **Migration 20211215213500 is necessary!**
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
 * I don't take any responsibility if you running this version on your infrastructure and have problems.
-* The extensions i made was done on a release version. So i do not build a release. I have no translations for the new features.
+* The extensions i made was done on a release version. So i do not build a release. I have no translations for the new features (always use german language).
 
 ## Database migration
 

@@ -702,6 +702,10 @@ class FitActivity extends AbstractSingleParser
         $this->Container->ContinuousData->Power[] = isset($this->Values['power']) ? (int)$this->Values['power'][0] : null;
         $this->Container->ContinuousData->LeftRightBalance[] = isset($this->Values['left_right_balance']) ? (int)$this->Values['left_right_balance'][0] : null;
         $this->Container->ContinuousData->Temperature[] = isset($this->Values['temperature']) ? (int)$this->Values['temperature'][0] : null;
+        // #TSC added performance-condition and respiration-rate
+        $this->Container->ContinuousData->PerformanceCondition[] = isset($this->Values['perf_cond']) ? (int)$this->Values['perf_cond'][0] : null;
+        // respiration-rate is 1000er; means 3500 => 35 per minute
+        $this->Container->ContinuousData->RespirationRate[] = isset($this->Values['respiration_rate']) ? round((int)($this->Values['respiration_rate'][0] / 100), 0) : null;
 
         $this->Container->ContinuousData->Time[] = $time;
 

@@ -32,7 +32,7 @@ echo '----------------------------- default,dependsOn,requiresSqlite -----------
 $PHPUNIT --colors -c tests/config.xml --group "default,dependsOn,requiresSqlite" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase,import,requiresKernel,requiresDoctrine,requiresClient"
 
 #................................................F........F...   61 / 1132 (  5%)
-#.........E...........................................F.......  122 / 1132 ( 10%)
+#.....................................................F.......  122 / 1132 ( 10%)
 #....................................F........................  183 / 1132 ( 16%)
 #.............................................................  244 / 1132 ( 21%)
 #...........................................................F.  305 / 1132 ( 26%)
@@ -49,10 +49,11 @@ $PHPUNIT --colors -c tests/config.xml --group "default,dependsOn,requiresSqlite"
 #.............................................................  976 / 1132 ( 86%)
 #.............................F............................... 1037 / 1132 ( 91%)
 #...........................................EEEEEEEEEEEEEE.... 1098 / 1132 ( 96%)
-#..................................
+#..................................                            1132 / 1132 (100%)
+
 #
 #Time: 12.72 seconds, Memory: 32.00MB
-#Tests: 1132, Assertions: 5043, Errors: 20, Failures: 16, Skipped: 1.
+#Tests: 1132, Assertions: 5052, Errors: 19, Failures: 16, Skipped: 1.
 
 # run one test
 # vendor/bin/phpunit --colors -c tests/config.xml --group "import,requiresDoctrine,dependsOnOldDatabase" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase" --filter InstallDatabaseCommandTest

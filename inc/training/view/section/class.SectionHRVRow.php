@@ -7,6 +7,7 @@
 use Runalyze\View\Activity;
 use Runalyze\Model\HRV;
 use Runalyze\Calculation\HRV\Calculator;
+use Runalyze\Model\Trackdata;
 
 /**
  * Row: HRV
@@ -30,6 +31,12 @@ class SectionHRVRow extends TrainingViewSectionRowTabbedPlot {
 			$this->addRightContent('hrv', __('R-R intervals'), new Activity\Plot\HRV($this->Context));
 			$this->addRightContent('hrv-sd', __('Successive differences'), new Activity\Plot\HRVdifferences($this->Context));
 			$this->addRightContent('hrvpoincare', __('Poincaré plot'), new Activity\Plot\HRVPoincare($this->Context));
+		}
+
+		// #TSC show respiration-rate, if available; it's not part of the HVR table, but on Fenix its only
+		// available/tracked if the HRM sensor run is used
+		if ($this->Context->hasTrackdata() && $this->Context->trackdata()->has(Trackdata\Entity::RESPIRATION_RATE)) {
+			$this->addRightContent('respirationrate', __('Atemfrequenz'), new Activity\Plot\RespirationRate($this->Context));
 		}
 	}
 
