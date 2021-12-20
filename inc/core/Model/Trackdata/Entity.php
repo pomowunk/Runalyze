@@ -12,7 +12,10 @@ use Runalyze\Calculation\Activity\VerticalRatioCalculator;
 use Runalyze\Calculation\StrideLength;
 
 /**
- * Trackdata entity
+ * Trackdata entity.
+ *
+ * !!!! #TSC if you add a new array which can contain only 0, exclude it in the
+ * #checkArraySizes like TEMPERATURE or PERFORMANCE_CONDITION !!!!!!!!!!!!!!!!!
  *
  * @author Hannes Christiansen
  * @package Runalyze\Model\Trackdata
@@ -236,7 +239,9 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 		foreach ($this->properties() as $key) {
 			if ($this->isArray($key)) {
 				try {
-					if ($key != self::TEMPERATURE && !empty($this->Data[$key]) && max($this->Data[$key]) == 0) {
+					// #TSC temp & perf-cond can have only 0 values in the array, so exclude it
+					if ($key != self::TEMPERATURE && $key != self::PERFORMANCE_CONDITION &&
+						!empty($this->Data[$key]) && max($this->Data[$key]) == 0) {
 						$this->Data[$key] = array();
 					}
 
