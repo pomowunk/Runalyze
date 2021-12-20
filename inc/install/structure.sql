@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `runalyze_training` (
   `fit_total_ascent` smallint unsigned DEFAULT NULL,
   `fit_total_descent` smallint unsigned DEFAULT NULL,
   `fit_self_evaluation_feeling` TINYINT(3) UNSIGNED DEFAULT NULL,
-  `fit_self_evaluation_perceived_effort` TINYINT(3) UNSIGNED DEFAULT,
+  `fit_self_evaluation_perceived_effort` TINYINT(3) UNSIGNED DEFAULT NULL,
   `avg_respiration_rate` TINYINT(2) UNSIGNED DEFAULT NULL,
   `max_respiration_rate` TINYINT(2) UNSIGNED DEFAULT NULL,
   `rpe` tinyint(2) unsigned DEFAULT NULL,

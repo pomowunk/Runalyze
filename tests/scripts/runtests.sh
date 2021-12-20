@@ -53,7 +53,7 @@ $PHPUNIT --colors -c tests/config.xml --group "default,dependsOn,requiresSqlite"
 
 #
 #Time: 12.72 seconds, Memory: 32.00MB
-#Tests: 1132, Assertions: 5052, Errors: 19, Failures: 16, Skipped: 1.
+#Tests: 1132, Assertions: 5054, Errors: 19, Failures: 16, Skipped: 1.
 
 # run one test
 # vendor/bin/phpunit --colors -c tests/config.xml --group "import,requiresDoctrine,dependsOnOldDatabase" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase" --filter InstallDatabaseCommandTest
