@@ -3646,8 +3646,10 @@ sub named_type_value {
      133 => +{'name' => 'avg_stance_time_balance', 'scale' => 100, 'unit' => '%'},
      134 => +{'name' => 'avg_step_length', 'scale' => 10, 'unit' => 'mm'},
      137 => +{'name' => 'total_anaerobic_training_effect', 'scale' => 10},
-     192 => +{'name' => 'self_evaluation_felt', 'unit' => '0=1, 25=2, 50=3, 75=4, 100=5'}, # Selbsteinschaetzung/Gefuehl; 1='Sehr schwach' bis 5='Sehr stark'
-     193 => +{'name' => 'self_evaluation_perceived effort', 'scale' => 10}, # Selbsteinschaetzung/Anstrengung; 1 - Sehr leicht, 2 - Leicht, 3 - Maessig, 4 - Etwas schwer, 5-6 - Schwer, 7-8 - Sehr schwer, 9 - Aeusserst schwer, 10 - Maximum
+     169 => +{'name' => 'avg_respiration_rate', 'scale' => 100, 'unit' => 'brpm'}, # RESPIRATIONRATE / per-minute
+     170 => +{'name' => 'max_respiration_rate', 'scale' => 100, 'unit' => 'brpm'}, # RESPIRATIONRATE / per-minute
+     192 => +{'name' => 'self_evaluation_felt', 'unit' => '0>1, 25>2, 50>3, 75>4, 100>5'}, # Selbsteinschaetzung/Gefuehl; 1='Sehr schwach' bis 5='Sehr stark'
+     193 => +{'name' => 'self_evaluation_perceived_effort', 'scale' => 10}, # Selbsteinschaetzung/Anstrengung; 1 - Sehr leicht, 2 - Leicht, 3 - Maessig, 4 - Etwas schwer, 5-6 - Schwer, 7-8 - Sehr schwer, 9 - Aeusserst schwer, 10 - Maximum
    },
 
    'lap' => +{
@@ -3882,7 +3884,7 @@ sub named_type_value {
      84 => +{'name' => 'stance_time_balance', 'scale' => 100, 'unit' => '%'},
      85 => +{'name' => 'step_length', 'scale' => 10, 'unit' => 'mm'},
      90 => +{'name' => 'perf_cond'}, # performance condition / Leistungszustand
-     108 => +{'name' => 'respiration_rate', 'scale' => 100, 'unit' => 'pm'}, # RESPIRATIONRATE / per-minute
+     108 => +{'name' => 'respiration_rate', 'scale' => 100, 'unit' => 'brpm'}, # RESPIRATIONRATE / per-minute
      112 => +{'name' => 'time_standing', 'scale' => 1000, 'unit' => 's'},
      114 => +{'name' => 'mtb_dynamics_grit'}, # MTB Dynamics - Grit
      115 => +{'name' => 'mtb_dynamics_flow'}, # MTB Dynamics - Flow

@@ -165,7 +165,8 @@ class SearchResults {
 			'route',
 			'title',
 			'partner',
-			'notes'
+			'notes',
+			'avg_respiration_rate'
 		);
 	}
 
@@ -192,7 +193,8 @@ class SearchResults {
 			'wind_speed',
 			'wind_deg',
 			'humidity',
-			'pressure'
+			'pressure',
+			'avg_respiration_rate'
 		];
 	}
 

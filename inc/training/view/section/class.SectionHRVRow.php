@@ -5,6 +5,7 @@
  */
 
 use Runalyze\View\Activity;
+use Runalyze\View\Activity\Box;
 use Runalyze\Model\HRV;
 use Runalyze\Calculation\HRV\Calculator;
 use Runalyze\Model\Trackdata;
@@ -58,6 +59,11 @@ class SectionHRVRow extends TrainingViewSectionRowTabbedPlot {
 			new BoxedValue(number_format($Calculator->pNN20()*100, 1), '%', 'pNN20'),
 			new BoxedValue(number_format($Calculator->percentageAnomalies()*100, 1), '%', __('Anomalies'))
 		);
+
+		// #TSC add respiration rate if available (its not direct a HRV value)
+		if ($this->Context->activity()->avgRespirationRate() > 0) {
+			$boxes[] = new Box\RespirationRate($this->Context);
+		}
 
 		foreach ($boxes as $box) {
 			$box->defineAsFloatingBlock('w50');

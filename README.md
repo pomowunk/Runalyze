@@ -74,6 +74,13 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Show _Respiration Rate_ as line diagram in the _HVR_ panel if available (resp-rate is only available for me with my Fenix 6 if i use a _HRM-Run_ sensor)
 	* Do same fixes to diagrams so not every time-tick needs a value (needed for _Performance Condition_ because tracking starts from one kilometer)
 	* **Migration 20211215213500 is necessary!**
+* 2021-12-20: Support Garmins _Respiration Rate_ (avg & max) and _self-evaluation_-fields (feeling & perceived effort) for FIT activity import and show the values
+	* New db columns in table `training`: `fit_self_evaluation_feeling`, `fit_self_evaluation_perceived_effort`, `avg_respiration_rate`, `max_respiration_rate`
+	* Display and search for _AVG Respiration Rate_ in the dataview settings/activity table and in the HRV detail section
+	* Show all values in the _FIT details_ section
+	* _self-evaluation_-fields are only available with the Fenix watches with a firmware 19.20 and you must activate _self-evaluation_ for your the activities
+	* Parsing _self-evaluation_-effort with the enum `SelfEvaluationPerceivedEffort` to a human readable text same as Garmin Connect shows
+	* **Migration 20211219161500 is necessary!**
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

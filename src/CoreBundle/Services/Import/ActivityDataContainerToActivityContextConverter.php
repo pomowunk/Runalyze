@@ -236,6 +236,8 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setTotalStrokes($activityData->TotalStrokes);
         $activity->setTrimp($activityData->Trimp);
         $activity->setRpe($activityData->RPE);
+        $activity->setAvgRespirationRate($activityData->AvgRespirationRate);
+        $activity->setMaxRespirationRate($activityData->MaxRespirationRate);
     }
 
     /**
@@ -271,6 +273,9 @@ class ActivityDataContainerToActivityContextConverter
         // #TSC: fit ascent / descent
         $activity->setFitTotalAscent($fitDetails->TotalAscent);
         $activity->setFitTotalDescent($fitDetails->TotalDescent);
+        // #TSC: self evaluation
+        $activity->setFitSelfEvaluationFeeling($fitDetails->SelfEvaluationFeeling);
+        $activity->setFitSelfEvaluationPreceivedEffort($fitDetails->SelfEvaluationPerceivedEffort);
     }
 
     protected function setActivityWeatherDataFor(Training $activity, WeatherData $weatherData)

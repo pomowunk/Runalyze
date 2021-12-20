@@ -204,6 +204,30 @@ class Entity extends Model\EntityWithID {
     const FIT_TOTAL_DESCENT = 'fit_total_descent';
 
 	/**
+     * Key: fit_self_evaluation_feeling
+     * @var string
+     */
+    const FIT_SELF_ELEVATION_FEELING = 'fit_self_evaluation_feeling';
+
+    /**
+     * Key: fit_self_evaluation_perceived_effort
+     * @var string
+     */
+    const FIT_SELF_ELEVATION_PRECEIVED_EFFORT = 'fit_self_evaluation_perceived_effort';
+
+    /**
+     * Key: avg_respiration_rate
+     * @var string
+     */
+    const AVG_RESPIRATION_RATE = 'avg_respiration_rate';
+
+    /**
+     * Key: max_respiration_rate
+     * @var string
+     */
+    const MAX_RESPIRATION_RATE = 'max_respiration_rate';
+
+	/**
 	 * Key: RPE
 	 * @var string
 	 */
@@ -480,6 +504,10 @@ class Entity extends Model\EntityWithID {
             self::FIT_LACTATE_THRESHOLD_HR,
             self::FIT_TOTAL_ASCENT,
             self::FIT_TOTAL_DESCENT,
+            self::FIT_SELF_ELEVATION_FEELING,
+            self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT,
+            self::AVG_RESPIRATION_RATE,
+            self::MAX_RESPIRATION_RATE,
             self::RPE,
 			self::TRIMP,
 			self::CADENCE,
@@ -582,6 +610,10 @@ class Entity extends Model\EntityWithID {
             case self::FIT_LACTATE_THRESHOLD_HR:
             case self::FIT_TOTAL_ASCENT:
             case self::FIT_TOTAL_DESCENT:
+            case self::FIT_SELF_ELEVATION_FEELING:
+            case self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT:
+            case self::AVG_RESPIRATION_RATE:
+            case self::MAX_RESPIRATION_RATE:
             case self::RPE:
             case self::TRIMP:
             case self::CADENCE:
@@ -659,6 +691,10 @@ class Entity extends Model\EntityWithID {
             self::FIT_LACTATE_THRESHOLD_HR,
             self::FIT_TOTAL_ASCENT,
             self::FIT_TOTAL_DESCENT,
+            self::FIT_SELF_ELEVATION_FEELING,
+            self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT,
+            self::AVG_RESPIRATION_RATE,
+            self::MAX_RESPIRATION_RATE,
             self::RPE,
             self::TRIMP,
             self::CADENCE,
@@ -939,6 +975,38 @@ class Entity extends Model\EntityWithID {
      */
     public function fitTotalDescent() {
         return $this->Data[self::FIT_TOTAL_DESCENT];
+    }
+
+    /**
+     * fit fitSelfEvaluationFeeling
+     * @return null|int
+     */
+    public function fitSelfEvaluationFeeling() {
+        return $this->Data[self::FIT_SELF_ELEVATION_FEELING];
+    }
+
+    /**
+     * fit fitSelfEvaluationPreceivedEffort
+     * @return null|int
+     */
+    public function fitSelfEvaluationPreceivedEffort() {
+        return $this->Data[self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT];
+    }
+
+    /**
+     * avgRespirationRate
+     * @return null|int
+     */
+    public function avgRespirationRate() {
+        return $this->Data[self::AVG_RESPIRATION_RATE];
+    }
+
+    /**
+     * maxRespirationRate
+     * @return null|int
+     */
+    public function maxRespirationRate() {
+        return $this->Data[self::MAX_RESPIRATION_RATE];
     }
 
 	/**

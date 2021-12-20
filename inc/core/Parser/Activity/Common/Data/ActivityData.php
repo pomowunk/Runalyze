@@ -94,6 +94,12 @@ class ActivityData
     /** @var int|null [grad] #TSC: add temperature here */
     public $AvgTemperature = null;
 
+    /** @var int|null [-] #TSC: added */
+    public $AvgRespirationRate = null;
+
+    /** @var int|null [-] #TSC: added */
+    public $MaxRespirationRate = null;
+
     /**
      * @return array
      */
@@ -127,7 +133,9 @@ class ActivityData
             'AvgPronationExcursionRight',
             'PoolLength',
             'TotalStrokes',
-            'AvgTemperature'
+            'AvgTemperature',
+            'AvgRespirationRate',
+            'MaxRespirationRate'
         ];
     }
 

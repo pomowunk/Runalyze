@@ -271,6 +271,34 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     private $fitTotalDescent = null;
 
     /**
+     * @var int|null []
+     *
+     * @ORM\Column(name="fit_self_evaluation_feeling", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $fitSelfEvaluationFeeling = null;
+
+    /**
+     * @var int|null []
+     *
+     * @ORM\Column(name="fit_self_evaluation_perceived_effort", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $fitSelfEvaluationPreceivedEffort = null;
+
+    /**
+     * @var int|null []
+     *
+     * @ORM\Column(name="avg_respiration_rate", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $avgRespirationRate = null;
+
+    /**
+     * @var int|null []
+     *
+     * @ORM\Column(name="max_respiration_rate", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $maxRespirationRate = null;
+
+    /**
      * @var int|null [6 .. 20]
      *
      * @ORM\Column(name="rpe", type="tinyint", nullable=true, options={"unsigned":true})
@@ -1315,6 +1343,86 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function getFitTotalDescent()
     {
         return $this->fitTotalDescent;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getFitSelfEvaluationFeeling()
+    {
+        return $this->fitSelfEvaluationFeeling;
+    }
+
+    /**
+     * @param null|int $fitSelfEvaluationFeeling
+     *
+     * @return $this
+     */
+    public function setFitSelfEvaluationFeeling($fitSelfEvaluationFeeling)
+    {
+        $this->fitSelfEvaluationFeeling = $fitSelfEvaluationFeeling;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getFitSelfEvaluationPreceivedEffort()
+    {
+        return $this->fitSelfEvaluationPreceivedEffort;
+    }
+
+    /**
+     * @param null|int $fitSelfEvaluationPreceivedEffort
+     *
+     * @return $this
+     */
+    public function setFitSelfEvaluationPreceivedEffort($fitSelfEvaluationPreceivedEffort)
+    {
+        $this->fitSelfEvaluationPreceivedEffort = $fitSelfEvaluationPreceivedEffort;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getAvgRespirationRate()
+    {
+        return $this->avgRespirationRate;
+    }
+
+    /**
+     * @param null|int $avgRespirationRate
+     *
+     * @return $this
+     */
+    public function setAvgRespirationRate($avgRespirationRate)
+    {
+        $this->avgRespirationRate = $avgRespirationRate;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getMaxRespirationRate()
+    {
+        return $this->maxRespirationRate;
+    }
+
+    /**
+     * @param null|int $maxRespirationRate
+     *
+     * @return $this
+     */
+    public function setMaxRespirationRate($maxRespirationRate)
+    {
+        $this->maxRespirationRate = $maxRespirationRate;
+
+        return $this;
     }
 
     /**

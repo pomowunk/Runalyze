@@ -33,4 +33,10 @@ class FitDetails
 
     /** @var int|null */
     public $TotalDescent = null;
+
+    /** @var int|null */
+    public $SelfEvaluationFeeling = null;
+
+    /** @var int|null */
+    public $SelfEvaluationPerceivedEffort = null;
 }

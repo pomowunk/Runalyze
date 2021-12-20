@@ -2,6 +2,7 @@
 
 namespace Runalyze\Parser\Activity\FileType;
 
+use Runalyze\Activity;
 use Runalyze\Import\Exception\ParserException;
 use Runalyze\Parser\Activity\Common\AbstractSingleParser;
 use Runalyze\Parser\Activity\Common\Data\Metadata;
@@ -445,6 +446,14 @@ class FitActivity extends AbstractSingleParser
             $this->Container->ActivityData->PoolLength = $this->Values['pool_length'][0];
         }
 
+        // #TSC add respiration rate AVG + MAX
+        if (isset($this->Values['avg_respiration_rate'])) {
+            $this->Container->ActivityData->AvgRespirationRate = round($this->Values['avg_respiration_rate'][0] / 100, 0);
+        }
+        if (isset($this->Values['max_respiration_rate'])) {
+            $this->Container->ActivityData->MaxRespirationRate = round($this->Values['max_respiration_rate'][0] / 100, 0);
+        }
+
         if (isset($this->Values['sport'])) {
             $this->Container->Metadata->setInternalSportId((new FitSdkMapping())->toInternal($this->Values['sport'][0]));
             $this->Container->Metadata->setSportName($this->Values['sport'][1]);
@@ -466,6 +475,15 @@ class FitActivity extends AbstractSingleParser
         }
         if (isset($this->Values['total_descent']) && $this->Values['total_descent'][0] != 0) {
             $this->Container->FitDetails->TotalDescent = $this->Values['total_descent'][0];
+        }
+
+        // #TSC: fit self evaluation
+        if (isset($this->Values['self_evaluation_felt'])) {
+            $v = Activity\SelfEvaluationPerceivedEffort::fromFitToEnum($this->Values['self_evaluation_felt'][0]);
+            $this->Container->FitDetails->SelfEvaluationFeeling = $v;
+        }
+        if (isset($this->Values['self_evaluation_perceived_effort'])) {
+            $this->Container->FitDetails->SelfEvaluationPerceivedEffort = $this->Values['self_evaluation_perceived_effort'][0] / 10;
         }
 
         // #TSC: set avg temperature

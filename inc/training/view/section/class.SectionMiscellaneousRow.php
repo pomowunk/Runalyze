@@ -4,6 +4,7 @@
  * @package Runalyze\DataObjects\Training\View\Section
  */
 
+use Runalyze\Activity as runActivity;
 use Runalyze\Activity\Duration;
 use Runalyze\Activity\Temperature;
 use Runalyze\AgeGrade\Lookup;
@@ -379,7 +380,7 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
         $this->addToTable($details, 'Recovery time (h):', ($this->Context->activity()->fitRecoveryTime() != null ? round($this->Context->activity()->fitRecoveryTime() / 60, 1) : '-'), $c);
         $this->addToTable($details, 'New lactate treshhold (bpm):', ($this->Context->activity()->fitLactateThresholdHR() != null ? $this->Context->activity()->fitLactateThresholdHR() : '-'), $c);
         $this->addToTable($details, $this->getGlossaryLink('HVR Heart-Rate Variability:', 'hrv'), ($this->Context->activity()->fitHRVscore() != null ? $this->Context->activity()->fitHRVscore() : '-'), $c);
-        $this->addToTable($details, $this->getGlossaryLink('Performance condition:', 'performance-condition'),
+        $this->addToTable($details, $this->getGlossaryLink('Performance condition start:', 'performance-condition'),
             ($this->Context->activity()->fitPerformanceCondition() != null ? sprintf('%+d', $this->Context->activity()->fitPerformanceCondition() - 100) : '-'), $c);
         $this->addToTable($details, $this->getGlossaryLink('Performance cond. end:', 'performance-condition'),
             ($this->Context->activity()->fitPerformanceConditionEnd() != null ? sprintf('%+d', $this->Context->activity()->fitPerformanceConditionEnd() - 100) : '-'), $c);
@@ -387,6 +388,11 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
         $this->addToTable($details, $this->getGlossaryLink('Anaerob training effect:', 'training-effect'), ($this->Context->activity()->fitAnaerobicTrainingEffect() != null ? $this->Context->activity()->fitAnaerobicTrainingEffect() : '-'), $c);
         $this->addToTable($details, 'Creator:', ($this->Context->activity()->creator() != null ? $this->Context->activity()->creator() : '-'), $c);
         $this->addToTable($details, 'Creator details:', ($this->Context->activity()->creatorDetails() != null ? $this->Context->activity()->creatorDetails() : '-'), $c);
+        $this->addToTable($details, 'Avg / max respiration rate (brpm):', ($this->Context->activity()->avgRespirationRate() != null ?
+            $this->Context->activity()->avgRespirationRate() . ' / ' .  $this->Context->activity()->maxRespirationRate() : ''), $c);
+        $this->addToTable($details, 'Anstrengung (1-10):', ($this->Context->activity()->fitSelfEvaluationPreceivedEffort() != null ? $this->Context->activity()->fitSelfEvaluationPreceivedEffort() : ''), $c);
+        $this->addToTable($details, 'Gefühl (1-5):', ($this->Context->activity()->fitSelfEvaluationFeeling() != null ? runActivity\SelfEvaluationPerceivedEffort::descriptionFromNum($this->Context->activity()->fitSelfEvaluationFeeling()) : ''), $c);
+
         $details .= '</tr></table>';
         $this->FitDetails .= HTML::fileBlock($details);
 

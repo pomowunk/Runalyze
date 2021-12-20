@@ -193,6 +193,9 @@ final class Keys extends AbstractEnum
 	/** @var int */
 	const FIT_ANAEROBIC_TRAINING_EFFECT = 60;
 
+	/** @var int */
+	const AVG_RESPIRATION_RATE = 61;
+
     /**
 	 * @var array|null
 	 */
@@ -309,7 +312,8 @@ final class Keys extends AbstractEnum
             self::AVG_BRAKING_GS => 'AverageBrakingGs',
             self::AVG_FOOTSTRIKE_TYPE => 'AverageFootstrikeType',
             self::AVG_PRONATION_EXCURSION => 'AveragePronationExcursion',
-            self::FIT_ANAEROBIC_TRAINING_EFFECT => 'FitAnaerobicTrainingEffect'
+            self::FIT_ANAEROBIC_TRAINING_EFFECT => 'FitAnaerobicTrainingEffect',
+            self::AVG_RESPIRATION_RATE => 'AverageRespirationRate'
         );
 	}
 }
