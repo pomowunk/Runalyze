@@ -241,4 +241,28 @@ class DefaultController extends Controller
     {
         return $this->renderCorrectView('GlossaryBundle:topics:efficiency_index.html.twig', $request);
     }
+
+    /**
+     * @Route("/self-evaluation", name="glossary-self-evaluation")
+     */
+    public function selfEvaluationAction(Request $request)
+    {
+        return $this->renderCorrectView('GlossaryBundle:topics:self_evaluation.html.twig', $request);
+    }
+
+    /**
+     * @Route("/run-dynamics", name="glossary-run-dynamics")
+     */
+    public function runningDynamicsAction(Request $request)
+    {
+        return $this->renderCorrectView('GlossaryBundle:topics:running_dynamics.html.twig', $request);
+    }
+
+    /**
+     * @Route("/respiration", name="glossary-respiration")
+     */
+    public function respirationAction(Request $request)
+    {
+        return $this->renderCorrectView('GlossaryBundle:topics:respiration.html.twig', $request);
+    }
 }

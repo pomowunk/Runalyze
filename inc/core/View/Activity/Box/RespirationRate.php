@@ -13,7 +13,7 @@ class RespirationRate extends AbstractBox
             'brpm',
             '&empty; Atemfrequenz',
             '',
-            ''
+            'respiration'
         );
     }
 }

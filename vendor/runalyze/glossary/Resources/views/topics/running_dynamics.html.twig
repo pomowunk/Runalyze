@@ -1,0 +1,53 @@
+{% extends "GlossaryBundle::_base.html.twig" %}
+
+{% import 'GlossaryBundle::_macro/references.html.twig' as ref %}
+
+{% block headline %}
+    Läufer Dynamik
+{% endblock %}
+
+{% block glossaryContent %}
+    <p class="text">
+        <u>Schrittfrequenz</u>
+        <br/>
+        Die Schrittfrequenz gibt an, wie oft der Fuß bei einer Laufaktivität in einer Minute auf dem Boden aufkommt. Sie wird in Schritten pro Minute (spm) gemessen. Im Allgemeinen haben erfahrene Läufer eine höhere Schrittfrequenz.
+        <br/>
+        Als Ziel für die Schrittfrequenz wird oft ein Wert von 180 spm angegeben. Bei einer höheren Schrittfrequenz ist gewöhnlich die vertikale Bewegung geringer und die Bodenkontaktzeit kürzer. Größere Läufer haben oft eine etwas niedrigere Schrittfrequenz.
+    </p>
+
+    <p class="text">
+        <u>Vertikales Verhältnis</u>
+        <br/>
+        Das vertikale Verhältnis bietet eine Möglichkeit, die Laufeffizienz zu messen. Dabei wird die vertikale Bewegung durch die Schrittlänge geteilt. 
+        Das Verhältnis wird dann als Prozentsatz ausgegeben. Da die Schrittlänge dem Nutzen beim Laufen entspricht (horizontale Bewegung) und die vertikale Bewegung den Kosten (vertikale Bewegung), repräsentiert ein niedrigeres vertikales Verhältnis geringe Kosten für einen großen Nutzen.
+    </p>
+
+    <p class="text">
+        <u>Vertikale Bewegung</u>
+        <br/>
+        Die vertikale Bewegung gibt an, wie stark beim Laufen die vertikale Körperbewegung bei jedem Schritt ist. Sie wird in Zentimetern (cm) gemessen.
+        <br/>
+        Viele Lauftrainer sind der Auffassung, dass eine geringere vertikale Bewegung besser ist, da weniger Energie für die Hoch-Tiefbewegung aufgewendet wird. Im Allgemeinen haben erfahrene Läufer eine geringere vertikale Bewegung. 
+        Allerdings kommt es bei einer schnelleren Pace oft zu einer etwas stärkeren vertikalen Bewegung. Beim vertikalen Verhältnis wird dies in Betracht gezogen. 
+        Ein weiterer Vorteil einer geringeren vertikalen Bewegung liegt darin, dass gewöhnlich beim Aufsetzen die Belastung auf den Unterkörper niedriger ist.
+    </p>
+
+    <p class="text">
+        <u>Bodenkontaktzeit</u>
+        <br/>
+        Die Bodenkontaktzeit ist die Zeit, die der Fuß bei jedem Schritt am Boden verbringt. Sie wird in Millisekunden (ms) gemessen. Bei Eliteläufern ist die Bodenkontaktzeit in der Regel besonders kurz. 
+        Fast alle erfahrenen Läufer haben eine Bodenkontaktzeit von weniger als 300 ms, da sie wahrscheinlich gelernt haben, schnell die Füße anzuheben und beim Aufsetzen das Overstriding zu vermeiden.
+    </p>
+
+    <p class="text">
+        <u>Balance der Bodenkontaktzeit</u>
+        <br/>
+        Bei der Balance der Bodenkontaktzeit wird ermittelt, wie symmetrisch Sie laufen. Dafür wird die Balance zwischen der Bodenkontaktzeit des linken und rechten Fußes verfolgt. 
+        Sie wird immer als Prozentsatz über 50 % mit einem Pfeil nach links oder nach rechts angezeigt, um anzugeben, welcher Fuß den Boden länger berührt.
+        <br/>
+        Für die meisten Personen ist ein symmetrischer Laufstil am besten. Farbige Anzeigen auf Garmin-Uhren zeigen an, wie ausgeglichen Sie im Vergleich mit anderen Läufern laufen. 
+        Viele Läufer sagen, dass die Balance der Bodenkontaktzeit stärker vom Idealwert von 50/50 abweicht, wenn sie bergauf oder bergab laufen, wenn sie auf Geschwindigkeit trainieren oder wenn sie ermüdet sind. 
+        Einige Läufer sehen auch einen Zusammenhang zwischen Verletzungen und einem Ungleichgewicht der Balance der Bodenkontaktzeit.
+    </p>
+
+{% endblock %}

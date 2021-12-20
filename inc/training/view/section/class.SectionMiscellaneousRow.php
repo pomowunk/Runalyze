@@ -390,8 +390,8 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
         $this->addToTable($details, 'Creator details:', ($this->Context->activity()->creatorDetails() != null ? $this->Context->activity()->creatorDetails() : '-'), $c);
         $this->addToTable($details, 'Avg / max respiration rate (brpm):', ($this->Context->activity()->avgRespirationRate() != null ?
             $this->Context->activity()->avgRespirationRate() . ' / ' .  $this->Context->activity()->maxRespirationRate() : ''), $c);
-        $this->addToTable($details, 'Anstrengung (1-10):', ($this->Context->activity()->fitSelfEvaluationPreceivedEffort() != null ? $this->Context->activity()->fitSelfEvaluationPreceivedEffort() : ''), $c);
-        $this->addToTable($details, 'Gefühl (1-5):', ($this->Context->activity()->fitSelfEvaluationFeeling() != null ? runActivity\SelfEvaluationPerceivedEffort::descriptionFromNum($this->Context->activity()->fitSelfEvaluationFeeling()) : ''), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Anstrengung (1-10):', 'self-evaluation'), ($this->Context->activity()->fitSelfEvaluationPreceivedEffort() != null ? $this->Context->activity()->fitSelfEvaluationPreceivedEffort() : ''), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Gefühl (1-5):', 'self-evaluation'), ($this->Context->activity()->fitSelfEvaluationFeeling() != null ? runActivity\SelfEvaluationPerceivedEffort::descriptionFromNum($this->Context->activity()->fitSelfEvaluationFeeling()) : ''), $c);
 
         $details .= '</tr></table>';
         $this->FitDetails .= HTML::fileBlock($details);

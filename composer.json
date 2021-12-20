@@ -28,7 +28,7 @@
         "jms/translation-bundle": "~1.6",
         "bernard/bernard-bundle": "^2.0.0",
         "runalyze/gpxtrackposter": "^1.0.0",
-        "runalyze/glossary": "dev-master#d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
+        "runalyze/glossary": "v4.3.0",
         "snc/redis-bundle": "^3.5",
         "predis/predis": "^1.0",
         "guzzlehttp/guzzle": "^7.0",
@@ -42,6 +42,7 @@
         "psr-4": {
             "DoctrineExtensions\\": "vendor/beberlei/DoctrineExtensions/src",
             "Runalyze\\": "inc/core/",
+            "Runalyze\\Bundle\\GlossaryBundle\\": "vendor/runalyze/glossary",
             "Runalyze\\Bundle\\CoreBundle\\Tests\\": "tests/CoreBundle",
             "Runalyze\\Bundle\\": "src/",
             "Runalyze\\Tests\\": "tests/inc/core/"
@@ -62,6 +63,18 @@
                     "url": "https://github.com/codeproducer198/GpxTrackPoster.git",
                     "type": "git",
                     "reference": "8b337ca89e1cf9552dc0bbb08d8b81bc55335c45"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "runalyze/glossary",
+                "version": "v4.3.0",
+                "source": {
+                    "url": "https://github.com/codeproducer198/Runalyze-Glossary.git",
+                    "type": "git",
+                    "reference": "v4.3.0"
                 }
             }
         }],

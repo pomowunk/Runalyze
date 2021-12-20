@@ -5285,55 +5285,15 @@
         },
         {
             "name": "runalyze/glossary",
-            "version": "dev-master",
-            "version_normalized": "dev-master",
+            "version": "v4.3.0",
+            "version_normalized": "4.3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Runalyze/glossary.git",
-                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6"
+                "url": "https://github.com/codeproducer198/Runalyze-Glossary.git",
+                "reference": "v4.3.0"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
-                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "phpunit/phpunit": "4.8.*"
-            },
-            "time": "2019-03-04T15:29:49+00:00",
-            "default-branch": true,
             "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "Runalyze\\Bundle\\GlossaryBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "RUNALYZE Team",
-                    "email": "mail@runalyze.com",
-                    "homepage": "https://runalyze.com"
-                }
-            ],
-            "description": "provides the glossary for runalyze",
-            "keywords": [
-                "runalyze",
-                "symfony3"
-            ],
-            "support": {
-                "issues": "https://github.com/Runalyze/glossary/issues",
-                "source": "https://github.com/Runalyze/glossary/tree/master"
-            },
+            "installation-source": "source",
             "install-path": "../runalyze/glossary"
         },
         {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f085d442c56b8a290071c7baba4b2ff",
+    "content-hash": "2ec0814c5875a2c4c629abaea52f1e5d",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4115,53 +4115,13 @@
         },
         {
             "name": "runalyze/glossary",
-            "version": "dev-master",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Runalyze/glossary.git",
-                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6"
+                "url": "https://github.com/codeproducer198/Runalyze-Glossary.git",
+                "reference": "v4.3.0"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
-                "reference": "d7e2540bf51dc1aabe4dbdce85af96e8203311b6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "phpunit/phpunit": "4.8.*"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Runalyze\\Bundle\\GlossaryBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "RUNALYZE Team",
-                    "email": "mail@runalyze.com",
-                    "homepage": "https://runalyze.com"
-                }
-            ],
-            "description": "provides the glossary for runalyze",
-            "keywords": [
-                "runalyze",
-                "symfony3"
-            ],
-            "support": {
-                "issues": "https://github.com/Runalyze/glossary/issues",
-                "source": "https://github.com/Runalyze/glossary/tree/master"
-            },
-            "time": "2019-03-04T15:29:49+00:00"
+            "type": "library"
         },
         {
             "name": "runalyze/translations",
@@ -7656,7 +7616,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "runalyze/glossary": 20,
         "p3k/picofeed": 0,
         "runalyze/translations": 20
     },

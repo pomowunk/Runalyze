@@ -1,0 +1,20 @@
+{% extends "GlossaryBundle::_base.html.twig" %}
+
+{% import 'GlossaryBundle::_macro/references.html.twig' as ref %}
+
+{% block headline %}
+    Atmung
+{% endblock %}
+
+{% block glossaryContent %}
+    <p class="text">
+        Die Atemfrequenz ist ein Messwert für die Anzahl der Atemzüge pro Minute (brpm) während des Tages. Ein Atemzug umfasst sowohl das Einatmen als auch das Ausatmen. 
+        Ihr Garmin-Gerät speichern die Atmung mittels der optischen Herzfrequenztechnologie.
+    </p>
+
+    <p class="text">
+        Eine normale Atemfrequenz für Erwachsene im Ruhezustand beträgt zwischen 12 und 20 Atemzügen pro Minute (brpm). Unter Belastung kann sich das auf bis zu 50-60 Atemzügen sein.
+        Dies kann je nach Person unterschiedlich sein, und während Aktivitäten ist sie gewöhnlich höher.
+    </p>
+
+{% endblock %}

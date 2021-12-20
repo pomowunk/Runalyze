@@ -743,14 +743,12 @@
             'dev_requirement' => false,
         ),
         'runalyze/glossary' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => 'v4.3.0',
+            'version' => '4.3.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../runalyze/glossary',
-            'aliases' => array(
-                0 => '9999999-dev',
-            ),
-            'reference' => 'd7e2540bf51dc1aabe4dbdce85af96e8203311b6',
+            'aliases' => array(),
+            'reference' => 'v4.3.0',
             'dev_requirement' => false,
         ),
         'runalyze/gpxtrackposter' => array(

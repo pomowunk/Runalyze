@@ -16,6 +16,45 @@
         {% trans %}Runalyze will import performance condition from fit files if available.{% endtrans %}
     </p>
 
+    <p class="text">
+        <u>Garmin</u>
+        <br/>
+        Für den Leistungszustand werden beim Aufzeichnen einer Aktivität mit der Garmin-Uhr Ihre Pace, Herzfrequenz und Herzfrequenzvariabilität analysiert, um eine Echtzeitbewertung Ihrer Leistungsfähigkeit im Vergleich zu Ihrem durchschnittlichen Fitnesslevel zu erstellen.
+        <br/>
+        In den ersten 6 bis 20 Minuten einer Aktivität zeigt die Uhr Ihren Wert für den Leistungszustand an. Der Leistungszustand kann Aufschluss über Ihren Ermüdungszustand geben, besonders am Ende eines langen Trainings.
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:150px; text-align;text-align: left;">Leistung</th>
+                    <th style="width:150px; text-align;text-align: left;">Wert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ausgezeichnet</td>
+                    <td>&gt; 10</td>
+                </tr>
+                <tr>
+                    <td>Gut</td>
+                    <td>2 bis 10</td>
+                </tr>
+                <tr>
+                    <td>Ausgangszustand</td>
+                    <td>-1 bis 1</td>
+                </tr>
+                <tr>
+                    <td>Ausreichend</td>
+                    <td>-10 bis -2</td>
+                </tr>
+                <tr>
+                    <td>Schlecht</td>
+                    <td>-20 bis -11</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+
     {{ ref.referencesHead() }}
     {{ ref.singleReferenceTextWithLink("Garmin - Physiological Measurements: Performance Condition", "https://www8.garmin.com/manuals/webhelp/fenix3/EN-US/GUID-901ACCFC-FB0D-414E-B80C-54970AF4E357.html", "garmin.com") }}
     

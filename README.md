@@ -81,6 +81,7 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* _self-evaluation_-fields are only available with the Fenix watches with a firmware 19.20 and you must activate _self-evaluation_ for your the activities
 	* Parsing _self-evaluation_-effort with the enum `SelfEvaluationPerceivedEffort` to a human readable text same as Garmin Connect shows
 	* **Migration 20211219161500 is necessary!**
+* 2021-12-20: Use [codeproducer198 glossary](https://github.com/codeproducer198/Runalyze-Glossary) and add links to new entries: respiration, running dynamics, self-evaluation
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
