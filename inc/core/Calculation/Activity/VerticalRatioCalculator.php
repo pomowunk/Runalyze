@@ -51,7 +51,11 @@ class VerticalRatioCalculator {
 		$this->VerticalRatio = array();
 
 		for ($i = 0; $i < $Size; ++$i) {
-			$this->VerticalRatio[] = ($StrideLength[$i] > 0) ? round(100 * $Oscillation[$i] / $StrideLength[$i]) : 0;
+			if ($StrideLength[$i] > 0 && is_numeric($Oscillation[$i])) {
+				$this->VerticalRatio[] = round(100 * $Oscillation[$i] / $StrideLength[$i]);
+			} else {
+				$this->VerticalRatio[] = null;
+			}
 		}
 
 		return $this->VerticalRatio;

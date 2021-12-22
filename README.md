@@ -82,6 +82,24 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Parsing _self-evaluation_-effort with the enum `SelfEvaluationPerceivedEffort` to a human readable text same as Garmin Connect shows
 	* **Migration 20211219161500 is necessary!**
 * 2021-12-20: Use [codeproducer198 glossary](https://github.com/codeproducer198/Runalyze-Glossary) and add links to new entries: respiration, running dynamics, self-evaluation
+* 2021-12-22: Fix previous hack of setting _null_-values to _0_ in the continous data of GroundContactTime, VerticalOscillation, VerticalOscillation, Strokes, StrokeType, Cadence, Temperature
+	* Some calculations (f.e. balance in the round detail view) result in small failure outcomes because _0_ is calculated - _null_ will be ignored for the calculation; mostly in the round details
+    * To fix the _0_ to _null_ for GroundContactTime, VerticalOscillation, VerticalOscillation you can use following sql commands:
+		```
+		update runalyze_trackdata set groundcontact = regexp_replace(regexp_replace(groundcontact, '\\|0\\|', '\\|\\|'), '\\|0\\|', '\\|\\|')                 where groundcontact is not null and groundcontact like '%|0|%';
+		update runalyze_trackdata set groundcontact = regexp_replace(groundcontact, '^0\\|', '\\|')                                                           where groundcontact is not null and groundcontact like '0|%';
+		update runalyze_trackdata set groundcontact = regexp_replace(groundcontact, '\\|0$', '\\|')                                                           where groundcontact is not null and groundcontact like '%|0';
+		update runalyze_trackdata set vertical_oscillation = regexp_replace(regexp_replace(vertical_oscillation, '\\|0\\|', '\\|\\|'), '\\|0\\|', '\\|\\|')   where vertical_oscillation is not null and vertical_oscillation like '%|0|%';
+		update runalyze_trackdata set vertical_oscillation = regexp_replace(vertical_oscillation, '^0\\|', '\\|')                                             where vertical_oscillation is not null and vertical_oscillation like '0|%';
+		update runalyze_trackdata set vertical_oscillation = regexp_replace(vertical_oscillation, '\\|0$', '\\|')                                             where vertical_oscillation is not null and vertical_oscillation like '%|0';
+		update runalyze_trackdata set groundcontact_balance = regexp_replace(regexp_replace(groundcontact_balance, '\\|0\\|', '\\|\\|'), '\\|0\\|', '\\|\\|') where groundcontact_balance is not null and groundcontact_balance like '%|0|%';
+		update runalyze_trackdata set groundcontact_balance = regexp_replace(groundcontact_balance, '^0\\|', '\\|')                                           where groundcontact_balance is not null and groundcontact_balance like '0|%';
+		update runalyze_trackdata set groundcontact_balance = regexp_replace(groundcontact_balance, '\\|0$', '\\|')                                           where groundcontact_balance is not null and groundcontact_balance like '%|0';
+		```
+		This will fix little failure displays of the _running dynamics_ in the round view and the diagrams.
+		It has no effect on the average/summarys of the _running dynamics_.
+	* For the other datas a fix is not so easy and makes no sense
+	* From now on the missing values are stored with a _null_ in the related array index and the calculation/display is fixed to handle these _null_-values indexes
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
