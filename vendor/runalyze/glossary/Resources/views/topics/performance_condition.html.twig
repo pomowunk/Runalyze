@@ -7,6 +7,10 @@
 {% endblock %}
 
 {% block glossaryContent %}
+    <style>
+    .gloss tr  { text-align: center;}
+    </style>
+
     <p class="text">
         {% trans %}Performance condition is a metric provided by Garmin that analyzes pace, heart rate and heart rate variability within the first 20 minutes of an activity to make a real-time assessment of your ability to perform compared to your current fitness level.{% endtrans %}
         {% trans %}Performance condition values range from +20 to -20, whereby positive values mean that you are rested and in shape for a good and intense workout.{% endtrans %}
@@ -23,11 +27,11 @@
         <br/>
         In den ersten 6 bis 20 Minuten einer Aktivität zeigt die Uhr Ihren Wert für den Leistungszustand an. Der Leistungszustand kann Aufschluss über Ihren Ermüdungszustand geben, besonders am Ende eines langen Trainings.
 
-        <table>
+        <table class="gloss">
             <thead>
                 <tr>
-                    <th style="width:150px; text-align;text-align: left;">Leistung</th>
-                    <th style="width:150px; text-align;text-align: left;">Wert</th>
+                    <th style="width:150px;">Leistung</th>
+                    <th style="width:150px;">Wert</th>
                 </tr>
             </thead>
             <tbody>
