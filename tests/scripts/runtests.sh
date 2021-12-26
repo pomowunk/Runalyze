@@ -7,6 +7,7 @@ PHPUNIT="php vendor/phpunit/phpunit/phpunit"
 # based on the combinations of https://github.com/Runalyze/Runalyze/blob/support/4.3.x/.travis.yml
 
 # before_script:
+cp data/config.yml data/config_notest.yml
 cp app/config/default_config.yml data/config.yml
 
 # tests
@@ -57,4 +58,6 @@ $PHPUNIT --colors -c tests/config.xml --group "default,dependsOn,requiresSqlite"
 
 # run one test
 # vendor/bin/phpunit --colors -c tests/config.xml --group "import,requiresDoctrine,dependsOnOldDatabase" --exclude-group "dependsOnSRTM,dependsOnTimezoneDatabase" --filter InstallDatabaseCommandTest
+
+cp data/config_notest.yml data/config.yml
 
