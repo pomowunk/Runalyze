@@ -14,6 +14,9 @@ use InvalidArgumentException;
  */
 class Derivative
 {
+    // 1000% means 85° grade
+    protected $Filter = 1000.0;
+
     /**
      * @param array $y
      * @param array $x
@@ -38,7 +41,14 @@ class Derivative
             $deltaY = $y[$i] - $y[$i - 1];
 
             if ($deltaX > 0) {
-                $ddx[] = $deltaY / $deltaX;
+                $v = $deltaY / $deltaX;
+                // #TSC if we have more than +/-X, limit it - it's data bullshit and not possible!!!
+                if ($v > $this->Filter) {
+                    $v = $this->Filter;
+                } elseif ($v < -$this->Filter) {
+                    $v = -$this->Filter;
+                }
+                $ddx[] = $v;
             } elseif ($i > 1) {
                 $ddx[] = $ddx[$i - 2];
             } else {
