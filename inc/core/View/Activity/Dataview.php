@@ -21,6 +21,7 @@ use Runalyze\Activity\HeartRate;
 use Runalyze\Activity\Pace;
 use Runalyze\Activity\StrideLength;
 use Runalyze\Activity\VerticalRatio;
+use Runalyze\Calculation\Activity\GradeAdjustedPaceCalculator;
 use Runalyze\Calculation\JD\LegacyEffectiveVO2max;
 use Runalyze\Calculation\JD\LegacyEffectiveVO2maxCorrector;
 use Runalyze\View\Icon\EffectiveVO2maxIcon;
@@ -245,6 +246,22 @@ class Dataview
     {
         return $this->object($this->Pace, function (Activity\Entity $Activity) {
             return new Pace($Activity->duration(), $Activity->distance(), SportFactory::getSpeedUnitFor($Activity->sportid()));
+        });
+    }
+
+    /**
+     * Get the grade adjusted pace
+     *
+     * @return \Runalyze\Activity\Pace
+     */
+    public function GApace(\Runalyze\View\Activity\Context $context)
+    {
+        // calc the pace based on the continous data time&distance&evaluation
+        $GaPaceCalculator = new GradeAdjustedPaceCalculator($context);
+        $adjTime = $GaPaceCalculator->getAdjustedTime();
+
+        return $this->object($this->GAPace, function (Activity\Entity $Activity) use (&$adjTime){
+            return new Pace($adjTime, $Activity->distance(), SportFactory::getSpeedUnitFor($Activity->sportid()));
         });
     }
 

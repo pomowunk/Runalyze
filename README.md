@@ -100,6 +100,9 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 		It has no effect on the average/summarys of the _running dynamics_.
 	* For the other datas a fix is not so easy and makes no sense
 	* From now on the missing values are stored with a _null_ in the related array index and the calculation/display is fixed to handle these _null_-values indexes
+* 2021-12-27: Add _GAP_/GradientAdjustedPace value in dataview (based on the existing Minetti algorithm)
+	* Only for running activities and not stored in the database; only calculated while displaying
+	* I'am not happy with the results, but I'll leave it that way for now; for me it always display the same or higher as the "normal" pace (perhaps the up/down is almost the same for me)
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

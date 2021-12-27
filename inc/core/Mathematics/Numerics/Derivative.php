@@ -18,8 +18,8 @@ class Derivative
     protected $Filter = 1000.0;
 
     /**
-     * @param array $y
-     * @param array $x
+     * @param array $y evaluation
+     * @param array $x distance
      * @return array
      *
      * @throws InvalidArgumentException
