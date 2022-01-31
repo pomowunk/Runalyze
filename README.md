@@ -103,6 +103,9 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2021-12-27: Add _GAP_/GradientAdjustedPace value in dataview (based on the existing Minetti algorithm)
 	* Only for running activities and not stored in the database; only calculated while displaying
 	* I'am not happy with the results, but I'll leave it that way for now; for me it always display the same or higher as the "normal" pace (perhaps the up/down is almost the same for me)
+* 2022-01-30: New activity icons and activities
+	* Add 12 new activity icons (climbing, snow activities, golf, kayak, tennis, surfing ...)
+	* New activity _snow shoeing_ and _cross-country-skiing_ can be added to your account and are recognised while importing from Garmin Fenix 6
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

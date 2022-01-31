@@ -33,7 +33,19 @@ class SportIconProfile implements InterfaceChoosable
             'icons8-Walking',
             'icons8-Weightlift',
             'icons8-skiing',
-            'icons8-Mountaineering'
+            'icons8-Mountaineering',
+            'icons8-SnowShoeing',
+            'icons8-CrossCountrySkiing',
+            'icons8-Boating',
+            'icons8-Rock-Climbing',
+            'icons8-Golf',
+            'icons8-Kayaking',
+            'icons8-SnowBoarding',
+            'icons8-Surfing',
+            'icons8-WindSurfing',
+            'icons8-Tennis',
+            'icons8-Free-Swimming',
+            'icons8-Bouldern'
         ];
 
         foreach ($iconClasses as $class) {
