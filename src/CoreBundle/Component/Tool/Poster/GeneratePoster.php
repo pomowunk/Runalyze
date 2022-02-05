@@ -25,6 +25,9 @@ class GeneratePoster
     /** @var string */
     protected $Filename;
 
+    /** @var string */
+    protected $StdErr = '';
+
     /**
      * @param string $kernelRootDir
      * @param string $python3Path
@@ -42,7 +45,7 @@ class GeneratePoster
      */
     protected function pathToRepository()
     {
-        return $this->KernelRootDir.'/../vendor/runalyze/GpxTrackPoster/';
+        return $this->KernelRootDir.'/../vendor/runalyze/gpxtrackposter/';
     }
 
     /**
@@ -67,8 +70,11 @@ class GeneratePoster
      */
     public function generate()
     {
-        $builder = new Process($this->Python3Path.' create_poster.py '.implode(' ', $this->Parameter));
-        $builder->setWorkingDirectory($this->pathToRepository())->run();
+        $cmd = $this->Python3Path.' create_poster.py '.implode(' ', $this->Parameter);
+        $builder = new Process($cmd);
+        $builder->setWorkingDirectory(realpath($this->pathToRepository()));
+        $builder->run();
+        $this->StdErr = $builder->getErrorOutput();
 
         return $this->pathToSvgDirectory().$this->Filename;
     }
@@ -83,15 +89,17 @@ class GeneratePoster
      */
     public function buildCommand($type, $jsonDir, $year, Account $account, Sport $sport, $title, $backgroundColor, $trackColor, $textColor, $raceColor)
     {
+        $this->Parameter = [];
+        
         $this->generateRandomFileName($account->getUsername(), (string)$year);
 
-        $this->Parameter[] = '--json-dir '.$jsonDir;
-        $this->Parameter[] = '--athlete '.$account->getUsername();
-        $this->Parameter[] = '--year '.(int)$year;
-        $this->Parameter[] = '--output '.$this->pathToSvgDirectory().$this->Filename;
+        $this->Parameter[] = '--json-dir '.escapeshellarg($jsonDir);
+        $this->Parameter[] = '--athlete '.escapeshellarg($account->getUsername());
+        $this->Parameter[] = '--year '.(string)(int)$year;
+        $this->Parameter[] = '--output '.escapeshellarg($this->pathToSvgDirectory().$this->Filename);
         $this->Parameter[] = '--type '.$type;
         $this->Parameter[] = '--title '.escapeshellarg($title);
-        $this->Parameter[] = '--background-color  '.escapeshellarg($backgroundColor);
+        $this->Parameter[] = '--background-color '.escapeshellarg($backgroundColor);
         $this->Parameter[] = '--track-color '.escapeshellarg($trackColor);
         $this->Parameter[] = '--text-color '.escapeshellarg($textColor);
         $this->Parameter[] = '--special-color '.escapeshellarg($raceColor);
@@ -99,7 +107,9 @@ class GeneratePoster
         $this->addStatsParameter($account, $sport, $year);
 
         if ((new Filesystem())->exists($jsonDir.'/special.params')) {
-            $this->Parameter[] = file_get_contents($jsonDir.'/special.params');
+            foreach(json_decode(file_get_contents($jsonDir.'/special.params')) as $special) {
+                $this->Parameter[] = '--special '.$special;
+            }
         }
     }
 
@@ -131,5 +141,12 @@ class GeneratePoster
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->pathToSvgDirectory().$this->Filename);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getErrorOutput() {
+        return $this->StdErr;
     }
 }

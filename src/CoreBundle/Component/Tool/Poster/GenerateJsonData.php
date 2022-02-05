@@ -45,6 +45,15 @@ class GenerateJsonData
     }
 
     /**
+     * @param int $timestamp
+     * @return string
+     */
+    private function generateJsonFilename($timestamp)
+    {
+        return date('Y-m-d-His', $timestamp).'.json';
+    }
+
+    /**
      * @param Account $account
      * @param Sport $sport
      * @param int $year
@@ -54,7 +63,7 @@ class GenerateJsonData
         $this->Directory = md5($account->getId().strtotime("now"));
 
         $filesystem = new Filesystem();
-        $filesystem->mkdir($this->getPathToJsonFiles(), 0755);
+        $filesystem->mkdir($this->getPathToJsonFiles(), 0777);
         $counter = 0;
 
         $query = $this->TrainingRepository->getQueryForJsonPosterData($account, $sport, $year);
@@ -68,7 +77,7 @@ class GenerateJsonData
                 'length' => 1000.0 * (float)$data['distance'],
                 'segments' => $this->getSegmentsFor($data['geohashes'], $data['distance'])
             ];
-            $filesystem->dumpFile($this->getPathToJsonFiles().'/'.date('Y-m-d-His', $data['time']).'.json', json_encode($json));
+            $filesystem->dumpFile($this->getPathToJsonFiles().'/'.$this->generateJsonFilename($data['time']), json_encode($json));
             $counter++;
         }
 
@@ -122,14 +131,14 @@ class GenerateJsonData
         $races = $this->RaceresultRepository->findBySportAndYear($account, $sport, $year);
 
         if (!empty($races)) {
-            $argument = '';
+            $special_filenames = [];
 
             foreach ($races as $race) {
-                $argument .= ' --special '.date('Y-m-d-His', $race['time']).'.json';
+                $special_filenames[] = $this->generateJsonFilename($race['time']);
             }
 
             $filesystem = new Filesystem();
-            $filesystem->dumpFile($this->getPathToJsonFiles().'/special.params', $argument);
+            $filesystem->dumpFile($this->getPathToJsonFiles().'/special.params', json_encode($special_filenames));
         }
     }
 

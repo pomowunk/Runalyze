@@ -10,6 +10,9 @@ abstract class AbstractSvgToPngConverter
     /** @var string */
     protected $Command;
 
+    /** @var string */
+    protected $StdErr = '';
+
     /**
      * @param int|string $height [px]
      */
@@ -26,4 +29,11 @@ abstract class AbstractSvgToPngConverter
      * @return int exit code
      */
     abstract public function callConverter($source, $target);
+    
+    /**
+     * @return string
+     */
+    public function getErrorOutput() {
+        return $this->StdErr;
+    }
 }

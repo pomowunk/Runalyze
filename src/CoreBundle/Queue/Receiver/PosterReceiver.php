@@ -15,6 +15,8 @@ use Runalyze\Bundle\CoreBundle\Entity\Notification;
 use Runalyze\Bundle\CoreBundle\Entity\NotificationRepository;
 use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData;
+use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -128,19 +130,26 @@ class PosterReceiver
 
                     $finalName = $this->FileHandler->buildFinalFileName($account, $sport, $message->get('year'), $type, $message->get('size'));
                     $finalFile = $this->exportDirectory().$finalName;
-                    $converter = $this->getConverter($type);
-                    $converter->setHeight($message->get('size'));
-                    $exitCode = $converter->callConverter($this->GeneratePoster->generate(), $this->exportDirectory().md5($finalName));
-                    $filesystem = new Filesystem();
-                    $filesystem->rename($this->exportDirectory().md5($finalName), $finalFile);
 
-                    if ($exitCode > 0) {
-                        $this->Logger->error('Poster converter failed', ['type' => $type, 'exitCode' => $exitCode]);
-                    } elseif ((new Filesystem())->exists($finalFile)) {
-                        $generatedFiles++;
+                    $gen = $this->GeneratePoster->generate();
+                    if (!(new Filesystem())->exists($gen)) {
+                        $this->Logger->error('Poster generator subprocess failed', ['type' => $type, 'stderr' => $this->GeneratePoster->getErrorOutput()]);
+                    } else {
+                        $converter = $this->getConverter($type);
+                        $converter->setHeight($message->get('size'));
+                        $exitCode = $converter->callConverter($gen, $this->exportDirectory().md5($finalName));
+                        if ($exitCode > 0) {
+                            $this->Logger->error('Poster converter subprocess failed', ['type' => $type, 'exitCode' => $exitCode, 'stderr' => $converter->getErrorOutput()]);
+                        } else {
+                            $filesystem = new Filesystem();
+                            $filesystem->rename($this->exportDirectory().md5($finalName), $finalFile);
+
+                            if ((new Filesystem())->exists($finalFile)) {
+                                $generatedFiles++;
+                            }
+                        }
+                        $this->GeneratePoster->deleteSvg();
                     }
-
-                    $this->GeneratePoster->deleteSvg();
                 } catch (\Exception $e) {
                     $this->Logger->error('Poster creation failed', ['type' => $type, 'exception' => $e]);
                 }
@@ -153,7 +162,7 @@ class PosterReceiver
         );
 
         $this->GenerateJsonData->deleteGeneratedFiles();
-	gc_collect_cycles();
+        gc_collect_cycles();
     }
 
     /**

@@ -28,8 +28,10 @@ class InkscapeConverter extends AbstractSvgToPngConverter
     public function callConverter($source, $target)
     {
         if ((new Filesystem())->exists($source)) {
-            $builder = new Process($this->Command.' -z -e  '.$target.' '.implode(' ', $this->Parameter).' '.$source);
-            return $builder->run();
+            $builder = new Process($this->Command.' --export-type=png --export-filename='.$target.' '.implode(' ', $this->Parameter).' '.$source);
+            $exitCode = $builder->run();
+            $this->StdErr = $builder->getErrorOutput();
+            return $exitCode;
         }
 
         return 1;
