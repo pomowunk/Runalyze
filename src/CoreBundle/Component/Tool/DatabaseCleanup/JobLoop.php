@@ -32,6 +32,8 @@ class JobLoop extends Job
 
     public function run()
     {
+        set_time_limit(120);
+        
         if ($this->isRequested(self::ELEVATION)) {
             $this->runRouteLoop();
         }
@@ -72,9 +74,9 @@ class JobLoop extends Job
                 }
 
                 if ($this->isRequested(self::VO2MAX)) {
-                    $Update->bindValue(':vo2max', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRate() : null, \PDO::PARAM_INT);
-                    $Update->bindValue(':vo2max_by_time', $calculateVO2max ? $Calculator->estimateVO2maxByTime() : null, \PDO::PARAM_INT);
-                    $Update->bindValue(':vo2max_with_elevation', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRateWithElevation() : null, \PDO::PARAM_INT);
+                    $Update->bindValue(':vo2max', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRate() : null, \PDO::PARAM_STR);
+                    $Update->bindValue(':vo2max_by_time', $calculateVO2max ? $Calculator->estimateVO2maxByTime() : null, \PDO::PARAM_STR);
+                    $Update->bindValue(':vo2max_with_elevation', $calculateVO2max ? $Calculator->estimateVO2maxByHeartRateWithElevation() : null, \PDO::PARAM_STR);
                 }
 
                 if ($this->isRequested(self::TRIMP)) {
