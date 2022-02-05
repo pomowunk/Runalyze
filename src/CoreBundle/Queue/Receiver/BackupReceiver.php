@@ -2,13 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
-use Bernard\Message\DefaultMessage;
+use Bernard\Message\PlainMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonBackup;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\SqlBackup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\BackupReadyMessage;
+use Runalyze\Bundle\CoreBundle\Entity\Account;
 
 class BackupReceiver
 {
@@ -28,7 +29,7 @@ class BackupReceiver
         return $this->container->getParameter('data_directory').'/backup-tool/backup/';
     }
 
-    public function userBackup(DefaultMessage $message)
+    public function userBackup(PlainMessage $message)
     {
         $Frontend = new \FrontendShared(true);
 
@@ -61,6 +62,6 @@ class BackupReceiver
         $this->container->get('doctrine')->getRepository('CoreBundle:Notification')->save(
             Notification::createFromMessage(new BackupReadyMessage(), $account)
         );
-	gc_collect_cycles();
+        gc_collect_cycles();
     }
 }
