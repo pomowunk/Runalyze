@@ -116,7 +116,7 @@ class AccountController extends Controller
                 $account->setNewChangePasswordHash();
                 $this->getAccountRepository()->save($account);
 
-                $this->get('app.mailer.account')->sendRecoverPasswordLinkTo($account);
+                $this->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer')->sendRecoverPasswordLinkTo($account);
 
                 return $this->render('account/recover/mail_delivered.html.twig');
             }

@@ -26,7 +26,7 @@ class WeatherController extends Controller
     {
         $location = $this->getLocationForRequest($request, $account);
 
-        $weather = $this->get('app.weather_forecast')->loadForecast($location) ?: new WeatherData();
+        $weather = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast')->loadForecast($location) ?: new WeatherData();
 
         /** @var SourceInterface|null $source */
         $source = $weather->Source ? WeatherSourceProfile::get($weather->Source) : null;
@@ -74,7 +74,7 @@ class WeatherController extends Controller
         if ($request->query->has('city')) {
             $location->setLocationName($request->query->get('city'));
         } elseif (!$location->hasPosition()) {
-            $location->setLocationName($this->get('app.configuration_manager')->getList($account)->get('activity-form.PLZ'));
+            $location->setLocationName($this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->get('activity-form.PLZ'));
         }
 
         if ($request->query->has('time')) {

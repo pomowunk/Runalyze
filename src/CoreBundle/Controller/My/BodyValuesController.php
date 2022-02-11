@@ -48,7 +48,7 @@ class BodyValuesController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getUserRepository()->save($user, $account);
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
             return $this->redirectToRoute('body-values-table');
         }
 
@@ -79,7 +79,7 @@ class BodyValuesController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getUserRepository()->save($user, $account);
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
             return $this->redirectToRoute('body-values-table');
         }
 
@@ -102,7 +102,7 @@ class BodyValuesController extends Controller
         }
 
         $this->getUserRepository()->remove($user);
-        $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
 
         return $this->redirectToRoute('body-values-table');
     }
@@ -115,7 +115,7 @@ class BodyValuesController extends Controller
     {
         return $this->render('my/body-values/table.html.twig', [
             'values' => $this->getUserRepository()->findAllFor($account),
-            'unitWeight' => $this->get('app.configuration_manager')->getList()->getUnitSystem()->getWeightUnit(),
+            'unitWeight' => $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getUnitSystem()->getWeightUnit(),
             'unitHeartRate' => new BeatsPerMinute()
         ]);
     }

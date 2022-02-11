@@ -53,7 +53,7 @@ class EditController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->has('data_series_remover')) {
-                $this->get('app.data_series_remover')->handleRequest($form->get('data_series_remover')->getData(), $activity);
+                $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\DataSeriesRemover')->handleRequest($form->get('data_series_remover')->getData(), $activity);
             }
 
             if ($form->get('is_race')->getData() && !$activity->hasRaceresult()) {
@@ -67,10 +67,10 @@ class EditController extends Controller
             }
 
             $repository->save($activity);
-            $this->get('app.legacy_cache')->clearActivityCache($activity);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearActivityCache($activity);
 
             $this->addFlash('success', $this->get('translator')->trans('Changes have been saved.'));
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
 
             $nextId = $form->get('next-multi-editor')->getData();
 
@@ -79,7 +79,7 @@ class EditController extends Controller
             }
         }
 
-        $context = $this->get('app.activity_context.factory')->getContext($activity);
+        $context = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory')->getContext($activity);
 
         return $this->render('activity/form.html.twig', [
             'form' => $form->createView(),
@@ -162,7 +162,7 @@ class EditController extends Controller
             } else {
                 $strategy = $this->getElevationCorrectionStrategyFromRequest($request->query->get('strategy'));
 
-                if ($routeAdapter->correctElevation($this->get('app.elevation_correction'), $strategy)) {
+                if ($routeAdapter->correctElevation($this->get('Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection'), $strategy)) {
                     $this->addFlash('success', $translator->trans('Elevation data has been corrected.'));
                     $success = true;
                 }
@@ -183,7 +183,7 @@ class EditController extends Controller
 
     protected function adjustAndSaveRouteAndActivityForElevationCorrection(Training $activity)
     {
-        $configuration = $this->get('app.configuration_manager')->getList($activity->getAccount())->getActivityView();
+        $configuration = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($activity->getAccount())->getActivityView();
 
         $activity->getRoute()->getAdapter()->calculateElevation(
             $configuration->getElevationCalculationMethod(),
@@ -196,8 +196,8 @@ class EditController extends Controller
 
         $this->getTrainingRepository()->save($activity);
 
-        $this->get('app.legacy_cache')->clearActivityCache($activity);
-        $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_TRAINING_AND_DATA_BROWSER);
+        $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearActivityCache($activity);
+        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_TRAINING_AND_DATA_BROWSER);
     }
 
     /**
@@ -207,11 +207,11 @@ class EditController extends Controller
     protected function getElevationCorrectionStrategyFromRequest($string)
     {
         if ('GeoTIFF' == $string) {
-            return $this->get('app.elevation_correction.geotiff');
+            return $this->get('Runalyze\Service\ElevationCorrection\Strategy\GeoTiff');
         } elseif ('Geonames' == $string) {
-            return $this->get('app.elevation_correction.geonames');
+            return $this->get('Runalyze\Service\ElevationCorrection\Strategy\Geonames');
         } elseif ('GoogleMaps' == $string) {
-            return $this->get('app.elevation_correction.google_maps');
+            return $this->get('Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps');
         }
 
         return null;

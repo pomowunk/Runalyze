@@ -55,7 +55,7 @@ class SettingsController extends Controller
                 Configuration::resetConfiguration($account->getId());
                 $this->addFlash('success', $this->get('translator')->trans('Default configuration has been restored!'));
 
-                $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+                $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
             }
 
             if (isset($formdata['language'])) {
@@ -63,7 +63,7 @@ class SettingsController extends Controller
                 Language::setLanguage($formdata['language']);
 
                 if ($account->getLanguage() != $currentLanguage) {
-                    $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PAGE);
+                    $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PAGE);
                 }
             }
 
@@ -142,7 +142,7 @@ class SettingsController extends Controller
         $account->setNewDeletionHash();
         $this->getAccountRepository()->save($account);
 
-        $this->get('app.mailer.account')->sendDeleteLinkTo($account);
+        $this->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer')->sendDeleteLinkTo($account);
 
         return $this->render('settings/account-delete.html.twig');
     }
@@ -171,7 +171,7 @@ class SettingsController extends Controller
             }
 
             $em->flush();
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_DATA_BROWSER);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_DATA_BROWSER);
         }
 
         return $this->redirectToRoute('settings-dataset');
@@ -221,7 +221,7 @@ class SettingsController extends Controller
      */
     protected function getExampleTraining(Account $account)
     {
-        $configuration = $this->get('app.configuration_manager')->getList();
+        $configuration = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
 
         return array(
             'id' => 0,

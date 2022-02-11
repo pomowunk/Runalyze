@@ -50,7 +50,7 @@ class EquipmentController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $unitSystem = $this->get('app.configuration_manager')->getList()->getUnitSystem();
+        $unitSystem = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getUnitSystem();
 
         if (1 == $equipmentType->getSport()->count()) {
             $unitSystem->setPaceUnitFromSport($equipmentType->getSport()->first());
@@ -90,7 +90,7 @@ class EquipmentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getEquipmentTypeRepository()->save($equipmentType);
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipmentType->getId()
@@ -124,7 +124,7 @@ class EquipmentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getEquipmentTypeRepository()->save($equipmentType);
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipmentType->getId()
@@ -155,7 +155,7 @@ class EquipmentController extends Controller
 
         $this->getEquipmentTypeRepository()->remove($equipmentType);
 
-        $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
         $this->addFlash('success', $this->get('translator')->trans('The category has been deleted.'));
 
         return $this->redirectToRoute('equipment-overview');
@@ -179,7 +179,7 @@ class EquipmentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getEquipmentRepository()->save($equipment);
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipment->getType()->getId()
@@ -213,7 +213,7 @@ class EquipmentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getEquipmentRepository()->save($equipment);
-            $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipment->getType()->getId()
@@ -245,7 +245,7 @@ class EquipmentController extends Controller
         }
 
         $this->getEquipmentRepository()->remove($equipment);
-        $this->get('app.automatic_reload_flag_setter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
         $this->addFlash('success', $this->get('translator')->trans('The object has been deleted.'));
 
         return $this->redirectToRoute('equipment-category-edit', [

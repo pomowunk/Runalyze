@@ -66,7 +66,7 @@ class RaceResultController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getRaceresultRepository()->save($raceResult);
-            $this->get('app.legacy_cache')->clearRaceResultCache($raceResult);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearRaceResultCache($raceResult);
         }
 
         return $this->render('my/raceresult/form.html.twig', [
@@ -87,7 +87,7 @@ class RaceResultController extends Controller
 
         if ($raceResult) {
             $this->getRaceresultRepository()->delete($raceResult);
-            $this->get('app.legacy_cache')->clearRaceResultCache($raceResult);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearRaceResultCache($raceResult);
         } else {
             throw $this->createAccessDeniedException();
         }
@@ -102,7 +102,7 @@ class RaceResultController extends Controller
     public function performanceChartAction(Account $account)
     {
         $danielsGilbertFormula = new DanielsGilbertFormula();
-        $ageGradeLookup = $this->get('app.age_grade_lookup')->getLookup() ?: $this->get('app.age_grade_lookup')->getDefaultLookup();
+        $ageGradeLookup = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getLookup() ?: $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getDefaultLookup();
         $distances = [0.06, 0.1, 0.2, 0.4, 0.8, 1.0, 1.5, 3.0, 5.0, 10.0, 21.1, 42.2, 50.0];
         $distanceTicks = [0.06, 0.1, 0.2, 0.4, 0.8, 1.5, 3.0, 5.0, 10.0, 21.1, 42.2];
         $ageStandardTimes = array_map(function($kilometer) use ($ageGradeLookup) {

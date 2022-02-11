@@ -97,7 +97,7 @@ class DefaultController extends AbstractPluginsAwareController
                 return $this->render('account/activate/success.html.twig');
             }
 
-            $this->get('app.mailer.account')->sendActivationLinkTo($account);
+            $this->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer')->sendActivationLinkTo($account);
 
             return $this->render('register/mail_delivered.html.twig');
         }
@@ -244,7 +244,7 @@ class DefaultController extends AbstractPluginsAwareController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->get('app.mailer.account')->sendCustomFeedbackToSystem($account, $this->getParameter('feedback_mail'), $form->getData()['message']);
+                $this->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer')->sendCustomFeedbackToSystem($account, $this->getParameter('feedback_mail'), $form->getData()['message']);
                 return $this->render('feedback.html.twig', [
                     'form' => $form->createView()
                 ]);

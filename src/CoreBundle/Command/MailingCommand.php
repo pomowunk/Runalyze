@@ -58,7 +58,7 @@ class MailingCommand extends ContainerAwareCommand
                 return;
             }
         }
-        $mailer = $this->getContainer()->get('app.mailer.account');
+        $mailer = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer');
         foreach($accounts as $account) {
             /** Account $account */
             $mailer->sendMailTo($account, $input->getOption('subject'), $this->customMailDirectory . $input->getArgument('template'), ['account' => $account]);

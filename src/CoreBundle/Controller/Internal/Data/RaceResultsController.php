@@ -31,7 +31,7 @@ class RaceResultsController extends Controller
     {
         $result = [];
         $races = $this->getRaceResultRepository()->findAllWithActivityStats($account);
-        $ageGradeLookup = $this->get('app.age_grade_lookup')->getLookup() ?: $this->get('app.age_grade_lookup')->getDefaultLookup();
+        $ageGradeLookup = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getLookup() ?: $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getDefaultLookup();
         /** @var PluginConfRepository */
         $pluginconfRepository = $this->getDoctrine()->getRepository('CoreBundle:PluginConf');
         $funIds = $pluginconfRepository->getAllActivityIdsOfFunRaces($account);

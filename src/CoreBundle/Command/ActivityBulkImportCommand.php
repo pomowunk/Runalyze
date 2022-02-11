@@ -56,7 +56,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->getContainer()->get('security.token_storage')->setToken($token);
 
-        $importer = $this->getContainer()->get('app.file_importer');
+        $importer = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\FileImporter');
         $dataDirectory = $this->getContainer()->getParameter('data_directory');
         $path = $input->getArgument('path');
         $it = new \FilesystemIterator($path);
@@ -77,9 +77,9 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         }
 
         $importResult = $importer->importFiles($files);
-        $importResult->completeAndFilterResults($this->getContainer()->get('app.activity_data_container.filter'));
-        $contextAdapterFactory = $this->getContainer()->get('app.activity_context_adapter_factory');
-        $defaultLocation = $this->getContainer()->get('app.configuration_manager')->getList()->getActivityForm()->getDefaultLocationForWeatherForecast();
+        $importResult->completeAndFilterResults($this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter'));
+        $contextAdapterFactory = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory');
+        $defaultLocation = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getActivityForm()->getDefaultLocationForWeatherForecast();
 
         foreach ($importResult as $result) {
             /** @var $result FileImportResult */
@@ -120,7 +120,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
      */
     protected function containerToActivity(ActivityDataContainer $container, Account $account)
     {
-        return $this->getContainer()->get('app.activity_data_container.converter')->getActivityFor($container, $account);
+        return $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter')->getActivityFor($container, $account);
     }
 
     private function addFailedFile($fileName, $error)

@@ -106,8 +106,8 @@ abstract class AbstractPluginsAwareController extends Controller
      */
     protected function getResponseForMonthlyStats(Request $request, Account $account, $pluginId)
     {
-        $valueExtension = new ValueExtension($this->get('app.configuration_manager'));
-        $sportSelection = $this->get('app.sport_selection_factory')->getSelection($request->get('sport'));
+        $valueExtension = new ValueExtension($this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager'));
+        $sportSelection = $this->get('Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory')->getSelection($request->get('sport'));
         $analysisList = new AnalysisSelection($request->get('dat'));
 
         if (!$analysisList->hasCurrentKey()) {

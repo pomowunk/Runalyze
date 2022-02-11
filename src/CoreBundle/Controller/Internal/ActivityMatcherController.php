@@ -27,14 +27,14 @@ class ActivityMatcherController extends Controller
             }
         }
 
-        $duplicateFinder = $this->get('app.activity_duplicate_finder');
+        $duplicateFinder = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder');
         $ignoredActivityIds = array_map(function($v) {
             try {
                 return (int)floor($this->parserStrtotime($v) / 60.0) * 60.0;
             } catch (\Exception $e) {
                 return 0;
             }
-        }, $this->get('app.configuration_manager')->getList()->getActivityForm()->getIgnoredActivityIds());
+        }, $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getActivityForm()->getIgnoredActivityIds());
 
         foreach ($ids as $id) {
             try {

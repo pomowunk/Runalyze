@@ -53,7 +53,7 @@ class ViewController extends Controller
         switch ($request->query->get('action')) {
             case 'changePrivacy':
                 $this->getTrainingRepository()->save($activity->togglePrivacy());
-                $this->get('app.legacy_cache')->clearActivityCache($activity);
+                $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearActivityCache($activity);
                 break;
             case 'delete':
                 $this->getTrainingRepository()->remove($activity);
@@ -81,8 +81,8 @@ class ViewController extends Controller
     {
         $this->checkThatEntityBelongsToActivity($activity, $account);
 
-        $configList = $this->get('app.configuration_manager')->getList();
-        $activityContext = $this->get('app.activity_context.factory')->getContext($activity);
+        $configList = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
+        $activityContext = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory')->getContext($activity);
 
         return $this->render('activity/vo2max_info.html.twig', [
             'context' => $activityContext,
@@ -235,7 +235,7 @@ class ViewController extends Controller
      */
     public function climbScoreAction(Training $activity, Account $account = null)
     {
-        $activityContext = $this->get('app.activity_context.factory')->getContext($activity);
+        $activityContext = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory')->getContext($activity);
 
         if (!$activity->isPublic() && $account === null) {
             throw $this->createNotFoundException('No activity found.');

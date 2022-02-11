@@ -45,14 +45,14 @@ class SharedController extends Controller
         /** @var AccountRepository */
         $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
         $account = $accountRepository->findByUsername($activity->getAccount()->getUsername());
-        $publicList = $this->get('app.configuration_manager')->getList($account)->getPrivacy()->isListPublic();
+        $publicList = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getPrivacy()->isListPublic();
 
         $Frontend = new \FrontendShared(true);
         /** @var ActivityContext $activityContext */
-        $activityContext = $this->get('app.activity_context.factory')->getContext($activity);
+        $activityContext = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory')->getContext($activity);
         $activityContextLegacy = new Context($activity->getId(), $activity->getAccount()->getId());
 
-        $hasRoute = $activityContext->canShowMap() && $this->get('app.privacy_guard')->isMapVisible($activity, $activityContext->getRaceResult());
+        $hasRoute = $activityContext->canShowMap() && $this->get('Runalyze\Bundle\CoreBundle\Services\PrivacyGuard')->isMapVisible($activity, $activityContext->getRaceResult());
 
         if ('iframe' == $request->query->get('mode')) {
             return $this->render('shared/widget/iframe/base.html.twig', [
@@ -94,7 +94,7 @@ class SharedController extends Controller
         $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
         /** @var null|Account $account */
         $account = $accountRepository->findByUsername($username);
-        $privacy = $this->get('app.configuration_manager')->getList($account)->getPrivacy();
+        $privacy = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getPrivacy();
 
         if (null === $account || !$privacy->isListPublic()) {
             return $this->render('shared/invalid_athlete.html.twig');
@@ -136,9 +136,9 @@ class SharedController extends Controller
         $accountRepository = $this->getDoctrine()->getRepository('CoreBundle:Account');
         /** @var null|Account $account */
         $account = $accountRepository->findByUsername($username);
-        $privacy = $this->get('app.configuration_manager')->getList($account)->getPrivacy();
+        $privacy = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getPrivacy();
 
-        $feed = $this->get('app.activity.feed');
+        $feed = $this->get('Runalyze\View\Activity\Feed');
         $feed->setFeedTitle('RUNALYZE athlete '.$username)
                 ->setFeedUrl($this->generateUrl('shared-athlete-feed', ['username' => $username], UrlGeneratorInterface::ABSOLUTE_URL))
                 ->setSiteUrl($this->generateUrl('shared-athlete', ['username' => $username], UrlGeneratorInterface::ABSOLUTE_URL))

@@ -67,7 +67,7 @@ class ToolsController extends Controller
      */
     public function tableVo2maxPaceAction()
     {
-        $config = $this->get('app.configuration_manager')->getList();
+        $config = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
         $running = $this->getDoctrine()->getRepository('CoreBundle:Sport')->find($config->getGeneral()->getRunningSport());
 
         return $this->render('tools/tables/vo2max_paces.html.twig', [
@@ -94,7 +94,7 @@ class ToolsController extends Controller
     public function tableVo2maxRaceResultAction()
     {
         return $this->render('tools/tables/vo2max.html.twig', [
-            'currentVo2max' => $this->get('app.configuration_manager')->getList()->getCurrentVO2maxShape(),
+            'currentVo2max' => $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getCurrentVO2maxShape(),
             'prognosis' => new VO2max(),
             'distances' => [1.0, 3.0, 5.0, 10.0, 21.1, 42.2, 50],
             'vo2maxValues' => range(30.0, 80.0)
@@ -109,7 +109,7 @@ class ToolsController extends Controller
     {
         $Frontend = new \Frontend(true, $this->get('security.token_storage'));
 
-        $configuration = $this->get('app.configuration_manager')->getList();
+        $configuration = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
         $correctionFactor = $configuration->getVO2maxCorrectionFactor();
 
         $analysisTable = new VO2maxAnalysis($configuration->getVO2max()->getLegacyCategory());
@@ -145,7 +145,7 @@ class ToolsController extends Controller
                 return new JsonResponse(['status' => 'There was a problem.']);
             }
 
-            $unitSystem = $this->get('app.configuration_manager')->getList($account)->getUnitSystem();
+            $unitSystem = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getUnitSystem();
             $query = new AnovaDataQuery($data);
             $query->loadAllGroups($this->getDoctrine()->getManager(), $account);
 
@@ -183,7 +183,7 @@ class ToolsController extends Controller
                 return new JsonResponse(['status' => 'There was a problem.']);
             }
 
-            $unitSystem = $this->get('app.configuration_manager')->getList($account)->getUnitSystem();
+            $unitSystem = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getUnitSystem();
             $query = new TrendAnalysisDataQuery($data);
 
             return new JsonResponse([
@@ -238,7 +238,7 @@ class ToolsController extends Controller
 
                 return $this->render('tools/poster_success.html.twig', [
                     'posterStoragePeriod' => $this->getParameter('poster_storage_period'),
-                    'listing' => $this->get('app.poster.filehandler')->getFileList($account)
+                    'listing' => $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler')->getFileList($account)
                 ]);
             }
         }
@@ -246,7 +246,7 @@ class ToolsController extends Controller
         return $this->render('tools/poster.html.twig', [
             'form' => $form->createView(),
             'posterStoragePeriod' => $this->getParameter('poster_storage_period'),
-            'listing' => $this->get('app.poster.filehandler')->getFileList($account)
+            'listing' => $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler')->getFileList($account)
         ]);
     }
 
@@ -256,7 +256,7 @@ class ToolsController extends Controller
      */
     public function posterDownloadAction(Account $account, $name)
     {
-        return $this->get('app.poster.filehandler')->getPosterDownloadResponse($account, $name);
+        return $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler')->getPosterDownloadResponse($account, $name);
     }
 
     /**
@@ -266,7 +266,7 @@ class ToolsController extends Controller
     public function overviewAction()
     {
         return $this->render('tools/tools_list.html.twig', [
-            'posterAvailable' => $this->get('app.poster.availability')->isAvailable()
+            'posterAvailable' => $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Availability')->isAvailable()
         ]);
     }
 }

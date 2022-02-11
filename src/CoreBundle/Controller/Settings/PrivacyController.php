@@ -27,7 +27,7 @@ class PrivacyController extends Controller
      */
     public function settingsAccountAction(Request $request, Account $account)
     {
-        $privacyConfig = $this->get('app.configuration_manager')->getList()->getPrivacy();
+        $privacyConfig = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getPrivacy();
 
         $privacy = new PrivacyData();
         $privacy->setDataFrom($privacyConfig);
@@ -38,7 +38,7 @@ class PrivacyController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.configuration_updater')->updatePrivacyDetails($account, $privacy->getDataForConfiguration());
+            $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater')->updatePrivacyDetails($account, $privacy->getDataForConfiguration());
 
             $this->addFlash('success', $this->get('translator')->trans('Your changes have been saved!'));
         }
