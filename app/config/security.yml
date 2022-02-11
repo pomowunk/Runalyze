@@ -14,6 +14,7 @@ security:
             http_basic: ~
             provider:  runalyzeuser
             switch_user: { role: ROLE_ADMIN, parameter: _switch_user }
+            logout_on_user_change: true
             logout:
                 path:   /logout
                 target: /
