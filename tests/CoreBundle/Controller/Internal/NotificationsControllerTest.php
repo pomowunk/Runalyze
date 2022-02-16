@@ -56,9 +56,10 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     {
         $id = $this->insertMessageFor($this->Account);
         
-        $this->loginAs($this->getEmptyAccount(), 'default');
-
-        $client = $this->makeClient();
+        $client = $this->makeClient(array(
+            'username' => $this->getEmptyAccount(),
+            'password' => 'default'
+        ));
         $client->request('GET', '/_internal/notifications/read/'.$id);
 
         $this->isSuccessful($client->getResponse(), false);
@@ -68,9 +69,10 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     {
         $id = $this->insertMessageFor($this->Account);
 
-        $this->loginAs($this->getDefaultAccount(), 'default');
-
-        $client = $this->makeClient();
+        $client = $this->makeClient(array(
+            'username' => $this->getDefaultAccount(),
+            'password' => 'default'
+        ));
         $client->request('GET', '/_internal/notifications/read/'.$id);
 
         $this->isSuccessful($client->getResponse());
@@ -79,7 +81,10 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     public function testThatNewNotificationActionIsEmptyForEmptyAccount()
     {
         $this->insertMessageFor($this->Account);
-        $this->loginAs($this->getEmptyAccount(), 'default');
+        $client = $this->makeClient(array(
+            'username' => $this->getEmptyAccount(),
+            'password' => 'default'
+        ));
 
         $this->assertEquals(
             json_encode([]),
@@ -90,7 +95,10 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     public function testThatNewNotificationActionReturnsCorrectTextAndLink()
     {
         $id = $this->insertMessageFor($this->Account);
-        $this->loginAs($this->getDefaultAccount(), 'default');
+        $client = $this->makeClient(array(
+            'username' => $this->getDefaultAccount(),
+            'password' => 'default'
+        ));
 
         $this->assertEquals(
             json_encode([[
