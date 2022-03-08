@@ -7,7 +7,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 /**

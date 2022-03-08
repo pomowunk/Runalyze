@@ -4,17 +4,17 @@ namespace Runalyze\Bundle\CoreBundle\Form\Tools\Anova;
 
 use Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryGroup\QueryGroups;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryValue\QueryValues;
-use Runalyze\Bundle\CoreBundle\Entity\TypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AnovaType extends AbstractType
 {
@@ -27,7 +27,7 @@ class AnovaType extends AbstractType
     /** @var EquipmentTypeRepository */
     protected $EquipmentTypeRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
     /** @var ConfigurationManager */
@@ -37,7 +37,7 @@ class AnovaType extends AbstractType
         SportRepository $sportRepository,
         TypeRepository $typeRepository,
         EquipmentTypeRepository $equipmentTypeRepository,
-        TokenStorage $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         ConfigurationManager $configurationManager
     )
     {

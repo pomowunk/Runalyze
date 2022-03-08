@@ -8,6 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class StaticController extends Controller
 {
+    /** @var string */
+    protected $runalyzeVersion;
+
+    public function __construct(
+        string $runalyzeVersion)
+    {
+        $this->runalyzeVersion = $runalyzeVersion;
+    }
+
     /**
      * @Route("/dashboard/help", name="help")
      * @Security("has_role('ROLE_USER')")
@@ -15,7 +24,7 @@ class StaticController extends Controller
     public function dashboardHelpAction()
     {
         return $this->render('static/help.html.twig', [
-            'version' => $this->getParameter('RUNALYZE_VERSION')
+            'version' => $this->runalyzeVersion
         ]);
     }
 

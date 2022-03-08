@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class InstallController
@@ -21,7 +22,7 @@ class InstallController extends Controller
      /**
       * @Route("/install", name="install", condition="'%update_disabled%' == 'no'")
       */
-    public function installAction(Request $request)
+    public function installAction(Request $request, KernelInterface $kernel)
     {
         $session = $request->getSession();
 
@@ -29,7 +30,7 @@ class InstallController extends Controller
             return $this->redirectToRoute('install_finish');
         }
 
-        $app = new Application($this->get('kernel'));
+        $app = new Application($kernel);
         $app->setAutoExit(false);
 
         $input = new StringInput('runalyze:install:check');
@@ -48,7 +49,7 @@ class InstallController extends Controller
     /**
      * @Route("/install/start", name="install_start", condition="'%update_disabled%' == 'no'")
      */
-    public function startAction(Request $request)
+    public function startAction(Request $request, KernelInterface $kernel)
     {
         $session = $request->getSession();
 
@@ -60,7 +61,7 @@ class InstallController extends Controller
             return $this->redirectToRoute('install_finish');
         }
 
-        $app = new Application($this->get('kernel'));
+        $app = new Application($kernel);
         $app->setAutoExit(false);
 
         $input = new StringInput('runalyze:install --skip=check');

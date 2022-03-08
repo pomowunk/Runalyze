@@ -12,13 +12,10 @@ class LegacyCache
 	/** @var \Phpfastcache\Core\Pool\ExtendedCacheItemPoolInterface */
     public static $cache;
 
-    /**
-     * @param string $path
-     */
-	public function __construct($path)
+	public function __construct(string $legacyCachePath)
     {
 		$config = new Config();
-		$config->setPath($path);
+		$config->setPath($legacyCachePath);
 		$config->setSecurityKey('cache');
         $config->setItemDetailedDate(true);
 		self::$cache = CacheManager::Files($config);

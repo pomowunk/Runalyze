@@ -1,6 +1,6 @@
 <?php
 
-namespace Runalyze\Metrics\Distance;
+namespace Runalyze\Metrics\Power;
 
 use Runalyze\Metrics\Common\AbstractMetric;
 use Runalyze\Metrics\Power\Unit\Watts;

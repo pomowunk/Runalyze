@@ -37,14 +37,9 @@ class OpenWeatherMap implements StrategyInterface, LoggerAwareInterface
     /** @var Client */
     protected $HttpClient;
 
-    /**
-     * @param string $apiKey
-     * @param Client $client
-     * @param LoggerInterface|null $logger
-     */
-    public function __construct($apiKey, Client $client, LoggerInterface $logger = null)
+    public function __construct(string $openWeatherMapApiKey, Client $client, LoggerInterface $logger = null)
     {
-        $this->ApiKey = $apiKey;
+        $this->ApiKey = $openWeatherMapApiKey;
         $this->HttpClient = $client;
         $this->logger = $logger;
     }

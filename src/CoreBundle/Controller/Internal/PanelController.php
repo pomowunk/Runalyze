@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,10 +22,8 @@ class PanelController extends Controller
      * @Route("/sport", name="internal-sport-panel")
      * @Security("has_role('ROLE_USER')")
      */
-    public function sportStatAction(Request $request, Account $account)
+    public function sportStatAction(Request $request, Account $account, SportRepository $sportRepository)
     {
-        /** @var SportRepository */
-        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
         $today = (new LocalTime())->setTime(0, 0, 0);
 
         return new JsonResponse( [

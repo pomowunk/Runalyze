@@ -2,13 +2,24 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Runalyze\Bundle\CoreBundle\Entity\NotificationRepository;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 class DeleteExpiredNotificationsCommand extends ContainerAwareCommand
 {
+    /** @var NotificationRepository */
+    protected $notificationRepository;
+
+    public function __construct(
+        NotificationRepository $notificationRepository)
+    {
+        $this->notificationRepository = $notificationRepository;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -25,9 +36,7 @@ class DeleteExpiredNotificationsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var NotificationRepository $notificationRepository */
-        $notificationRepository = $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Notification');
-        $numRemoved = $notificationRepository->removeExpiredNotifications();
+        $numRemoved = $this->notificationRepository->removeExpiredNotifications();
 
         $output->writeln(sprintf('<info>%u notifications have been removed.</info>', $numRemoved));
         $output->writeln('');

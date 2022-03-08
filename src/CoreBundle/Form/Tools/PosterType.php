@@ -8,9 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PosterType extends AbstractType
 {
@@ -20,13 +20,13 @@ class PosterType extends AbstractType
     /** @var SportRepository */
     protected $SportRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
     public function __construct(
         SportRepository $sportRepository,
         TrainingRepository $trainingRepository,
-        TokenStorage $tokenStorage
+        TokenStorageInterface $tokenStorage
     )
     {
         $this->SportRepository = $sportRepository;

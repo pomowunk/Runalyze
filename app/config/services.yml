@@ -1,3 +1,6 @@
+parameters:
+  container.autowiring.strict_mode: true # enable the upcoming stricter autowiring 
+
 sensio_framework_extra:
   request:
     converters: true
@@ -7,336 +10,151 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+    public: false
+    bind:
+      $databasePrefix: '%database_prefix%'
+      $defaultLocale: '%kernel.default_locale%'
+      $feedbackMail: '%feedback_mail%'
+      $runalyzeVersion: '%RUNALYZE_VERSION%'
+      $userCanRegister: '%user_can_register%'
+      $userDisableAccountActivation: '%user_disable_account_activation%'
+      $backupStoragePeriod: '%backup_storage_period%'
+      $posterStoragePeriod: '%poster_storage_period%'
+      $dataDirectory: '%data_directory%'
+      $kernelRootDir: '%kernel.root_dir%'
+      $legacyCachePath: '%data_directory%'
+      $projectDirectory: '%kernel.project_dir%'
+      $srtmDirectory: "%data_directory%/srtm"
+      $inkscapePath: '%inkscape_path%'
+      $pathToFitPerlScript: "%kernel.project_dir%/call/perl/fittorunalyze.pl"
+      $pathToPerl: "%perl_path%"
+      $pathToTtbincnv: "%kernel.project_dir%/app/%ttbin_path%"
+      $python3Path: '%python3_path%'
+      $rsvgPath: '%rsvg_path%'
+      $spatialiteExtensionName: "%sqlite_mod_spatialite%"
+      $timezoneDatabasePath: "%data_directory%/timezone.sqlite"
+      $darkSkyApiKey: "%darksky_api_key%"
+      $garminApiKey: "%garmin_api_key%"
+      $geonamesUsername: "%geonames_username%"
+      $openWeatherMapApiKey: "%openweathermap_api_key%"
+
+  Bernard\Producer:
+    alias: bernard.producer
 
   Doctrine\ORM\EntityManager:
     alias: doctrine.orm.default_entity_manager
     public: false
 
-  Runalyze\Bundle\CoreBundle\Tests\DataFixtures\:
-    resource: '%kernel.project_dir%/tests/CoreBundle/DataFixtures'
-
-  Runalyze\Bundle\CoreBundle\ArgumentResolver\AccountValueResolver:
-    tags:
-      - { name: controller.argument_value_resolver, priority: 50 }
-  Runalyze\Bundle\CoreBundle\EventListener\ConsoleExceptionListener:
-    tags:
-      - { name: kernel.event_listener, event: console.exception }
-  Runalyze\Bundle\CoreBundle\EventListener\ConsoleErrorStatusListener:
-    tags:
-      - { name: kernel.event_listener, event: console.terminate }
-  Runalyze\Bundle\CoreBundle\EventListener\LocaleListener:
-    arguments: ['%kernel.default_locale%']
-    tags:
-      - { name: kernel.event_subscriber }
-  Runalyze\Bundle\CoreBundle\EventListener\UserTimezoneListener:
-    arguments: ["@security.token_storage"]
-    tags:
-      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-  Runalyze\Bundle\CoreBundle\EventListener\UserLocaleListener:
-    arguments: ['@session']
-    tags:
-      - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
-  Runalyze\Bundle\CoreBundle\EventListener\AccountLastActionListener:
-    arguments: ['@security.token_storage']
-    tags:
-      - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }
-  Runalyze\Bundle\CoreBundle\EventListener\RecalculationTasksPerformerListener:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager']
-    tags:
-      - { name: kernel.event_listener, event: kernel.terminate, method: onTerminate }
-  Runalyze\Bundle\CoreBundle\Services\Sha256SaltedEncoder: ~
-  Runalyze\Bundle\CoreBundle\EventListener\TablePrefixSubscriber:
-    arguments: ['%database_prefix%']
-    tags:
-      - { name: doctrine.event_subscriber }
-  Runalyze\Bundle\CoreBundle\EventListener\MaintenanceListener:
-    tags:
-      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-  Runalyze\Bundle\CoreBundle\Services\AccountMailer:
-    calls:
-      - [setFrom, ["%mail_sender%", "%mail_name%"]]
-  Runalyze\Bundle\CoreBundle\Services\LegacyCache:
-    arguments: ["%data_directory%"]
-  Runalyze\Bundle\CoreBundle\Entity\AccountRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Account]
-  Runalyze\Bundle\CoreBundle\Entity\ConfRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Conf]
-  Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Equipment]
-  Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\EquipmentType]
-  Runalyze\Bundle\CoreBundle\Entity\NotificationRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Notification]
-  Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Raceresult]
-  Runalyze\Bundle\CoreBundle\Entity\SportRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Sport]
-  Runalyze\Bundle\CoreBundle\Entity\TagRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Tag]
-  Runalyze\Bundle\CoreBundle\Entity\TypeRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Type]
-  Runalyze\Bundle\CoreBundle\Entity\TrainingRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Training]
-  Runalyze\Bundle\CoreBundle\Entity\UserRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\User]
-  Runalyze\Bundle\CoreBundle\Entity\WeathercacheRepository:
-    factory: ["@doctrine.orm.entity_manager", getRepository]
-    arguments: [Runalyze\Bundle\CoreBundle\Entity\Weathercache]
-  Runalyze\Bundle\CoreBundle\EntityListener\ActivityListener:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager', '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager', '@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository', '@Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup']
-    tags:
-     - { name: doctrine.orm.entity_listener, lazy: true }
-  Runalyze\Bundle\CoreBundle\EntityListener\EquipmentUpdateSubscriber:
-    tags:
-     - { name: doctrine.event_subscriber, connection: default, lazy: true }
-  Runalyze\Bundle\CoreBundle\EntityListener\UserListener:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater', '@Runalyze\Bundle\CoreBundle\Entity\UserRepository']
-    tags:
-     - { name: doctrine.orm.entity_listener, lazy: true }
-  Runalyze\Bundle\CoreBundle\EntityListener\RaceResultListener:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager']
-    tags:
-     - { name: doctrine.orm.entity_listener, lazy: true }
-  Runalyze\Bundle\CoreBundle\EntityListener\RouteListener:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager', '@Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection']
-    tags:
-     - { name: doctrine.orm.entity_listener, lazy: true }
-  Runalyze\Bundle\CoreBundle\Form\ActivityType:
-    arguments: ["@security.token_storage", '@Runalyze\Bundle\CoreBundle\Entity\TagRepository']
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\MultiImporterType:
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\ActivityEquipmentType:
-    arguments: ["@security.token_storage"]
-    calls:
-     - [setConfigurationManager, ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaType:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\TypeRepository', '@Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository', "@security.token_storage", '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Tools\TrendAnalysis\TrendAnalysisType:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\TypeRepository', "@security.token_storage", '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Tools\PosterType:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\TrainingRepository', "@security.token_storage"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\EquipmentType:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository', "@security.token_storage"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\EquipmentCategoryType:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\SportRepository', "@security.token_storage"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Settings\SportType:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\TypeRepository', '@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository', "@security.token_storage"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Settings\SportTypeType:
-    arguments: ["@security.token_storage"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\RaceResultType:
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\BodyValuesType:
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\DistanceType:
-    arguments: ["@app.unit_system.distance"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\ElevationType:
-    arguments: ["@app.unit_system.elevation"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\EnergyType:
-    arguments: ["@app.unit_system.energy"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\EnergyKcalType:
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\PowerType:
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\SportChoiceType:
-    arguments: ["@security.token_storage", '@Runalyze\Bundle\CoreBundle\Entity\SportRepository']
-    calls:
-     - [setConfigurationManager, ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\ActivityTypeChoiceType:
-    arguments: ["@security.token_storage"]
-    calls:
-     - [setConfigurationManager, ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\TemperatureType:
-    arguments: ["@app.unit_system.temperature"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\WindSpeedType:
-    arguments: ["@app.unit_system.wind_speed"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Form\Type\WeightType:
-    arguments: ["@app.unit_system.weight"]
-    tags:
-     - { name: form.type }
-  Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter:
-    arguments: ["@session.flash_bag"]
-  Runalyze\Bundle\CoreBundle\Services\PrivacyGuard:
-    arguments: ["@security.token_storage", '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory:
-    arguments: ["@doctrine.orm.entity_manager"]
-  Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\ConfRepository', "@security.token_storage"]
-  Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\ConfRepository', '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-    lazy: true
-  Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager', '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater', '@Runalyze\Bundle\CoreBundle\Entity\TrainingRepository', '@Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository']
-    lazy: true
-  Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager', "@security.token_storage"]
-  Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory: ~
-  app.unit_system.distance:
-    class: Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit
-    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getDistanceUnit'
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  app.unit_system.elevation:
-    class: Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit
-    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getElevationUnit'
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  app.unit_system.energy:
-    class: Runalyze\Metrics\Energy\Unit\AbstractEnergyUnit
-    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getEnergyUnit'
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  app.unit_system.temperature:
-    class: Runalyze\Metrics\Temperature\Unit\AbstractTemperatureUnit
-    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getTemperatureUnit'
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  app.unit_system.wind_speed:
-    class: Runalyze\Metrics\Velocity\Unit\AbstractPaceInDecimalFormatUnit
-    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWindSpeedUnit'
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  app.unit_system.weight:
-    class: Runalyze\Metrics\Weight\Unit\AbstractWeightUnit
-    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWeightUnit'
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  Runalyze\Bundle\CoreBundle\Twig\ConfigurationExtension:
-    public: false
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-    tags:
-      - { name: twig.extension }
-  Runalyze\Bundle\CoreBundle\Twig\HtmlExtension:
-    public: false
-    tags:
-      - { name: twig.extension }
-  Runalyze\Bundle\CoreBundle\Twig\UtilityExtension:
-    public: false
-    tags:
-      - { name: twig.extension }
-  Runalyze\Bundle\CoreBundle\Twig\ValueExtension:
-    public: false
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-    tags:
-      - { name: twig.extension }
-  Runalyze\Bundle\CoreBundle\Twig\AutomaticReloadFlagExtension:
-    public: false
-    tags:
-      - { name: twig.extension }
-  Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\TrainingRepository', '@Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository', "%kernel.root_dir%"]
-  Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GeneratePoster:
-    arguments: ["%kernel.root_dir%", "%python3_path%", '@Runalyze\Bundle\CoreBundle\Entity\TrainingRepository']
-  Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Availability:
-    arguments: ["%rsvg_path%", "%inkscape_path%", "%python3_path%"]
-  Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler:
-    arguments: ["%data_directory%"]
-  Runalyze\Bundle\CoreBundle\Queue\Receiver\BackupReceiver:
-    tags:
-      - { name: bernard.receiver, message: userBackup }
-  Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver:
-    arguments: ["@monolog.logger.queue", '@Runalyze\Bundle\CoreBundle\Entity\AccountRepository', '@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\NotificationRepository', '@Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData', '@Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GeneratePoster', '@Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler', '@Runalyze\Bundle\CoreBundle\Services\AccountMailer', "%data_directory%", "%rsvg_path%", "%inkscape_path%"]
-    tags:
-      - { name: bernard.receiver, message: posterGenerator }
-  Runalyze\View\Activity\Feed: ~
   GuzzleHttp\Client: ~
-  Runalyze\Parser\Activity\Converter\FitConverter:
-    arguments: ["%perl_path%", "%kernel.root_dir%/../call/perl/fittorunalyze.pl"]
-  Runalyze\Parser\Activity\Converter\TtbinConverter:
-    arguments: ["%kernel.root_dir%/%ttbin_path%"]
-  Runalyze\Bundle\CoreBundle\Services\Import\FileImporter:
-    arguments: ['@Runalyze\Parser\Activity\Converter\FitConverter', '@Runalyze\Parser\Activity\Converter\TtbinConverter', "%data_directory%/import/activity/failed", "@logger"]
-    tags:
-      - { name: monolog.logger, channel: activity_uploads }
-  Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\TrainingRepository']
-  Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\SportRepository', '@Runalyze\Bundle\CoreBundle\Entity\TypeRepository', '@Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository', '@Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager']
-  Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter:
-    arguments: ["@logger"]
-    tags:
-      - { name: monolog.logger, channel: activity_uploads }
-  Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache:
-    arguments: ["@app.cache.activity_uploads"]
-  Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast', '@Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder']
-  Runalyze\Bundle\CoreBundle\Services\Activity\DataSeriesRemover:
-    arguments: ["@doctrine.orm.entity_manager"]
-  Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup:
-    arguments: ["@security.token_storage"]
-  Runalyze\Service\WeatherForecast\Strategy\DarkSky:
-    arguments: ["%darksky_api_key%", '@GuzzleHttp\Client', "@logger"]
-    tags:
-      - { name: monolog.logger, channel: external_services }
-  Runalyze\Service\WeatherForecast\Strategy\OpenWeatherMap:
-    arguments: ["%openweathermap_api_key%", '@GuzzleHttp\Client', "@logger"]
-    tags:
-      - { name: monolog.logger, channel: external_services }
-  Runalyze\Service\WeatherForecast\Strategy\DatabaseCache:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Entity\WeathercacheRepository']
-  Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast:
-    arguments: ['@Runalyze\Service\WeatherForecast\Strategy\DatabaseCache', '@Runalyze\Service\WeatherForecast\Strategy\DarkSky', '@Runalyze\Service\WeatherForecast\Strategy\OpenWeatherMap', '@Runalyze\Bundle\CoreBundle\Entity\WeathercacheRepository']
-  Runalyze\Bundle\CoreBundle\Services\Import\GeoTiffReader:
-    arguments: ["%data_directory%/srtm"]
-  Runalyze\Service\ElevationCorrection\Strategy\GeoTiff:
-    arguments: ['@Runalyze\Bundle\CoreBundle\Services\Import\GeoTiffReader']
-  Runalyze\Service\ElevationCorrection\Strategy\Geonames:
-    arguments: ["%geonames_username%", '@GuzzleHttp\Client', "@logger"]
-    tags:
-      - { name: monolog.logger, channel: external_services }
-  Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps:
-    arguments: ['@GuzzleHttp\Client', "@logger"]
-    tags:
-      - { name: monolog.logger, channel: external_services }
-  Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection:
-    arguments: ['@Runalyze\Service\ElevationCorrection\Strategy\GeoTiff', '@Runalyze\Service\ElevationCorrection\Strategy\Geonames', '@Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps']
-  Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup:
-    arguments: ["%data_directory%/timezone.sqlite", "%sqlite_mod_spatialite%", true]
-  Runalyze\Bundle\CoreBundle\Services\SessionRequestProcessor:
-    autowire: true
-    tags:
-      - { name: monolog.processor, method: processRecord }
+
   Monolog\Formatter\LineFormatter:
     arguments:
       - "[%%datetime%%] [%%extra.token%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+
+  Runalyze\Bundle\CoreBundle\:
+    resource: '../../src/CoreBundle/*'
+    exclude: '../../src/CoreBundle/{Entity,Controller}'
+
+  Runalyze\Bundle\CoreBundle\ArgumentResolver\AccountValueResolver:
+    autoconfigure: false
+    tags: [ {name: controller.argument_value_resolver, priority: 50} ]
+
+  Runalyze\Bundle\CoreBundle\Controller\:
+    resource: '%kernel.project_dir%/src/CoreBundle/Controller/*'
+    public: true
+    tags: ['controller.service_arguments']
+
+  Runalyze\Bundle\CoreBundle\EntityListener\:
+    resource: '%kernel.project_dir%/src/CoreBundle/EntityListener/*Listener.php'
+    tags: [ {name: doctrine.orm.entity_listener, lazy: true} ]
+  Runalyze\Bundle\CoreBundle\EntityListener\EquipmentUpdateSubscriber:
+    tags: [ {name: doctrine.event_subscriber, connection: default, lazy: true} ]
+
+  Runalyze\Bundle\CoreBundle\EventListener\AccountLastActionListener:
+    tags: [ {name: kernel.event_listener, event: kernel.controller, method: onCoreController} ]
+  Runalyze\Bundle\CoreBundle\EventListener\ConsoleErrorStatusListener:
+    tags: [ {name: kernel.event_listener, event: console.terminate} ]
+  Runalyze\Bundle\CoreBundle\EventListener\ConsoleExceptionListener:
+    tags: [ {name: kernel.event_listener, event: console.exception} ]
+  Runalyze\Bundle\CoreBundle\EventListener\LocaleListener:
+    tags: [ {name: kernel.event_subscriber} ]
+  Runalyze\Bundle\CoreBundle\EventListener\MaintenanceListener:
+    lazy: true # TODO: patches the container loading the default configuration list while building the container (ValueExtension)
+    tags: [ {name: kernel.event_listener, event: kernel.request, method: onKernelRequest} ]
+  Runalyze\Bundle\CoreBundle\EventListener\RecalculationTasksPerformerListener:
+    tags: [ {name: kernel.event_listener, event: kernel.terminate, method: onTerminate} ]
+  Runalyze\Bundle\CoreBundle\EventListener\TablePrefixSubscriber:
+    tags: [ {name: doctrine.event_subscriber} ]
+  Runalyze\Bundle\CoreBundle\EventListener\UserLocaleListener:
+    tags: [ {name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin} ]
+  Runalyze\Bundle\CoreBundle\EventListener\UserTimezoneListener:
+    tags: [ {name: kernel.event_listener, event: kernel.request, method: onKernelRequest} ]
+
+  Runalyze\Bundle\CoreBundle\Form\Type\ElevationType:
+    arguments: ["@app.unit_system.elevation"]
+
+  Runalyze\Bundle\CoreBundle\Queue\Receiver\BackupReceiver:
+    public: true
+    tags: [ {name: bernard.receiver, message: userBackup} ]
+  Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver:
+    public: true
+    tags:
+      - { name: bernard.receiver, message: posterGenerator }
+      - { name: monolog.logger, channel: queue }
+
+  Runalyze\Bundle\CoreBundle\Repository\:
+    resource: '%kernel.project_dir%/src/CoreBundle/Repository/*'
+    public: true
+
+  Runalyze\Bundle\CoreBundle\Services\AccountMailer:
+    calls: [ [setFrom, ["%mail_sender%", "%mail_name%"]] ]
+  Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater:
+    lazy: true
+  Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache:
+    arguments:
+      $cache: "@app.cache.activity_uploads"
+  Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter:
+    tags: [ {name: monolog.logger, channel: activity_uploads} ]
+  Runalyze\Bundle\CoreBundle\Services\Import\FileImporter:
+    tags: [ {name: monolog.logger, channel: activity_uploads} ]
+  Runalyze\DEM\Reader:
+    alias: 'Runalyze\Bundle\CoreBundle\Services\Import\GeoTiffReader'
+  Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup:
+    arguments:
+      $silentExceptions: true
+  Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager:
+    lazy: true
+  Runalyze\Bundle\CoreBundle\Services\SessionRequestProcessor:
+    tags: [ {name: monolog.processor, method: processRecord} ]
+
+  Runalyze\Bundle\CoreBundle\Tests\DataFixtures\:
+    resource: '%kernel.project_dir%/tests/CoreBundle/DataFixtures'
+
+  Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit:
+    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getDistanceUnit'
+  app.unit_system.elevation:
+    class: Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit
+    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getElevationUnit'
+  Runalyze\Metrics\Energy\Unit\AbstractEnergyUnit:
+    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getEnergyUnit'
+  Runalyze\Metrics\Temperature\Unit\AbstractTemperatureUnit:
+    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getTemperatureUnit'
+  Runalyze\Metrics\Velocity\Unit\AbstractPaceInDecimalFormatUnit:
+    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWindSpeedUnit'
+  Runalyze\Metrics\Weight\Unit\AbstractWeightUnit:
+    factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWeightUnit'
+
+  Runalyze\:
+    resource: '%kernel.project_dir%/inc/core/*'
+
+  Runalyze\Service\ElevationCorrection\Strategy\Geonames:
+    tags: [ {name: monolog.logger, channel: external_services} ]
+  Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps:
+    tags: [ {name: monolog.logger, channel: external_services} ]
+
+  Runalyze\Service\WeatherForecast\DatabaseCacheInterface:
+    alias: 'Runalyze\Bundle\CoreBundle\Repository\WeathercacheRepository'
+  Runalyze\Service\WeatherForecast\Strategy\DarkSky:
+    tags: [ {name: monolog.logger, channel: external_services} ]
+  Runalyze\Service\WeatherForecast\Strategy\OpenWeatherMap:
+    tags: [ {name: monolog.logger, channel: external_services} ]

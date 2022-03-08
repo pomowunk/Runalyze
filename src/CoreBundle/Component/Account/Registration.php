@@ -2,14 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Account;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Conf;
 use Runalyze\Bundle\CoreBundle\Entity\Equipment;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
 use Runalyze\Bundle\CoreBundle\Entity\Plugin;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Type;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Runalyze\Parameter\Application\Timezone;
@@ -21,17 +21,17 @@ class Registration
     /** @var Account */
     protected $Account;
 
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     protected $em;
 
     /** @var object[] */
     protected $specialVars;
 
     /**
-     * @param ObjectManager $em
+     * @param EntityManagerInterface $em
      * @param Account $account
      */
-    public function __construct(ObjectManager $em, Account $account)
+    public function __construct(EntityManagerInterface $em, Account $account)
     {
         $this->em = $em;
         $this->Account = $account;

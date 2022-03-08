@@ -2,11 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Recalculation\Task;
 
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationTaskInterface;
 use Runalyze\Util\LocalTime;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class VO2maxShapeCalculation implements RecalculationTaskInterface
 {

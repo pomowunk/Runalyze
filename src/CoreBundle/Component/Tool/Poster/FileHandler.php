@@ -12,22 +12,11 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 class FileHandler
 {
     /** @var string */
-    protected $DataDir;
+    protected $posterDirectory;
 
-    /**
-     * @param string $dataDir
-     */
-    public function __construct($dataDir)
+    public function __construct(string $dataDirectory)
     {
-        $this->DataDir = $dataDir;
-    }
-
-    /**
-     * @return string
-     */
-    protected function pathToImages()
-    {
-        return $this->DataDir.'/poster/';
+        $this->posterDirectory = $dataDirectory.'/poster/';
     }
 
     /**
@@ -41,7 +30,7 @@ class FileHandler
             ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
                 return ($b->getMTime() - $a->getMTime());
             })
-            ->in($this->pathToImages());
+            ->in($this->posterDirectory);
 
         $list = [];
 
@@ -63,14 +52,15 @@ class FileHandler
     {
         $fs = new Filesystem();
         $filename = $account->getId().'-'.$filename;
+        $path = $this->posterDirectory.$filename;
 
-        if ($fs->exists($this->pathToImages().$filename)) {
+        if ($fs->exists($path)) {
             $response = new Response();
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-type', 'image/png');
             $response->headers->set('Content-Disposition', 'attachment; filename="'.basename($filename).'";');
-            $response->headers->set('Content-length', (string)filesize($this->pathToImages().$filename));
-            $response->setContent(file_get_contents($this->pathToImages().$filename));
+            $response->headers->set('Content-length', (string)filesize($path));
+            $response->setContent(file_get_contents($path));
 
             return $response;
         }

@@ -17,14 +17,14 @@ class TimezoneLookup
     protected $SilentExceptions = false;
 
     /**
-     * @param string $pathToDatabase absolute path to database
-     * @param string $extensionName
+     * @param string $timezoneDatabasePath absolute path to database
+     * @param string $spatialiteExtensionName
      * @param bool $silentExceptions
      */
-    public function __construct($pathToDatabase, $extensionName, $silentExceptions = false)
+    public function __construct($timezoneDatabasePath, $spatialiteExtensionName, $silentExceptions = false)
     {
-        $this->PathToTimeZoneDatabase = $pathToDatabase;
-        $this->SpatialiteExtensionName = $extensionName;
+        $this->PathToTimeZoneDatabase = $timezoneDatabasePath;
+        $this->SpatialiteExtensionName = $spatialiteExtensionName;
         $this->SilentExceptions = $silentExceptions;
     }
 

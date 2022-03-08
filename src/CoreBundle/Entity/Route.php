@@ -14,7 +14,7 @@ use Runalyze\Model;
  * Route
  *
  * @ORM\Table(name="route")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\RouteRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\RouteRepository")
  * @ORM\EntityListeners({"Runalyze\Bundle\CoreBundle\EntityListener\RouteListener"})
  * @ORM\HasLifecycleCallbacks()
  */

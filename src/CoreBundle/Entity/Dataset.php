@@ -10,7 +10,7 @@ use Runalyze\Profile\View\DatasetPrivacyProfile;
  * Dataset
  *
  * @ORM\Table(name="dataset", indexes={@ORM\Index(name="position", columns={"accountid", "position"})}, uniqueConstraints={@ORM\UniqueConstraint(name="unique_key", columns={"accountid", "keyid"})})
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\DatasetRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\DatasetRepository")
  */
 class Dataset implements AccountRelatedEntityInterface
 {

@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Recalculation\Task;
 
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationTaskInterface;
 

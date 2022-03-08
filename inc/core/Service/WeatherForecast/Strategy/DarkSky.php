@@ -36,14 +36,9 @@ class DarkSky implements StrategyInterface, LoggerAwareInterface
     /** @var Client */
     protected $HttpClient;
 
-    /**
-     * @param string $apiKey
-     * @param Client $client
-     * @param LoggerInterface|null $logger
-     */
-    public function __construct($apiKey, Client $client, LoggerInterface $logger = null)
+    public function __construct(string $darkSkyApiKey, Client $client, LoggerInterface $logger = null)
     {
-        $this->ApiKey = $apiKey;
+        $this->ApiKey = $darkSkyApiKey;
         $this->HttpClient = $client;
         $this->logger = $logger ?: new NullLogger();
     }

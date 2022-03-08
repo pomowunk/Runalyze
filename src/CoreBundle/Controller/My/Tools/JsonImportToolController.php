@@ -12,25 +12,35 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @Route("/my/tools/backup-import")
  */
 class JsonImportToolController extends Controller
 {
-    /**
-     * @return string
-     */
-    protected function getImportFilePath()
+    /** @var string */
+    protected $importPath;
+
+    /** @var string */
+    protected $runalyzeVersion;
+
+    /** @var string */
+    protected $databasePrefix;
+
+    public function __construct(string $dataDirectory, string $runalyzeVersion, string $databasePrefix)
     {
-        return $this->getParameter('data_directory').'/backup-tool/import/';
+        $this->importPath = $dataDirectory.'/backup-tool/import/';
+        $this->runalyzeVersion = $runalyzeVersion;
+        $this->databasePrefix = $databasePrefix;
     }
 
     /**
      * @Route("/upload", name="tools-backup-json-upload")
      * @Security("has_role('ROLE_USER')")
      */
-    public function backupUploadAction(Request $request)
+    public function backupUploadAction(Request $request, FlashBagInterface $flashBag)
     {
         $backupFile = $request->files->get('qqfile');
 
@@ -43,12 +53,12 @@ class JsonImportToolController extends Controller
         }
 
         try {
-            $backupFile->move($this->getImportFilePath(), $backupFile->getClientOriginalName());
+            $backupFile->move($this->importPath, $backupFile->getClientOriginalName());
         } catch (FileException $e) {
             return $this->json(['error' => 'Moving file did not work. Set chmod 777 for /data/backup-tool/import/']);
         }
 
-        $this->get('session')->getFlashBag()->set('json-import.file', $backupFile->getClientOriginalName());
+        $flashBag->set('json-import.file', $backupFile->getClientOriginalName());
 
         return $this->json(['success' => true]);
     }
@@ -57,31 +67,28 @@ class JsonImportToolController extends Controller
      * @Route("/import", name="tools-backup-json-import")
      * @Security("has_role('ROLE_USER')")
      */
-    public function backupImportAction()
+    public function backupImportAction(FlashBagInterface $flashBag)
     {
-        $sessionFlashBag = $this->get('session')->getFlashBag();
-
-        if (!$sessionFlashBag->has('json-import.file')) {
+        if (!$flashBag->has('json-import.file')) {
             return $this->redirectToRoute('tools-backup-json');
         }
 
-        $filePath = $this->getImportFilePath();
-        $filename = $sessionFlashBag->get('json-import.file')[0];
-        $fileInfo = new \SplFileInfo($filePath.$filename);
-        $analyzer = new JsonBackupAnalyzer($filePath.$filename, $this->getParameter('runalyze_version'));
+        $filename = $flashBag->get('json-import.file')[0];
+        $fileInfo = new \SplFileInfo($this->importPath.$filename);
+        $analyzer = new JsonBackupAnalyzer($this->importPath.$filename, $this->runalyzeVersion);
 
         if (!$analyzer->fileIsOkay()) {
-            (new Filesystem())->remove($filePath.$filename);
+            (new Filesystem())->remove($this->importPath.$filename);
 
             return $this->render('tools/backup/import_bad_file.html.twig', [
                 'file' => $fileInfo,
                 'versionIsOkay' => $analyzer->versionIsOkay(),
-                'runalyzeVersion' => $this->getParameter('runalyze_version'),
+                'runalyzeVersion' => $this->runalyzeVersion,
                 'runalyzeVersionFile' => $analyzer->fileVersion()
             ]);
         }
 
-        $sessionFlashBag->set('json-import.file', $filename);
+        $flashBag->set('json-import.file', $filename);
 
         return $this->render('tools/backup/import_form.html.twig', [
             'file' => $fileInfo,
@@ -94,24 +101,25 @@ class JsonImportToolController extends Controller
      * @Route("/import/do", name="tools-backup-json-import-do")
      * @Security("has_role('ROLE_USER')")
      */
-    public function backupImportDoAction(Request $request, Account $account)
+    public function backupImportDoAction(
+        Request $request,
+        Account $account,
+        TokenStorageInterface $tokenStorage,
+        FlashBagInterface $flashBag)
     {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $tokenStorage);
 
-        $sessionFlashBag = $this->get('session')->getFlashBag();
-
-        if (!$sessionFlashBag->has('json-import.file')) {
+        if (!$flashBag->has('json-import.file')) {
             return $this->redirectToRoute('tools-backup-json');
         }
 
-        $filePath = $this->getImportFilePath();
-        $filename = $sessionFlashBag->get('json-import.file')[0];
+        $filename = $flashBag->get('json-import.file')[0];
 
         $importer = new JsonImporter(
-            $filePath.$filename,
+            $this->importPath.$filename,
             \DB::getInstance(),
             $account->getId(),
-            $this->getParameter('database_prefix')
+            $this->databasePrefix
         );
 
         if ($request->request->get('delete_trainings')) {
@@ -139,7 +147,7 @@ class JsonImportToolController extends Controller
     public function uploadFormAction()
     {
         return $this->render('tools/backup/upload_form.html.twig', [
-            'runalyzeVersion' => $this->getParameter('runalyze_version')
+            'runalyzeVersion' => $this->runalyzeVersion
         ]);
     }
 }

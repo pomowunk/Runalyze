@@ -4,13 +4,14 @@ namespace Runalyze\Bundle\CoreBundle\Controller\Settings;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Tag;
-use Runalyze\Bundle\CoreBundle\Entity\TagRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
 use Runalyze\Bundle\CoreBundle\Form\Settings\TagType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/settings/tags")
@@ -18,12 +19,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TagsController extends Controller
 {
-    /**
-     * @return TagRepository
-     */
-    protected function getTagRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Tag');
+    /** @var TagRepository */
+    protected $tagRepository;
+
+    public function __construct(TagRepository $tagRepository) {
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -32,7 +32,7 @@ class TagsController extends Controller
     public function overviewAction(Account $account)
     {
         return $this->render('settings/tag/overview.html.twig', [
-            'tags' => $this->getTagRepository()->findAllFor($account),
+            'tags' => $this->tagRepository->findAllFor($account),
         ]);
     }
 
@@ -57,7 +57,7 @@ class TagsController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getTagRepository()->save($tag);
+            $this->tagRepository->save($tag);
 
             return $this->redirectToRoute('settings-tags');
         }
@@ -71,10 +71,14 @@ class TagsController extends Controller
      * @Route("/{id}/delete", name="settings-tags-delete")
      * @ParamConverter("tag", class="CoreBundle:Tag")
      */
-    public function tagDeleteAction(Request $request, Tag $tag, Account $account)
+    public function tagDeleteAction(
+        Request $request,
+        Tag $tag,
+        Account $account,
+        TranslatorInterface $translator)
     {
         if (!$this->isCsrfTokenValid('deleteTag', $request->get('t'))) {
-            $this->addFlash('notice', $this->get('translator')->trans('Invalid token.'));
+            $this->addFlash('notice', $translator->trans('Invalid token.'));
 
             return $this->redirect($this->generateUrl('settings-tags'));
         }
@@ -83,9 +87,9 @@ class TagsController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $this->getTagRepository()->remove($tag);
+        $this->tagRepository->remove($tag);
 
-        $this->addFlash('notice', $this->get('translator')->trans('Tag has been deleted.'));
+        $this->addFlash('notice', $translator->trans('Tag has been deleted.'));
 
         return $this->redirect($this->generateUrl('settings-tags'));
     }

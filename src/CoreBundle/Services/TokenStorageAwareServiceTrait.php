@@ -3,11 +3,11 @@
 namespace Runalyze\Bundle\CoreBundle\Services;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 trait TokenStorageAwareServiceTrait
 {
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
     /**

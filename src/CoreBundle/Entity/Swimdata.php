@@ -9,7 +9,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * Swimdata
  *
  * @ORM\Table(name="swimdata")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\SwimdataRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\SwimdataRepository")
  */
 class Swimdata implements AccountRelatedEntityInterface
 {

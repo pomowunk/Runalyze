@@ -24,4 +24,9 @@ class CastedDecimalScale1Type extends DecimalType
     {
         return self::CASTED_DECIMAL_1;
     }
+    
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }

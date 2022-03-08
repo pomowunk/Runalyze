@@ -3,7 +3,9 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal\Data;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\PluginConfRepository;
+use Runalyze\Bundle\CoreBundle\Repository\PluginConfRepository;
+use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
+use Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup;
 use Runalyze\Util\LocalTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -16,25 +18,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class RaceResultsController extends Controller
 {
     /**
-     * @return \Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository
-     */
-    protected function getRaceResultRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Raceresult');
-    }
-
-    /**
      * @Route("/all", name="internal-data-race-results-all")
      * @Security("has_role('ROLE_USER')")
      */
-    public function allRaceResultsAction(Account $account)
+    public function allRaceResultsAction(
+        Account $account,
+        RaceresultRepository $raceresultRepository,
+        PluginConfRepository $pluginConfRepository,
+        AgeGradeLookup $ageGradeLookup)
     {
         $result = [];
-        $races = $this->getRaceResultRepository()->findAllWithActivityStats($account);
-        $ageGradeLookup = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getLookup() ?: $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getDefaultLookup();
-        /** @var PluginConfRepository */
-        $pluginconfRepository = $this->getDoctrine()->getRepository('CoreBundle:PluginConf');
-        $funIds = $pluginconfRepository->getAllActivityIdsOfFunRaces($account);
+        $races = $raceresultRepository->findAllWithActivityStats($account);
+        $ageGradeLookup = $ageGradeLookup->getLookup() ?: $ageGradeLookup->getDefaultLookup();
+        $funIds = $pluginConfRepository->getAllActivityIdsOfFunRaces($account);
 
         foreach ($races as $race) {
             $ageGrade = $ageGradeLookup->getAgeGrade(

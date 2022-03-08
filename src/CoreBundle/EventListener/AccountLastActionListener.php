@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
@@ -10,13 +10,15 @@ use Runalyze\Bundle\CoreBundle\Entity\Account;
 
 class AccountLastActionListener
 {
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $token;
 
     /** @var EntityManager */
     protected $em;
 
-    public function __construct(TokenStorage $token, EntityManager $manager)
+    public function __construct(
+        TokenStorageInterface $token,
+        EntityManager $manager)
     {
         $this->token = $token;
         $this->em = $manager;
@@ -38,7 +40,8 @@ class AccountLastActionListener
 
             if ($account instanceof Account && $account->getLastAction() < strtotime('2 minutes ago')) {
                 $account->setLastAction();
-                $this->em->flush($account);
+                $this->em->persist($account);
+                $this->em->flush();
             }
         }
     }

@@ -8,17 +8,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class CallController extends Controller
 {
+    /** @var string */
+    protected $garminApiKey;
+
+    public function __construct(
+        string $garminApiKey)
+    {
+        $this->garminApiKey = $garminApiKey;
+    }
+
     /**
      * @Route("/call/call.DataBrowser.display.php")
      * @Route("databrowser", name="databrowser")
      * @Security("has_role('ROLE_USER')")
      */
-    public function dataBrowserAction()
+    public function dataBrowserAction(TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $tokenStorage);
         $DataBrowser = new \DataBrowser();
         $DataBrowser->display();
 
@@ -33,7 +43,7 @@ class CallController extends Controller
     public function garminCommunicatorAction()
     {
         return $this->render('import/garmin_communicator.html.twig', array(
-            'garminAPIKey' => $this->getParameter('garmin_api_key'),
+            'garminAPIKey' => $this->garminApiKey,
         ));
     }
 
@@ -56,8 +66,10 @@ class CallController extends Controller
      * @Route("/settings", name="settings")
      * @Security("has_role('ROLE_USER')")
      */
-    public function windowConfigAction(Request $request) {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+    public function windowConfigAction(
+        Request $request,
+        TokenStorageInterface $tokenStorage) {
+        $Frontend = new \Frontend(true, $tokenStorage);
         $ConfigTabs = new \ConfigTabs();
         $ConfigTabs->addDefaultTab(new  \ConfigTabGeneral());
         $ConfigTabs->addTab(new \ConfigTabPlugins());
@@ -73,9 +85,9 @@ class CallController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @Method({"GET"})
      */
-    public function ajaxChanceConfigAction()
+    public function ajaxChanceConfigAction(TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $tokenStorage);
 
         switch ($_GET['key']) {
         	case 'garmin-ignore':
@@ -100,9 +112,9 @@ class CallController extends Controller
      * @Route("/my/search", name="my-search")
      * @Security("has_role('ROLE_USER')")
      */
-    public function windowSearchAction()
+    public function windowSearchAction(TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(false, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(false, $tokenStorage);
         $showResults = !empty($_POST);
 
         if (isset($_GET['get']) && $_GET['get'] == 'true') {
@@ -148,9 +160,9 @@ class CallController extends Controller
     /**
      * @Route("/call/window.plotSumData.php")
      */
-    public function windowsPlotSumDataAction()
+    public function windowsPlotSumDataAction(TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(false, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(false, $tokenStorage);
         $this->getPlotSumData()->display();
 
         return new Response();

@@ -4,9 +4,9 @@ namespace Runalyze\Bundle\CoreBundle\Tests\Services\Recalculation;
 
 use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
-use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\ConfRepository;
+use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
@@ -42,7 +42,8 @@ class RecalculationManagerTest extends TestCase
         $list->set('data.BASIC_ENDURANCE', '0');
 
         $this->ConfigurationUpdater = new ConfigurationUpdater($confRepository, $this->ConfigurationManager);
-
+        
+        // TODO
         $this->Manager = new RecalculationManager(
             $this->ConfigurationManager,
             $this->ConfigurationUpdater,

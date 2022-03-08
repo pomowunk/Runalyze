@@ -3,6 +3,9 @@
 namespace Runalyze\Bundle\CoreBundle\Command;
 
 use Doctrine\ORM\QueryBuilder;
+use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,9 +16,27 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class MailingCommand extends ContainerAwareCommand
 {
-
     /** @var string */
     protected $customMailDirectory = '/mail/custom/';
+
+    /** @var AccountMailer */
+    protected $accountMailer;
+
+    /** @var AccountRepository */
+    protected $accountRepository;
+
+    /** @var string */
+    protected $dataDirectory;
+
+    public function __construct(AccountMailer $accountMailer, AccountRepository $accountRepository, string $dataDirectory)
+    {
+        $this->accountMailer = $accountMailer;
+        $this->accountRepository = $accountRepository;
+        $this->dataDirectory = $dataDirectory;
+
+        parent::__construct();
+    }
+
 
     protected function configure()
     {
@@ -36,8 +57,8 @@ class MailingCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface $input
+     * @param OutputInterface $output
      *
      * @return null|int null or 0 if everything went fine, or an error code
      */
@@ -58,10 +79,9 @@ class MailingCommand extends ContainerAwareCommand
                 return;
             }
         }
-        $mailer = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer');
         foreach($accounts as $account) {
-            /** Account $account */
-            $mailer->sendMailTo($account, $input->getOption('subject'), $this->customMailDirectory . $input->getArgument('template'), ['account' => $account]);
+            /** @var Account $account */
+            $this->accountMailer->sendMailTo($account, $input->getOption('subject'), $this->customMailDirectory . $input->getArgument('template'), ['account' => $account]);
         }
         $output->writeln(sprintf('<info>%u mail(s) have been sent.</info>', count($accounts)));
         $output->writeln('');
@@ -74,10 +94,7 @@ class MailingCommand extends ContainerAwareCommand
      * @return array
      */
     private function buildQuery(InputInterface $input) {
-        $repository = $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Account');
-
-        /** @var QueryBuilder $query */
-        $query = $repository->createQueryBuilder('a');
+        $query = $this->accountRepository->createQueryBuilder('a');
         $exclude = false;
 
         $query->andWhere('a.allowMails = 1');
@@ -155,7 +172,7 @@ class MailingCommand extends ContainerAwareCommand
      */
     protected function validateTemplate($templateName)
     {
-        $source = $this->getContainer()->getParameter('data_directory').'/views'.$this->customMailDirectory.$templateName;
+        $source = $this->dataDirectory.'/views'.$this->customMailDirectory.$templateName;
         return (new Filesystem())->exists($source);
     }
 

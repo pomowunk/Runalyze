@@ -4,7 +4,13 @@ namespace Runalyze\Bundle\CoreBundle\Command;
 
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter;
+use Runalyze\Bundle\CoreBundle\Services\Import\FileImporter;
 use Runalyze\Bundle\CoreBundle\Services\Import\FileImportResult;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -12,12 +18,64 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ActivityBulkImportCommand extends ContainerAwareCommand
 {
     /** @var array */
     protected $FailedImports = array();
+
+    /** @var AccountRepository */
+    protected $accountRepository;
+
+    /** @var ActivityContextAdapterFactory */
+    protected $activityContextAdapterFactory;
+
+    /** @var ActivityDataContainerFilter */
+    protected $activityDataContainerFilter;
+
+    /** @var ActivityDataContainerToActivityContextConverter */
+    protected $converter;
+
+    /** @var ConfigurationManager */
+    protected $configurationManager;
+
+    /** @var FileImporter */
+    protected $fileImporter;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var TrainingRepository */
+    protected $trainingRepository;
+
+    /** @var string */
+    protected $importDirectory;
+
+    public function __construct(
+        AccountRepository $accountRepository,
+        ActivityContextAdapterFactory $activityContextAdapterFactory,
+        ActivityDataContainerFilter $activityDataContainerFilter,
+        ActivityDataContainerToActivityContextConverter $converter,
+        ConfigurationManager $configurationManager,
+        FileImporter $fileImporter,
+        TokenStorageInterface $tokenStorage,
+        TrainingRepository $trainingRepository,
+        string $dataDirectory)
+    {
+        $this->accountRepository = $accountRepository;
+        $this->activityContextAdapterFactory = $activityContextAdapterFactory;
+        $this->activityDataContainerFilter = $activityDataContainerFilter;
+        $this->converter = $converter;
+        $this->configurationManager = $configurationManager;
+        $this->fileImporter = $fileImporter;
+        $this->tokenStorage = $tokenStorage;
+        $this->trainingRepository = $trainingRepository;
+        $this->importDirectory = $dataDirectory.'/import/';
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -29,14 +87,6 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return TrainingRepository
-     */
-    protected function getTrainingRepository()
-    {
-        return $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Training');
-    }
-
-    /**
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
@@ -44,8 +94,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repository = $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Account');
-        $user = $repository->loadUserByUsername($input->getArgument('username'));
+        $user = $this->accountRepository->loadUserByUsername($input->getArgument('username'));
 
         if (null === $user) {
             $output->writeln('<fg=red>Unknown User</>');
@@ -54,10 +103,8 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->getContainer()->get('security.token_storage')->setToken($token);
+        $this->tokenStorage->setToken($token);
 
-        $importer = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\FileImporter');
-        $dataDirectory = $this->getContainer()->getParameter('data_directory');
         $path = $input->getArgument('path');
         $it = new \FilesystemIterator($path);
         $fs = new Filesystem();
@@ -72,21 +119,20 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
             }
 
             $filename = 'bulk-import'.uniqid().$file;
-            $fs->copy($path.'/'.$file, $dataDirectory.'/import/'.$filename);
-            $files[] = $dataDirectory.'/import/'.$filename;
+            $fs->copy($path.'/'.$file, $this->importDirectory.$filename);
+            $files[] = $this->importDirectory.$filename;
         }
 
-        $importResult = $importer->importFiles($files);
-        $importResult->completeAndFilterResults($this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter'));
-        $contextAdapterFactory = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory');
-        $defaultLocation = $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getActivityForm()->getDefaultLocationForWeatherForecast();
+        $importResult = $this->fileImporter->importFiles($files);
+        $importResult->completeAndFilterResults($this->activityDataContainerFilter);
+        $defaultLocation = $this->configurationManager->getList()->getActivityForm()->getDefaultLocationForWeatherForecast();
 
         foreach ($importResult as $result) {
-            /** @var $result FileImportResult */
+            /** @var FileImportResult $result */
             foreach ($result->getContainer() as $container) {
                 $activity = $this->containerToActivity($container, $user);
                 $context = new ActivityContext($activity, null, null, $activity->getRoute());
-                $contextAdapter = $contextAdapterFactory->getAdapterFor($context);
+                $contextAdapter = $this->activityContextAdapterFactory->getAdapterFor($context);
                 $output->writeln('<info>'.$result->getOriginalFileName().'</info>');
 
                 if ($contextAdapter->isPossibleDuplicate()) {
@@ -95,7 +141,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
                 }
 
                 $contextAdapter->guessWeatherConditions($defaultLocation);
-                $this->getTrainingRepository()->save($activity);
+                $this->trainingRepository->save($activity);
                 $output->writeln('<fg=green> ... successfully imported</>');
             }
         }
@@ -120,7 +166,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
      */
     protected function containerToActivity(ActivityDataContainer $container, Account $account)
     {
-        return $this->getContainer()->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter')->getActivityFor($container, $account);
+        return $this->converter->getActivityFor($container, $account);
     }
 
     private function addFailedFile($fileName, $error)

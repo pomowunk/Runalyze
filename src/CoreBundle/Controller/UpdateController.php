@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class UpdateController
@@ -19,17 +20,17 @@ class UpdateController extends Controller
     /**
      * @Route("/update", name="update", condition="'%update_disabled%' == 'no'")
      */
-    public function updateAction($entity_manager = 'default')
+    public function updateAction(KernelInterface $kernel, $entity_manager = 'default')
     {
         $output = new BufferedOutput();
-        $application = new Application($this->get('kernel'));
+        $application = new Application($kernel);
         $application->setAutoExit(false);
         $application->run(new ArrayInput([
             'command' => 'doctrine:migrations:status',
             '--em' => $entity_manager,
         ]), $output);
 
-        if ('prod' == $this->get('kernel')->getEnvironment()) {
+        if ('prod' == $kernel->getEnvironment()) {
             $application->run(new ArrayInput([
                 'command' => 'cache:clear',
                 '--env' => 'prod',
@@ -58,10 +59,10 @@ class UpdateController extends Controller
     /**
      * @Route("/update/start", name="update_start", condition="'%update_disabled%' == 'no'")
      */
-    public function updateStartAction()
+    public function updateStartAction(KernelInterface $kernel)
     {
         $output = new BufferedOutput();
-        $application = new Application($this->get('kernel'));
+        $application = new Application($kernel);
         $application->setAutoExit(false);
         $application->run(new ArrayInput([
             'command' => 'doctrine:migrations:migrate',

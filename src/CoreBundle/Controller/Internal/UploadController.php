@@ -16,6 +16,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UploadController extends Controller
 {
+    /** @var string */
+    protected $importDirectory;
+
+    public function __construct(string $dataDirectory)
+    {
+        $this->importDirectory = $dataDirectory.'/import';
+    }
+
     /**
      * @Route("", name="internal-activity-upload")
      * @Security("has_role('ROLE_USER')")
@@ -33,7 +41,7 @@ class UploadController extends Controller
 
             try {
                 $file->move(
-                    $this->getParameter('data_directory').'/import',
+                    $this->importDirectory,
                     $newFileName
                 );
 
@@ -65,7 +73,7 @@ class UploadController extends Controller
 
         try {
             $filesystem->appendToFile(
-                $this->getParameter('data_directory').'/import/'.$fileName,
+                $this->importDirectory.$fileName,
                 $request->request->get('data')
             );
 

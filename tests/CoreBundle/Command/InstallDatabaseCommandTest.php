@@ -58,7 +58,7 @@ class InstallDatabaseCommandTest extends KernelTestCase
     public function testExecute()
     {
         $application = new Application(static::$kernel);
-        $application->add(new InstallDatabaseCommand());
+        $application->add(static::$kernel->getContainer()->get('Runalyze\Bundle\CoreBundle\Command\InstallDatabaseCommand'));
 
         $command = $application->find('runalyze:install:database');
         $commandTester = new CommandTester($command);

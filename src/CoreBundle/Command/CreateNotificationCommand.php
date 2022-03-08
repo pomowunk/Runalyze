@@ -2,11 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Doctrine\DBAL\Connection;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\TemplateBasedMessage;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Entity\NotificationRepository;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,6 +17,32 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class CreateNotificationCommand extends ContainerAwareCommand
 {
+    /** @var AccountRepository */
+    protected $accountRepository;
+
+    /** @var Connection */
+    protected $connection;
+
+    /** @var NotificationRepository */
+    protected $notificationRepository;
+    
+    /** @var string */
+    protected $databasePrefix;
+
+    public function __construct(
+        AccountRepository $accountRepository,
+        Connection $connection,
+        NotificationRepository $notificationRepository,
+        string $databasePrefix)
+    {
+        $this->accountRepository = $accountRepository;
+        $this->connection = $connection;
+        $this->notificationRepository = $notificationRepository;
+        $this->databasePrefix = $databasePrefix;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -180,21 +207,16 @@ class CreateNotificationCommand extends ContainerAwareCommand
 
     protected function insertSingleNotifications(Notification $notification, array $accountIds)
     {
-        /** @var NotificationRepository $notificationRepository */
-        $notificationRepository = $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Notification');
-
-        /** @var AccountRepository $accountRepository */
-        $accountRepository = $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Account');
         $num = 0;
 
         foreach ($accountIds as $id) {
-            $account = $accountRepository->find($id);
+            $account = $this->accountRepository->find($id);
 
             if (null !== $account) {
                 $accountsNotification = clone $notification;
                 $accountsNotification->setAccount($account);
 
-                $notificationRepository->save($accountsNotification);
+                $this->notificationRepository->save($accountsNotification);
                 $num++;
             }
         }
@@ -222,12 +244,11 @@ class CreateNotificationCommand extends ContainerAwareCommand
         $registrationAfter
     )
     {
-        $prefix = $this->getContainer()->getParameter('database_prefix');
         $accountWhere = $this->getWhereToFindRelevantAccounts($lang, $excludeLang, $lastActionBefore, $lastActionAfter, $registrationBefore, $registrationAfter);
 
-        $statement = $this->getContainer()->get('doctrine.dbal.default_connection')->prepare(
-            'INSERT INTO `'.$prefix.'notification` (`messageType`, `createdAt`, `expirationAt`, `data`, `account_id`) '.
-            'SELECT ?, ?, ?, ?, `a`.`id` FROM `'.$prefix.'account` AS `a` WHERE '.$accountWhere
+        $statement = $this->connection->prepare(
+            'INSERT INTO `'.$this->databasePrefix.'notification` (`messageType`, `createdAt`, `expirationAt`, `data`, `account_id`) '.
+            'SELECT ?, ?, ?, ?, `a`.`id` FROM `'.$this->databasePrefix.'account` AS `a` WHERE '.$accountWhere
         );
 
         $statement->execute([

@@ -6,27 +6,40 @@ use Bernard\Message\PlainMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonBackup;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\SqlBackup;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\BackupReadyMessage;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 
 class BackupReceiver
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var AccountRepository */
+    protected $accountRepository;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    /** @var NotificationRepository */
+    protected $notificationRepository;
 
-    /**
-     * @return string
-     */
-    protected function getPathToBackupFiles()
+    /** @var string */
+    protected $backupPath;
+
+    /** @var string */
+    protected $databasePrefix;
+
+    /** @var string */
+    protected $runalyzeVersion;
+
+    public function __construct(
+        AccountRepository $accountRepository,
+        NotificationRepository $notificationRepository,
+        string $dataDirectory,
+        string $databasePrefix,
+        string $runalyzeVersion)
     {
-        return $this->container->getParameter('data_directory').'/backup-tool/backup/';
+        $this->accountRepository = $accountRepository;
+        $this->notificationRepository = $notificationRepository;
+        $this->backupPath = $dataDirectory.'/backup-tool/backup/';
+        $this->databasePrefix = $databasePrefix;
+        $this->runalyzeVersion = $runalyzeVersion;
     }
 
     public function userBackup(PlainMessage $message)
@@ -34,32 +47,31 @@ class BackupReceiver
         $Frontend = new \FrontendShared(true);
 
         $fileHandler = new FilenameHandler($message->get('accountid'));
-        $fileHandler->setRunalyzeVersion($this->container->getParameter('runalyze_version'));
+        $fileHandler->setRunalyzeVersion($this->runalyzeVersion);
 
-        /** @var Account $account */
-        $account = $this->container->get('doctrine.orm.entity_manager')->getRepository('CoreBundle:Account')->find($message->get('accountid'));
+        $account = $this->accountRepository->find($message->get('accountid'));
 
         if ('json' == $message->get('export-type')) {
             $Backup = new JsonBackup(
-                $this->getPathToBackupFiles().$fileHandler->generateInternalFilename(FilenameHandler::JSON_FORMAT),
+                $this->backupPath.$fileHandler->generateInternalFilename(FilenameHandler::JSON_FORMAT),
                 $message->get('accountid'),
                 \DB::getInstance(),
-                $this->container->getParameter('database_prefix'),
-                $this->container->getParameter('runalyze_version')
+                $this->databasePrefix,
+                $this->runalyzeVersion
             );
             $Backup->run();
         } else {
             $Backup = new SqlBackup(
-                $this->getPathToBackupFiles().$fileHandler->generateInternalFilename(FilenameHandler::SQL_FORMAT),
+                $this->backupPath.$fileHandler->generateInternalFilename(FilenameHandler::SQL_FORMAT),
                 $message->get('accountid'),
                 \DB::getInstance(),
-                $this->container->getParameter('database_prefix'),
-                $this->container->getParameter('runalyze_version')
+                $this->databasePrefix,
+                $this->runalyzeVersion
             );
             $Backup->run();
         }
 
-        $this->container->get('doctrine')->getRepository('CoreBundle:Notification')->save(
+        $this->notificationRepository->save(
             Notification::createFromMessage(new BackupReadyMessage(), $account)
         );
         gc_collect_cycles();

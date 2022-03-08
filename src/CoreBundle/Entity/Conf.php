@@ -9,7 +9,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * Conf
  *
  * @ORM\Table(name="conf", indexes={@ORM\Index(name="accountid", columns={"accountid"})})
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\ConfRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\ConfRepository")
  */
 class Conf implements AccountRelatedEntityInterface
 {

@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class EquipmentUpdateSubscriber implements EventSubscriber

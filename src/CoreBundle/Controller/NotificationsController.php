@@ -3,9 +3,12 @@
 namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/notifications")
@@ -13,23 +16,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class NotificationsController extends Controller
 {
     /**
-     * @return \Runalyze\Bundle\CoreBundle\Entity\NotificationRepository
-     */
-    protected function getNotificationsRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Notification');
-    }
-
-    /**
      * @Route("", name="notifications-list")
      * @Security("has_role('ROLE_USER')")
      */
-    public function newNotificationsAction(Account $account)
+    public function newNotificationsAction(
+        Account $account,
+        RouterInterface $router,
+        TranslatorInterface $translator,
+        NotificationRepository $notificationRepository)
     {
         return $this->render('notifications.html.twig', [
-            'notifications' => $this->getNotificationsRepository()->findAll($account),
-            'router' => $this->get('router'),
-            'translator' => $this->get('translator.default')
+            'notifications' => $notificationRepository->findAll($account),
+            'router' => $router,
+            'translator' => $translator
         ]);
     }
 }

@@ -4,15 +4,15 @@ namespace Runalyze\Bundle\CoreBundle\Services\Import;
 
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Hrv;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Swimdata;
 use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
-use Runalyze\Bundle\CoreBundle\Entity\TypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Parser\Activity\Common\Data\ActivityData;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;

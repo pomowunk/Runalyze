@@ -5,7 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Tests\Entity;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\TemplateBasedMessage;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Entity\NotificationRepository;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\AbstractFixturesAwareWebTestCase;
 
 /**

@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Form;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
 use Runalyze\Bundle\CoreBundle\Form\Type\DistanceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,17 +12,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class EquipmentType extends AbstractType
 {
     /** @var EquipmentTypeRepository */
     protected $EquipmentRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
-    public function __construct(EquipmentTypeRepository $equipmentTypeRepository, TokenStorage $tokenStorage)
+    public function __construct(
+        EquipmentTypeRepository $equipmentTypeRepository,
+        TokenStorageInterface $tokenStorage)
     {
         $this->EquipmentRepository = $equipmentTypeRepository;
         $this->TokenStorage = $tokenStorage;

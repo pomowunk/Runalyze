@@ -7,7 +7,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
 
 /**
  * @ORM\Table(name="plugin")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\PluginRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\PluginRepository")
  */
 class Plugin implements AccountRelatedEntityInterface
 {

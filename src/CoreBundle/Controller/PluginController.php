@@ -7,16 +7,24 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PluginController extends AbstractPluginsAwareController
 {
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage) {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * @Route("/call/call.Plugin.install.php")
      * @Security("has_role('ROLE_USER')")
      */
     public function pluginInstallAction()
     {
-        $Frontend = new \Frontend(false, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(false, $this->tokenStorage);
         $Pluginkey = filter_input(INPUT_GET, 'key');
 
         $Installer = new \PluginInstaller($Pluginkey);
@@ -52,7 +60,7 @@ class PluginController extends AbstractPluginsAwareController
     */
     public function pluginDisplayAction($id, Request $request, Account $account)
     {
-        $Frontend = new \Frontend(false, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(false, $this->tokenStorage);
 
         return $this->getResponseFor($id, $request, $account);
     }
@@ -63,7 +71,7 @@ class PluginController extends AbstractPluginsAwareController
     */
     public function pluginConfigAction()
     {
-        $Frontend = new \Frontend(false, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(false, $this->tokenStorage);
         $Factory = new \PluginFactory();
 
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {

@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Selection\Selection;
 use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
 use Runalyze\Bundle\CoreBundle\Twig\DisplayableTime;

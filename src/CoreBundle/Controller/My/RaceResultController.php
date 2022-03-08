@@ -4,15 +4,16 @@ namespace Runalyze\Bundle\CoreBundle\Controller\My;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Metrics\LegacyUnitConverter;
 use Runalyze\Sports\Running\VO2max\Estimation\DanielsGilbertFormula;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Runalyze\Bundle\CoreBundle\Form\RaceResultType;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup;
+use Runalyze\Bundle\CoreBundle\Services\LegacyCache;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,19 +38,21 @@ class RaceResultController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function raceresultFormAction($activityId, Account $account, Request $request)
+    public function raceresultFormAction(
+        $activityId,
+        Account $account,
+        Request $request,
+        TrainingRepository $trainingRepository,
+        RaceresultRepository $raceresultRepository,
+        LegacyCache $legacyCache)
     {
-        /** @var TrainingRepository */
-        $trainingRepository = $this->getDoctrine()->getRepository('CoreBundle:Training');
-        /** @var null|Training $activity */
         $activity = $trainingRepository->findForAccount($activityId, $account->getId());
 
         if (null === $activity) {
             throw $this->createAccessDeniedException();
         }
 
-        /** @var null|Raceresult $raceResult */
-        $raceResult = $this->getRaceresultRepository()->findForAccount($activityId, $account->getId());
+        $raceResult = $raceresultRepository->findForAccount($activityId, $account->getId());
         $isNew = false;
 
         if (null === $raceResult) {
@@ -65,8 +68,8 @@ class RaceResultController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRaceresultRepository()->save($raceResult);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearRaceResultCache($raceResult);
+            $raceresultRepository->save($raceResult);
+            $legacyCache->clearRaceResultCache($raceResult);
         }
 
         return $this->render('my/raceresult/form.html.twig', [
@@ -80,14 +83,18 @@ class RaceResultController extends Controller
     /**
      * @Route("/{activityId}/delete", name="raceresult-delete", requirements={"activityId" = "\d+"})
      */
-    public function raceresultDeleteAction($activityId, Request $request, Account $account)
+    public function raceresultDeleteAction(
+        $activityId,
+        Request $request,
+        Account $account,
+        RaceresultRepository $raceresultRepository,
+        LegacyCache $legacyCache)
     {
-        /** @var null|Raceresult $raceResult */
-        $raceResult = $this->getRaceresultRepository()->findForAccount($activityId, $account->getId());
+        $raceResult = $raceresultRepository->findForAccount($activityId, $account->getId());
 
         if ($raceResult) {
-            $this->getRaceresultRepository()->delete($raceResult);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearRaceResultCache($raceResult);
+            $raceresultRepository->delete($raceResult);
+            $legacyCache->clearRaceResultCache($raceResult);
         } else {
             throw $this->createAccessDeniedException();
         }
@@ -99,10 +106,13 @@ class RaceResultController extends Controller
      * @Route("/performance-chart", name="race-results-performance-chart")
      * @Security("has_role('ROLE_USER')")
      */
-    public function performanceChartAction(Account $account)
+    public function performanceChartAction(
+        Account $account,
+        AgeGradeLookup $ageGradeLookup,
+        SportRepository $sportRepository)
     {
         $danielsGilbertFormula = new DanielsGilbertFormula();
-        $ageGradeLookup = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getLookup() ?: $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup')->getDefaultLookup();
+        $ageGradeLookup = $ageGradeLookup->getLookup() ?: $ageGradeLookup->getDefaultLookup();
         $distances = [0.06, 0.1, 0.2, 0.4, 0.8, 1.0, 1.5, 3.0, 5.0, 10.0, 21.1, 42.2, 50.0];
         $distanceTicks = [0.06, 0.1, 0.2, 0.4, 0.8, 1.5, 3.0, 5.0, 10.0, 21.1, 42.2];
         $ageStandardTimes = array_map(function($kilometer) use ($ageGradeLookup) {
@@ -111,8 +121,6 @@ class RaceResultController extends Controller
         $ageStandardVO2max = array_map(function($kilometer, $seconds) use ($danielsGilbertFormula) {
             return $danielsGilbertFormula->estimateFromRaceResult($kilometer, $seconds);
         }, $distances, $ageStandardTimes);
-        /** @var SportRepository */
-        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
 
         return $this->render('my/raceresult/performance_chart.html.twig', [
             'runningSportId' => $sportRepository->findRunningFor($account)->getId(),

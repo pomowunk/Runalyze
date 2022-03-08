@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="plugin_conf", indexes={@ORM\Index(name="pluginid", columns={"pluginid"})})
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\PluginConfRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\PluginConfRepository")
  */
 class PluginConf
 {

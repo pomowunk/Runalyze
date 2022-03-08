@@ -6,7 +6,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PrivacyGuard
 {
@@ -15,7 +15,7 @@ class PrivacyGuard
     /** @var ConfigurationManager */
     protected $ConfigurationManager;
 
-    public function __construct(TokenStorage $tokenStorage, ConfigurationManager $configurationManager)
+    public function __construct(TokenStorageInterface $tokenStorage, ConfigurationManager $configurationManager)
     {
         $this->TokenStorage = $tokenStorage;
         $this->ConfigurationManager = $configurationManager;

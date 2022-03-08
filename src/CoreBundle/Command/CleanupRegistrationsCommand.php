@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -9,6 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 class CleanupRegistrationsCommand extends ContainerAwareCommand
 {
+    /** @var AccountRepository */
+    protected $accountRepository;
+
+    public function __construct(AccountRepository $accountRepository)
+    {
+        $this->accountRepository = $accountRepository;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -31,8 +42,7 @@ class CleanupRegistrationsCommand extends ContainerAwareCommand
         $output->writeln('<info>Delete all not activated accounts older than '.$days.' days</info>');
         $output->writeln('');
 
-        $repository = $this->getContainer()->get('doctrine')->getRepository('CoreBundle:Account');
-        $delete =  $repository->deleteNotActivatedAccounts($days);
+        $delete = $this->accountRepository->deleteNotActivatedAccounts($days);
         $output->writeln('<info>'.$delete.' deleted accounts</info>');
         $output->writeln('');
 

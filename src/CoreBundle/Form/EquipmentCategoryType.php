@@ -4,7 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Form;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType as EntityEquipmentType;
 use Runalyze\Bundle\CoreBundle\Form\Type\DistanceType;
 use Runalyze\Bundle\CoreBundle\Form\Type\DurationNullableType;
@@ -16,17 +16,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class EquipmentCategoryType extends AbstractType
 {
     /** @var SportRepository */
     protected $SportRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
-    public function __construct(SportRepository $SportRepository, TokenStorage $tokenStorage)
+    public function __construct(
+        SportRepository $SportRepository,
+        TokenStorageInterface $tokenStorage)
     {
         $this->SportRepository = $SportRepository;
         $this->TokenStorage = $tokenStorage;

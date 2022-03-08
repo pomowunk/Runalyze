@@ -3,16 +3,16 @@
 namespace Runalyze\Bundle\CoreBundle\Form\Tools\TrendAnalysis;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryValue\QueryValues;
-use Runalyze\Bundle\CoreBundle\Entity\TypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TrendAnalysisType extends AbstractType
 {
@@ -22,7 +22,7 @@ class TrendAnalysisType extends AbstractType
     /** @var TypeRepository */
     protected $TypeRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
     /** @var ConfigurationManager */
@@ -31,7 +31,7 @@ class TrendAnalysisType extends AbstractType
     public function __construct(
         SportRepository $sportRepository,
         TypeRepository $typeRepository,
-        TokenStorage $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         ConfigurationManager $configurationManager
     )
     {

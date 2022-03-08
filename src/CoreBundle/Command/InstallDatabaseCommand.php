@@ -2,17 +2,38 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class InstallDatabaseCommand extends ContainerAwareCommand
 {
     /** @var string */
     const DATABASE_STRUCTURE_FILE = 'inc/install/structure.sql';
+
+    /** @var Connection */
+    protected $connection;
+
+    /** @var string */
+    protected $projectDirectory;
+
+    /** @var string */
+    protected $databasePrefix;
+
+    public function __construct(
+        Connection $connection,
+        string $projectDirectory,
+        string $databasePrefix)
+    {
+        $this->connection = $connection;
+        $this->projectDirectory = $projectDirectory;
+        $this->databasePrefix = $databasePrefix;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -48,20 +69,18 @@ class InstallDatabaseCommand extends ContainerAwareCommand
      */
     protected function importDatabaseStructure()
     {
-        $fileName = $this->getContainer()->getParameter('kernel.root_dir').'/../'.self::DATABASE_STRUCTURE_FILE;
-        $queries = $this->getSqlFileAsArray($fileName, $this->getContainer()->getParameter('database_prefix'));
+        $fileName = $this->projectDirectory.self::DATABASE_STRUCTURE_FILE;
+        $queries = $this->getSqlFileAsArray($fileName, $this->databasePrefix);
 
-        /** @var \Doctrine\DBAL\Connection $em */
-        $em = $this->getContainer()->get('doctrine')->getConnection();
-        $em->beginTransaction();
+        $this->connection->beginTransaction();
 
         try {
             foreach ($queries as $query) {
-                $em->executeQuery($query);
+                $this->connection->executeQuery($query);
             }
 
             try {
-                $em->commit();
+                $this->connection->commit();
             } catch (\Throwable $th) {
                 // queries are auto-committed anyways, even when disabled. ignore...
                 if ($th->getMessage() !== 'There is no active transaction') {
@@ -70,7 +89,7 @@ class InstallDatabaseCommand extends ContainerAwareCommand
             }
         } catch (\Exception $e) {
             try {
-                $em->rollBack();
+                $this->connection->rollBack();
             } catch(\Exception $e_ignored) {
 
             }

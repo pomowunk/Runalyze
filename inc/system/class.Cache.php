@@ -49,6 +49,7 @@ class Cache {
 
 	/**
 	 * Set Cache
+	 * @param int $time
 	 */
 	public static function set($keyword, $data, $time, $nousercache = 0) {
 		$key = $keyword;

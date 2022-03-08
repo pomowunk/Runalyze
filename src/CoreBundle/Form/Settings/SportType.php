@@ -4,11 +4,11 @@ namespace Runalyze\Bundle\CoreBundle\Form\Settings;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Type;
-use Runalyze\Bundle\CoreBundle\Entity\TypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Form\Type\EnergyKcalType;
 use Runalyze\Bundle\CoreBundle\Form\Type\HeartRateType;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SportType extends AbstractType
 {
@@ -36,14 +36,14 @@ class SportType extends AbstractType
     /** @var EquipmentTypeRepository */
     protected $EquipmentTypeRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
     public function __construct(
         TypeRepository $typeRepository,
         SportRepository $sportRepository,
         EquipmentTypeRepository $equipmentTypeRepository,
-        TokenStorage $tokenStorage
+        TokenStorageInterface $tokenStorage
     )
     {
         $this->TypeRepository = $typeRepository;

@@ -3,12 +3,12 @@
 namespace Runalyze\Bundle\CoreBundle\Form\Type;
 
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Form\AbstractTokenStorageAwareType;
 use Runalyze\Bundle\CoreBundle\Form\ConfigurationManagerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SportChoiceType extends AbstractTokenStorageAwareType
 {
@@ -17,7 +17,9 @@ class SportChoiceType extends AbstractTokenStorageAwareType
     /** @var SportRepository */
     protected $SportRepository;
 
-    public function __construct(TokenStorage $tokenStorage, SportRepository $sportRepository)
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        SportRepository $sportRepository)
     {
         parent::__construct($tokenStorage);
 

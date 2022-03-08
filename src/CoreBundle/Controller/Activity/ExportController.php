@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ExportController extends Controller
 {
@@ -17,8 +18,13 @@ class ExportController extends Controller
      * @Route("/activity/{id}/export/social/{typeid}", requirements={"id" = "\d+"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function exporterExportAction($id, $typeid, Account $account) {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+    public function exporterExportAction(
+        $id, 
+        $typeid, 
+        Account $account, 
+        TokenStorageInterface $tokenStorageInterface)
+    {
+        $Frontend = new \Frontend(true, $tokenStorageInterface);
 
         if (Share\Types::isValidValue((int)$typeid)) {
             $context = new Context((int)$id, $account->getId());
@@ -36,8 +42,13 @@ class ExportController extends Controller
      * @Route("/activity/{id}/export/file/{typeid}", requirements={"id" = "\d+"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function fileExportAction($id, $typeid, Account $account) {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+    public function fileExportAction(
+        $id,
+        $typeid,
+        Account $account,
+        TokenStorageInterface $tokenStorageInterface)
+    {
+        $Frontend = new \Frontend(true, $tokenStorageInterface);
 
         if (File\Types::isValidValue((int)$typeid)) {
             $context = new Context((int)$id, $account->getId());

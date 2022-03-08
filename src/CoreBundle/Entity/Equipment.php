@@ -12,7 +12,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\NamedEntityInterface;
  * Equipment
  *
  * @ORM\Table(name="equipment")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository")
  */
 class Equipment implements IdentifiableEntityInterface, NamedEntityInterface, AccountRelatedEntityInterface
 {

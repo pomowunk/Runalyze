@@ -10,7 +10,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * Tag
  *
  * @ORM\Table(name="tag")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\TagRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\TagRepository")
  */
 class Tag implements AccountRelatedEntityInterface
 {

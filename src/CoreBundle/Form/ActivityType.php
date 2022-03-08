@@ -5,7 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Form;
 use League\Geotools\Geohash\Geohash;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Tag;
-use Runalyze\Bundle\CoreBundle\Entity\TagRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Form\Type\ActivityEquipmentType;
 use Runalyze\Bundle\CoreBundle\Form\Type\ActivityRoundType;
@@ -41,19 +41,18 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ActivityType extends AbstractType
 {
     /** @var TagRepository */
     protected $TagRepository;
 
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
-
     public function __construct(
-        TokenStorage $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         TagRepository $tagRepository
     )
     {

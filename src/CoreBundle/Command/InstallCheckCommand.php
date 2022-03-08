@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -63,6 +64,27 @@ class InstallCheckCommand extends ContainerAwareCommand
         'var/queue/',
         'var/tmp/'
     ];
+
+    /** @var Connection */
+    protected $connection;
+
+    /** @var string */
+    protected $projectDirectory;
+
+    /** @var string */
+    protected $databasePrefix;
+
+    public function __construct(
+        Connection $connection, 
+        string $projectDirectory, 
+        string $databasePrefix)
+    {
+        $this->connection = $connection;
+        $this->projectDirectory = $projectDirectory;
+        $this->databasePrefix = $databasePrefix;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -162,11 +184,9 @@ class InstallCheckCommand extends ContainerAwareCommand
      */
     protected function prefixIsNotUsed()
     {
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = $this->getContainer()->get('doctrine')->getConnection();
-        $prefix = $this->getContainer()->getParameter('database_prefix');
+        $prefix = $this->databasePrefix;
 
-        if (0 !== $connection->query('SHOW TABLES LIKE "'.$prefix.'%"')->rowCount()) {
+        if (0 !== $this->connection->query('SHOW TABLES LIKE "'.$prefix.'%"')->rowCount()) {
             return self::ERROR;
         }
 
@@ -178,10 +198,8 @@ class InstallCheckCommand extends ContainerAwareCommand
      */
     protected function directoriesAreWritable()
     {
-        $root = $this->getContainer()->getParameter('kernel.root_dir').'/../';
-
         foreach ($this->DirectoriesThatMustBeWritable as $directory) {
-            if (!is_writable($root.$directory)) {
+            if (!is_writable($this->projectDirectory.$directory)) {
                 return self::WARNING;
             }
         }

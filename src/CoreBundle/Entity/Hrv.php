@@ -9,7 +9,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * Hrv
  *
  * @ORM\Table(name="hrv")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\HrvRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\HrvRepository")
  */
 class Hrv implements AccountRelatedEntityInterface
 {

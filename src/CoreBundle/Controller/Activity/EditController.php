@@ -7,26 +7,51 @@ use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityPreview;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
+use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Form\ActivityType;
+use Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory;
+use Runalyze\Bundle\CoreBundle\Services\Activity\DataSeriesRemover;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection;
+use Runalyze\Bundle\CoreBundle\Services\LegacyCache;
+use Runalyze\Service\ElevationCorrection\Strategy\Geonames;
+use Runalyze\Service\ElevationCorrection\Strategy\GeoTiff;
+use Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class EditController extends Controller
 {
-    /**
-     * @return TrainingRepository
-     */
-    protected function getTrainingRepository()
+    /** @var AutomaticReloadFlagSetter */
+    protected $automaticReloadFlagSetter;
+    
+    /** @var ConfigurationManager */
+    protected $configurationManager;
+    
+    /** @var LegacyCache */
+    protected $legacyCache;
+    
+    /** @var TrainingRepository */
+    protected $trainingRepository;
+    
+    /** @var TranslatorInterface */
+    protected $translator;
+    
+    public function __construct(AutomaticReloadFlagSetter $automaticReloadFlagSetter, ConfigurationManager $configurationManager, LegacyCache $legacyCache, TrainingRepository $trainingRepository, TranslatorInterface $translator)
     {
-        return $this->getDoctrine()->getRepository('CoreBundle:Training');
+        $this->automaticReloadFlagSetter = $automaticReloadFlagSetter;
+        $this->configurationManager = $configurationManager;
+        $this->legacyCache = $legacyCache;
+        $this->trainingRepository = $trainingRepository;
+        $this->translator = $translator;
     }
 
     protected function checkThatEntityBelongsToActivity(AccountRelatedEntityInterface $entity, Account $account)
@@ -41,11 +66,10 @@ class EditController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @ParamConverter("activity", class="CoreBundle:Training")
      */
-    public function activityEditAction(Request $request, Training $activity, Account $account)
+    public function activityEditAction(Request $request, Training $activity, Account $account, DataSeriesRemover $dataSeriesRemover, RaceresultRepository $raceresultRepository, ActivityContextFactory $activityContextFactory)
     {
         $this->checkThatEntityBelongsToActivity($activity, $account);
 
-        $repository = $this->getTrainingRepository();
         $form = $this->createForm(ActivityType::class, $activity, [
             'action' => $this->generateUrl('activity-edit', ['id' => $activity->getId()])
         ]);
@@ -53,24 +77,22 @@ class EditController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->has('data_series_remover')) {
-                $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\DataSeriesRemover')->handleRequest($form->get('data_series_remover')->getData(), $activity);
+                $dataSeriesRemover->handleRequest($form->get('data_series_remover')->getData(), $activity);
             }
 
             if ($form->get('is_race')->getData() && !$activity->hasRaceresult()) {
                 $raceResult = (new Raceresult())->fillFromActivity($activity);
                 $activity->setRaceresult($raceResult);
             } elseif (!$form->get('is_race')->getData() && $activity->hasRaceresult()) {
-                /** @var RaceresultRepository */
-                $raceResultRepository = $this->getDoctrine()->getRepository('CoreBundle:Raceresult');
-                $raceResultRepository->delete($activity->getRaceresult());
+                $raceresultRepository->delete($activity->getRaceresult());
                 $activity->setRaceresult(null);
             }
 
-            $repository->save($activity);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearActivityCache($activity);
+            $this->trainingRepository->save($activity);
+            $this->legacyCache->clearActivityCache($activity);
 
-            $this->addFlash('success', $this->get('translator')->trans('Changes have been saved.'));
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $this->addFlash('success', $this->translator->trans('Changes have been saved.'));
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
 
             $nextId = $form->get('next-multi-editor')->getData();
 
@@ -79,7 +101,7 @@ class EditController extends Controller
             }
         }
 
-        $context = $this->get('Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory')->getContext($activity);
+        $context = $activityContextFactory->getContext($activity);
 
         return $this->render('activity/form.html.twig', [
             'form' => $form->createView(),
@@ -87,8 +109,8 @@ class EditController extends Controller
             'isMulti' => (bool)$request->get('multi', false),
             'decorator' => new ActivityDecorator($context),
             'activity_id' => $activity->getId(),
-            'prev_activity_id' => $repository->getIdOfPreviousActivity($activity),
-            'next_activity_id' => $repository->getIdOfNextActivity($activity),
+            'prev_activity_id' => $this->trainingRepository->getIdOfPreviousActivity($activity),
+            'next_activity_id' => $this->trainingRepository->getIdOfNextActivity($activity),
             'showElevationCorrectionLink' => $activity->hasRoute() && $activity->getRoute()->hasGeohashes() && !$activity->getRoute()->hasCorrectedElevations(),
             'isPowerLocked' => null !== $activity->isPowerCalculated()
         ]);
@@ -114,7 +136,7 @@ class EditController extends Controller
     {
         $previews = array_map(function (Training $activity) {
             return new ActivityPreview($activity);
-        }, $this->getTrainingRepository()->getPartialEntitiesForPreview($activityIds, $account, 20));
+        }, $this->trainingRepository->getPartialEntitiesForPreview($activityIds, $account, 20));
 
         return $this->render('activity/multi_editor_navigation.html.twig', [
             'previews' => $previews
@@ -132,7 +154,7 @@ class EditController extends Controller
 
        $this->checkThatEntityBelongsToActivity($activity, $account);
 
-       $this->getTrainingRepository()->remove($activity);
+       $this->trainingRepository->remove($activity);
 
         return $this->render('activity/activity_has_been_removed.html.twig', [
             'multiEditorId' => (int)$activityId
@@ -144,26 +166,24 @@ class EditController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @ParamConverter("activity", class="CoreBundle:Training")
      */
-    public function elevationCorrectionAction(Request $request, Training $activity, Account $account)
+    public function elevationCorrectionAction(Request $request, Training $activity, Account $account, ElevationCorrection $elevationCorrection, GeoTiff $geotiff, Geonames $geonames, GoogleMaps $googleMaps)
     {
         $this->checkThatEntityBelongsToActivity($activity, $account);
 
-        $translator = $this->get('translator');
         $success = false;
-
         if ($activity->hasRoute()) {
             $routeAdapter = $activity->getRoute()->getAdapter();
             $strategy = null;
 
             if ('none' == $request->query->get('strategy')) {
                 $routeAdapter->removeElevation();
-                $this->addFlash('notice', $translator->trans('Corrected elevation data has been removed.'));
+                $this->addFlash('notice', $this->translator->trans('Corrected elevation data has been removed.'));
                 $success = true;
             } else {
-                $strategy = $this->getElevationCorrectionStrategyFromRequest($request->query->get('strategy'));
+                $strategy = $this->getElevationCorrectionStrategyFromRequest($request->query->get('strategy'), $geotiff, $geonames, $googleMaps);
 
-                if ($routeAdapter->correctElevation($this->get('Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection'), $strategy)) {
-                    $this->addFlash('success', $translator->trans('Elevation data has been corrected.'));
+                if ($routeAdapter->correctElevation($elevationCorrection, $strategy)) {
+                    $this->addFlash('success', $this->translator->trans('Elevation data has been corrected.'));
                     $success = true;
                 }
             }
@@ -172,7 +192,7 @@ class EditController extends Controller
         if ($success) {
             $this->adjustAndSaveRouteAndActivityForElevationCorrection($activity);
         } else {
-            $this->addFlash('error', $translator->trans('Elevation data could not be retrieved.'));
+            $this->addFlash('error', $this->translator->trans('Elevation data could not be retrieved.'));
         }
 
         return $this->render('util/flashmessages_only.html.twig', [
@@ -183,7 +203,7 @@ class EditController extends Controller
 
     protected function adjustAndSaveRouteAndActivityForElevationCorrection(Training $activity)
     {
-        $configuration = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($activity->getAccount())->getActivityView();
+        $configuration = $this->configurationManager->getList($activity->getAccount())->getActivityView();
 
         $activity->getRoute()->getAdapter()->calculateElevation(
             $configuration->getElevationCalculationMethod(),
@@ -194,24 +214,24 @@ class EditController extends Controller
         $activityAdapter->useElevationFromRoute();
         $activityAdapter->calculateClimbScore();
 
-        $this->getTrainingRepository()->save($activity);
+        $this->trainingRepository->save($activity);
 
-        $this->get('Runalyze\Bundle\CoreBundle\Services\LegacyCache')->clearActivityCache($activity);
-        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_TRAINING_AND_DATA_BROWSER);
+        $this->legacyCache->clearActivityCache($activity);
+        $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_TRAINING_AND_DATA_BROWSER);
     }
 
     /**
      * @param $string
      * @return null|\Runalyze\Service\ElevationCorrection\Strategy\StrategyInterface
      */
-    protected function getElevationCorrectionStrategyFromRequest($string)
+    protected function getElevationCorrectionStrategyFromRequest($string, GeoTiff $geoTiff, Geonames $geoNames, GoogleMaps $googleMaps)
     {
         if ('GeoTIFF' == $string) {
-            return $this->get('Runalyze\Service\ElevationCorrection\Strategy\GeoTiff');
+            return $geoTiff;
         } elseif ('Geonames' == $string) {
-            return $this->get('Runalyze\Service\ElevationCorrection\Strategy\Geonames');
+            return $geoNames;
         } elseif ('GoogleMaps' == $string) {
-            return $this->get('Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps');
+            return $googleMaps;
         }
 
         return null;

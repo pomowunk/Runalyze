@@ -12,7 +12,7 @@ use Runalyze\Profile\View\DataBrowserRowProfile;
  * Type
  *
  * @ORM\Table(name="type")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\TypeRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\TypeRepository")
  */
 class Type implements IdentifiableEntityInterface, NamedEntityInterface, AccountRelatedEntityInterface
 {

@@ -3,6 +3,8 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal\Service;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast;
 use Runalyze\Parser\Activity\Common\Data\WeatherData;
 use Runalyze\Profile\Weather\Source\SourceInterface;
 use Runalyze\Profile\Weather\Source\WeatherSourceProfile;
@@ -12,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/_internal/service/weather")
@@ -22,11 +25,16 @@ class WeatherController extends Controller
      * @Route("", name="internal-service-weather")
      * @Security("has_role('ROLE_USER')")
      */
-    public function fetchWeatherDataAction(Request $request, Account $account)
+    public function fetchWeatherDataAction(
+        Request $request,
+        Account $account,
+        WeatherForecast $weatherForecast,
+        ConfigurationManager $configurationManager,
+        TranslatorInterface $translator)
     {
-        $location = $this->getLocationForRequest($request, $account);
+        $location = $this->getLocationForRequest($request, $account, $configurationManager);
 
-        $weather = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast')->loadForecast($location) ?: new WeatherData();
+        $weather = $weatherForecast->loadForecast($location) ?: new WeatherData();
 
         /** @var SourceInterface|null $source */
         $source = $weather->Source ? WeatherSourceProfile::get($weather->Source) : null;
@@ -41,7 +49,7 @@ class WeatherController extends Controller
             ],
             'source' => [
                 'id' => $weather->Source,
-                'name' => null !== $source ? $source->getAttribution($this->get('translator.default')) : ''
+                'name' => null !== $source ? $source->getAttribution($translator) : ''
             ],
             'weatherid' => $weather->InternalConditionId,
             'temperature' => $weather->Temperature,
@@ -57,7 +65,10 @@ class WeatherController extends Controller
      * @param Account $account
      * @return Location
      */
-    private function getLocationForRequest(Request $request, Account $account)
+    private function getLocationForRequest(
+        Request $request,
+        Account $account,
+        ConfigurationManager $configurationManager)
     {
         $location = new Location();
 
@@ -74,7 +85,7 @@ class WeatherController extends Controller
         if ($request->query->has('city')) {
             $location->setLocationName($request->query->get('city'));
         } elseif (!$location->hasPosition()) {
-            $location->setLocationName($this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->get('activity-form.PLZ'));
+            $location->setLocationName($configurationManager->getList($account)->get('activity-form.PLZ'));
         }
 
         if ($request->query->has('time')) {

@@ -5,7 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Tests\Services\Configuration;
 use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Conf;
-use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
+use Runalyze\Bundle\CoreBundle\Repository\ConfRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 

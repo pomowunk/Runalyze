@@ -22,31 +22,64 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Bernard\Message\DefaultMessage;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Bernard\Message\PlainMessage;
+use Bernard\Producer;
+use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Availability;
+use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ToolsController extends Controller
 {
+    /** @var ConfigurationManager */
+    protected $configurationManager;
+
+    /** @var SportRepository */
+    protected $sportRepository;
+
+    /** @var TrainingRepository */
+    protected $trainingRepository;
+
+    /** @var int */
+    protected $posterStoragePeriod;
+
+    /** @var string */
+    protected $databasePrefix;
+
+    public function __construct(
+        ConfigurationManager $configurationManager,
+        SportRepository $sportRepository,
+        TrainingRepository $trainingRepository,
+        int $posterStoragePeriod,
+        string $databasePrefix)
+    {
+        $this->configurationManager = $configurationManager;
+        $this->sportRepository = $sportRepository;
+        $this->trainingRepository = $trainingRepository;
+        $this->posterStoragePeriod = $posterStoragePeriod;
+        $this->databasePrefix = $databasePrefix;
+    }
+
     /**
      * @Route("/my/tools/cleanup", name="tools-cleanup")
      * @Security("has_role('ROLE_USER')")
      */
-    public function cleanupAction(Request $request, Account $account)
+    public function cleanupAction(Request $request, Account $account, TokenStorageInterface $tokenStorage)
     {
-        $prefix = $this->getParameter('database_prefix');
-
         $defaultData = array();
         $form = $this->createForm(DatabaseCleanupType::class, $defaultData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && null !== $form->getData()['mode']) {
-            $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+            $Frontend = new \Frontend(true, $tokenStorage);
 
             if ('general' === $form->getData()['mode']) {
-                $job = new JobGeneral($form->getData(), \DB::getInstance(), $account->getId(), $prefix);
+                $job = new JobGeneral($form->getData(), \DB::getInstance(), $account->getId(), $this->databasePrefix);
             } else {
-                $job = new JobLoop($form->getData(), \DB::getInstance(), $account->getId(), $prefix);
+                $job = new JobLoop($form->getData(), \DB::getInstance(), $account->getId(), $this->databasePrefix);
             }
 
             $job->run();
@@ -67,8 +100,8 @@ class ToolsController extends Controller
      */
     public function tableVo2maxPaceAction()
     {
-        $config = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
-        $running = $this->getDoctrine()->getRepository('CoreBundle:Sport')->find($config->getGeneral()->getRunningSport());
+        $config = $this->configurationManager->getList();
+        $running = $this->sportRepository->find($config->getGeneral()->getRunningSport());
 
         return $this->render('tools/tables/vo2max_paces.html.twig', [
             'currentVo2max' => $config->getCurrentVO2maxShape(),
@@ -94,7 +127,7 @@ class ToolsController extends Controller
     public function tableVo2maxRaceResultAction()
     {
         return $this->render('tools/tables/vo2max.html.twig', [
-            'currentVo2max' => $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getCurrentVO2maxShape(),
+            'currentVo2max' => $this->configurationManager->getList()->getCurrentVO2maxShape(),
             'prognosis' => new VO2max(),
             'distances' => [1.0, 3.0, 5.0, 10.0, 21.1, 42.2, 50],
             'vo2maxValues' => range(30.0, 80.0)
@@ -105,11 +138,11 @@ class ToolsController extends Controller
      * @Route("/my/tools/vo2max-analysis", name="tools-vo2max-analysis")
      * @Security("has_role('ROLE_USER')")
      */
-    public function vo2maxAnalysisAction(Account $account)
+    public function vo2maxAnalysisAction(Account $account, TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $tokenStorage);
 
-        $configuration = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
+        $configuration = $this->configurationManager->getList();
         $correctionFactor = $configuration->getVO2maxCorrectionFactor();
 
         $analysisTable = new VO2maxAnalysis($configuration->getVO2max()->getLegacyCategory());
@@ -131,9 +164,7 @@ class ToolsController extends Controller
      */
     public function anovaAction(Request $request, Account $account)
     {
-        /** @var SportRepository */
-        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
-        $data = AnovaData::getDefault($sportRepository->findAllFor($account), []);
+        $data = AnovaData::getDefault($this->sportRepository->findAllFor($account), []);
 
         $form = $this->createForm(AnovaType::class, $data, [
             'action' => $this->generateUrl('tools-anova')
@@ -145,14 +176,14 @@ class ToolsController extends Controller
                 return new JsonResponse(['status' => 'There was a problem.']);
             }
 
-            $unitSystem = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getUnitSystem();
+            $unitSystem = $this->configurationManager->getList($account)->getUnitSystem();
             $query = new AnovaDataQuery($data);
             $query->loadAllGroups($this->getDoctrine()->getManager(), $account);
 
             return new JsonResponse([
                 'tickFormatter' => JavaScriptFormatter::getFormatter($query->getValueUnit($unitSystem)),
                 'groups' => $query->getResults(
-                    $this->getDoctrine()->getRepository('CoreBundle:Training'),
+                    $this->trainingRepository,
                     $account, $unitSystem
                 )
             ]);
@@ -169,9 +200,7 @@ class ToolsController extends Controller
      */
     public function trendAnalysisAction(Request $request, Account $account)
     {
-        /** @var SportRepository */
-        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
-        $data = TrendAnalysisData::getDefault($sportRepository->findAllFor($account), []);
+        $data = TrendAnalysisData::getDefault($this->sportRepository->findAllFor($account), []);
 
         $form = $this->createForm(TrendAnalysisType::class, $data, [
             'action' => $this->generateUrl('tools-trend-analysis')
@@ -183,13 +212,13 @@ class ToolsController extends Controller
                 return new JsonResponse(['status' => 'There was a problem.']);
             }
 
-            $unitSystem = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList($account)->getUnitSystem();
+            $unitSystem = $this->configurationManager->getList($account)->getUnitSystem();
             $query = new TrendAnalysisDataQuery($data);
 
             return new JsonResponse([
                 'tickFormatter' => JavaScriptFormatter::getFormatter($query->getValueUnit($unitSystem)),
                 'values' => $query->getResults(
-                    $this->getDoctrine()->getRepository('CoreBundle:Training'),
+                    $this->trainingRepository,
                     $account, $unitSystem
                 )
             ]);
@@ -204,7 +233,12 @@ class ToolsController extends Controller
      * @Route("/my/tools/poster", name="poster")
      * @Security("has_role('ROLE_USER')")
      */
-    public function posterAction(Request $request, Account $account)
+    public function posterAction(
+        Request $request,
+        Account $account,
+        TranslatorInterface $translator,
+        FileHandler $fileHandler,
+        Producer $producer)
     {
         $form = $this->createForm(PosterType::class, [
             'postertype' => ['heatmap'],
@@ -216,13 +250,11 @@ class ToolsController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $request->request->get($form->getName());
 
-            /** @var TrainingRepository */
-            $trainingRepository = $this->getDoctrine()->getRepository('CoreBundle:Training');
-            $numberOfActivities = $trainingRepository->getNumberOfActivitiesFor($account, (int)$formdata['year'], (int)$formdata['sport']);
+            $numberOfActivities = $this->trainingRepository->getNumberOfActivitiesFor($account, (int)$formdata['year'], (int)$formdata['sport']);
             if ($numberOfActivities <= 1) {
-                $this->addFlash('error', $this->get('translator')->trans('There are not enough activities to generate a poster. Please change your selection.'));
+                $this->addFlash('error', $translator->trans('There are not enough activities to generate a poster. Please change your selection.'));
             } else {
-                $message = new DefaultMessage('posterGenerator', array(
+                $message = new PlainMessage('posterGenerator', array(
                     'accountid' => $account->getId(),
                     'year' => $formdata['year'],
                     'types' => $formdata['postertype'],
@@ -234,19 +266,19 @@ class ToolsController extends Controller
                     'textColor' => $formdata['textColor'],
                     'raceColor' => $formdata['raceColor'],
                 ));
-                $this->get('bernard.producer')->produce($message);
+                $producer->produce($message);
 
                 return $this->render('tools/poster_success.html.twig', [
-                    'posterStoragePeriod' => $this->getParameter('poster_storage_period'),
-                    'listing' => $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler')->getFileList($account)
+                    'posterStoragePeriod' => $this->posterStoragePeriod,
+                    'listing' => $fileHandler->getFileList($account)
                 ]);
             }
         }
 
         return $this->render('tools/poster.html.twig', [
             'form' => $form->createView(),
-            'posterStoragePeriod' => $this->getParameter('poster_storage_period'),
-            'listing' => $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler')->getFileList($account)
+            'posterStoragePeriod' => $this->posterStoragePeriod,
+            'listing' => $fileHandler->getFileList($account)
         ]);
     }
 
@@ -254,19 +286,19 @@ class ToolsController extends Controller
      * @Route("/my/tools/poster/{name}", name="poster-download", requirements={"name": ".+"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function posterDownloadAction(Account $account, $name)
+    public function posterDownloadAction(Account $account, $name, FileHandler $fileHandler)
     {
-        return $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler')->getPosterDownloadResponse($account, $name);
+        return $fileHandler->getPosterDownloadResponse($account, $name);
     }
 
     /**
      * @Route("/my/tools", name="tools")
      * @Security("has_role('ROLE_USER')")
      */
-    public function overviewAction()
+    public function overviewAction(Availability $availability)
     {
         return $this->render('tools/tools_list.html.twig', [
-            'posterAvailable' => $this->get('Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Availability')->isAvailable()
+            'posterAvailable' => $availability->isAvailable()
         ]);
     }
 }

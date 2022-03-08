@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Services\Configuration;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
+use Runalyze\Bundle\CoreBundle\Repository\ConfRepository;
 
 class ConfigurationUpdater
 {

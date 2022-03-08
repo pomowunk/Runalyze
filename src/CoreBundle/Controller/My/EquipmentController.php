@@ -4,16 +4,18 @@ namespace Runalyze\Bundle\CoreBundle\Controller\My;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
 use Runalyze\Bundle\CoreBundle\Form;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/my/equipment")
@@ -21,36 +23,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class EquipmentController extends Controller
 {
-    /**
-     * @return EquipmentRepository
-     */
-    protected function getEquipmentRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Equipment');
-    }
+    /** @var AutomaticReloadFlagSetter */
+    protected $automaticReloadFlagSetter;
 
-    /**
-     * @return EquipmentTypeRepository
-     */
-    protected function getEquipmentTypeRepository()
+    /** @var EquipmentRepository */
+    protected $equipmentRepository;
+
+    /** @var EquipmentTypeRepository */
+    protected $equipmentTypeRepository;
+
+    public function __construct(
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter,
+        EquipmentRepository $equipmentRepository,
+        EquipmentTypeRepository $equipmentTypeRepository)
     {
-        return $this->getDoctrine()->getRepository('CoreBundle:EquipmentType');
+        $this->automaticReloadFlagSetter = $automaticReloadFlagSetter;
+        $this->equipmentRepository = $equipmentRepository;
+        $this->equipmentTypeRepository = $equipmentTypeRepository;
     }
 
     /**
      * @Route("/category/{typeid}/table", name="equipment-category-table", requirements={"typeid" = "\d+"})
      */
-    public function categoryTableAction($typeid, Account $account)
+    public function categoryTableAction($typeid, Account $account, ConfigurationManager $configurationManager)
     {
-        /** @var EquipmentType $equipmentType */
-        $equipmentType = $this->getEquipmentTypeRepository()->findOneBy(['id' => $typeid, 'account' => $account->getId()]);
-        $equipmentStatistics = $this->getEquipmentRepository()->getStatisticsForType($typeid, $account);
+        $equipmentType = $this->equipmentTypeRepository->findOneBy(['id' => $typeid, 'account' => $account->getId()]);
+        $equipmentStatistics = $this->equipmentRepository->getStatisticsForType($typeid, $account);
 
         if (null === $equipmentType) {
             throw $this->createAccessDeniedException();
         }
 
-        $unitSystem = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getUnitSystem();
+        $unitSystem = $configurationManager->getList()->getUnitSystem();
 
         if (1 == $equipmentType->getSport()->count()) {
             $unitSystem->setPaceUnitFromSport($equipmentType->getSport()->first());
@@ -70,7 +74,7 @@ class EquipmentController extends Controller
     public function overviewAction(Account $account)
     {
         return $this->render('my/equipment/overview.html.twig', [
-            'equipmentTypes' => $this->getEquipmentTypeRepository()->findAllFor($account)
+            'equipmentTypes' => $this->equipmentTypeRepository->findAllFor($account)
         ]);
     }
 
@@ -89,8 +93,8 @@ class EquipmentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getEquipmentTypeRepository()->save($equipmentType);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->equipmentTypeRepository->save($equipmentType);
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipmentType->getId()
@@ -123,8 +127,8 @@ class EquipmentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getEquipmentTypeRepository()->save($equipmentType);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->equipmentTypeRepository->save($equipmentType);
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipmentType->getId()
@@ -133,7 +137,7 @@ class EquipmentController extends Controller
 
         return $this->render('my/equipment/form-category.html.twig', [
             'form' => $form->createView(),
-            'equipment' => $this->getEquipmentRepository()->findByTypeId($equipmentType->getId(), $account)
+            'equipment' => $this->equipmentRepository->findByTypeId($equipmentType->getId(), $account)
         ]);
     }
 
@@ -141,10 +145,14 @@ class EquipmentController extends Controller
      * @Route("/category/{id}/delete", name="equipment-category-delete")
      * @ParamConverter("equipmentType", class="CoreBundle:EquipmentType")
      */
-    public function deleteEquipmentTypeAction(Request $request, EquipmentType $equipmentType, Account $account)
+    public function deleteEquipmentTypeAction(
+        Request $request,
+        EquipmentType $equipmentType,
+        Account $account,
+        TranslatorInterface $translator)
     {
         if (!$this->isCsrfTokenValid('deleteEquipmentCategory', $request->get('t'))) {
-            $this->addFlash('error', $this->get('translator')->trans('Invalid token.'));
+            $this->addFlash('error', $translator->trans('Invalid token.'));
 
             return $this->redirectToRoute('equipment-overview');
         }
@@ -153,10 +161,10 @@ class EquipmentController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $this->getEquipmentTypeRepository()->remove($equipmentType);
+        $this->equipmentTypeRepository->remove($equipmentType);
 
-        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
-        $this->addFlash('success', $this->get('translator')->trans('The category has been deleted.'));
+        $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+        $this->addFlash('success', $translator->trans('The category has been deleted.'));
 
         return $this->redirectToRoute('equipment-overview');
     }
@@ -178,8 +186,8 @@ class EquipmentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getEquipmentRepository()->save($equipment);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->equipmentRepository->save($equipment);
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipment->getType()->getId()
@@ -212,8 +220,8 @@ class EquipmentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getEquipmentRepository()->save($equipment);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+            $this->equipmentRepository->save($equipment);
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipment->getType()->getId()
@@ -230,10 +238,14 @@ class EquipmentController extends Controller
      * @Route("/{id}/delete", name="equipment-delete")
      * @ParamConverter("equipment", class="CoreBundle:Equipment")
      */
-    public function deleteEquipmentAction(Request $request, Equipment $equipment, Account $account)
+    public function deleteEquipmentAction(
+        Request $request,
+        Equipment $equipment,
+        Account $account,
+        TranslatorInterface $translator)
     {
         if (!$this->isCsrfTokenValid('deleteEquipment', $request->get('t'))) {
-            $this->addFlash('error', $this->get('translator')->trans('Invalid token.'));
+            $this->addFlash('error', $translator->trans('Invalid token.'));
 
             return $this->redirectToRoute('equipment-category-edit', [
                 'id' => $equipment->getType()->getId()
@@ -244,9 +256,9 @@ class EquipmentController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $this->getEquipmentRepository()->remove($equipment);
-        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
-        $this->addFlash('success', $this->get('translator')->trans('The object has been deleted.'));
+        $this->equipmentRepository->remove($equipment);
+        $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
+        $this->addFlash('success', $translator->trans('The object has been deleted.'));
 
         return $this->redirectToRoute('equipment-category-edit', [
             'id' => $equipment->getType()->getId()

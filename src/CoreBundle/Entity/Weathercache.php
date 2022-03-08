@@ -10,7 +10,7 @@ use Runalyze\Service\WeatherForecast\Location;
  * Weathercache
  *
  * @ORM\Table(name="weathercache")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\WeathercacheRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\WeathercacheRepository")
  */
 class Weathercache
 {

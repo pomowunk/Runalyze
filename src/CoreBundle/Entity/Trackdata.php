@@ -12,7 +12,7 @@ use Runalyze\Model;
  * Trackdata
  *
  * @ORM\Table(name="trackdata")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\TrackdataRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\TrackdataRepository")
  */
 class Trackdata implements AccountRelatedEntityInterface
 {

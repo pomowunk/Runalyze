@@ -4,14 +4,14 @@ namespace Runalyze\Bundle\CoreBundle\EventListener;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Parameter\Application\Timezone;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserTimezoneListener
 {
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     private $token;
 
-    public function __construct(TokenStorage $token)
+    public function __construct(TokenStorageInterface $token)
     {
         $this->token = $token;
     }

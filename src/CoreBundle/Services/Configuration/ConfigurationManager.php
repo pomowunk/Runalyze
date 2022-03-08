@@ -4,9 +4,9 @@ namespace Runalyze\Bundle\CoreBundle\Services\Configuration;
 
 use Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\ConfRepository;
+use Runalyze\Bundle\CoreBundle\Repository\ConfRepository;
 use Runalyze\Bundle\CoreBundle\Services\TokenStorageAwareServiceTrait;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ConfigurationManager
 {
@@ -21,7 +21,9 @@ class ConfigurationManager
     /** @var null|RunalyzeConfigurationList */
     protected $DefaultList = null;
 
-    public function __construct(ConfRepository $repository, TokenStorage $tokenStorage)
+    public function __construct(
+        ConfRepository $repository,
+        TokenStorageInterface $tokenStorage)
     {
         $this->Repository = $repository;
         $this->TokenStorage = $tokenStorage;

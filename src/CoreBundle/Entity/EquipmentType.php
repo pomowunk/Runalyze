@@ -10,7 +10,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * EquipmentType
  *
  * @ORM\Table(name="equipment_type")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\EquipmentTypeRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository")
  */
 class EquipmentType implements AccountRelatedEntityInterface
 {

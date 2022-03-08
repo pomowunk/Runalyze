@@ -4,7 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\EventListener;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Language;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
@@ -13,20 +13,14 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
  */
 class UserLocaleListener
 {
-    /** @var \Symfony\Component\HttpFoundation\Session\Session */
+    /** @var SessionInterface */
     private $session;
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
-     */
-    public function __construct(Session $session)
+    public function __construct(SessionInterface $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * @param \Symfony\Component\Security\Http\Event\InteractiveLoginEvent $event
-     */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
         /** @var Account */

@@ -5,24 +5,26 @@ namespace Runalyze\Bundle\CoreBundle\Controller\Internal;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\MessageFactory;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/_internal/notifications")
  */
 class NotificationsController extends Controller
 {
-    /**
-     * @return \Runalyze\Bundle\CoreBundle\Entity\NotificationRepository
-     */
-    protected function getNotificationsRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Notification');
+    /** @var NotificationRepository */
+    protected $notificationRepository;
+
+    public function __construct(NotificationRepository $notificationRepository) {
+        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -31,7 +33,7 @@ class NotificationsController extends Controller
      */
     public function readAllNotificationsAction(Account $account)
     {
-        $this->getNotificationsRepository()->markAllAsRead($account);
+        $this->notificationRepository->markAllAsRead($account);
 
         return new JsonResponse();
     }
@@ -47,7 +49,7 @@ class NotificationsController extends Controller
             return $this->createAccessDeniedException();
         }
 
-        $this->getNotificationsRepository()->markAsRead($notification);
+        $this->notificationRepository->markAsRead($notification);
 
         return new JsonResponse();
     }
@@ -56,13 +58,11 @@ class NotificationsController extends Controller
      * @Route("", name="internal-notifications-list")
      * @Security("has_role('ROLE_USER')")
      */
-    public function newNotificationsAction(Request $request, Account $account)
+    public function newNotificationsAction(Request $request, Account $account, RouterInterface $router, TranslatorInterface $translator)
     {
         $messages = [];
         $factory = new MessageFactory();
-        $router = $this->get('router');
-        $translator = $this->get('translator.default');
-        $notifications = $this->getNotificationsRepository()->findAllSince($request->query->getInt('last_request'), $account);
+        $notifications = $this->notificationRepository->findAllSince($request->query->getInt('last_request'), $account);
 
         foreach ($notifications as $notification) {
             $message = $factory->getMessage($notification);

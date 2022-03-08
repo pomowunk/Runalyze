@@ -3,14 +3,14 @@
 namespace Runalyze\Bundle\CoreBundle\Form;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 trait TokenStorageAwareTypeTrait
 {
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
-    public function __construct(TokenStorage $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->TokenStorage = $tokenStorage;
     }

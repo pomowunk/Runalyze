@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AccountValueResolver implements ArgumentValueResolverInterface
 {
@@ -45,7 +46,7 @@ class AccountValueResolver implements ArgumentValueResolverInterface
     /**
      * @param Request $request
      * @param ArgumentMetadata $argument
-     * @return \Generator
+     * @return Account|UserInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {

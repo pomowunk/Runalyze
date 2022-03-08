@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Poster;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;

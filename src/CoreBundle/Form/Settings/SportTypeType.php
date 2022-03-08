@@ -11,14 +11,14 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Runalyze\Profile\View\DataBrowserRowProfile;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SportTypeType extends AbstractType
 {
-    /** @var TokenStorage */
+    /** @var TokenStorageInterface */
     protected $TokenStorage;
 
-    public function __construct(TokenStorage $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->TokenStorage = $tokenStorage;
     }

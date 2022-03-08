@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Controller\Settings;
 
-use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Dataset;
 use Runalyze\Bundle\CoreBundle\Form\Settings\ChangeMailType;
 use Runalyze\Bundle\CoreBundle\Form\Settings\ChangePasswordType;
@@ -13,34 +13,39 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\DatasetRepository;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentRepository;
-use Runalyze\Bundle\CoreBundle\Entity\TagRepository;
+use Runalyze\Bundle\CoreBundle\Repository\DatasetRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Runalyze\Bundle\CoreBundle\Form\Settings\AccountType;
+use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Configuration;
 use Runalyze\Language;
 use Runalyze\Dataset as RunalyzeDataset;
 use Runalyze\Dataset\Keys;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class SettingsController extends Controller
 {
     /**
-     * @return AccountRepository
-     */
-    protected function getAccountRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Account');
-    }
-
-    /**
      * @Route("/settings/account", name="settings-account")
      * @Security("has_role('ROLE_USER')")
      */
-    public function settingsAccountAction(Request $request, Account $account)
+    public function settingsAccountAction(
+        Request $request,
+        Account $account,
+        TokenStorageInterface $tokenStorage,
+        TranslatorInterface $translator,
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter,
+        AccountRepository $accountRepository,
+        SessionInterface $session)
     {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $tokenStorage);
 
         $currentLanguage = $account->getLanguage();
         $form = $this->createForm(AccountType::class, $account, array(
@@ -53,23 +58,23 @@ class SettingsController extends Controller
 
             if (isset($formdata['reset_configuration'])) {
                 Configuration::resetConfiguration($account->getId());
-                $this->addFlash('success', $this->get('translator')->trans('Default configuration has been restored!'));
+                $this->addFlash('success', $translator->trans('Default configuration has been restored!'));
 
-                $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+                $automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
             }
 
             if (isset($formdata['language'])) {
-                $this->get('session')->set('_locale', $formdata['language']);
+                $session->set('_locale', $formdata['language']);
                 Language::setLanguage($formdata['language']);
 
                 if ($account->getLanguage() != $currentLanguage) {
-                    $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_PAGE);
+                    $automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PAGE);
                 }
             }
 
-            $this->getAccountRepository()->save($account);
+            $accountRepository->save($account);
 
-            $this->addFlash('success', $this->get('translator')->trans('Your changes have been saved!'));
+            $this->addFlash('success', $translator->trans('Your changes have been saved!'));
         }
 
         return $this->render('settings/account.html.twig', [
@@ -82,7 +87,12 @@ class SettingsController extends Controller
      * @Route("/settings/password", name="settings-password")
      * @Security("has_role('ROLE_USER')")
      */
-    public function settingsPasswordAction(Request $request, Account $account)
+    public function settingsPasswordAction(
+        Request $request,
+        Account $account,
+        EncoderFactoryInterface $encoderFactory,
+        AccountRepository $accountRepository,
+        TranslatorInterface $translator)
     {
         $form = $this->createForm(ChangePasswordType::class, $account, array(
             'action' => $this->generateUrl('settings-password')
@@ -92,10 +102,10 @@ class SettingsController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $request->request->get($form->getName());
             $account->setPlainPassword($formdata['plainPassword']['first']);
-            $this->encodePassword($account);
-            $this->getAccountRepository()->save($account);
+            $this->encodePassword($account, $encoderFactory);
+            $accountRepository->save($account);
 
-            $this->addFlash('success', $this->get('translator')->trans('Your new password has been saved!'));
+            $this->addFlash('success', $translator->trans('Your new password has been saved!'));
         }
 
         return $this->render('settings/account-password.html.twig', [
@@ -107,7 +117,11 @@ class SettingsController extends Controller
      * @Route("/settings/mail", name="settings-mail")
      * @Security("has_role('ROLE_USER')")
      */
-    public function settingsMailAction(Request $request, Account $account)
+    public function settingsMailAction(
+        Request $request,
+        Account $account,
+        AccountRepository $accountRepository,
+        TranslatorInterface $translator)
     {
         $form = $this->createForm(ChangeMailType::class, $account, array(
             'action' => $this->generateUrl('settings-mail')
@@ -115,8 +129,8 @@ class SettingsController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getAccountRepository()->save($account);
-            $this->addFlash('success', $this->get('translator')->trans('Your mail address has been changed!'));
+            $accountRepository->save($account);
+            $this->addFlash('success', $translator->trans('Your mail address has been changed!'));
         }
 
         return $this->render('settings/account-mail.html.twig', [
@@ -124,9 +138,11 @@ class SettingsController extends Controller
         ]);
     }
 
-    protected function encodePassword(Account $account)
+    protected function encodePassword(
+        Account $account,
+        EncoderFactoryInterface $encoderFactory)
     {
-        $encoder = $this->container->get('security.encoder_factory')->getEncoder($account);
+        $encoder = $encoderFactory->getEncoder($account);
 
         $account->setNewSalt();
         $account->setPassword($encoder->encodePassword($account->getPlainPassword(), $account->getSalt()));
@@ -137,12 +153,15 @@ class SettingsController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function windowDeleteAction(Account $account)
+    public function windowDeleteAction(
+        Account $account,
+        AccountRepository $accountRepository,
+        AccountMailer $accountMailer)
     {
         $account->setNewDeletionHash();
-        $this->getAccountRepository()->save($account);
+        $accountRepository->save($account);
 
-        $this->get('Runalyze\Bundle\CoreBundle\Services\AccountMailer')->sendDeleteLinkTo($account);
+        $accountMailer->sendDeleteLinkTo($account);
 
         return $this->render('settings/account-delete.html.twig');
     }
@@ -152,12 +171,14 @@ class SettingsController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @Method("POST")
      */
-    public function datasetPostAction(Account $account, Request $request)
+    public function datasetPostAction(
+        Account $account,
+        Request $request,
+        DatasetRepository $datasetRepository,
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter)
     {
         $em = $this->getDoctrine()->getManager();
 
-        /** @var DatasetRepository */
-        $datasetRepository = $em->getRepository('CoreBundle:Dataset');
         $dataset = $datasetRepository->findAllFor($account);
 
         $form = $this->createForm(DatasetCollectionType::class, ['datasets' => $dataset]);
@@ -171,7 +192,7 @@ class SettingsController extends Controller
             }
 
             $em->flush();
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_DATA_BROWSER);
+            $automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_DATA_BROWSER);
         }
 
         return $this->redirectToRoute('settings-dataset');
@@ -182,13 +203,17 @@ class SettingsController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @Method("GET")
      */
-    public function datasetAction(Account $account, Request $request)
+    public function datasetAction(
+        Account $account,
+        Request $request,
+        TokenStorageInterface $tokenStorage,
+        DatasetRepository $datasetRepository,
+        ConfigurationManager $configurationManager,
+        TagRepository $tagRepository,
+        EquipmentRepository $equipmentRepository)
     {
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $tokenStorage);
 
-        /** @var DatasetRepository */
-        $datasetRepository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Dataset');
-        /** @var Dataset[] $dataset */
         $dataset = $datasetRepository->findAllFor($account);
         $missingKeyObjects = array_flip(RunalyzeDataset\Keys::getEnum());
         $numberOfExistingKeys = count($dataset);
@@ -212,16 +237,20 @@ class SettingsController extends Controller
             'missingKeys' => $missingKeyObjects,
             'defaultConfiguration' => (new DefaultConfiguration)->data(),
             'numberOfExistingKeys' => $numberOfExistingKeys,
-            'context' => new RunalyzeDataset\Context($this->getExampleTraining($account), $account->getId())
+            'context' => new RunalyzeDataset\Context($this->getExampleTraining($account, $configurationManager, $tagRepository, $equipmentRepository), $account->getId())
         ]);
     }
 
     /**
      * @return array
      */
-    protected function getExampleTraining(Account $account)
+    protected function getExampleTraining(
+        Account $account,
+        ConfigurationManager $configurationManager,
+        TagRepository $tagRepository,
+        EquipmentRepository $equipmentRepository)
     {
-        $configuration = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList();
+        $configuration = $configurationManager->getList();
 
         return array(
             'id' => 0,
@@ -284,18 +313,18 @@ class SettingsController extends Controller
             'avg_footstrike_type_right' => 13,
             'avg_pronation_excursion_left' => -9.4,
             'avg_pronation_excursion_right' => -15.0,
-            Keys\Tags::CONCAT_TAGIDS_KEY => $this->exampleTagID($account),
-            Keys\CompleteEquipment::CONCAT_EQUIPMENT_KEY => $this->exampleEquipmentIDs($account)
+            Keys\Tags::CONCAT_TAGIDS_KEY => $this->exampleTagID($account, $tagRepository),
+            Keys\CompleteEquipment::CONCAT_EQUIPMENT_KEY => $this->exampleEquipmentIDs($account, $equipmentRepository)
         );
     }
 
     /**
      * @return string
      */
-    protected function exampleTagID(Account $account)
+    protected function exampleTagID(
+        Account $account,
+        TagRepository $tagRepository)
     {
-        /** @var TagRepository */
-        $tagRepository = $this->getDoctrine()->getRepository('CoreBundle:Tag');
         $tag = $tagRepository->findBy(['account' => $account->getId()], null, 1);
 
         if ($tag) {
@@ -308,11 +337,11 @@ class SettingsController extends Controller
     /**
      * @return string
      */
-    protected function exampleEquipmentIDs(Account $account)
+    protected function exampleEquipmentIDs(
+        Account $account,
+        EquipmentRepository $equipmentRepository)
     {
         $ids = [];
-        /** @var EquipmentRepository */
-        $equipmentRepository = $this->getDoctrine()->getRepository('CoreBundle:Equipment');
         $equipment = $equipmentRepository->findBy(['account' => $account->getId()], null, 2);
 
         if (is_array($equipment)) {

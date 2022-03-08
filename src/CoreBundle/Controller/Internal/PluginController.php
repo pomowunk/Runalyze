@@ -5,23 +5,29 @@ namespace Runalyze\Bundle\CoreBundle\Controller\Internal;
 use Runalyze\Bundle\CoreBundle\Controller\AbstractPluginsAwareController;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Plugin;
+use Runalyze\Bundle\CoreBundle\Repository\PluginRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @Route("/_internal/plugin")
  */
 class PluginController extends AbstractPluginsAwareController
 {
-    /**
-     * @return \Runalyze\Bundle\CoreBundle\Entity\PluginRepository
-     */
-    protected function getPluginRepository()
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var PluginRepository */
+    protected $pluginRepository;
+
+    public function __construct(TokenStorageInterface $tokenStorage, PluginRepository $pluginRepository)
     {
-        return $this->getDoctrine()->getRepository('CoreBundle:Plugin');
+        $this->tokenStorage = $tokenStorage;
+        $this->pluginRepository = $pluginRepository;
     }
 
     /**
@@ -36,10 +42,10 @@ class PluginController extends AbstractPluginsAwareController
         }
 
         // Only as long as PluginFactory's cache is in use
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $this->tokenStorage);
         \PluginFactory::clearCache();
 
-        $this->getPluginRepository()->toggleHidden($plugin);
+        $this->pluginRepository->toggleHidden($plugin);
 
         return new JsonResponse();
     }
@@ -56,10 +62,10 @@ class PluginController extends AbstractPluginsAwareController
         }
 
         // Only as long as PluginFactory's cache is in use
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $this->tokenStorage);
         \PluginFactory::clearCache();
 
-        $this->getPluginRepository()->movePanelUp($plugin);
+        $this->pluginRepository->movePanelUp($plugin);
 
         return new JsonResponse();
     }
@@ -76,10 +82,10 @@ class PluginController extends AbstractPluginsAwareController
         }
 
         // Only as long as PluginFactory's cache is in use
-        $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(true, $this->tokenStorage);
         \PluginFactory::clearCache();
 
-        $this->getPluginRepository()->movePanelDown($plugin);
+        $this->pluginRepository->movePanelDown($plugin);
 
         return new JsonResponse();
     }
@@ -90,7 +96,7 @@ class PluginController extends AbstractPluginsAwareController
      */
     public function contentPanelsAction(Request $request, Account $account)
     {
-        $Frontend = new \Frontend(false, $this->get('security.token_storage'));
+        $Frontend = new \Frontend(false, $this->tokenStorage);
 
         return $this->getResponseForAllEnabledPanels($request, $account);
     }

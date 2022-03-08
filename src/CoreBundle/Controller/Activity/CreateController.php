@@ -7,11 +7,19 @@ use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityPreview;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Entity\Route as EntityRoute;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Form\ActivityType;
 use Runalyze\Bundle\CoreBundle\Form\MultiImporterType;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter;
+use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter;
+use Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder;
+use Runalyze\Bundle\CoreBundle\Services\Import\FileImporter;
 use Runalyze\Bundle\CoreBundle\Services\Import\FileImportResultCollection;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Util\LocalTime;
@@ -22,15 +30,67 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CreateController extends Controller
 {
-    /**
-     * @return \Runalyze\Bundle\CoreBundle\Entity\TrainingRepository
-     */
-    protected function getTrainingRepository()
+    /** @var ActivityDataContainerToActivityContextConverter */
+    protected $activityConverter;
+
+    /** @var ActivityCache */
+    protected $activityCache;
+
+    /** @var ActivityContextAdapterFactory */
+    protected $activityContextAdapterFactory;
+
+    /** @var AutomaticReloadFlagSetter */
+    protected $automaticReloadFlagSetter;
+
+    /** @var ConfigurationManager */
+    protected $configurationManager;
+
+    /** @var DuplicateFinder */
+    protected $duplicateFinder;
+
+    /** @var SportRepository */
+    protected $sportRepository;
+
+    /** @var TrainingRepository */
+    protected $trainingRepository;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var string */
+    protected $importDirectory;
+
+    /** @var string */
+    protected $garminApiKey;
+
+    public function __construct(
+        ActivityDataContainerToActivityContextConverter $converter,
+        ActivityCache $cache,
+        ActivityContextAdapterFactory $contextAdapterFactory,
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter,
+        ConfigurationManager $configurationManager,
+        DuplicateFinder $duplicateFinder,
+        SportRepository $sportRepository,
+        TrainingRepository $trainingRepository,
+        TranslatorInterface $translator,
+        string $dataDirectory,
+        string $garminApiKey)
     {
-        return $this->getDoctrine()->getRepository('CoreBundle:Training');
+        $this->activityConverter = $converter;
+        $this->activityContextAdapterFactory = $contextAdapterFactory;
+        $this->activityCache = $cache;
+        $this->automaticReloadFlagSetter = $automaticReloadFlagSetter;
+        $this->configurationManager = $configurationManager;
+        $this->duplicateFinder = $duplicateFinder;
+        $this->sportRepository = $sportRepository;
+        $this->trainingRepository = $trainingRepository;
+        $this->translator = $translator;
+        $this->importDirectory = $dataDirectory.'/import/';
+        $this->garminApiKey = $garminApiKey;
     }
 
     /**
@@ -39,7 +99,7 @@ class CreateController extends Controller
      */
     public function createAction()
     {
-        $defaultUploadMode = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getActivityForm()->get('TRAINING_CREATE_MODE');
+        $defaultUploadMode = $this->configurationManager->getList()->getActivityForm()->get('TRAINING_CREATE_MODE');
 
         if ('garmin' == $defaultUploadMode) {
             return $this->forward('CoreBundle:Activity\Create:communicator');
@@ -66,7 +126,7 @@ class CreateController extends Controller
     public function communicatorIFrameAction()
     {
         return $this->render('import/garmin_communicator.html.twig', [
-            'garminAPIKey' => $this->getParameter('garmin_api_key'),
+            'garminAPIKey' => $this->garminApiKey,
         ]);
     }
 
@@ -74,25 +134,22 @@ class CreateController extends Controller
      * @Route("/activity/upload", name="activity-upload")
      * @Security("has_role('ROLE_USER')")
      */
-    public function uploadAction(Request $request, Account $account)
+    public function uploadAction(Request $request, Account $account, FileImporter $fileImporter, ActivityDataContainerFilter $filter)
     {
         $importResult = null;
-        $importDir = $this->getParameter('data_directory').'/import/';
 
         if ($request->query->has('file')) {
-            $importer = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\FileImporter');
-            $importResult = $importer->importSingleFile($importDir.$request->query->get('file'));
+            $importResult = $fileImporter->importSingleFile($this->importDirectory.$request->query->get('file'));
         } elseif ($request->query->has('files')) {
-            $importer = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\FileImporter');
-            $importResult = $importer->importFiles(
-                array_map(function ($file) use ($importDir) {
-                    return $importDir.$file;
+            $importResult = $fileImporter->importFiles(
+                array_map(function ($file) {
+                    return $this->importDirectory.$file;
                 }, explode(';', $request->query->get('files')))
             );
         }
 
         if (null !== $importResult) {
-            return $this->getResponseForImportResults($importResult, $account, $request);
+            return $this->getResponseForImportResults($importResult, $account, $request, $filter);
         }
 
         return $this->getUploadFormResponse();
@@ -104,9 +161,9 @@ class CreateController extends Controller
      * @param Request $request
      * @return Response
      */
-    protected function getResponseForImportResults(FileImportResultCollection $results, Account $account, Request $request)
+    protected function getResponseForImportResults(FileImportResultCollection $results, Account $account, Request $request, ActivityDataContainerFilter $filter)
     {
-        $results->completeAndFilterResults($this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter'));
+        $results->completeAndFilterResults($filter);
 
         foreach ($results as $result) {
             if ($result->isFailed()) {
@@ -118,7 +175,7 @@ class CreateController extends Controller
 
         if (1 == $numActivities) {
             return $this->getResponseForNewSingleActivity(
-                $this->containerToActivity($results[0]->getContainer()[0], $account),
+                $this->activityConverter->getActivityFor($results[0]->getContainer()[0], $account),
                 $request
             );
         } elseif (1 < $numActivities) {
@@ -141,20 +198,8 @@ class CreateController extends Controller
         ]);
     }
 
-    /**
-     * @param ActivityDataContainer $container
-     * @param Account $account
-     * @return Training
-     */
-    protected function containerToActivity(ActivityDataContainer $container, Account $account)
-    {
-        return $this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter')->getActivityFor($container, $account);
-    }
-
     protected function getResponseForMultipleNewActivities(FileImportResultCollection $results, Request $request, Account $account)
     {
-        $cache = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache');
-        $duplicateFinder = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder');
         $activityHashes = [];
         $errors = [];
         $previews = [];
@@ -164,9 +209,9 @@ class CreateController extends Controller
                 $errors[] = sprintf('%s: %s', $result->getOriginalFileName(), $result->getException()->getMessage());
             } else {
                 foreach ($result->getContainer() as $container) {
-                    $activity = $this->containerToActivity($container, $account);
-                    $previews[] = new ActivityPreview($activity, $duplicateFinder->isPossibleDuplicate($activity));
-                    $activityHashes[] = $cache->save($activity);
+                    $activity = $this->activityConverter->getActivityFor($container, $account);
+                    $previews[] = new ActivityPreview($activity, $this->duplicateFinder->isPossibleDuplicate($activity));
+                    $activityHashes[] = $this->activityCache->save($activity);
                 }
             }
         }
@@ -201,30 +246,27 @@ class CreateController extends Controller
                 return $this->redirectToRoute('activity-upload');
             }
 
-            $repository = $this->getTrainingRepository();
-            $cache = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache');
-            $contextAdapterFactory = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory');
-            $defaultLocation = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getActivityForm()->getDefaultLocationForWeatherForecast();
+            $defaultLocation = $this->configurationManager->getList()->getActivityForm()->getDefaultLocationForWeatherForecast();
             $activityIds = [];
 
             foreach ($hashes as $hash) {
-                $activity = $cache->get($hash, null, true);
+                $activity = $this->activityCache->get($hash, null, true);
                 $activity->setAccount($account);
                 $activity->getAdapter()->setAccountToRelatedEntities();
 
                 $context = new ActivityContext($activity, null, null, $activity->getRoute());
-                $contextAdapterFactory->getAdapterFor($context)->guessWeatherConditions($defaultLocation);
+                $this->activityContextAdapterFactory->getAdapterFor($context)->guessWeatherConditions($defaultLocation);
 
-                $activityIds[] = $repository->save($activity, true);
+                $activityIds[] = $this->trainingRepository->save($activity, true);
             }
 
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
 
             if ($form->get('show_multi_editor')->getData()) {
                 return $this->redirectToRoute('multi-editor', ['ids' => implode(',', $activityIds)]);
             }
 
-            $this->addFlash('success', $this->get('translator')->trans('The activities have been successfully imported.'));
+            $this->addFlash('success', $this->translator->trans('The activities have been successfully imported.'));
 
             return $this->render('util/close_overlay.html.twig');
         }
@@ -261,27 +303,27 @@ class CreateController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleSubmitOfNewActivityForm($activity, $form);
 
-            $this->addFlash('success', $this->get('translator')->trans('The activity has been successfully created.'));
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $this->addFlash('success', $this->translator->trans('The activity has been successfully created.'));
+            $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
 
             return $this->render('util/close_overlay.html.twig');
         } elseif (!$form->isSubmitted() && $setCache) {
             $form->get('temporaryHash')->setData(
-                $this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache')->save($activity)
+                $this->activityCache->save($activity)
             );
         }
 
         return $this->render('activity/form.html.twig', [
             'form' => $form->createView(),
             'isNew' => true,
-            'isDuplicate' => $this->get('Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder')->isPossibleDuplicate($activity),
+            'isDuplicate' => $this->duplicateFinder->isPossibleDuplicate($activity),
             'isPowerLocked' => null !== $activity->isPowerCalculated()
         ]);
     }
 
     protected function handleSubmitOfNewActivityForm(Training $newActivity, Form $form)
     {
-        $activity = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache')->get($form->get('temporaryHash')->getData(), $newActivity, true);
+        $activity = $this->activityCache->get($form->get('temporaryHash')->getData(), $newActivity, true);
 
         if ('' != $activity->getRouteName()) {
             if (!$activity->hasRoute()) {
@@ -300,7 +342,7 @@ class CreateController extends Controller
             $activity->setRaceresult($raceResult);
         }
 
-        $this->getTrainingRepository()->save($activity);
+        $this->trainingRepository->save($activity);
     }
 
     /**
@@ -329,10 +371,9 @@ class CreateController extends Controller
      */
     protected function getMainSport(Account $account)
     {
-        $mainSportId = $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getGeneral()->getMainSport();
+        $mainSportId = $this->configurationManager->getList()->getGeneral()->getMainSport();
         /** @var SportRepository */
-        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
-        $sport = $sportRepository->findThisOrAny($mainSportId, $account);
+        $sport = $this->sportRepository->findThisOrAny($mainSportId, $account);
 
         if (null === $sport || $account->getId() != $sport->getAccount()->getId()) {
             return null;

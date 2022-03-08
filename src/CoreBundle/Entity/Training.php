@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Training
  *
  * @ORM\Table(name="training", indexes={@ORM\Index(name="time", columns={"accountid", "time"}), @ORM\Index(name="sportid", columns={"accountid", "sportid"}), @ORM\Index(name="typeid", columns={"accountid", "typeid"})})
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\TrainingRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\TrainingRepository")
  * @ORM\EntityListeners({"Runalyze\Bundle\CoreBundle\EntityListener\ActivityListener"})
  * @ORM\HasLifecycleCallbacks()
  */

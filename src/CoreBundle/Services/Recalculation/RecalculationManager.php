@@ -3,8 +3,8 @@
 namespace Runalyze\Bundle\CoreBundle\Services\Recalculation;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\MarathonShapeCalculation;
@@ -35,17 +35,29 @@ class RecalculationManager
     /** @var RaceresultRepository */
     protected $RaceResultRepository;
 
+    /** @var VO2maxShapeCalculation */
+    protected $vo2maxShapeCalculation;
+
+    /** @var MarathonShapeCalculation */
+    protected $marathonShapeCalculation;
+
     public function __construct(
         ConfigurationManager $manager,
         ConfigurationUpdater $updater,
         TrainingRepository $trainingRepository,
-        RaceresultRepository $raceresultRepository
+        RaceresultRepository $raceresultRepository,
+        VO2maxShapeCalculation $vo2maxShapeCalculation,
+        MarathonShapeCalculation $marathonShapeCalculation,
+        VO2maxCorrectionFactorCalculation $vo2maxCorrectionFactorCalculation
     )
     {
         $this->ConfigurationManager = $manager;
         $this->ConfigurationUpdater = $updater;
         $this->TrainingRepository = $trainingRepository;
         $this->RaceResultRepository = $raceresultRepository;
+        $this->vo2maxShapeCalculation = $vo2maxShapeCalculation;
+        $this->marathonShapeCalculation = $marathonShapeCalculation;
+        $this->vo2maxCorrectionFactorCalculation = $vo2maxCorrectionFactorCalculation;
         $this->Tasks = new RecalculationTaskCollection();
     }
 
@@ -125,8 +137,7 @@ class RecalculationManager
     public function scheduleEffectiveVO2maxCorrectionFactorCalculation(Account $account)
     {
         if (!$this->isTaskScheduled($account, VO2maxCorrectionFactorCalculation::class)) {
-            $task = new VO2maxCorrectionFactorCalculation($this->RaceResultRepository, $this->ConfigurationManager, $this->ConfigurationUpdater);
-            $this->scheduleTaskForAccount($account, $task);
+            $this->scheduleTaskForAccount($account, $this->vo2maxCorrectionFactorCalculation);
         }
     }
 
@@ -138,8 +149,7 @@ class RecalculationManager
                 unset($this->AccountRelatedTaskNames[$account->getId()][VO2maxShapeCalculation::class]);
             }
 
-            $task = new VO2maxShapeCalculation($this->TrainingRepository, $this->ConfigurationManager, $this->ConfigurationUpdater);
-            $this->scheduleTaskForAccount($account, $task);
+            $this->scheduleTaskForAccount($account, $this->vo2maxShapeCalculation);
 
             $this->scheduleMarathonShapeCalculation($account);
         }
@@ -148,8 +158,7 @@ class RecalculationManager
     public function scheduleMarathonShapeCalculation(Account $account)
     {
         if (!$this->isTaskScheduled($account, MarathonShapeCalculation::class)) {
-            $task = new MarathonShapeCalculation($this->TrainingRepository, $this->ConfigurationManager, $this->ConfigurationUpdater);
-            $this->scheduleTaskForAccount($account, $task);
+            $this->scheduleTaskForAccount($account, $this->marathonShapeCalculation);
         }
     }
 

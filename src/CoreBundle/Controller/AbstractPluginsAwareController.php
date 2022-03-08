@@ -5,7 +5,10 @@ namespace Runalyze\Bundle\CoreBundle\Controller;
 use Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats\AnalysisData;
 use Runalyze\Bundle\CoreBundle\Component\Statistics\MonthlyStats\AnalysisSelection;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
 use Runalyze\Bundle\CoreBundle\Twig\ValueExtension;
 use Runalyze\Util\LocalTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,6 +18,30 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractPluginsAwareController extends Controller
 {
     protected $IsShowingAllPanels = false;
+    
+    /** @var SportRepository */
+    protected $sportRepository;
+
+    /** @var ConfigurationManager */
+    protected $configurationManager;
+
+    /** @var SportSelectionFactory */
+    protected $sportSelectionFactory;
+
+    /** @var TrainingRepository */
+    protected $trainingRepository;
+
+    public function __construct(
+        SportRepository $sportRepository,
+        ConfigurationManager $configurationManager,
+        SportSelectionFactory $sportSelectionFactory,
+        TrainingRepository $trainingRepository)
+    {
+        $this->sportRepository = $sportRepository;
+        $this->configurationManager = $configurationManager;
+        $this->sportSelectionFactory = $sportSelectionFactory;
+        $this->trainingRepository = $trainingRepository;
+    }
 
     /**
      * @param Request $request
@@ -84,17 +111,15 @@ abstract class AbstractPluginsAwareController extends Controller
      */
     protected function getResponseForSportsPanel(Account $account, \Plugin $plugin)
     {
-        /** @var SportRepository */
-        $sportRepository = $this->getDoctrine()->getRepository('CoreBundle:Sport');
         $today = (new LocalTime())->setTime(0, 0, 0);
 
         return $this->render('my/panels/sports/base.html.twig', [
             'isHidden' => $plugin->isHidden(),
             'pluginId' => $plugin->id(),
-            'weekStatistics' => $sportRepository->getSportStatisticsSince($today->weekstart(), $account),
-            'monthStatistics' => $sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), (int)$today->format('m'), 1)->getTimestamp(), $account),
-            'yearStatistics' => $sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), 1, 1)->getTimestamp(), $account),
-            'totalStatistics' => $sportRepository->getSportStatisticsSince(null, $account)
+            'weekStatistics' => $this->sportRepository->getSportStatisticsSince($today->weekstart(), $account),
+            'monthStatistics' => $this->sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), (int)$today->format('m'), 1)->getTimestamp(), $account),
+            'yearStatistics' => $this->sportRepository->getSportStatisticsSince($today->setDate((int)$today->format('Y'), 1, 1)->getTimestamp(), $account),
+            'totalStatistics' => $this->sportRepository->getSportStatisticsSince(null, $account)
         ]);
     }
 
@@ -106,8 +131,8 @@ abstract class AbstractPluginsAwareController extends Controller
      */
     protected function getResponseForMonthlyStats(Request $request, Account $account, $pluginId)
     {
-        $valueExtension = new ValueExtension($this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager'));
-        $sportSelection = $this->get('Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory')->getSelection($request->get('sport'));
+        $valueExtension = new ValueExtension($this->configurationManager);
+        $sportSelection = $this->sportSelectionFactory->getSelection($request->get('sport'));
         $analysisList = new AnalysisSelection($request->get('dat'));
 
         if (!$analysisList->hasCurrentKey()) {
@@ -117,7 +142,7 @@ abstract class AbstractPluginsAwareController extends Controller
         $analysisData = new AnalysisData(
             $sportSelection,
             $analysisList,
-            $this->get('doctrine')->getRepository('CoreBundle:Training'),
+            $this->trainingRepository,
             $account
         );
         $analysisData->setValueExtension($valueExtension);

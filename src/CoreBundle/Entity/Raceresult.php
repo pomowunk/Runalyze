@@ -9,7 +9,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * Raceresult
  *
  * @ORM\Table(name="raceresult")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\RaceresultRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository")
  * @ORM\EntityListeners({"Runalyze\Bundle\CoreBundle\EntityListener\RaceResultListener"})
  */
 class Raceresult implements AccountRelatedEntityInterface

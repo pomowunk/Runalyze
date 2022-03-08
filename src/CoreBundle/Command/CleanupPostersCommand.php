@@ -6,10 +6,32 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class CleanupPostersCommand extends ContainerAwareCommand
 {
+    /** @var Filesystem */
+    protected $filesystem;
+
+    /** @var string */
+    protected $dataDirectory;
+
+    /** @var string */
+    protected $posterStoragePeriod;
+
+    public function __construct(
+        Filesystem $filesystem,
+        string $dataDirectory,
+        string $posterStoragePeriod)
+    {
+        $this->filesystem = $filesystem;
+        $this->dataDirectory = $dataDirectory;
+        $this->posterStoragePeriod = $posterStoragePeriod;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -27,23 +49,20 @@ class CleanupPostersCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $days = $input->getArgument('days') ?: $this->getContainer()->getParameter('poster_storage_period');
+        $days = $input->getArgument('days') ?: $this->posterStoragePeriod;
         $output->writeln(sprintf('<info>Delete all posters older than %s days</info>', $days));
-
-        /** @var $filesystem \Symfony\Component\Filesystem\Filesystem */
-        $filesystem = $this->getContainer()->get('filesystem');
 
         $finder = new Finder();
         $finder
             ->files()
             ->name('*.png')
-            ->in($this->getContainer()->getParameter('data_directory').'/poster/')
+            ->in($this->dataDirectory.'/poster/')
             ->date(sprintf('until %s days ago', $days));
 
         $deleted= $finder->count();
 
         foreach ($finder as $file) {
-            $filesystem->remove($file);
+            $this->filesystem->remove($file);
         }
 
         $output->writeln(sprintf('<info>%s deleted posters</info>', $deleted));

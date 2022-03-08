@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
-use Bernard\Message\DefaultMessage;
+use Bernard\Message\PlainMessage;
 use Psr\Log\LoggerInterface;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\PosterGeneratedMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\AbstractSvgToPngConverter;
@@ -10,13 +10,11 @@ use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\InkscapeConverter
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\RsvgConverter;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GeneratePoster;
-use Runalyze\Bundle\CoreBundle\Entity\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Entity\NotificationRepository;
-use Runalyze\Bundle\CoreBundle\Entity\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -47,28 +45,15 @@ class PosterReceiver
     /** @var AccountMailer */
     protected $AccountMailer;
 
-    /** @var $Datadir */
-    protected $DataDir;
+    /** @var string */
+    protected $dataDirectory;
 
-    /** @var $RsvgPath */
+    /** @var string */
     protected $RsvgPath;
 
-    /** @var $InkscapePath */
+    /** @var string */
     protected $InkscapePath;
 
-    /**
-     * @param LoggerInterface $logger
-     * @param AccountRepository $accountRepository
-     * @param SportRepository $sportRepository
-     * @param NotificationRepository $notificationRepository
-     * @param GenerateJsonData $generateJsonData
-     * @param GeneratePoster $generatePoster
-     * @param FileHandler $posterFileHandler
-     * @param AccountMailer $accountMailer
-     * @param string $dataDir
-     * @param string $rsvgPath
-     * @param string $inkscapePath
-     */
     public function __construct(
         LoggerInterface $logger,
         AccountRepository $accountRepository,
@@ -78,10 +63,9 @@ class PosterReceiver
         GeneratePoster $generatePoster,
         FileHandler $posterFileHandler,
         AccountMailer $accountMailer,
-        $dataDir,
-        $rsvgPath,
-        $inkscapePath
-    )
+        string $dataDirectory,
+        string $rsvgPath,
+        string $inkscapePath)
     {
         $this->Logger = $logger;
         $this->AccountRepository = $accountRepository;
@@ -91,17 +75,14 @@ class PosterReceiver
         $this->GeneratePoster = $generatePoster;
         $this->FileHandler = $posterFileHandler;
         $this->AccountMailer = $accountMailer;
-        $this->DataDir = $dataDir;
+        $this->dataDirectory = $dataDirectory;
         $this->RsvgPath = $rsvgPath;
         $this->InkscapePath = $inkscapePath;
     }
 
-    public function posterGenerator(DefaultMessage $message)
+    public function posterGenerator(PlainMessage $message)
     {
-        /** @var Account|null $account */
         $account = $this->AccountRepository->find((int)$message->get('accountid'));
-
-        /** @var Sport|null $sport */
         $sport = $this->SportRepository->find((int)$message->get('sportid'));
 
         if (null === $account || null === $sport || $sport->getAccount()->getId() != $account->getId()) {
@@ -201,6 +182,6 @@ class PosterReceiver
      */
     protected function exportDirectory()
     {
-        return $this->DataDir.'/poster/';
+        return $this->dataDirectory.'/poster/';
     }
 }

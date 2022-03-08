@@ -3,6 +3,8 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal;
 
 use Runalyze\Bundle\CoreBundle\Entity\Training;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -15,7 +17,7 @@ class ActivityMatcherController extends Controller
      * @Route("/_internal/activity/matcher", name="internal-activity-matcher")
      * @Security("has_role('ROLE_USER')")
      */
-    public function ajaxActivityMatcher()
+    public function ajaxActivityMatcher(DuplicateFinder $duplicateFinder, ConfigurationManager $configurationManager)
     {
         $ids = [];
         $matches = [];
@@ -27,14 +29,13 @@ class ActivityMatcherController extends Controller
             }
         }
 
-        $duplicateFinder = $this->get('Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder');
         $ignoredActivityIds = array_map(function($v) {
             try {
                 return (int)floor($this->parserStrtotime($v) / 60.0) * 60.0;
             } catch (\Exception $e) {
                 return 0;
             }
-        }, $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getActivityForm()->getIgnoredActivityIds());
+        }, $configurationManager->getList()->getActivityForm()->getIgnoredActivityIds());
 
         foreach ($ids as $id) {
             try {

@@ -9,12 +9,12 @@ use Runalyze\DEM\Reader;
 class GeoTiffReader extends Reader
 {
     /**
-     * @param string $directory
+     * @param string $srtmDirectory
      */
-    public function __construct($directory)
+    public function __construct($srtmDirectory)
     {
         parent::__construct(
-            new SRTM4Provider($directory, new BilinearInterpolation())
+            new SRTM4Provider($srtmDirectory, new BilinearInterpolation())
         );
     }
 }

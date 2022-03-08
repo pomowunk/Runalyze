@@ -3,10 +3,11 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\My\Tools;
 
 use Bernard\Message\PlainMessage;
+use Bernard\Producer;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\RouteRepository;
-use Runalyze\Bundle\CoreBundle\Entity\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Repository\RouteRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Form\Tools\BackupExportType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,18 +18,19 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**
  * @Route("/my/tools/backup")
  */
 class BackupToolController extends Controller
 {
-    /**
-     * @return string
-     */
-    protected function getPathToBackupFiles()
+    /** @var string */
+    protected $backupPath;
+
+    public function __construct(string $dataDirectory)
     {
-        return $this->getParameter('data_directory').'/backup-tool/backup/';
+        $this->backupPath = $dataDirectory.'/backup-tool/backup/';
     }
 
     /**
@@ -43,7 +45,7 @@ class BackupToolController extends Controller
     {
         $fileSystem = new Filesystem();
         $fileHandler = new FilenameHandler($account->getId());
-        $filePath = $this->getPathToBackupFiles();
+        $filePath = $this->backupPath;
         $internalFilename = $fileHandler->transformPublicToInternalFilename($filename);
 
         if (!$fileSystem->exists($filePath.$internalFilename)) {
@@ -69,13 +71,15 @@ class BackupToolController extends Controller
      * @Route("", name="tools-backup")
      * @Security("has_role('ROLE_USER')")
      */
-    public function backupAction(Account $account, Request $request)
+    public function backupAction(
+        Account $account,
+        Request $request,
+        RouteRepository $routeRepository,
+        TrainingRepository $trainingRepository,
+        Producer $producer,
+        FlashBagInterface $flashBag)
     {
-        /** @var RouteRepository */
-        $routeRepository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Route');
         $lockedRoutes = $routeRepository->accountHasLockedRoutes($account);
-        /** @var TrainingRepository */
-        $trainingRepository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Training');
         $hasLockedTrainings = $trainingRepository->accountHasLockedTrainings($account);
 
         $form = $this->createForm(BackupExportType::class);
@@ -83,18 +87,18 @@ class BackupToolController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $request->request->get($form->getName());
-            $this->get('bernard.producer')->produce(new PlainMessage('userBackup', [
+            $producer->produce(new PlainMessage('userBackup', [
                 'accountid' => $account->getId(),
                 'export-type' => $formdata['fileFormat']
             ]));
-            $this->get('session')->getFlashBag()->set('runalyze.backupjob.created', true);
+            $flashBag->set('runalyze.backupjob.created', true);
         }
 
         $fileHandler = new FilenameHandler($account->getId());
         $finder = new Finder();
         $finder
             ->files()
-            ->in($this->getPathToBackupFiles())
+            ->in($this->backupPath)
             ->filter(function(\SplFileInfo $file) use ($fileHandler) {
                 return $fileHandler->validateInternalFilename($file->getFilename());
             })
@@ -103,7 +107,7 @@ class BackupToolController extends Controller
         });
 
         return $this->render('tools/backup/export.html.twig', [
-            'backupjobWasCreated' => $this->get('session')->getFlashBag()->get('runalyze.backupjob.created'),
+            'backupjobWasCreated' => $flashBag->get('runalyze.backupjob.created'),
             'hasFiles' => $finder->count() > 0,
             'files' => $finder->getIterator(),
             'hasLocks' => ($lockedRoutes || $hasLockedTrainings),

@@ -11,7 +11,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
  * Notification
  *
  * @ORM\Table(name="notification")
- * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Entity\NotificationRepository")
+ * @ORM\Entity(repositoryClass="Runalyze\Bundle\CoreBundle\Repository\NotificationRepository")
  */
 class Notification implements AccountRelatedEntityInterface
 {

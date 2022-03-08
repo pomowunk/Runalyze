@@ -4,9 +4,10 @@ namespace Runalyze\Bundle\CoreBundle\Controller\My;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\User;
-use Runalyze\Bundle\CoreBundle\Entity\UserRepository;
+use Runalyze\Bundle\CoreBundle\Repository\UserRepository;
 use Runalyze\Bundle\CoreBundle\Form\BodyValuesType;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Metrics\HeartRate\Unit\BeatsPerMinute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,23 +23,18 @@ use Symfony\Component\Form\Extension\Core\Type\PercentType;
 class BodyValuesController extends Controller
 {
     /**
-     * @return UserRepository
-     */
-    protected function getUserRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:User');
-    }
-
-    /**
      * @Route("/add", name="body-values-add")
      * @param Request $request
      * @param Account $account
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction(Request $request, Account $account)
+    public function addAction(
+        Request $request,
+        Account $account,
+        UserRepository $userRepository,
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter)
     {
-        /** @var User $oldUser */
-        $oldUser = $this->getUserRepository()->getLatestEntryFor($account);
+        $oldUser = $userRepository->getLatestEntryFor($account);
         $user = $oldUser ? $oldUser->cloneObjectForForm() : (new User())->setAccount($account)->setCurrentTimestamp();
 
         $form = $this->createForm(BodyValuesType::class, $user,[
@@ -47,8 +43,8 @@ class BodyValuesController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getUserRepository()->save($user, $account);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $userRepository->save($user, $account);
+            $automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
             return $this->redirectToRoute('body-values-table');
         }
 
@@ -66,7 +62,12 @@ class BodyValuesController extends Controller
      * @param Account $account
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, User $user, Account $account)
+    public function editAction(
+        Request $request,
+        User $user,
+        Account $account,
+        UserRepository $userRepository,
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter)
     {
         if ($user->getAccount()->getId() != $account->getId()) {
             throw $this->createNotFoundException();
@@ -78,8 +79,8 @@ class BodyValuesController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getUserRepository()->save($user, $account);
-            $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+            $userRepository->save($user, $account);
+            $automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
             return $this->redirectToRoute('body-values-table');
         }
 
@@ -95,14 +96,18 @@ class BodyValuesController extends Controller
      * @param Account $account
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(User $user, Account $account)
+    public function deleteAction(
+        User $user,
+        Account $account,
+        UserRepository $userRepository,
+        AutomaticReloadFlagSetter $automaticReloadFlagSetter)
     {
         if ($user->getAccount()->getId() != $account->getId()) {
             throw $this->createNotFoundException('No user entry found.');
         }
 
-        $this->getUserRepository()->remove($user);
-        $this->get('Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter')->set(AutomaticReloadFlagSetter::FLAG_ALL);
+        $userRepository->remove($user);
+        $automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_ALL);
 
         return $this->redirectToRoute('body-values-table');
     }
@@ -111,11 +116,14 @@ class BodyValuesController extends Controller
      * @Route("/table", name="body-values-table")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function tableAction(Account $account)
+    public function tableAction(
+        Account $account,
+        UserRepository $userRepository,
+        ConfigurationManager $configurationManager)
     {
         return $this->render('my/body-values/table.html.twig', [
-            'values' => $this->getUserRepository()->findAllFor($account),
-            'unitWeight' => $this->get('Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager')->getList()->getUnitSystem()->getWeightUnit(),
+            'values' => $userRepository->findAllFor($account),
+            'unitWeight' => $configurationManager->getList()->getUnitSystem()->getWeightUnit(),
             'unitHeartRate' => new BeatsPerMinute()
         ]);
     }
