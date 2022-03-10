@@ -66,6 +66,7 @@ class FitActivity extends AbstractSingleParser
         'ContactTime' => ['stance_time', 10],
         'RP_Power' => ['power', 1],
         'RS_Power_AVG' => ['power', 1],
+	'0_0_Power' => ['power', 1],
         'RS_ContactTime_L' => ['stance_time_left', 10],
         'RS_ContactTime_R' => ['stance_time_right', 10],
         'RS_Impact_GS_L' => ['impact_gs_left', 1],
