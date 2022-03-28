@@ -15,17 +15,18 @@ use Runalyze\Service\WeatherForecast\Location;
 
 /**
  * Weather-strategy for using meteostat.net.
- * meteostat.net is a free cost service for get historical weather data.
+ * meteostat.net is a free cost service for get historical weather data and is now hosted via rapidapi.com.
+ * It loads for the GPS lat/lon the hourly (historical) weather-data and fetch the timed data in the mid of the activity.
  * #TSC
  *
- * @see https://meteostat.net
+ * @see https://meteostat.net / https://dev.meteostat.net/api/point/hourly.html#endpoint
  */
 class MeteostatNet implements StrategyInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     /** @var string */
-    const URL = 'https://api.meteostat.net/v2/point/hourly';
+    const URL = 'https://meteostat.p.rapidapi.com/point/hourly';
 
     /** @var string */
     protected $ApiKey;
@@ -79,7 +80,7 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
         $data->Source = WeatherSourceProfile::METEOSTAT_NET;
 
         if (isset($currently['temp'])) {
-            $data->Temperature = $currently['temp'];
+            $data->Temperature = (int)round($currently['temp']);
         }
 
         if (isset($currently['pres'])) {
@@ -91,7 +92,7 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
         }
 
         if (isset($currently['wspd'])) {
-            $data->WindSpeed = $currently['wspd'];
+            $data->WindSpeed = (int)round($currently['wspd']);
         }
 
         if (isset($currently['wdir'])) {
@@ -131,9 +132,13 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
 
         try {
 
-            $request = $this->HttpClient->request('GET', $url, [ 'headers' => [ 'x-api-key' => '52tFldIqvPnoDWT6JV7XPPXsjBcQnbhY' ]]);
-            $repCont = $request->getBody()->getContents();
-            $this->logger->info(sprintf('result-raw >> %s', $repCont));
+            $response = $this->HttpClient->request('GET', $url, [ 'headers' => [
+                'x-rapidapi-host' => 'meteostat.p.rapidapi.com',
+                'x-rapidapi-key' => $this->ApiKey ]]);
+            $statusCode = $response->getStatusCode();
+
+            $repCont = $response->getBody()->getContents();
+            $this->logger->info(sprintf('status-code >> %d result-raw >> %s', $statusCode, $repCont));
 
             $result = json_decode($repCont, true);
 
@@ -158,7 +163,7 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
 
         // the array is sorted from 00:00 to 23:00; do the reverse and select the right
         foreach (array_reverse($data) as &$value) {
-            if(isset($value['time_local']) && $ymdhms >= $value['time_local']) {
+            if(isset($value['time']) && $ymdhms >= $value['time']) {
                 $this->logger->debug(sprintf('found data elements for time %s >%s<', $ymdhms, print_r($value, true)));
                 return $value;
             }
