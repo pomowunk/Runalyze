@@ -599,6 +599,22 @@ class TrainingRepository extends ServiceEntityRepository
             $this->_em->remove($activity->getRoute());
         }
 
+        if (null !== $activity->getTrackdata()) {
+            $this->_em->remove($activity->getTrackdata());
+        }
+
+        if (null !== $activity->getSwimdata()) {
+            $this->_em->remove($activity->getSwimdata());
+        }
+
+        if (null !== $activity->getHrv()) {
+            $this->_em->remove($activity->getHrv());
+        }
+
+        if (null !== $activity->getRaceresult()) {
+            $this->_em->remove($activity->getRaceresult());
+        }
+
         $this->_em->remove($activity);
         $this->_em->flush();
     }
