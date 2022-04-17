@@ -9,11 +9,12 @@
 # - Message informations start with a '='
 # - all values follow line per line as '--- key=binary=value'
 
-use File::Basename;
+use File::Spec;
 
 my $includePath;
 BEGIN {
-  $includePath = dirname(__FILE__);
+  $script_dir = (File::Spec->splitpath(File::Spec->rel2abs(__FILE__)))[1];
+  $includePath = File::Spec->catdir(($script_dir, '..', '..', 'vendor', 'mrihtar', 'garmin-fit'));
 }
 use lib $includePath;
 

@@ -6,35 +6,36 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.3",
-        "symfony/symfony": "^3.4.49",
-        "sensio/framework-extra-bundle": "^3.0",
-        "twig/twig": "^1.44.5",
-        "monolog/monolog": "^1.20",
-        "nojacko/email-validator": "~1.0",
-        "league/geotools": "^0.7.0",
-        "swiftmailer/swiftmailer": "@stable",
-        "phpfastcache/phpfastcache": "^8.0",
-        "doctrine/doctrine-bundle": "1.12.*",
-        "doctrine/orm": "^2.5",
-        "symfony/monolog-bundle": "3.1.*",
-        "doctrine/doctrine-migrations-bundle": "^1.0",
-        "doctrine/doctrine-cache-bundle": "^1.3",
-        "runalyze/dem-reader": "^1.0",
-        "runalyze/age-grade": "^1.2",
-        "symfony/swiftmailer-bundle": "2.6.*",
         "beberlei/doctrineextensions": "~1.0",
-        "jms/translation-bundle": "^1.6",
         "bernard/bernard-bundle": "^2.0",
-        "runalyze/gpxtrackposter": "^1.0.0",
-        "runalyze/glossary": "dev-master",
-        "snc/redis-bundle": "2.*",
-        "predis/predis": "^1.0",
+        "doctrine/doctrine-bundle": "1.12.*",
+        "doctrine/doctrine-cache-bundle": "^1.3",
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "doctrine/orm": "^2.5",
         "guzzlehttp/guzzle": "^6.0",
-        "runalyze/common": "dev-master",
-        "runalyze/devices": "dev-master",
+        "jms/translation-bundle": "^1.6",
+        "league/geotools": "^0.7.0",
+        "monolog/monolog": "^1.20",
+        "mrihtar/garmin-fit": "^0.33",
+        "nojacko/email-validator": "~1.0",
         "p3k/picofeed": "@stable",
-        "runalyze/translations": "dev-master"
+        "php": ">=7.3",
+        "phpfastcache/phpfastcache": "^8.0",
+        "predis/predis": "^1.0",
+        "runalyze/age-grade": "^1.2",
+        "runalyze/common": "dev-master",
+        "runalyze/dem-reader": "^1.0",
+        "runalyze/devices": "dev-master",
+        "runalyze/glossary": "dev-master",
+        "runalyze/gpxtrackposter": "^1.0.0",
+        "runalyze/translations": "dev-master",
+        "sensio/framework-extra-bundle": "^3.0",
+        "snc/redis-bundle": "2.*",
+        "swiftmailer/swiftmailer": "@stable",
+        "symfony/monolog-bundle": "3.1.*",
+        "symfony/swiftmailer-bundle": "2.6.*",
+        "symfony/symfony": "^3.4.49",
+        "twig/twig": "^1.44.5"
     },
     "autoload": {
         "files": ["src/functions.php", "app/AppKernel.php"],
@@ -49,12 +50,12 @@
         }
     },
     "require-dev": {
-        "runalyze/playground": "dev-master",
+        "doctrine/data-fixtures": "^1.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "liip/functional-test-bundle": "^4.3",
         "liip/test-fixtures-bundle": "^1.12",
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "phpunit/phpunit": "^9.0",
-        "doctrine/data-fixtures": "^1.3",
+        "runalyze/playground": "dev-master",
         "symfony/phpunit-bridge": "^6.0"
     },
     "repositories": [
@@ -69,5 +70,18 @@
                     "reference": "8b337ca89e1cf9552dc0bbb08d8b81bc55335c45"
                 }
             }
-        }]
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "mrihtar/garmin-fit",
+                "version": "0.33.0",
+                "source": {
+                    "url": "https://github.com/mrihtar/Garmin-FIT.git",
+                    "type": "git",
+                    "reference": "f6ecc545ffb18a1ac3047ec9803000a4a010c8da"
+                }
+            }
+        }
+    ]
 }

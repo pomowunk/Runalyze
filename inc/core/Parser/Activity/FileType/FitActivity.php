@@ -491,10 +491,16 @@ class FitActivity extends AbstractSingleParser
 
                     // TODO: this may need more device and firmware specific conditions
                     if (
+                        substr($creator, 0, 5) == 'fr245' ||
                         substr($creator, 0, 5) == 'fr630' ||
+                        substr($creator, 0, 5) == 'fr645' ||
                         substr($creator, 0, 7) == 'fr735xt' ||
+                        substr($creator, 0, 5) == 'fr745' ||
+                        substr($creator, 0, 5) == 'fr935' ||
+                        substr($creator, 0, 5) == 'fr945' ||
                         substr($creator, 0, 6) == 'fenix3' ||
-                        substr($creator, 0, 6) == 'fenix5'
+                        substr($creator, 0, 6) == 'fenix5' ||
+                        substr($creator, 0, 6) == 'fenix6'
                     ) {
                         if ((int)$this->Values['data'][1] >= 0 && (int)$this->Values['data'][1] <= 255) {
                             $this->Container->FitDetails->PerformanceCondition = (int)$this->Values['data'][1];
@@ -589,7 +595,9 @@ class FitActivity extends AbstractSingleParser
 
         $this->Container->ContinuousData->Latitude[] = isset($this->Values['position_lat']) ? substr($this->Values['position_lat'][1], 0, -4) : null;
         $this->Container->ContinuousData->Longitude[] = isset($this->Values['position_long']) ? substr($this->Values['position_long'][1], 0, -4) : null;
-        $this->Container->ContinuousData->Altitude[] = isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null;
+        $this->Container->ContinuousData->Altitude[] = isset($this->Values['enhanced_altitude']) && (int)$this->Values['enhanced_altitude'][0] != 0 ? substr($this->Values['enhanced_altitude'][1], 0, -4) : (
+            isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null
+        );
         $this->Container->ContinuousData->Distance[] = isset($this->Values['distance']) ? (int)$this->Values['distance'][0] / 1e5 : end($this->Container->ContinuousData->Distance);
         $this->Container->ContinuousData->HeartRate[] = isset($this->Values['heart_rate']) ? (int)$this->Values['heart_rate'][0] : null;
         $this->Container->ContinuousData->Cadence[] = isset($this->Values['cadence']) ? (int)$this->Values['cadence'][0] : null;
