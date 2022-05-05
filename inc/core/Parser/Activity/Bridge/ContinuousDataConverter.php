@@ -24,6 +24,8 @@ class ContinuousDataConverter
     {
         return new Trackdata\Entity([
             Trackdata\Entity::TIME => $this->Data->Time,
+            Trackdata\Entity::DISTANCE => $this->Data->Distance,
+            Trackdata\Entity::SPEED => $this->Data->Speed,
             Trackdata\Entity::HEARTRATE => $this->Data->HeartRate,
             Trackdata\Entity::CADENCE => $this->Data->Cadence,
             Trackdata\Entity::POWER => $this->Data->Power,

@@ -10,6 +10,9 @@ class ContinuousData
     /** @var array [km] */
     public $Distance = [];
 
+    /** @var float[] [m/s] */
+    public $Speed = [];
+
     /** @var array [°] */
     public $Latitude = [];
 
@@ -100,6 +103,7 @@ class ContinuousData
         return [
             'Time',
             'Distance',
+            'Speed',
             'Latitude',
             'Longitude',
             'Altitude',

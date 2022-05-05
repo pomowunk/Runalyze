@@ -284,6 +284,7 @@ class ActivityDataContainerToActivityContextConverter
         $trackData->setPauses($container->Pauses);
         $trackData->setTime($container->ContinuousData->Time ?: null);
         $trackData->setDistance($this->getRoundedContinuousDistanceData($container->ContinuousData->Distance));
+        $trackData->setSpeed($container->ContinuousData->Speed ?: null);
         $trackData->setHeartrate($container->ContinuousData->HeartRate ?: null);
         $trackData->setCadence($container->ContinuousData->Cadence ?: null);
         $trackData->setPower($container->ContinuousData->Power ?: null);

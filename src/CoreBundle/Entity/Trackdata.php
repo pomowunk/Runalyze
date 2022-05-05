@@ -31,6 +31,13 @@ class Trackdata implements AccountRelatedEntityInterface
     private $distance;
 
     /**
+     * @var array|null [km]
+     *
+     * @ORM\Column(name="speed", type="pipe_array", nullable=true)
+     */
+    private $speed;
+
+    /**
      * @var array|null [bpm]
      *
      * @ORM\Column(name="heartrate", type="pipe_array", nullable=true)
@@ -307,6 +314,34 @@ class Trackdata implements AccountRelatedEntityInterface
         }
 
         return end($this->distance);
+    }
+
+    /**
+     * @param array|null $speed [m/s]
+     *
+     * @return $this
+     */
+    public function setSpeed(array $speed = null)
+    {
+        $this->speed = $speed;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null [m/s]
+     */
+    public function getSpeed()
+    {
+        return $this->speed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSpeed()
+    {
+        return null !== $this->speed;
     }
 
     /**
@@ -940,6 +975,7 @@ class Trackdata implements AccountRelatedEntityInterface
         return (
             (null === $this->time && empty($this->time)) &&
             (null === $this->distance && empty($this->distance)) &&
+            (null === $this->speed && empty($this->speed)) &&
             (null === $this->heartrate && empty($this->heartrate)) &&
             (null === $this->cadence && empty($this->cadence)) &&
             (null === $this->power && empty($this->power)) &&
@@ -972,6 +1008,7 @@ class Trackdata implements AccountRelatedEntityInterface
             Model\Trackdata\Entity::ACTIVITYID => $this->activity->getId(),
             Model\Trackdata\Entity::TIME => $this->time,
             Model\Trackdata\Entity::DISTANCE => $this->distance,
+            Model\Trackdata\Entity::SPEED => $this->speed,
             Model\Trackdata\Entity::HEARTRATE => $this->heartrate,
             Model\Trackdata\Entity::CADENCE => $this->cadence,
             Model\Trackdata\Entity::POWER => $this->power,
@@ -1014,7 +1051,9 @@ class Trackdata implements AccountRelatedEntityInterface
      */
     public function getPace()
     {
-        if (false === $this->pace) {
+        if ($this->hasSpeed()){
+            $this->pace = array_map(fn($s): float => $s == 0.0 ? 0.0 : 1000.0 / $s, $this->speed);
+        } elseif (false === $this->pace) {
             $this->getAdapter()->calculatePace();
         }
 
@@ -1026,6 +1065,7 @@ class Trackdata implements AccountRelatedEntityInterface
      */
     public function setPace(array $pace = null)
     {
+        // TODO: Does it make sense to set the speed here?
         $this->pace = $pace;
     }
 
@@ -1034,7 +1074,7 @@ class Trackdata implements AccountRelatedEntityInterface
      */
     public function hasPace()
     {
-        return null !== $this->time && null !== $this->distance;
+        return $this->hasSpeed() || (null !== $this->time && null !== $this->distance);
     }
 
     /**

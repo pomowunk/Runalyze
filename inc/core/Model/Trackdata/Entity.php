@@ -39,6 +39,12 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 	const DISTANCE = 'distance';
 
 	/**
+	 * Key: speed
+	 * @var string
+	 */
+	const SPEED = 'speed';
+
+	/**
 	 * Key: pace - must be calculated (not in db!)
 	 * @var string
 	 */
@@ -297,6 +303,7 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 			self::ACTIVITYID,
 			self::TIME,
 			self::DISTANCE,
+			self::SPEED,
 			self::HEARTRATE,
 			self::CADENCE,
 			self::POWER,
@@ -352,6 +359,7 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 		switch ($key) {
 			case self::TIME:
 			case self::DISTANCE:
+			case self::SPEED:
 			case self::HEARTRATE:
 			case self::CADENCE:
 			case self::POWER:
@@ -483,6 +491,14 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 		/** @var float[] */
 		$distanceArray =& $this->Data[self::DISTANCE];
 		return empty($distanceArray) ? 0.0 : $distanceArray[$this->numberOfPoints-1];
+	}
+
+	/**
+	 * Get speed
+	 * @return array unit: [m/s]
+	 */
+	public function speed() {
+		return $this->Data[self::SPEED];
 	}
 
 	/**
@@ -725,10 +741,16 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 	 */
 	public function calculatePaceArray() {
 		if (!$this->has(self::PACE)) {
-			$PaceCalculator = new PaceCalculator($this);
-			$PaceCalculator->calculate();
+			if ($this->has(self::SPEED)) {
+				$this->set(self::PACE, array_map(
+					fn($s): float => $s == 0.0 ? 0.0 : 1000.0 / $s,
+					$this->get(self::SPEED)));
+			} else {
+				$PaceCalculator = new PaceCalculator($this);
+				$PaceCalculator->calculate();
 
-			$this->set(self::PACE, $PaceCalculator->result());
+				$this->set(self::PACE, $PaceCalculator->result());
+			}
 		}
 	}
 
