@@ -255,6 +255,7 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
     {
         $power = null;
         $rpm   = null;
+        $speed = null;
 
         if (!empty($point->Cadence)) {
             $rpm = (int)$point->Cadence;
@@ -269,28 +270,37 @@ class TcxActivity extends AbstractSingleParser implements PauseDetectionCapableP
                 $power = (int)$point->Extensions->TPX->Watts;
             }
 
-            $this->parsePowerFromExtensionValues($point->Extensions[0], 'ns2', $power, $rpm);
-            $this->parsePowerFromExtensionValues($point->Extensions[0], 'ns3', $power, $rpm);
+            if (isset($point->Extensions->TPX) && isset($point->Extensions->TPX->Speed)) {
+                $speed = (float)$point->Extensions->TPX->Speed;
+            }
+            $speedA = $speed;
+            
+            $this->parsePowerFromExtensionValues($point->Extensions[0], 'http://www.garmin.com/xmlschemas/ActivityExtension/v2', $power, $rpm, $speed);
         }
 
         $this->Container->ContinuousData->Power[] = $power;
         $this->Container->ContinuousData->Cadence[] = $rpm;
+        $this->Container->ContinuousData->Speed[] = $speed;
     }
 
-    protected function parsePowerFromExtensionValues(SimpleXMLElement &$extensions, $namespace, &$power, &$rpm)
+    protected function parsePowerFromExtensionValues(SimpleXMLElement &$extensions, $extensionNamespace, &$power, &$rpm, &$speed)
     {
-        $extensionElements = $extensions->children($namespace, true);
+        $extensionElements = $extensions->children($extensionNamespace, false);
         if ($extensionElements->count() > 0) {
             if (isset($extensionElements->TPX)) {
                 $trackPointx = $extensionElements->TPX[0];
-                $tpxElements = $trackPointx->children($namespace, true);
-                
+                $tpxElements = $trackPointx->children($extensionNamespace, false);
+
                 if ($tpxElements->count() > 0 && isset($tpxElements->Watts)) {
                     $power = (int)$tpxElements->Watts;
                 }
 
                 if ($tpxElements->count() > 0 && isset($tpxElements->RunCadence)) {
                     $rpm = (int)$tpxElements->RunCadence;
+                }
+
+                if ($tpxElements->count() > 0 && isset($tpxElements->Speed)) {
+                    $speed = (float)$tpxElements->Speed;
                 }
             }
         }
