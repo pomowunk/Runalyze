@@ -456,8 +456,9 @@ class FitActivity extends AbstractSingleParser
         }
 
         if (isset($this->Values['sport'])) {
-            $this->Container->Metadata->setInternalSportId((new FitSdkMapping())->toInternal($this->Values['sport'][0]));
-            $this->Container->Metadata->setSportName($this->Values['sport'][1]);
+            // #TSC in the session (same as NAME=sport) the sport is also stored
+            // not sure whats the best way and what to use in which case (and when they can differ); but use both as implementation before
+            $this->readSportProfile();
         }
 
         // #TSC: save effect (import at least is greater 0 - see also inc/core/Parser/Activity/Common/Filter/OutOfRangeValueFilter.php)
@@ -495,12 +496,7 @@ class FitActivity extends AbstractSingleParser
 
     protected function readSport()
     {
-        if (isset($this->Values['sport'])) {
-            $this->Container->Metadata->setInternalSportId((new FitSdkMapping())->toInternal($this->Values['sport'][0]));
-            $this->Container->Metadata->setSportName($this->Values['sport'][1]);
-        } elseif (isset($this->Values['name'])) {
-            $this->Container->Metadata->setSportName(substr($this->Values['name'][0], 1, -1));
-        }
+        $this->readSportProfile();
 
         // #TSC: set original sport-name to notes
         if (isset($this->Values['name'])) {
@@ -509,6 +505,47 @@ class FitActivity extends AbstractSingleParser
                 $v = $v . "\n".$this->Container->Metadata->getNotes();
             }
             $this->Container->Metadata->setNotes($v);
+        }
+    }
+
+    /**
+     * #TSC
+     * reads the sports-type (running, climbing...) from the FIT and set the internalId for this activity.
+     */
+    protected function readSportProfile()
+    {
+        // if the sport is already set, ignore further
+        if (!empty($this->Container->Metadata->getInternalSportId()) && !empty($this->Container->Metadata->getSportName())) {
+            return;
+        }
+
+        if (isset($this->Values['sport'])) {
+            $fitSdkMapping = new FitSdkMapping();
+
+            // the subsport is available (think this is in the most cases)
+            if (isset($this->Values['sub_sport'])) {
+                // now check if we found a mapping mit sport & subsport
+                $internalId = $fitSdkMapping->sportWithSubsportToInternal($this->Values['sport'][0], $this->Values['sub_sport'][0]);
+                if (isset($internalId)) {
+                    // yeah, something like sport=31=rock_climbing & sub_sport=69 (=Boulder) was found.
+                    // use the name attribute (=Bouldering) and not the "sport" (was rock_climbing) as in the "normal" case
+                    // not sure if this is necessary here, but be on the secure side ;-)
+                    $name = substr($this->Values['name'][0], 1, -1);
+                }
+            }
+
+            // no mapping with subsport found, try it with only "sport" (the original case)
+            if (!isset($internalId)) {
+                $internalId = $fitSdkMapping->toInternal($this->Values['sport'][0]);
+                $name = $this->Values['sport'][1];
+            }
+
+            // set the examined values
+            $this->Container->Metadata->setInternalSportId($internalId);
+            $this->Container->Metadata->setSportName($name);
+        } elseif (isset($this->Values['name'])) {
+            // no sport available, set the name so later the "string" can be resolved to the interalid
+            $this->Container->Metadata->setSportName(substr($this->Values['name'][0], 1, -1));
         }
     }
 

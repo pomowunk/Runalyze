@@ -106,6 +106,11 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2022-01-30: New activity icons and activities
 	* Add 12 new activity icons (climbing, snow activities, golf, kayak, tennis, surfing ...)
 	* New activity _snow shoeing_ and _cross-country-skiing_ can be added to your account and are recognised while importing from Garmin Fenix 6
+* 2022-08-29:
+	* Fix importing the power average produced by Stryd (thanks to tgradl)
+* 2022-08-30: 
+	* New activity _bouldering_ and _indoor climbing_ can be added to your account and are recognised while importing from Garmin Fenix 6
+	* Limitation: the routes (how many and difficulty), rest times and some other values are not imported yet -> hope this comes in the future when i understand the boulder/climbing FIT structure
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

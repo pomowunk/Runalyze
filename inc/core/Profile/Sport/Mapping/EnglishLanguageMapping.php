@@ -20,7 +20,9 @@ class EnglishLanguageMapping implements ToInternalMappingInterface
         'swim' => SportProfile::SWIMMING,
         'swimming' => SportProfile::SWIMMING,
         'hiking' => SportProfile::HIKING,
-        'mountaineering' => SportProfile::MOUNTAINEERING
+        'mountaineering' => SportProfile::MOUNTAINEERING,
+        'climbingindoor' => SportProfile::CLIMBING_INDOOR,
+        'bouldering' => SportProfile::BOULDERING
     ];
 
     public function toInternal($value)

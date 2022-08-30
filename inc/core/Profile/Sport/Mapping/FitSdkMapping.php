@@ -24,7 +24,9 @@ class FitSdkMapping extends AbstractMapping
             FitSdk\SportProfile::HIKING => SportProfile::HIKING,
             FitSdk\SportProfile::MOUNTAINEERING => SportProfile::MOUNTAINEERING,
             FitSdk\SportProfile::SNOWSHOEING => SportProfile::SNOW_SHOEING,
-            FitSdk\SportProfile::CROSS_COUNTRY_SKIING => SportProfile::CROSS_COUNTRY_SKIING
+            FitSdk\SportProfile::CROSS_COUNTRY_SKIING => SportProfile::CROSS_COUNTRY_SKIING,
+            FitSdk\SportProfile::CLIMBING_INDOOR => SportProfile::CLIMBING_INDOOR,
+            FitSdk\SportProfile::BOULDERING => SportProfile::BOULDERING
         ];
     }
 
@@ -42,5 +44,21 @@ class FitSdkMapping extends AbstractMapping
     protected function externalDefault()
     {
         return FitSdk\SportProfile::GENERIC;
+    }
+
+    /**
+     * #TSC
+     * Tries to find the internal sport with the sub-sport.
+     * This is for cases like BOULDERING where sport=31=climbing and subsport=69=bouldern.
+     */
+    public function sportWithSubsportToInternal(string $sport, string $subsport)
+    {
+        $id = $sport * 1000 + $subsport;
+
+        if (isset($this->getMapping()[$id])) {
+            return $this->getMapping()[$id];
+        } else {
+            return;
+        }
     }
 }
