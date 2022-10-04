@@ -12,7 +12,7 @@ use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class RecalculationManagerTest extends \PHPUnit_Framework_TestCase
+class RecalculationManagerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var  RecalculationManager */
     protected $Manager;
