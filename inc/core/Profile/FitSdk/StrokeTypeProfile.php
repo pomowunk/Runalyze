@@ -23,4 +23,7 @@ class StrokeTypeProfile extends AbstractEnum
 
     /** @var int */
     const MIXED = 5;
+
+    /** @var int */
+    const BREAK = 99;
 }

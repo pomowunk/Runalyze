@@ -8,6 +8,7 @@ namespace Runalyze\Model\Swimdata;
 
 use Runalyze\Model;
 use Runalyze\Model\Trackdata;
+use Runalyze\Profile\FitSdk\StrokeTypeProfile;
 
 /**
  * Swimdata entity
@@ -198,18 +199,19 @@ class Entity extends Model\Entity implements Model\Loopable {
 
 	/*
 	 * Calculate Distance based on pool length
+	 * Fills a array like [0.025,0.05,0.075,0.75,0.1 ...]
 	 */
 	public function fillDistanceArray(Trackdata\Entity $trackdata) {
 		if ($this->poollength() && !$trackdata->has(Trackdata\Entity::DISTANCE) && $this->num() == $trackdata->num()) {
 			$length = $this->poollength();
 
 			$distance = null;
-			if($this->stroke() && $this->num() == count($this->stroke())) {
-				// #TSC: optimise for GARMINs: if we have 0 strokes for one lane, distance must be 0 for this lane; because it's a erholung/"length_type=0=idle" lane
+			if($this->stroketype() && $this->num() == count($this->stroketype())) {
+				// #TSC: optimize for GARMINs: if we have 0 strokes for one lane, distance must be 0 for this lane; because it's a erholung/"length_type=0=idle" lane
 				$d = 0;
-				foreach ($this->stroke() as &$str) {
-					// only add pool-length if strokes are done in this lane
-					$d = $d + ($str > 0 ? $length : 0);
+				foreach ($this->stroketype() as &$strtype) {
+					// only add pool-length if stroke-type is not pause are done in this lane
+					$d = $d + ($strtype != StrokeTypeProfile::BREAK ? $length : null);
 					$distance[] = $d;
 				}
 			} else {

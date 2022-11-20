@@ -61,6 +61,8 @@ class Stroketype
                 return __('Drill');
             case StrokeTypeProfile::MIXED:
                 return __('Mixed');
+            case StrokeTypeProfile::BREAK:
+                return __('Break');
         }
 
         return '';
@@ -84,9 +86,18 @@ class Stroketype
                 return __('Drill');
             case StrokeTypeProfile::MIXED:
                 return __('Mixed');
+            case StrokeTypeProfile::BREAK:
+                return __('Break');
         }
 
         return '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBreak() {
+        return $this->Identifier == StrokeTypeProfile::BREAK;
     }
 }
 

@@ -207,23 +207,28 @@ abstract class Loop
 		$this->LastIndex = $this->Index;
 
 		// called with TIME or DISTANCE as key and search the array for the target value
-		// example array: ...569|608|642... and search for target=610 we stop on 642
+		// example array: ...569|608|642... and search for target=610 this stop on value=642
 		while (
 			!$this->isAtEnd() &&
 			$this->Object->at($this->Index, $key) < $target
 		) {
-			$this->Index++;
+			$this->Index++; // index points to "642" example
 		}
 
 		// #TSC
-		// if this is not the value we search for and not the end, decrease the index to point to the correct value
+		// if this is not EXACTLY the value we search for and not the end, choose the closest value to target of current or the prevoius.
 		// the "$this->Index > $this->LastIndex + 1" is necessary to avoid a endless-loop
 		// for running this does not play a major role (because of tracking intervals of a second); but for swimming the "time" tracking
 		// is based on a swim lane!
 		$curr = $this->Object->at($this->Index, $key);
 		if($curr != $target && $this->Index > $this->LastIndex + 1 && $this->Index > 0 && !$this->isAtEnd()) {
-			// with this step we stop on the below example on "608"
-			$this->Index = $this->Index - 1;
+			// get value before and after (this is "608")
+			$previous = $this->Object->at($this->Index - 1, $key);
+			// search the idx is closer to the $target (example 642-610 > 610-608 so use the previous)
+			if ($curr - $target > $target - $previous) {
+				// with this step we go to the closer value (on the below example to "608")
+				$this->Index = $this->Index - 1;
+			}
 		}
 
 		// #TSC: for every step increase the counter

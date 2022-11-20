@@ -3590,7 +3590,7 @@ sub named_type_value {
      69 => +{'name' => 'avg_lap_time', 'scale' => 1000, 'unit' => 's'},
      70 => +{'name' => 'best_lap_index'},
      71 => +{'name' => 'min_altitude', 'scale' => 5, 'offset' => 500, 'unit' => 'm'},
-     78 => +{'name' => 'unknown78'}, # unknown UINT32
+     78 => +{'name' => 'total_swim_time', 'scale' => 1000, 'unit' => 's'}, # pure swimming time without "LAP" button pause/rest
      81 => +{'name' => 'unknown81'}, # unknown ENUM
      82 => +{'name' => 'player_score'},
      83 => +{'name' => 'opponent_score'},

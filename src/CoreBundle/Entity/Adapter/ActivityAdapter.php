@@ -12,6 +12,7 @@ use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\VO2maxCalculator;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup;
 use Runalyze\Profile\Weather\WeatherConditionProfile;
+use Runalyze\Profile\FitSdk\StrokeTypeProfile;
 use Runalyze\Service\ElevationCorrection\StepwiseElevationProfileFixer;
 use Runalyze\Util\LocalTime;
 
@@ -265,10 +266,13 @@ class ActivityAdapter
 
     public function calculateSwolf()
     {
-        if (null !== $this->Activity->getTotalStrokes() && null !== $this->Activity->getTrackdata() && $this->Activity->getTrackdata()->hasTime()) {
-            $trackDataTime = $this->Activity->getTrackdata()->getTime();
-            $totalTime = end($trackDataTime);
-            $numberOfPoints = count($trackDataTime);
+        // TSC calculation of SWOLF must use the real swim-time, not the "verstrichene" time
+        if (null !== $this->Activity->getTotalStrokes() && null !== $this->Activity->getS() &&
+            null !== $this->Activity->getSwimdata() && $this->Activity->getSwimdata()->hasStrokeTypes()) {
+            $totalTime = $this->Activity->getS(); // use the swim-time, not the "verstrichene" time
+            $numberOfPoints = count(array_filter($this->Activity->getSwimdata()->getStroketype(), function($v){
+                return $v != StrokeTypeProfile::BREAK; // ignore lanes form type=pause/rest
+            }));
 
             $this->Activity->setSwolf((int)round(($this->Activity->getTotalStrokes() + $totalTime) / $numberOfPoints));
         } else {
