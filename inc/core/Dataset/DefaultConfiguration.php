@@ -39,6 +39,7 @@ class DefaultConfiguration extends Configuration
 			Keys::PACE => true,
 			Keys::HEARTRATE_AVG => true,
 			Keys::HEARTRATE_MAX => false,
+			Keys::HEARTRATE_AVG_ACTIVE => false,
 			Keys::ELEVATION => true,
             Keys::CLIMB_SCORE => true,
             Keys::PERCENTAGE_HILLY => false,

@@ -46,6 +46,9 @@ class ActivityData
     /** @var int|float|null [bpm] */
     public $AvgHeartRate = null;
 
+    /** @var int|float|null [bpm] */
+    public $AvgHeartRateActive = null;
+
     /** @var int|null [bpm] */
     public $MaxHeartRate = null;
 
@@ -118,6 +121,7 @@ class ActivityData
             'AvgPower',
             'MaxPower',
             'AvgHeartRate',
+            'AvgHeartRateActive',
             'MaxHeartRate',
             'AvgCadence',
             'AvgGroundContactTime',
@@ -139,11 +143,11 @@ class ActivityData
         ];
     }
 
-    public function completeFromContinuousData(ContinuousData $data)
+    public function completeFromContinuousData(ContinuousData $data, RoundCollection $rounds)
     {
         $this->completeTotalValuesFromContinuousData($data);
         $this->completeMaximalValuesFromContinuousData($data);
-        $this->completeAverageValuesFromContinuousData($data);
+        $this->completeAverageValuesFromContinuousData($data, $rounds);
     }
 
     public function completeTotalValuesFromContinuousData(ContinuousData $data)
@@ -168,7 +172,7 @@ class ActivityData
         }
     }
 
-    public function completeAverageValuesFromContinuousData(ContinuousData $data)
+    public function completeAverageValuesFromContinuousData(ContinuousData $data, RoundCollection $rounds)
     {
         if (empty($data->Time)) {
             return;
@@ -200,6 +204,18 @@ class ActivityData
         $this->completeStandardAverageValuesFromAverages($averages);
         $this->completeRunningDynamicsAverageValuesFromAverages($averages);
         $this->completeRunScribeDataAverageValuesFromAverages($averages);
+
+        // #TSC if there are inactive/ruhe rounds, average the hearth-rate only for active rounds
+        if ($rounds->hasInactiveRounds()) {
+            $activeRoundCalc = new ActiveRoundCalculator($data, $rounds);
+            $hr = $activeRoundCalc->calcAvgHeartRate();
+
+            if ($hr != null) {
+                $this->AvgHeartRateActive = $hr;
+            }
+        } else {
+            $this->AvgHeartRateActive = $this->AvgHeartRate;
+        }
     }
 
     public function completeStandardAverageValuesFromAverages(TrackdataAverages $averages)

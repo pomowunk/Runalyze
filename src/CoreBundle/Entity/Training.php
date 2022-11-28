@@ -171,6 +171,20 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     private $pulseMax = null;
 
     /**
+     * @var int|null [bpm]
+     *
+     * @Assert\Range(
+     *      min = 30,
+     *      max = 255,
+     *      minMessage = "Your average heartrate active rounds must be at least {{ limit }} bpm",
+     *      maxMessage = "Your average heartrate active rounds cannot be greater than {{ limit }} bpm"
+     * )
+     *
+     * @ORM\Column(name="pulse_avg_active", type="tinyint", nullable=true, options={"unsigned":true})
+     */
+    private $pulseAvgActive = null;
+
+    /**
      * @var float|null [ml/kg/min]
      *
      * @ORM\Column(name="vo2max", type="casted_decimal_2", precision=5, scale=2, nullable=true, options={"unsigned":true})
@@ -1063,6 +1077,26 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function getPulseMax()
     {
         return $this->pulseMax;
+    }
+
+    /**
+     * @param null|int $pulseAvgActive [bpm]
+     *
+     * @return $this
+     */
+    public function setPulseAvgActive($pulseAvgActive)
+    {
+        $this->pulseAvgActive = $pulseAvgActive;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int [bpm]
+     */
+    public function getPulseAvgActive()
+    {
+        return $this->pulseAvgActive;
     }
 
     /**

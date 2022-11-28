@@ -200,30 +200,33 @@ class SearchFormular extends Formular {
 		$this->addNumericConditionFIeld('power', __('Power'), FormularInput::$SIZE_SMALL, FormularUnit::$POWER);
 		$this->addBooleanField('is_race', __('Is race'));
 
-		$this->addNumericConditionField(Configuration::VO2max()->useElevationCorrection() ? 'vo2max_with_elevation' : 'vo2max', 'VO<sub>2</sub>max', FormularInput::$SIZE_SMALL);
+		// #TSC add pulse active rounds
+		$this->addNumericConditionField('pulse_avg_active', __('avg. HR').' active', FormularInput::$SIZE_SMALL, FormularUnit::$BPM);
+		$this->addNumericConditionField(Configuration::VO2max()->useElevationCorrection() ? 'vo2max_with_elevation' : 'vo2max', 'VO2max', FormularInput::$SIZE_SMALL);
 		$this->addNumericConditionField('vertical_oscillation', __('Vertical oscillation'), FormularInput::$SIZE_SMALL, FormularUnit::$CM);
-		$this->addBooleanField('use_vo2max', __('Uses VO<sub>2</sub>max'));
 
+		$this->addBooleanField('use_vo2max', __('Uses VO2max'));
 		$this->addNumericConditionField('trimp', __('TRIMP'), FormularInput::$SIZE_SMALL);
 		$this->addNumericConditionField('vertical_ratio', __('Vertical ratio'), FormularInput::$SIZE_SMALL, FormularUnit::$PERCENT);
-		$this->addBooleanField('is_track', __('Track'));
 
+		$this->addBooleanField('is_track', __('Track'));
 		$this->addNumericConditionField('rpe', __('RPE'), FormularInput::$SIZE_SMALL);
 		$this->addNumericConditionField('groundcontact', __('Ground contact'), FormularInput::$SIZE_SMALL, FormularUnit::$MS);
-		$this->addNumericConditionField('temperature', __('Temperature'), FormularInput::$SIZE_SMALL, Configuration::General()->temperatureUnit()->unit());
 
+		$this->addNumericConditionField('temperature', __('Temperature'), FormularInput::$SIZE_SMALL, Configuration::General()->temperatureUnit()->unit());
         $this->addNumericConditionField('kcal', __('Energy'), FormularInput::$SIZE_SMALL, Configuration::General()->energyUnit()->unit());
 		$this->addNumericConditionField('groundcontact_balance', __('Ground Contact Balance'), FormularInput::$SIZE_SMALL, 'L'. FormularUnit::$PERCENT);
-		$this->addNumericConditionField('wind_speed', __('Wind Speed'), FormularInput::$SIZE_SMALL, (new WindSpeed())->unit());
 
+		$this->addNumericConditionField('wind_speed', __('Wind Speed'), FormularInput::$SIZE_SMALL, (new WindSpeed())->unit());
         $this->addNumericConditionField('fit_performance_condition', __('Performance condition'), FormularInput::$SIZE_SMALL);
 		$this->addNumericConditionField('fit_training_effect', __('(Aerob) Training Effect'), FormularInput::$SIZE_SMALL);
+
 		$this->addNumericConditionField('humidity', __('Humidity'), FormularInput::$SIZE_SMALL, (new Humidity())->unit());
-
-		$this->addNumericConditionField('fit_vo2max_estimate', Dataset\Keys::get(Dataset\Keys::FIT_VO2MAX_ESTIMATE)->label(), FormularInput::$SIZE_SMALL);
+		// #TSC change label from "Dataset\Keys::get(Dataset\Keys::FIT_VO2MAX_ESTIMATE)->label()" to static-string to avoid layout problems
+		$this->addNumericConditionField('fit_vo2max_estimate', 'VO2max (laut Datei)', FormularInput::$SIZE_SMALL);
 		$this->addNumericConditionField('fit_recovery_time', Dataset\Keys::get(Dataset\Keys::FIT_RECOVERY_TIME)->label(), FormularInput::$SIZE_SMALL, 'h');
-		$this->addNumericConditionField('pressure', __('Pressure'), FormularInput::$SIZE_SMALL, (new Pressure())->unit());
 
+		$this->addNumericConditionField('pressure', __('Pressure'), FormularInput::$SIZE_SMALL, (new Pressure())->unit());
         $this->addNumericConditionField('climb_score', __('Climb Score'), FormularInput::$SIZE_SMALL);
         $this->addNumericConditionField('percentage_hilly', __('Percentage Hilly'), FormularInput::$SIZE_SMALL, '%');
 

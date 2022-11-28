@@ -73,8 +73,8 @@ class TableSwimLane extends TableLapsAbstract {
 				$this->Code .= '<td>'.$Loop->swolf().'</td>';
 				$this->Code .= '<td>'.$Loop->stroke().'</td>';
 				$intervalLanes++;
-				$swolfs += $Loop->swolf();
-				$strokes += $Loop->stroke();
+				$swolfs += empty($Loop->swolf()) ? 0 : $Loop->swolf();
+				$strokes += empty($Loop->stroke()) ? 0: $Loop->stroke();
 			} else {
 				// show the summary lane of this interval
 				$this->writeSummary($Poollength, $TrackLoop, $interval, $intervalLanes, $swolfs, $strokes);

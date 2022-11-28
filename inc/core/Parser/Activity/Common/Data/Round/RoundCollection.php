@@ -211,4 +211,13 @@ class RoundCollection implements \Countable, \ArrayAccess, \Iterator
         }
         return false;
     }
+
+    /**
+     * #TSC check if the rounds has inactive/ruhe rounds.
+     */
+    public function hasInactiveRounds() {
+        return count(array_filter($this->Elements, function($v, $k) {
+            return !$v->IsActive();
+        }, ARRAY_FILTER_USE_BOTH)) > 0;
+    }
 }

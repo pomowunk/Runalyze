@@ -21,7 +21,7 @@ class ActivityDataTest extends \PHPUnit_Framework_TestCase
 
     public function testCompletionFromEmptyContinuousData()
     {
-        $this->Data->completeFromContinuousData(new ContinuousData());
+        $this->Data->completeFromContinuousData(new ContinuousData(), new RoundCollection());
 
         $this->assertNull($this->Data->Duration);
         $this->assertNull($this->Data->Distance);
@@ -40,7 +40,7 @@ class ActivityDataTest extends \PHPUnit_Framework_TestCase
         $continuousData = new ContinuousData();
         $continuousData->Time = range(0, 10);
 
-        $this->Data->completeFromContinuousData($continuousData);
+        $this->Data->completeFromContinuousData($continuousData, new RoundCollection());
 
         $this->assertEquals(10, $this->Data->Duration);
         $this->assertNull($this->Data->Distance);
@@ -71,7 +71,7 @@ class ActivityDataTest extends \PHPUnit_Framework_TestCase
 
     public function testCompletionFromContinuousData()
     {
-        $this->Data->completeFromContinuousData($this->getExampleForFilledContinuousData());
+        $this->Data->completeFromContinuousData($this->getExampleForFilledContinuousData(), new RoundCollection());
 
         $this->assertEquals(10, $this->Data->Duration);
         $this->assertEquals(0.05, $this->Data->Distance);
@@ -98,7 +98,7 @@ class ActivityDataTest extends \PHPUnit_Framework_TestCase
         $this->Data->AvgVerticalOscillation = 76;
         $this->Data->AvgGroundContactBalance = 5015;
 
-        $this->Data->completeFromContinuousData($this->getExampleForFilledContinuousData());
+        $this->Data->completeFromContinuousData($this->getExampleForFilledContinuousData(), new RoundCollection());
 
         $this->assertEquals(120, $this->Data->Duration);
         $this->assertEquals(0.5, $this->Data->Distance);

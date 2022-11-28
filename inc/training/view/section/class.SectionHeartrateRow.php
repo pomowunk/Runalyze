@@ -37,6 +37,7 @@ class SectionHeartrateRow extends TrainingViewSectionRowTabbedPlot {
 	protected function setContent() {
 		$this->addAverageHeartrate();
 		$this->addMaximalHeartrate();
+		$this->addAverageHeartrateActive();
 		$this->addCaloriesAndTrimp();
 		$this->addFitTrainingEffect();
 		$this->addFitAnaerobicTrainingEffect(); // #TSC: add Anaerobic to statistic-page to the heart-rate table
@@ -68,6 +69,16 @@ class SectionHeartrateRow extends TrainingViewSectionRowTabbedPlot {
 			if ($this->Context->dataview()->hrMax()->canShowInHRmax()) {
 				$this->BoxedValues[] = new Box\MaximalHeartRateInPercent($this->Context->dataview()->hrMax(), !Request::isOnSharedPage());
 			}
+		}
+	}
+
+	/**
+	 * #TSC Add: average heartrate of active rounds
+	 */
+	protected function addAverageHeartrateActive() {
+		$hr = $this->Context->activity()->hrAvgActive();
+		if ($hr > 0 && $hr != $this->Context->activity()->hrAvg()) {
+			$this->BoxedValues[] = new BoxedValue($this->Context->dataview()->hrAvgActive()->inBPM(), 'bpm', '&#216; '.__('Heart rate').' active');
 		}
 	}
 

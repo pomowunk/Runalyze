@@ -112,13 +112,20 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* New activity _bouldering_ and _indoor climbing_ can be added to your account and are recognised while importing from Garmin Fenix 6
 	* Limitation: the routes (how many and difficulty), rest times and some other values are not imported yet -> hope this comes in the future when i understand the boulder/climbing FIT structure
 * 2022-11-20:
-	* For swimming Garmin's newer Firmware writes _rest_-laps in the FIT files (when using LAP button on the watch). This are considered:
+	* For swimming Garmin's Firmware writes _rest_-laps in the FIT files (when using LAP button on the watch). This are considered:
 	1. While importing such activity, this laps are set to "deactivate/ruhe" and will not shown (or special shown) in the laps widgets
 	2. SWOLF calculation ignore _rest_-laps
 	3. _lanes_ widget shows more details if the activity has _rest_-lanes
 	4. _time_ of the activity is the real swimming time (without rests times)
 	5. Optimize/fix the _lanes_-windows assignement of _trackdata_ to laps based on the time
-	6. Implementation depends on `StrokeTypeProfile::PAUSE`
+	6. Implementation depends on `StrokeTypeProfile::BREAK`
+* 2022-11-27:
+	* New _average heart-rate for active rounds_ is a hr-value, only calculated based on active rounds/laps (inactive/"Ruhe" will ignored); this is relevant if you swimming with a Fenix and use the LAP button for rests/breaks
+	* New db field `runalyze_training.pulse_avg_active`
+	* Field is on the details view in the heart-rate section (only if the rate differs from the normal), in the dataset and in the search formular
+	* If there no inactive rounds (means only active rounds), the normal avg heart-rate is set in this new field
+	* **Migration 20221123203500 is necessary!** it will fill the `pulse_avg_active` with the content of `pulse_avg`
+
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

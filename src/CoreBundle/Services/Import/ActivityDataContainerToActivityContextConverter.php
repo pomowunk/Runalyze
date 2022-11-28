@@ -221,6 +221,8 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setPower($this->getRoundedValue($activityData->AvgPower));
         $activity->setPulseAvg($this->getRoundedValue($activityData->AvgHeartRate));
         $activity->setPulseMax($activityData->MaxHeartRate);
+        // #TSC: hr for active rounds
+        $activity->setPulseAvgActive($activityData->AvgHeartRateActive);
         $activity->setCadence($this->getRoundedValue($activityData->AvgCadence));
         $activity->setGroundcontact($this->getRoundedValue($activityData->AvgGroundContactTime));
         $activity->setGroundcontactBalance($this->getRoundedValue($activityData->AvgGroundContactBalance));

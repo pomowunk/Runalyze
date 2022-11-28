@@ -54,6 +54,9 @@ class Dataview
     /** @var null|\Runalyze\Activity\HeartRate */
     protected $HRavg = null;
 
+    /** @var null|\Runalyze\Activity\HeartRate */
+    protected $HRavgActive = null;
+
     /** @var null|\Runalyze\Activity\Pace */
     protected $Pace = null;
 
@@ -565,6 +568,16 @@ class Dataview
     {
         return $this->object($this->HRavg, function (Activity\Entity $Activity) {
             return new HeartRate($Activity->hrAvg(), GeneralContext::Athlete());
+        });
+    }
+
+    /**
+     * @return \Runalyze\Activity\HeartRate
+     */
+    public function hrAvgActive()
+    {
+        return $this->object($this->HRavgActive, function (Activity\Entity $Activity) {
+            return new HeartRate($Activity->hrAvgActive(), GeneralContext::Athlete());
         });
     }
 

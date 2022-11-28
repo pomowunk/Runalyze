@@ -120,6 +120,12 @@ class Entity extends Model\EntityWithID {
 	const HR_MAX = 'pulse_max';
 
 	/**
+	 * Key: average heart rate active rounds
+	 * @var string
+	 */
+	const HR_AVG_ACTIVE = 'pulse_avg_active';
+
+	/**
 	 * Key: vo2max
 	 * @var string
 	 */
@@ -490,6 +496,7 @@ class Entity extends Model\EntityWithID {
 			self::ENERGY,
 			self::HR_AVG,
 			self::HR_MAX,
+			self::HR_AVG_ACTIVE,
 			self::VO2MAX,
 			self::VO2MAX_BY_TIME,
 			self::VO2MAX_WITH_ELEVATION,
@@ -597,6 +604,7 @@ class Entity extends Model\EntityWithID {
             case self::ENERGY:
             case self::HR_AVG:
             case self::HR_MAX:
+            case self::HR_AVG_ACTIVE:
             case self::VO2MAX:
             case self::VO2MAX_BY_TIME:
             case self::VO2MAX_WITH_ELEVATION:
@@ -678,6 +686,7 @@ class Entity extends Model\EntityWithID {
             self::ENERGY,
             self::HR_AVG,
             self::HR_MAX,
+            self::HR_AVG_ACTIVE,
             self::VO2MAX,
             self::VO2MAX_BY_TIME,
             self::VO2MAX_WITH_ELEVATION,
@@ -867,6 +876,14 @@ class Entity extends Model\EntityWithID {
 	 */
 	public function hrMax() {
 		return $this->Data[self::HR_MAX];
+	}
+
+	/**
+	 * Average heart rate active rounds
+	 * @return null|int [bpm]
+	 */
+	public function hrAvgActive() {
+		return $this->Data[self::HR_AVG_ACTIVE];
 	}
 
 	/**
