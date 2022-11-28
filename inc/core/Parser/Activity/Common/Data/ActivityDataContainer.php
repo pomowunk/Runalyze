@@ -91,7 +91,7 @@ class ActivityDataContainer
 
         // #TSC: set average-temp from the clock/FIT data if available
         if(!empty(($this->ActivityData->AvgTemperature))) {
-            // first use the session attribute
+            // first use the session (or battery) attribute
             $this->WeatherData->Temperature = $this->ActivityData->AvgTemperature;
         } else {
             // second calc the avg from the temp's

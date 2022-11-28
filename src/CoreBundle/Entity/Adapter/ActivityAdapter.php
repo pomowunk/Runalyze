@@ -233,7 +233,8 @@ class ActivityAdapter
     {
         $this->Activity->setWeatherid(WeatherConditionProfile::UNKNOWN);
         $this->Activity->setWeatherSource(null);
-        $this->Activity->setTemperature(null);
+        // #TSC do not remove temperature for indoor sports
+        //$this->Activity->setTemperature(null);
         $this->Activity->setWindSpeed(null);
         $this->Activity->setWindDeg(null);
         $this->Activity->setPressure(null);

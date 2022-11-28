@@ -125,7 +125,13 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Field is on the details view in the heart-rate section (only if the rate differs from the normal), in the dataset and in the search formular
 	* If there no inactive rounds (means only active rounds), the normal avg heart-rate is set in this new field
 	* **Migration 20221123203500 is necessary!** it will fill the `pulse_avg_active` with the content of `pulse_avg`
-
+* 2022-11-28:
+	* Optimize temperature determination on the activity (attribute `training.temperature`)
+	1. if available: use the avg temperature from the FIT `session`
+	2. if no data is set until now -> if available: use the avg temperature from the FIT `battery` recodings (every 5 minutes)
+	3. if no data is set until now -> if available: use the average of stored temperatures in the track-/continuous-data
+	4. if bulk import and outdoor-sport with external weather is successful loaded, use this data
+	* show always the temperature in the dataset if available (independent of indoor/outdoor)
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
