@@ -6,6 +6,7 @@ use Runalyze\Parser\Activity\Common\Data\Pause\PauseCollection;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollection;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollectionFiller;
 use Runalyze\Parser\Activity\Common\Filter\FilterCollection;
+use Runalyze\Activity;
 
 class ActivityDataContainer
 {
@@ -97,6 +98,14 @@ class ActivityDataContainer
             // second calc the avg from the temp's
             $this->WeatherData->Temperature = $this->ContinuousDataAdapter->getAverageTemperatur();
         }
+
+        // #TSC set RG=Regeneration Run
+        if (empty($this->Metadata->getTypeName()) && !empty($this->FitDetails)
+            && $this->FitDetails->SelfEvaluationPerceivedEffort == 1 // anstrengung=sehr leicht=1
+            && $this->FitDetails->SelfEvaluationFeeling == Activity\SelfEvaluationFeeling::VERY_STRONG) // gefuehl=sehr stark=5
+            { 
+            $this->Metadata->setTypeName('RG');
+        }
     }
 
     public function filterActivityData(FilterCollection $filter)
@@ -121,7 +130,7 @@ class ActivityDataContainer
 
 
             // #TSC check if rounds includes intervals
-            if ($this->Rounds->hasIntervalRounds()) {
+            if (empty($this->Metadata->getTypeName()) && $this->Rounds->hasIntervalRounds()) {
                 // search type by short-cut - it must be configured as short-cut "IT" in the master-data
                 $this->Metadata->setTypeName('IT');
             }

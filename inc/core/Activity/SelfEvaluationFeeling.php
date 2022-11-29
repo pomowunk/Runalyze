@@ -9,11 +9,11 @@ namespace Runalyze\Activity;
 use Runalyze\Common\Enum\AbstractEnum;
 
 /**
- * Enum for SelfEvaluationPerceivedEffort
+ * Enum for SelfEvaluationFeeling (Gefuehl 1 - 5).
  * 
  * @package Runalyze\Activity
  */
-class SelfEvaluationPerceivedEffort extends AbstractEnum
+class SelfEvaluationFeeling extends AbstractEnum
 {
     // respect the order by number!
 

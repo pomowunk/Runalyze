@@ -500,7 +500,7 @@ class FitActivity extends AbstractSingleParser
 
         // #TSC: fit self evaluation
         if (isset($this->Values['self_evaluation_felt'])) {
-            $v = Activity\SelfEvaluationPerceivedEffort::fromFitToEnum($this->Values['self_evaluation_felt'][0]);
+            $v = Activity\SelfEvaluationFeeling::fromFitToEnum($this->Values['self_evaluation_felt'][0]);
             $this->Container->FitDetails->SelfEvaluationFeeling = $v;
         }
         if (isset($this->Values['self_evaluation_perceived_effort'])) {

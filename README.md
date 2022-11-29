@@ -132,6 +132,12 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	3. if no data is set until now -> if available: use the average of stored temperatures in the track-/continuous-data
 	4. if bulk import and outdoor-sport with external weather is successful loaded, use this data
 	* show always the temperature in the dataset if available (independent of indoor/outdoor)
+* 2022-11-29: Auto detection of type "Regeneration Run" (_RG_) while importing activity based on self-evaluation
+	* You must configure a training-type with short-cut _RG_ to your sports (of default _RG_ exists)
+	* Detection only works in batch/bulk import mode
+	* Works on Fenix self-evaluation (Selbsteinschätzung), where you set
+		* `perceived effort` = 1 ("empfundene Anstrengung", very light/sehr leicht)
+		* and `feel evaluation` = 5 ("Gefühl", very strong/sehr stark)
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
