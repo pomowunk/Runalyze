@@ -282,6 +282,12 @@ class Entity extends Model\EntityWithID {
 	const SWOLF = 'swolf';
 
 	/**
+	 * Key: total_cycles
+	 * @var ing
+	 */
+	const TOTAL_CYCLES = 'total_cycles';
+
+	/**
 	 * Key: ground contact time
 	 * @var string
 	 */
@@ -523,6 +529,7 @@ class Entity extends Model\EntityWithID {
 			self::STRIDE_LENGTH,
 			self::SWOLF,
 			self::TOTAL_STROKES,
+			self::TOTAL_CYCLES,
 			self::GROUNDCONTACT,
 			self::VERTICAL_OSCILLATION,
 			self::GROUNDCONTACT_BALANCE,
@@ -630,6 +637,7 @@ class Entity extends Model\EntityWithID {
             case self::TOTAL_STROKES:
             case self::SWOLF:
             case self::STRIDE_LENGTH:
+            case self::TOTAL_CYCLES:
             case self::GROUNDCONTACT:
             case self::GROUNDCONTACT_BALANCE:
             case self::VERTICAL_OSCILLATION:
@@ -712,6 +720,7 @@ class Entity extends Model\EntityWithID {
             self::TOTAL_STROKES,
             self::SWOLF,
             self::STRIDE_LENGTH,
+            self::TOTAL_CYCLES,
             self::GROUNDCONTACT,
             self::GROUNDCONTACT_BALANCE,
             self::VERTICAL_OSCILLATION,
@@ -1087,6 +1096,15 @@ class Entity extends Model\EntityWithID {
 	public function swolf() {
 		return $this->Data[self::SWOLF];
 	}
+
+    /**
+     * total cycles
+	 * #TSC
+     * @return null|int
+     */
+    public function totalCycles() {
+        return $this->Data[self::TOTAL_CYCLES];
+    }
 
 	/**
 	 * Ground contact

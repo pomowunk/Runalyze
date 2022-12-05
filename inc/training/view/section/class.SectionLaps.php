@@ -19,7 +19,7 @@ class SectionLaps extends TrainingViewSectionTabbed {
 	protected function setHeaderAndRows() {
 		$this->Header = __('Laps');
 
-		if (!$this->Context->activity()->splits()->isEmpty() && $this->Context->activity()->splits()->totalDistance() > 0) {
+		if (!$this->Context->activity()->splits()->isEmpty()) {
 			$this->appendRowTabbed( new SectionLapsRowManual($this->Context), __('Manual Laps') );
 		}
 
@@ -33,7 +33,8 @@ class SectionLaps extends TrainingViewSectionTabbed {
 	 * @return bool
 	 */
 	protected function hasRequiredData() {
-		return (!$this->Context->activity()->splits()->isEmpty() && $this->Context->activity()->splits()->totalDistance() > 0)
+		// #TSC only splits are needed as required-data, if the splits()->totalDistance() is 0, anyway show laps
+		return (!$this->Context->activity()->splits()->isEmpty())
 			|| ($this->Context->trackdata()->has(Trackdata\Entity::DISTANCE) && $this->Context->trackdata()->has(Trackdata\Entity::TIME));
 	}
 

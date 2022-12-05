@@ -56,6 +56,7 @@ class DefaultConfiguration extends Configuration
 			Keys::CADENCE => false,
             Keys::STRIDE_LENGTH => false,
             Keys::TOTAL_STROKES => false,
+            Keys::TOTAL_CYCLES => false,
 			Keys::GROUNDCONTACT => true,
             Keys::GROUNDCONTACT_BALANCE => true,
 			Keys::VERTICAL_OSCILLATION => true,

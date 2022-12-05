@@ -77,8 +77,7 @@
             {% endif %}
         </fieldset>
 
-        <fieldset id="fieldset-splits" class="only-distances{{ formConfig.fieldSetIsCollapsed('SPLITS') ? ' collapsed' : '' }}">
-            <legend onclick="Runalyze.toggleFieldset(this, 'fieldset-splits', false, 'SPLITS')">{% trans %}Laps{% endtrans %}</legend>
+        <fieldset id="fieldset-splits" class="{{ form.splits|length > 0 ? '' : 'only-distances' }}{{ formConfig.fieldSetIsCollapsed('SPLITS') ? ' collapsed' : '' }}">
 
             <div class="w100 with50erLabel">
                 {{ form_label(form.splits, null, {'help': 'Defining some laps as \'resting\' will hide them in the respective plot.'}) }}

@@ -240,6 +240,7 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setRpe($activityData->RPE);
         $activity->setAvgRespirationRate($activityData->AvgRespirationRate);
         $activity->setMaxRespirationRate($activityData->MaxRespirationRate);
+        $activity->setTotalCycles($activityData->TotalCycles);
     }
 
     /**

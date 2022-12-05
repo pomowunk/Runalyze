@@ -104,6 +104,7 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 		$this->addEquipment();
 		$this->addTrainingPartner();
         $this->addSmo2AndThb();
+		$this->addTotalCycles();
 	}
 
 	/**
@@ -509,7 +510,18 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	 */
 	protected function addRPE() {
 	    if ($this->Context->activity()->rpe()) {
-		$this->BoxedValues[] = new Box\RPE($this->Context);
+			$this->BoxedValues[] = new Box\RPE($this->Context);
+	    }
+	}
+
+	/**
+	 * Add: Cycles #TSC
+	 */
+	protected function addTotalCycles() {
+	    if ($this->Context->activity()->totalCycles()) {
+            $box = new Box\TotalCycles($this->Context);
+            $box->defineAsFloatingBlock('w50');
+            $this->BoxedValues[] = $box;
 	    }
 	}
 }

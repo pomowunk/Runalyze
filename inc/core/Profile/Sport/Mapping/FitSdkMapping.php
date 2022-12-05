@@ -26,7 +26,8 @@ class FitSdkMapping extends AbstractMapping
             FitSdk\SportProfile::SNOWSHOEING => SportProfile::SNOW_SHOEING,
             FitSdk\SportProfile::CROSS_COUNTRY_SKIING => SportProfile::CROSS_COUNTRY_SKIING,
             FitSdk\SportProfile::CLIMBING_INDOOR => SportProfile::CLIMBING_INDOOR,
-            FitSdk\SportProfile::BOULDERING => SportProfile::BOULDERING
+            FitSdk\SportProfile::BOULDERING => SportProfile::BOULDERING,
+            FitSdk\SportProfile::STRENGTH_TRAINING => SportProfile::STRENGTH_TRAINING
         ];
     }
 

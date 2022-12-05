@@ -45,6 +45,9 @@ class SportProfile extends AbstractEnum implements InterfaceChoosable
     /** @var int */
     const CLIMBING_INDOOR = 10;
 
+    /** @var int */
+    const STRENGTH_TRAINING = 11;
+
     /**
      * @return array
      */

@@ -138,6 +138,13 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Works on Fenix self-evaluation (Selbsteinschätzung), where you set
 		* `perceived effort` = 1 ("empfundene Anstrengung", very light/sehr leicht)
 		* and `feel evaluation` = 5 ("Gefühl", very strong/sehr stark)
+* 2022-12-04: 
+	* New activity _strength training_ (=Krafttraining) can be added to your account and are recognised while importing from Garmin Fenix 6
+	* New database field `training.total_cycles` will be stored the total cycles/iterations of activity; this info be also available in the dataset-view and in the _miscellaneous_ section
+	* Small changes to show laps and details of laps, if no distance is stored and the sport is a "no distance"-sport
+	* Limitation: only the sets (active and rest) will be stored as "laps" with the duration; no cycles, type and wights on set/lap-level
+	* Note: `total_cycles` can also be imported in other sports activities
+	* **Migration 20221204190000 is necessary!**
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

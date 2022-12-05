@@ -369,6 +369,13 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     private $strideLength = null;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="total_cycles", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $totalCycles = null;
+
+    /**
      * @var int|null [ms]
      *
      * @ORM\Column(name="groundcontact", type="smallint", nullable=true, options={"unsigned":true})
@@ -1616,6 +1623,26 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function getStrideLength()
     {
         return $this->strideLength;
+    }
+
+    /**
+     * @param null|int $strideLength [stck]
+     *
+     * @return $this
+     */
+    public function setTotalCycles($totalCycles)
+    {
+        $this->totalCycles = $totalCycles;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int [stck]
+     */
+    public function getTotalCycles()
+    {
+        return $this->totalCycles;
     }
 
     /**

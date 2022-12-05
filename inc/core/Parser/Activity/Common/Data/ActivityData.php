@@ -94,6 +94,9 @@ class ActivityData
     /** @var int|null */
     public $TotalStrokes = null;
 
+    /** @var int|null */
+    public $TotalCycles = null;
+
     /** @var int|null [grad] #TSC: add temperature here */
     public $AvgTemperature = null;
 
@@ -137,6 +140,7 @@ class ActivityData
             'AvgPronationExcursionRight',
             'PoolLength',
             'TotalStrokes',
+            'TotalCycles',
             'AvgTemperature',
             'AvgRespirationRate',
             'MaxRespirationRate'

@@ -72,13 +72,16 @@ abstract class Laps extends ActivityPlot {
 			$max = Helper::ceilFor(max($this->Data), 30000);
 
 			$this->Plot->setYAxisTimeFormat('%M:%S');
-		} else {
+		} else if(!empty($this->Data)) {
 			$min = floor(min($this->Data));
 			$max = ceil(max($this->Data));
 
 			$Pace = new PaceObject(0, 1);
 			$Pace->setUnit($this->PaceUnit);
 			$this->Plot->addYUnit(1, str_replace('&nbsp;', '', $Pace->appendix()), 1);
+		} else {
+			// #TSC if we have no distance data set nothing => will result in "no data" notice
+			return;
 		}
 
 		if (Configuration::ActivityView()->startSplitsAtZero()) {

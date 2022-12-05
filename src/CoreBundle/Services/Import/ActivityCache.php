@@ -123,6 +123,7 @@ class ActivityCache
         $activityToMerge->setCreatorDetails($activityFromCache->getCreatorDetails());
         $activityToMerge->setActivityId($activityFromCache->getActivityId());
         $activityToMerge->setPulseAvgActive($activityFromCache->getPulseAvgActive()); // #TSC: transfer hr
+        $activityToMerge->setTotalCycles($activityFromCache->getTotalCycles()); // #TSC: transfer
 
         if (null !== $activityFromCache->isPowerCalculated()) {
             $activityToMerge->setPower($activityFromCache->getPower());

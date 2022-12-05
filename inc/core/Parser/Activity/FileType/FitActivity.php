@@ -394,7 +394,11 @@ class FitActivity extends AbstractSingleParser
                 case 140:
                     $this->readUndocumentedDataBlob140();
                     break;
-            }
+
+                case '225': // #TSC a "set" of Krafttraining are interpreded as laps
+                    $this->readSet();
+                    break;
+                }
         }
     }
 
@@ -432,11 +436,13 @@ class FitActivity extends AbstractSingleParser
     {
         $this->mapDeveloperFieldsToNativeFieldsFor($this->DeveloperFieldMappingForSession);
 
-        if ($this->IsSwimming && isset($this->Values['total_swim_time'])) {
-            // #TSC: if swimming and "total_swim_time" is available, this is the real swim time without rests (this was introduced with a new FW-version)
-            $this->Container->ActivityData->Duration += round($this->Values['total_swim_time'][0] / 1e3);
+        // #TSC swiming or STRENGTH_TRAINING have a "special" belastungs-time
+        if (($this->IsSwimming || $this->Container->Metadata->getInternalSportId() == \Runalyze\Profile\Sport\SportProfile::STRENGTH_TRAINING)
+            && isset($this->Values['total_active_time'])) {
+            // #TSC: if special activity and "total_active_time" is available, this is the real swim time without rests (this was introduced with a new FW-version)
+            $this->Container->ActivityData->Duration += round($this->Values['total_active_time'][0] / 1e3);
         } else {
-            // if now "new" total_swim_time or "no swimming" use the "default" time
+            // if no "new" total_active_time or "no swimming" use the "default" time
             if (isset($this->Values['total_timer_time'])) {
                 $this->Container->ActivityData->Duration += round($this->Values['total_timer_time'][0] / 1e3);
             }
@@ -510,6 +516,11 @@ class FitActivity extends AbstractSingleParser
         // #TSC: set avg temperature
         if (isset($this->Values['avg_temperature']) && $this->Values['avg_temperature'][0] != 0) {
             $this->Container->ActivityData->AvgTemperature = $this->Values['avg_temperature'][0];
+        }
+
+        // #TSC: total cycles (for strength training)
+        if (isset($this->Values['total_cycles']) && $this->Values['total_cycles'][0] > 0) {
+            $this->Container->ActivityData->TotalCycles = $this->Values['total_cycles'][0];
         }
     }
 
@@ -887,6 +898,22 @@ class FitActivity extends AbstractSingleParser
                 $this->Values['total_distance'][0] / 1e5,
                 $this->Values['total_timer_time'][0] / 1e3,
                 $this->isActiveLap() // #TSC is swimming and no real activity in this lap ==> pause/rest
+            ));
+        }
+    }
+
+    /**
+     * #TSC read the sets of a strength-training as "normal" laps
+     */
+    protected function readSet()
+    {
+        // xxx0=duration in millis
+        if (isset($this->Values['xxx0']) && round($this->Values['xxx0'][0] / 1e3) > 0) {
+            $this->Container->Rounds->add(new Round(
+                0,
+                $this->Values['xxx0'][0] / 1e3,
+                // xxx5=set_type=1=active;0=rest
+                (isset($this->Values['xxx5']) && $this->Values['xxx5'][0] == 1)
             ));
         }
     }

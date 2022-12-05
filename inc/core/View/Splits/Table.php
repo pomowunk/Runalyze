@@ -135,10 +135,13 @@ class Table {
 		$this->Code = '';
 
 		$this->setTableHeader();
-		$this->setSplits();
+		$hasDistance = $this->setSplits();
 		$this->setInstruction();
-		$this->setAverage();
-		$this->setHalfsOfCompetitionToCode();
+		// #TSC: if we have no distance/pace, not necessary
+		if ($hasDistance) {
+			$this->setAverage();
+			$this->setHalfsOfCompetitionToCode();
+		}
 		$this->setTableFooter();
 	}
 
@@ -165,6 +168,7 @@ class Table {
 	private function setSplits() {
 		$i = 0;
 		$seperated = false;
+		$hasDistance = false;
 
 		$showOnlyActive = $this->Splits->hasActiveAndInactiveLaps() && $this->Splits->hasActiveLaps(2);
 
@@ -183,17 +187,23 @@ class Table {
 				$seperated = false;
 			}
 
+			// #TSC hide distance&pace if not available
+			if ($Split->distance() > 0 || !$PaceObj->isEmpty()) {
+				$hasDistance = true;
+			}
 
 			$this->Code .= '<tr class="r">';
 			$this->Code .= '<td class="c">'.(++$i).'.</td>';
-			$this->Code .= '<td>'.Distance::format($Split->distance(), true, 2).'</td>';
+			$this->Code .= '<td>'. ($hasDistance ? Distance::format($Split->distance(), true, 2) : '') .'</td>';
 			$this->Code .= '<td>'.Duration::format($Split->time()).'</td>';
-			$this->Code .= '<td>'.$PaceObj->value().'<small>'.$PaceObj->appendix().'</small></td>';
-			$this->Code .= '<td>'.$this->tdForPaceDifference($PaceObj).'</td>';
+			$this->Code .= '<td>'. ($hasDistance ? $PaceObj->value().'<small>'.$PaceObj->appendix() : '') .'</small></td>';
+			$this->Code .= '<td>'. ($hasDistance ? $this->tdForPaceDifference($PaceObj) : '') .'</td>';
 			$this->Code .= '</tr>';
 		}
 
 		$this->Code .= '</tbody><tbody class="top-spacer">';
+
+		return $hasDistance;
 	}
 
 	/**
