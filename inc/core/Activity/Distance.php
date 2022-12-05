@@ -36,7 +36,7 @@ class Distance implements ValueInterface {
 	 * Default number of decimals
 	 * @var int
 	 */
-	public static $DefaultDecimals = 2;
+	public static $DefaultDecimals = 3;
 
 	/**
 	 * Distance [km]
