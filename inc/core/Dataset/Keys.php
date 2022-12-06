@@ -202,6 +202,9 @@ final class Keys extends AbstractEnum
 	/** @var int */
 	const TOTAL_CYCLES = 63;
 
+	/** @var int */
+	const FIT_LOAD_PEAK = 64;
+
     /**
 	 * @var array|null
 	 */
@@ -321,7 +324,8 @@ final class Keys extends AbstractEnum
             self::FIT_ANAEROBIC_TRAINING_EFFECT => 'FitAnaerobicTrainingEffect',
             self::AVG_RESPIRATION_RATE => 'AverageRespirationRate',
             self::HEARTRATE_AVG_ACTIVE => 'HeartrateAverageActive',
-            self::TOTAL_CYCLES => 'TotalCycles'
+            self::TOTAL_CYCLES => 'TotalCycles',
+            self::FIT_LOAD_PEAK => 'FitLoadPeak'
         );
 	}
 }

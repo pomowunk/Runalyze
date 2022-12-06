@@ -278,6 +278,9 @@ class SettingsController extends Controller
             'avg_footstrike_type_right' => 13,
             'avg_pronation_excursion_left' => -9.4,
             'avg_pronation_excursion_right' => -15.0,
+            'pulse_avg_active' => 156,
+            'total_cycles' => 203,
+            'fit_load_peak' => 78,
             Keys\Tags::CONCAT_TAGIDS_KEY => $this->exampleTagID($account),
             Keys\CompleteEquipment::CONCAT_EQUIPMENT_KEY => $this->exampleEquipmentIDs($account)
         );

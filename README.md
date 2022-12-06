@@ -146,6 +146,12 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Note: `total_cycles` can also be imported in other sports activities
 	* **Migration 20221204190000 is necessary!**
 * 2022-12-05: Set default decimal for distances from 2 to 3 decimal places; this affected detail views; this is better for swimming distances
+* 2022-12-06: Garmin FITs _training load peak_ (=Trainingsbelastung) is now support (after a long time of search ;-))
+	* New database field `training.fit_load_peak` will be stored the "Belastung"
+	* Importing the field, available in the dataset and shown on the "FIT detail" section of a selected activity
+	* Add glossary entry for _training load peak_; available on the "FIT detail" with the _?_
+	* **Migration 20221206170000 is necessary!**
+
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

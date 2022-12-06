@@ -522,6 +522,11 @@ class FitActivity extends AbstractSingleParser
         if (isset($this->Values['total_cycles']) && $this->Values['total_cycles'][0] > 0) {
             $this->Container->ActivityData->TotalCycles = $this->Values['total_cycles'][0];
         }
+
+        // #TSC: training load peak
+        if (isset($this->Values['xxx168']) && $this->Values['xxx168'][0] > 0) {
+            $this->Container->FitDetails->LoadPeak = round($this->Values['xxx168'][0] / 65536, 0);
+        }
     }
 
     protected function readSport()

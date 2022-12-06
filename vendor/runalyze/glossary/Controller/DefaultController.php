@@ -265,4 +265,12 @@ class DefaultController extends Controller
     {
         return $this->renderCorrectView('GlossaryBundle:topics:respiration.html.twig', $request);
     }
+
+    /**
+     * @Route("/training_load_peak", name="glossary-training_load_peak")
+     */
+    public function trainingLoadPeak(Request $request)
+    {
+        return $this->renderCorrectView('GlossaryBundle:topics:training_load_peak.html.twig', $request);
+    }
 }

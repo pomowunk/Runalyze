@@ -1,0 +1,33 @@
+{% extends "GlossaryBundle::_base.html.twig" %}
+
+{% import 'GlossaryBundle::_macro/references.html.twig' as ref %}
+
+{% block headline %}
+    Trainingsbelastung
+{% endblock %}
+
+{% block glossaryContent %}
+    <p class="text">
+        Die Belastung eines Trainings ist ein numerischer Wert, der angibt, inwieweit sich das Training auf den Körper auswirkt.
+        Sie basiert auf der berechneten EPOC. Garmin ermittelt die Belastung für einzelne Trainings und stellt außerdem Belastungsmessungen
+        zum Berechnen der wöchentlichen Trainingsbelastung und des wöchentlichen Trainingszustands zusammen.
+    </p>
+
+    <p class="text">
+        <u>Belastung und EPOC</u>
+        <br/>
+        Nach Abschluss eines Trainings nimmt Ihr Körper mehr Sauerstoff auf als im Ruhezustand (Afterburn-Effekt).
+        Dieses Phänomen ist als Sauerstoffmehraufnahme nach Belastungsende (EPOC; Excess post-exercise Oxygen Consumption) bekannt.
+        Da der vom Körper aufgenommene Sauerstoff direkt mit der verbrauchten Energie im Zusammenhang steht, eignet sich die EPOC ausgezeichnet zum Messen der Trainingsbelastung.
+        Sie gibt an, wie sehr sich der Körper bemühen muss, das normale Niveau wiederherzustellen.
+    </p>
+
+    <p class="text">
+        <u>Verwenden der Belastung für das Training</u>
+        <br/>
+        Die Trainingsbelastung bietet sich an, um die Intensität verschiedener Trainings im Vergleich miteinander zu messen.
+        Im Allgemeinen weisen höhere Belastungswerte auf ein wirkungsvolleres Training hin, jedoch bietet es sich in Bezug auf die Erholung an,
+        ein ausgewogenes Verhältnis von höheren und niedrigeren Belastungswerten zu haben.
+    </p>
+
+{% endblock %}

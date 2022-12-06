@@ -81,6 +81,7 @@ class DefaultConfiguration extends Configuration
 			Keys::RPE => false,
 			Keys::RACE_RESULT => false,
             Keys::TOOLS => false,
+            Keys::FIT_LOAD_PEAK => false,
 		));
 	}
 

@@ -222,6 +222,12 @@ class Entity extends Model\EntityWithID {
     const FIT_SELF_ELEVATION_PRECEIVED_EFFORT = 'fit_self_evaluation_perceived_effort';
 
     /**
+     * Key: fit_load_peak
+     * @var string
+     */
+    const FIT_LOAD_PEAK = 'fit_load_peak';
+
+    /**
      * Key: avg_respiration_rate
      * @var string
      */
@@ -519,6 +525,7 @@ class Entity extends Model\EntityWithID {
             self::FIT_TOTAL_DESCENT,
             self::FIT_SELF_ELEVATION_FEELING,
             self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT,
+			self::FIT_LOAD_PEAK,
             self::AVG_RESPIRATION_RATE,
             self::MAX_RESPIRATION_RATE,
             self::RPE,
@@ -627,6 +634,7 @@ class Entity extends Model\EntityWithID {
             case self::FIT_TOTAL_DESCENT:
             case self::FIT_SELF_ELEVATION_FEELING:
             case self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT:
+			case self::FIT_LOAD_PEAK:
             case self::AVG_RESPIRATION_RATE:
             case self::MAX_RESPIRATION_RATE:
             case self::RPE:
@@ -710,6 +718,7 @@ class Entity extends Model\EntityWithID {
             self::FIT_TOTAL_DESCENT,
             self::FIT_SELF_ELEVATION_FEELING,
             self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT,
+			self::FIT_LOAD_PEAK,
             self::AVG_RESPIRATION_RATE,
             self::MAX_RESPIRATION_RATE,
             self::RPE,
@@ -1017,6 +1026,14 @@ class Entity extends Model\EntityWithID {
      */
     public function fitSelfEvaluationPreceivedEffort() {
         return $this->Data[self::FIT_SELF_ELEVATION_PRECEIVED_EFFORT];
+    }
+
+    /**
+     * fit fitLoadPeak
+     * @return null|int
+     */
+    public function fitLoadPeak() {
+        return $this->Data[self::FIT_LOAD_PEAK];
     }
 
     /**

@@ -301,6 +301,13 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     /**
      * @var int|null []
      *
+     * @ORM\Column(name="fit_load_peak", type="smallint", nullable=true, options={"unsigned":true})
+     */
+    private $fitLoadPeak = null;
+
+    /**
+     * @var int|null []
+     *
      * @ORM\Column(name="avg_respiration_rate", type="smallint", nullable=true, options={"unsigned":true})
      */
     private $avgRespirationRate = null;
@@ -1422,6 +1429,26 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function setFitSelfEvaluationPreceivedEffort($fitSelfEvaluationPreceivedEffort)
     {
         $this->fitSelfEvaluationPreceivedEffort = $fitSelfEvaluationPreceivedEffort;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getFitLoadPeak()
+    {
+        return $this->fitLoadPeak;
+    }
+
+    /**
+     * @param null|int $fitLoadPeak
+     *
+     * @return $this
+     */
+    public function setFitLoadPeak($fitLoadPeak)
+    {
+        $this->fitLoadPeak = $fitLoadPeak;
 
         return $this;
     }

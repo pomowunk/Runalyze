@@ -39,4 +39,7 @@ class FitDetails
 
     /** @var int|null */
     public $SelfEvaluationPerceivedEffort = null;
+
+    /** @var int|null */
+    public $LoadPeak = null;
 }

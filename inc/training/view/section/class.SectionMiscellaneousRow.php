@@ -393,6 +393,7 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
             $this->Context->activity()->avgRespirationRate() . ' / ' .  $this->Context->activity()->maxRespirationRate() : '- / -'), $c);
         $this->addToTable($details, $this->getGlossaryLink('Anstrengung (1-10):', 'self-evaluation'), ($this->Context->activity()->fitSelfEvaluationPreceivedEffort() != null ? $this->Context->activity()->fitSelfEvaluationPreceivedEffort() : '-'), $c);
         $this->addToTable($details, $this->getGlossaryLink('Gefühl (1-5):', 'self-evaluation'), ($this->Context->activity()->fitSelfEvaluationFeeling() != null ? runActivity\SelfEvaluationFeeling::descriptionFromNum($this->Context->activity()->fitSelfEvaluationFeeling()) : '-'), $c);
+        $this->addToTable($details, $this->getGlossaryLink('Trainingsbelastung:', 'training_load_peak'), ($this->Context->activity()->fitLoadPeak() != null ? $this->Context->activity()->fitLoadPeak() : '-'), $c);
 
         $details .= '</tr></table>';
         $this->FitDetails .= HTML::fileBlock($details);
