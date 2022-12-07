@@ -22,7 +22,7 @@ class DistanceTest extends \PHPUnit_Framework_TestCase
 
 	public function testStaticFormatting()
 	{
-		$this->assertEquals('1,00&nbsp;km', Distance::format(1.0));
+		$this->assertEquals('1,000&nbsp;km', Distance::format(1.0));
 	}
 
 	public function testAutoFormat()
@@ -32,9 +32,9 @@ class DistanceTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('100m', $Distance->set(0.1)->stringAuto());
 		$this->assertEquals('1.000m', $Distance->set(1.0)->stringAuto());
 		$this->assertEquals('1.500m', $Distance->set(1.5)->stringAuto());
-		$this->assertEquals('1,75&nbsp;km', $Distance->set(1.75)->stringAuto());
+		$this->assertEquals('1,756&nbsp;km', $Distance->set(1.756)->stringAuto());
 		$this->assertEquals('3.000m', $Distance->set(3.0)->stringAuto());
-		$this->assertEquals('5,00&nbsp;km', $Distance->set(5)->stringAuto());
+		$this->assertEquals('5,000&nbsp;km', $Distance->set(5)->stringAuto());
 	}
 
 	public function testWithoutUnit()

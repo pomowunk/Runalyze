@@ -18,9 +18,9 @@ class DistanceTypeTest extends \PHPUnit_Framework_TestCase
     public function testTransform()
     {
         $this->assertEquals('', $this->Type->transform(null));
-        $this->assertEquals('1.234', $this->Type->transform(1.234));
-        $this->assertEquals('1234.50', $this->Type->transform(1234.5));
-        $this->assertEquals('7.69', $this->Type->transform('7.69'));
+        $this->assertEquals(round(1.234, $this->Type->getViewPrecision()), $this->Type->transform(1.234));
+        $this->assertEquals(round(1234.50, $this->Type->getViewPrecision()), $this->Type->transform(1234.5));
+        $this->assertEquals(round(7.69, $this->Type->getViewPrecision()), $this->Type->transform('7.69'));
     }
 
     public function testReverseTransform()

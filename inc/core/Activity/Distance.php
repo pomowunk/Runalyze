@@ -34,6 +34,7 @@ class Distance implements ValueInterface {
 
 	/**
 	 * Default number of decimals
+	 * **If you change this, also change the test src/CoreBundle/Form/Type/DistanceType.php**
 	 * @var int
 	 */
 	public static $DefaultDecimals = 3;

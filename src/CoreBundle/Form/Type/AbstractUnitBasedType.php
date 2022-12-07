@@ -64,4 +64,8 @@ abstract class AbstractUnitBasedType extends AbstractType implements DataTransfo
     {
         return TextType::class;
     }
+
+    public function getViewPrecision() {
+        return $this->ViewPrecision;
+    }
 }

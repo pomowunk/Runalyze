@@ -561,7 +561,7 @@ class FitActivity extends AbstractSingleParser
             if (isset($this->Values['sub_sport'])) {
                 // now check if we found a mapping mit sport & subsport
                 $internalId = $fitSdkMapping->sportWithSubsportToInternal($this->Values['sport'][0], $this->Values['sub_sport'][0]);
-                if (isset($internalId)) {
+                if (isset($internalId) && isset($this->Values['name'])) {
                     // yeah, something like sport=31=rock_climbing & sub_sport=69 (=Boulder) was found.
                     // use the name attribute (=Bouldering) and not the "sport" (was rock_climbing) as in the "normal" case
                     // not sure if this is necessary here, but be on the secure side ;-)
@@ -572,6 +572,8 @@ class FitActivity extends AbstractSingleParser
             // no mapping with subsport found, try it with only "sport" (the original case)
             if (!isset($internalId)) {
                 $internalId = $fitSdkMapping->toInternal($this->Values['sport'][0]);
+            }
+            if (!isset($name) && isset($this->Values['sport'])) {
                 $name = $this->Values['sport'][1];
             }
 

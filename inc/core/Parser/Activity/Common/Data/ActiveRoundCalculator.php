@@ -89,6 +89,10 @@ class ActiveRoundCalculator {
                     $this->activeIdx[$timeIdx++] = false;
                 }
             }
+
+            if ($timeIdx >= $len) {
+                break;
+            }
         }
     }
 

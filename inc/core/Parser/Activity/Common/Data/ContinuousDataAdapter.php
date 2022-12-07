@@ -249,7 +249,7 @@ class ContinuousDataAdapter
      * #TSC
      */
     public function getAverageTemperatur() {
-        if (!empty($this->ContinuousData->Temperature)) {
+        if (!empty($this->ContinuousData->Temperature) && count($this->ContinuousData->Temperature) > 0) {
             $a = array_filter($this->ContinuousData->Temperature);
             $average = array_sum($a)/count($a);
             return $average;

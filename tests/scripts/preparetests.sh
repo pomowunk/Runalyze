@@ -1,12 +1,14 @@
 #!/bin/bash
 
+set -e
+
 DB_HOST="-h 127.0.0.1"
 DB_USER="-urunalyze_test"
 
 # base is https://github.com/Runalyze/Runalyze/blob/support/4.3.x/.travis.yml
 
 apt-get update
-apt-get install --no-install-recommends mariadb-client
+apt-get install --no-install-recommends mariadb-client tzdata
 
 # create/update database
 echo "Create testdatabase. Enter root password."
