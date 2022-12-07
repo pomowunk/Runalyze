@@ -99,12 +99,17 @@ class ActivityDataContainer
             $this->WeatherData->Temperature = $this->ContinuousDataAdapter->getAverageTemperatur();
         }
 
-        // #TSC set RG=Regeneration Run
-        if (empty($this->Metadata->getTypeName()) && !empty($this->FitDetails)
-            && $this->FitDetails->SelfEvaluationPerceivedEffort == 1 // anstrengung=sehr leicht=1
-            && $this->FitDetails->SelfEvaluationFeeling == Activity\SelfEvaluationFeeling::VERY_STRONG) // gefuehl=sehr stark=5
-            { 
-            $this->Metadata->setTypeName('RG');
+        // check that the type belongs to sport "running" not needed here; will be checked further in ActivityDataContainerToActivityContextConverter.tryToSetTypeFor
+        if (empty($this->Metadata->getTypeName()) && !empty($this->FitDetails)) {
+            // #TSC set RG=Regeneration Run
+            if ($this->FitDetails->SelfEvaluationPerceivedEffort == 1 // anstrengung=sehr leicht=1
+                && $this->FitDetails->SelfEvaluationFeeling == Activity\SelfEvaluationFeeling::VERY_STRONG) { // gefuehl=sehr stark=5
+                $this->Metadata->setTypeName('RG');
+            } else if($this->FitDetails->SelfEvaluationPerceivedEffort == 10 // anstrengung=maximum=10
+                && $this->FitDetails->SelfEvaluationFeeling == Activity\SelfEvaluationFeeling::VERY_WEAK) { // gefuehl=sehr schwach=1
+                // #TSC TR=tempo run
+                $this->Metadata->setTypeName('TR');
+            }
         }
     }
 
@@ -130,6 +135,7 @@ class ActivityDataContainer
 
 
             // #TSC check if rounds includes intervals
+            // check that the type belongs to sport "running" not needed here; will be checked further in ActivityDataContainerToActivityContextConverter.tryToSetTypeFor
             if (empty($this->Metadata->getTypeName()) && $this->Rounds->hasIntervalRounds()) {
                 // search type by short-cut - it must be configured as short-cut "IT" in the master-data
                 $this->Metadata->setTypeName('IT');

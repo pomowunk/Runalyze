@@ -151,6 +151,12 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Importing the field, available in the dataset and shown on the "FIT detail" section of a selected activity
 	* Add glossary entry for _training load peak_; available on the "FIT detail" with the _?_
 	* **Migration 20221206170000 is necessary!**
+* 2022-12-07: Auto detection of type "Tempo run" (_TR_) while importing activity based on self-evaluation
+	* You must configure a training-type with short-cut _TR_ to your sports (default _TR_ exists)
+	* Detection only works in batch/bulk import mode
+	* Works on Fenix self-evaluation (Selbsteinschätzung), where you set
+		* `perceived effort` = 10 ("empfundene Anstrengung", maximum)
+		* and `feel evaluation` = 1 ("Gefühl", very weak/sehr schwach)
 
 
 Please notice:
