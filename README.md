@@ -157,7 +157,9 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Works on Fenix self-evaluation (Selbsteinschätzung), where you set
 		* `perceived effort` = 10 ("empfundene Anstrengung", maximum)
 		* and `feel evaluation` = 1 ("Gefühl", very weak/sehr schwach)
-
+* 2022-12-11: Show the pauses in a table on the _miscellaneous_-section
+	* The pause table is only available if pauses exists
+	* Add the pause number/index in the leaflet's tooltip
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

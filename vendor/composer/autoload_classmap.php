@@ -605,6 +605,7 @@ return array(
     'TableLaps' => $baseDir . '/inc/training/view/section/table/class.TableLaps.php',
     'TableLapsAbstract' => $baseDir . '/inc/training/view/section/table/class.TableLapsAbstract.php',
     'TableLapsComputed' => $baseDir . '/inc/training/view/section/table/class.TableLapsComputed.php',
+    'TablePauses' => $baseDir . '/inc/training/view/section/table/class.TablePauses.php',
     'TableSwimLane' => $baseDir . '/inc/training/view/section/table/class.TableSwimLane.php',
     'TableZonesAbstract' => $baseDir . '/inc/training/view/section/table/class.TableZonesAbstract.php',
     'TableZonesHeartrate' => $baseDir . '/inc/training/view/section/table/class.TableZonesHeartrate.php',

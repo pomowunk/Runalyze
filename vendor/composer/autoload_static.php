@@ -1174,6 +1174,7 @@ class ComposerStaticInitf2f4f22e000d8fb4380f43e220229215
         'TableLaps' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TableLaps.php',
         'TableLapsAbstract' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TableLapsAbstract.php',
         'TableLapsComputed' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TableLapsComputed.php',
+        'TablePauses' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TablePauses.php',
         'TableSwimLane' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TableSwimLane.php',
         'TableZonesAbstract' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TableZonesAbstract.php',
         'TableZonesHeartrate' => __DIR__ . '/../..' . '/inc/training/view/section/table/class.TableZonesHeartrate.php',

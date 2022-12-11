@@ -349,7 +349,8 @@ class Activity extends LeafletRoute {
 		$Pause = $this->Trackdata->pauses()->at($this->PauseIndex);
 		$Index = $this->RouteLoop->index();
 
-		$Tooltip = sprintf( __('<strong>Pause</strong> of %s'), Duration::format($Pause->duration()));
+		// #TSC: add also pause-index to the tooltip
+		$Tooltip = sprintf( '<strong>%d.</strong> ' . __('<strong>Pause</strong> of %s'), $this->PauseIndex + 1, Duration::format($Pause->duration()));
 		$Tooltip .= '<br>'.sprintf( __('<strong>Distance:</strong> %s'), Distance::format($this->Trackdata->at($Index, Trackdata\Entity::DISTANCE)) );
 		$Tooltip .= '<br>'.sprintf( __('<strong>Time:</strong> %s'), Duration::format($this->Trackdata->at($Index, Trackdata\Entity::TIME)) );
 

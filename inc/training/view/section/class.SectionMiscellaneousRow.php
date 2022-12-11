@@ -16,6 +16,7 @@ use Runalyze\Profile\Athlete\Gender;
 use Runalyze\View;
 use Runalyze\View\Activity;
 use Runalyze\View\Activity\Box;
+use Runalyze\Model\Trackdata\Pauses;
 
 /**
  * Row: Miscellaneous
@@ -31,6 +32,8 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	protected $NotesContent = '';
 
 	protected $FitDetails = '';
+
+	protected $PausesContent = '';
 
 	/**
 	 * @var bool
@@ -89,6 +92,11 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
             $this->addRightContent('smo2AndThb', __('SmO2').' / '.__('THb'), $Plot);
         }
 
+		// #TSC pauses
+		if ($this->Context->trackdata()->has(Trackdata\Entity::PAUSES)) {
+			$Table = new TablePauses($this->Context);
+			$this->addRightContent('pauses', __('Pausen'), $Table->getCode());
+		}
 	}
 
 	/**
