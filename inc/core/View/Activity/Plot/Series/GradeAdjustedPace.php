@@ -38,6 +38,7 @@ class GradeAdjustedPace extends Pace
 
 	protected function adjustTrackdata(Activity\Context $context)
 	{
+        // #TSC the based Minetti-algorithm only makes sence in RUNNING
         if ($context->sport()->getInternalProfileEnum() != SportProfile::RUNNING || !$context->hasRoute() || !$context->route()->hasElevations() || !$context->hasTrackdata() || !$context->trackdata()->has(Trackdata::DISTANCE)) {
             $context->trackdata()->set(Trackdata::PACE, []);
 

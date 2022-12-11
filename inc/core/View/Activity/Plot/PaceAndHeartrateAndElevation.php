@@ -27,20 +27,22 @@ class PaceAndHeartrateAndElevation extends ActivityPlot {
 	 * @param \Runalyze\View\Activity\Context $context
 	 */
 	protected function initData(Activity\Context $context) {
+		$Gradient = new Series\Gradient($context);
 		/** @var \Runalyze\View\Plot\Series[] $allSeries */
 		$allSeries = [
 			new Series\Elevation($context),
-			new Series\Gradient($context),
-			new Series\Pace($context),
+			$Gradient,
 			new Series\Heartrate($context),
-			new Series\TimeSeries($context),
-			new Series\DistanceSeries($context)
+			new Series\Pace($context)
 		];
 
 		$this->addMultipleSeries($allSeries);
 
-		$allSeries[1]->hideIn($this);
-		$allSeries[4]->hideIn($this);
-		$allSeries[5]->hideIn($this);
+		// #TSC add GAP, but not via addMultipleSeries, bacause yAxis must the same as the Pace series
+		$GradeAdjustedPaceSeries = new Series\GradeAdjustedPace($context);
+		$this->addSeries($GradeAdjustedPaceSeries, 4, false);
+
+		$this->Plot->Options['legend']['hidden'] = [$Gradient->label(), $GradeAdjustedPaceSeries->label()]; // hide by default
+
 	}
 }

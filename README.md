@@ -160,6 +160,10 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2022-12-11: Show the pauses in a table on the _miscellaneous_-section
 	* The pause table is only available if pauses exists
 	* Add the pause number/index in the leaflet's tooltip
+* 2022-12-11: Tune the combined section (heart-rate, pace, elevation)
+	* Show additionally the GAP in the _Pace & heartrate_ diagram
+	* Show additionally the GAP and gradient in the _Pace & heartrate & elevation_ diagram
+	* Show additionally "average heart-rate for active rounds", GAP and FITs-training-effects in the combined table
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

@@ -59,15 +59,12 @@ class SectionPaceRow extends TrainingViewSectionRowTabbedPlot {
 			if ($Pace->unit()->isDecimalFormat()) {
 				$this->BoxedValues[] = new Activity\Box\Pace($this->Context);
 				$this->BoxedValues[] = new Activity\Box\PaceAlternative($this->Context);
-				if (Activity\Box\GradeAdjustedPace::hasPace($this->Context)) {
-					$this->BoxedValues[] = new Activity\Box\GradeAdjustedPace($this->Context);
-				}
 			} else {
 				$this->BoxedValues[] = new Activity\Box\Pace($this->Context);
 				$this->BoxedValues[] = new Activity\Box\Speed($this->Context);
-				if (Activity\Box\GradeAdjustedPace::hasPace($this->Context)) {
-					$this->BoxedValues[] = new Activity\Box\GradeAdjustedPace($this->Context);
-				}
+			}
+			if (Activity\Box\GradeAdjustedPace::hasPace($this->Context)) {
+				$this->BoxedValues[] = new Activity\Box\GradeAdjustedPace($this->Context);
 			}
 		}
 	}

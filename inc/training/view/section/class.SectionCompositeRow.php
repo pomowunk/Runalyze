@@ -91,6 +91,10 @@ class SectionCompositeRow extends TrainingViewSectionRowTabbedPlot {
 		$this->addMaximalHeartrate();
 		$this->addCaloriesAndTrimp();
 
+		// #TSC: add effects
+		$this->addFitTrainingEffect();
+		$this->addFitAnaerobicTrainingEffect();
+
 		if ($showElevation) {
 			$this->addElevation();
 		}
@@ -128,6 +132,10 @@ class SectionCompositeRow extends TrainingViewSectionRowTabbedPlot {
 				$this->BoxedValues[] = new Activity\Box\Pace($this->Context);
 				$this->BoxedValues[] = new Activity\Box\Speed($this->Context);
 			}
+			// #TSC show also GAP
+			if (Activity\Box\GradeAdjustedPace::hasPace($this->Context)) {
+				$this->BoxedValues[] = new Activity\Box\GradeAdjustedPace($this->Context);
+			}
 		}
 	}
 
@@ -163,6 +171,12 @@ class SectionCompositeRow extends TrainingViewSectionRowTabbedPlot {
 				$this->BoxedValues[] = new BoxedValue($this->Context->dataview()->hrAvg()->inPercent(), '&#37;', __('avg.').' '.__('Heart rate'));
 			}
 		}
+
+		// #TSC: also show active-HR (without rests) in the combined view
+		$hr = $this->Context->activity()->hrAvgActive();
+		if ($hr > 0 && $hr != $this->Context->activity()->hrAvg()) {
+			$this->BoxedValues[] = new BoxedValue($this->Context->dataview()->hrAvgActive()->inBPM(), 'bpm', '&#216; '.__('Heart rate').' active');
+		}
 	}
 
 	/**
@@ -197,11 +211,12 @@ class SectionCompositeRow extends TrainingViewSectionRowTabbedPlot {
 				$this->BoxedValues[] = new Box\Distance($this->Context);
 			}
 
-			$this->BoxedValues[] = new Box\Elevation($this->Context);
-
 			// TODO: Calculated elevation?
 
 			if ($this->Context->activity()->elevation() > 0) {
+				// #TSC: show elevation only if available
+				$this->BoxedValues[] = new Box\Elevation($this->Context);
+
 				if ($this->Context->activity()->distance() > 0) {
 					$this->BoxedValues[] = new Box\Gradient($this->Context);
 				}
@@ -240,5 +255,24 @@ class SectionCompositeRow extends TrainingViewSectionRowTabbedPlot {
 		}
 
 		// TODO: Add link to correct them now!
+	}
+
+	/**
+	 * Add: FitTrainingEffect
+	 */
+	protected function addFitTrainingEffect() {
+	    if ($this->Context->activity()->fitTrainingEffect() > 0) {
+		$this->BoxedValues[] = new Box\FitTrainingEffect($this->Context);
+	    }
+	}
+
+	/**
+	 * Add: FitAnaerobicTrainingEffect
+     * #TSC: new Anaerobic
+	 */
+	protected function addFitAnaerobicTrainingEffect() {
+	    if ($this->Context->activity()->fitAnaerobicTrainingEffect() > 0) {
+            $this->BoxedValues[] = new Box\FitAnaerobicTrainingEffect($this->Context);
+	    }
 	}
 }
