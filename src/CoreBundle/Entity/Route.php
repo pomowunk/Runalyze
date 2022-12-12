@@ -105,6 +105,13 @@ class Route implements AccountRelatedEntityInterface
     private $elevationsSource = '';
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="altitude_barometric", type="boolean")
+     */
+    private $altitudeBarometric = false;
+
+    /**
      * @var string|null [geohash]
      *
      * @ORM\Column(name="startpoint", type="string", length=10, nullable=true, options={"fixed" = true})
@@ -290,6 +297,26 @@ class Route implements AccountRelatedEntityInterface
     public function getElevationDown()
     {
         return $this->elevationDown;
+    }
+
+    /**
+     * @param int $altitudeBarometric boolean
+     *
+     * @return $this
+     */
+    public function setAltitudeBarometric($altitudeBarometric)
+    {
+        $this->altitudeBarometric = $altitudeBarometric;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAltitudeBarometric()
+    {
+        return $this->altitudeBarometric;
     }
 
     /**

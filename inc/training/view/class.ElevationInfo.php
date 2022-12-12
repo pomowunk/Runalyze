@@ -110,7 +110,7 @@ class ElevationInfo {
 		}
 
 		$Fieldset = new FormularFieldset( __('General data') );
-		$Fieldset->setHtmlCode('
+		$html ='
 			<div class="w50">
 				<label>'.Ajax::tooltip(__('manual value'), __('If you did not insert a value by hand, this value has been calculated.')).'</label>
 				<span class="as-input">'.Elevation::format($this->manualElevation).'</span>
@@ -135,7 +135,20 @@ class ElevationInfo {
 				<label>'.__('Up/Down').'</label>
 				<span class="as-input">+'.Elevation::format($this->Context->route()->elevationUp()).' / -'.Elevation::format($this->Context->route()->elevationDown()).'</span>
 			</div>
-		');
+			<div class="w50">
+			</div>
+		';
+		// #TSC if the original FIT values available, add it
+		if ($this->Context->activity()->fitTotalAscent() > 0 || $this->Context->activity()->fitTotalDescent() != 0) {
+			$html .= '
+			<div class="w50">
+				<label>'. __('Up/Down'). ' (FIT original)</label>
+				<span class="as-input">+'. Elevation::format($this->Context->activity()->fitTotalAscent()).
+								    ' / -'.Elevation::format($this->Context->activity()->fitTotalDescent()).'</span>
+			</div>';
+		}
+
+		$Fieldset->setHtmlCode($html);
 		$Fieldset->display();
 	}
 
@@ -235,6 +248,11 @@ class ElevationInfo {
 		} else {
 			$textInfo = __('Elevation data has not been corrected.');
 			$rawLinks = array('' => __('correct now'));
+		}
+
+		// #TSC add info about barometric device
+		if ($this->Context->route()->altitudeBarometric()) {
+			$textInfo .= '&nbsp;&nbsp;Die Orginal Höhendaten basieren auf einer barometrischen Messung.';
 		}
 
 		foreach ($rawLinks as $urlAppendix => $text) {

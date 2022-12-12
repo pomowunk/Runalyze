@@ -101,6 +101,12 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 	const ELEVATIONS_SOURCE = 'elevations_source';
 
 	/**
+	 * Key: elevations source
+	 * @var string
+	 */
+	const ALTITUDE_BAROMETRIC = 'altitude_barometric';
+
+	/**
 	 * Key: startpoint in geohash
 	 * @var string
 	 */
@@ -192,6 +198,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 			self::ELEVATIONS_ORIGINAL,
 			self::ELEVATIONS_CORRECTED,
 			self::ELEVATIONS_SOURCE,
+			self::ALTITUDE_BAROMETRIC,
 			self::STARTPOINT,
 			self::ENDPOINT,
 			self::MIN,
@@ -217,6 +224,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 			self::ELEVATIONS_ORIGINAL,
 			self::ELEVATIONS_CORRECTED,
 			self::ELEVATIONS_SOURCE,
+			self::ALTITUDE_BAROMETRIC,
 			self::STARTPOINT,
 			self::ENDPOINT,
 			self::MIN,
@@ -258,6 +266,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 		switch ($key) {
 			case self::ELEVATIONS_ORIGINAL:
 			case self::ELEVATIONS_CORRECTED:
+			case self::ALTITUDE_BAROMETRIC:
 			case self::GEOHASHES:
 			case self::STARTPOINT:
 			case self::ENDPOINT:
@@ -291,6 +300,7 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 			self::ELEVATION,
 			self::ELEVATION_UP,
 			self::ELEVATION_DOWN,
+			self::ALTITUDE_BAROMETRIC,
 			self::IN_ROUTENET
 		));
 	}
@@ -592,6 +602,14 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 	 */
 	public function elevationsSource() {
 		return $this->Data[self::ELEVATIONS_SOURCE];
+	}
+
+	/**
+	 * Barometric device
+	 * @return string
+	 */
+	public function altitudeBarometric() {
+		return $this->Data[self::ALTITUDE_BAROMETRIC];
 	}
 
 	/**

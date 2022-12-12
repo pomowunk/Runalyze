@@ -164,6 +164,17 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Show additionally the GAP in the _Pace & heartrate_ diagram
 	* Show additionally the GAP and gradient in the _Pace & heartrate & elevation_ diagram
 	* Show additionally "average heart-rate for active rounds", GAP and FITs-training-effects in the combined table
+* 2022-12-12: Optimize the storing of elevations regarding _original_ and _corrected_ values
+	* Until now: if you have a barometric-supported device, the _corrected_ elevations additionally stored in `route.elevations_corrected` and the _original_ and _corrected_ are the same;
+	  this was necessary to suppress the correction of "good barometric" data; in this cases it was not full clear in the UI about this
+	* _"Correction" in this context means the altitude correction via GeoTiff due "bad" GPS elevations_
+	* Now: if you have a barometric-supported device, the original elevations are stored only in `route.elevations_original` and the new flag `route.altitude_barometric` is set to true
+	* In the _elevation calculation_-window now it's a clear note, if the data are from a barometric device and if there are corrected or not
+	* As before, the data of barometric-supported devices are not corrected, even the configuration _user wants elevations to be corrected_ is set
+	* By default all existing routes will be set to `route.altitude_barometric` = 0 = false; if you want to "migrate" existing routes to barometric-device use this:
+	  `update runalyze_route set elevations_corrected = null, altitude_barometric = 1 where elevations_original = elevations_corrected and elevations_corrected is not null and elevations_source = '' and altitude_barometric = 0;`
+	* If available show the ascent/desent from your device on the _elevation calculation_-window for better comparison of the calculated values
+	* **Migration 20221212190000 is necessary!**
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
