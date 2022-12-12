@@ -135,12 +135,12 @@ class ElevationInfo {
 				<label>'.__('Up/Down').'</label>
 				<span class="as-input">+'.Elevation::format($this->Context->route()->elevationUp()).' / -'.Elevation::format($this->Context->route()->elevationDown()).'</span>
 			</div>
-			<div class="w50">
-			</div>
 		';
 		// #TSC if the original FIT values available, add it
 		if ($this->Context->activity()->fitTotalAscent() > 0 || $this->Context->activity()->fitTotalDescent() != 0) {
 			$html .= '
+			<div class="w50">
+			</div>
 			<div class="w50">
 				<label>'. __('Up/Down'). ' (FIT original)</label>
 				<span class="as-input">+'. Elevation::format($this->Context->activity()->fitTotalAscent()).
