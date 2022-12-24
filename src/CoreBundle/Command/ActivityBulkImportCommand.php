@@ -138,6 +138,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
                 }
 
                 $contextAdapter->guessWeatherConditions($defaultLocation, $user);
+                $contextAdapter->guessRouteDetails();
                 $this->getTrainingRepository()->save($activity);
                 $output->writeln('<fg=green> ... successfully imported</>');
                 $this->moveFile($fs, $path, $result->getOriginalFileName(), $output);

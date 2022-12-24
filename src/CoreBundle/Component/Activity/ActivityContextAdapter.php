@@ -5,6 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Component\Activity;
 use Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder;
 use Runalyze\Bundle\CoreBundle\Services\Import\WeatherDataToActivityConverter;
 use Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast;
+use Runalyze\Service\RouteNameEvaluation\RouteNameEval;
 use Runalyze\Parameter\Application\Timezone;
 use Runalyze\Service\WeatherForecast\Location;
 use Runalyze\Util\LocalTime;
@@ -20,15 +21,17 @@ class ActivityContextAdapter
     /** @var DuplicateFinder */
     protected $DuplicateFinder;
 
+    protected $RouteNameEval;
+
     public function __construct(
         ActivityContext $context,
         WeatherForecast $weatherForecast,
-        DuplicateFinder $duplicateFinder
-    )
-    {
+        DuplicateFinder $duplicateFinder,
+        RouteNameEval $routeNameEval) {
         $this->Context = $context;
         $this->WeatherForecast = $weatherForecast;
         $this->DuplicateFinder = $duplicateFinder;
+        $this->RouteNameEval = $routeNameEval;
     }
 
     /**
@@ -73,6 +76,26 @@ class ActivityContextAdapter
             $converter = new WeatherDataToActivityConverter();
             $converter->setActivityWeatherDataFor($this->Context->getActivity(), $weather);
         }
+    }
+
+    /**
+     * #TSC get details of the route and set it on the relevant activity fields.
+     * @return bool
+     */
+    public function guessRouteDetails(): bool {
+        $activity = $this->Context->getActivity();
+        if($activity->hasRoute() && $activity->getRoute()->hasGeohashes()) {
+            $result = $this->RouteNameEval->evaluate($activity->getSport(), $activity->getRoute(), $activity->getDistance());
+
+            if($result != null) {
+                // set the name not directly on route, because on Training there is also a "route(name)" attribute
+                $activity->setRouteName($result->getNames());
+                $activity->setNotes($result->appendNotes($activity->getNotes()));
+                return true;
+            }    
+        }
+
+        return false;
     }
 
     /**

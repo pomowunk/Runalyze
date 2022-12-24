@@ -613,6 +613,24 @@ class Entity extends Model\EntityWithID implements Model\Loopable, Model\Common\
 	}
 
 	/**
+	 * 
+	 * @return lat|lng
+	 */
+	public function min() {
+		$geohash = $this->Data[self::MIN];
+		return (new Geohash())->decode($geohash)->getCoordinate();
+	}
+
+	/**
+	 * 
+	 * @return lat|lng
+	 */
+	public function max() {
+		$geohash = $this->Data[self::MAX];
+		return (new Geohash())->decode($geohash)->getCoordinate();
+	}
+
+	/**
 	 * Elevations array (corrected or original)
 	 * @return array
 	 */

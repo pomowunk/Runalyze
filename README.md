@@ -175,6 +175,27 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	  `update runalyze_route set elevations_corrected = null, altitude_barometric = 1 where elevations_original = elevations_corrected and elevations_corrected is not null and elevations_source = '' and altitude_barometric = 0;`
 	* If available show the ascent/desent from your device on the _elevation calculation_-window for better comparison of the calculated values
 	* **Migration 20221212190000 is necessary!**
+* 2022-12-27: Retrieve route name, cities and additional infos regarding your route of the activity and store it while bulk importing
+	* Based on the route (GPS) coordinates, the informations are fetched from the OpenStreetMap API `Overpass`
+	* If a activity has route coordinates following will be determined:
+		1. peaks and sattles (order by elevation; first highest)
+		2. places
+		    - city>town>village>hamlet...; order by OSM-"size" of the place
+		    - (alpine) huts
+		    - waters (sea, lakes...)
+		    - forests/woods
+		3. hiking ways (like Kramersteig or Maximiliansweg)
+		4. any tourism information's
+	* Where possible, the _DE_ (german) `name` of OSM is used, otherwise the `name`
+	* In normal cases (when all informations are available), the `training.route`, `route.name` and `route.cities` contains 1. and 2.; if the limit of 255 chars is exceeded, it will cut clean at the latest fitted name
+	* The names will be seperated with the ` - ` delimiter (to extract the _often places_)
+	* The `training.notes` includes informations of 3. and 4. in a section marked with `Strecken-Info` at the end of existing text
+	* If some information are not found in OSM, this priority can changed
+	* This works only on the bulk import
+	* It's also possible to update existing activities with the command `/usr/bin/php /app/runalyze/bin/console runalyze:activity:bulk-routeval --env=prod [--nexted] [--override] username trainingId`
+		* `--nexted` fetch the next activity and also update it; so long as next activities exists (like multi update)
+		* `--override` overrides possible existing data with the newest determined informations
+	* With the configration parameters `osm_overpass_url` or/and `osm_overpass_proxy` you can configure the `Overpass` API endpoint and a proxy-server. A good `Overpass` (without limits) is `https://overpass.kumi.systems/api/interpreter` or your own local instance. The proxy can be used for `Tor` to "hide" your IP. If no `osm_overpass_url` is configured, no determination is occured
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

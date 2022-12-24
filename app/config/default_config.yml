@@ -39,3 +39,5 @@ parameters:
   router.request_context.host: localhost
   router.request_context.scheme: http
   router.request_context.base_url:
+  osm_overpass_url: 'https://overpass.kumi.systems/api/interpreter'
+  osm_overpass_proxy:

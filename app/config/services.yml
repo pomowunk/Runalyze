@@ -378,7 +378,7 @@ services:
     arguments: ["@app.cache.activity_uploads"]
   app.activity_context_adapter_factory:
     class: Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory
-    arguments: ["@app.weather_forecast", "@app.activity_duplicate_finder"]
+    arguments: ["@app.weather_forecast", "@app.activity_duplicate_finder", "@app.routename_elevation.routename_elevation_factory"]
   app.data_series_remover:
     class: Runalyze\Bundle\CoreBundle\Services\Activity\DataSeriesRemover
     arguments: ["@doctrine.orm.entity_manager"]
@@ -425,6 +425,16 @@ services:
   app.elevation_correction:
     class: Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection
     arguments: ["@app.elevation_correction.geotiff", "@app.elevation_correction.geonames", "@app.elevation_correction.google_maps"]
+  app.routename_elevation.routename_elevation_factory:
+    class: Runalyze\Service\RouteNameEvaluation\RouteNameEvalFactory
+    arguments: ["@app.routename_elevation.routename_elevation_osm"]
+    tags:
+      - { name: monolog.logger, channel: external_services }
+  app.routename_elevation.routename_elevation_osm:
+    class: Runalyze\Service\RouteNameEvaluation\RouteNameEvalOsm
+    arguments: ["%osm_overpass_url%", "%osm_overpass_proxy%", "@app.http_client", "@logger"]
+    tags:
+      - { name: monolog.logger, channel: external_services }
   app.timezone_lookup:
     class: Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup
     arguments: ["%data_directory%/timezone.sqlite", "%sqlite_mod_spatialite%", true]

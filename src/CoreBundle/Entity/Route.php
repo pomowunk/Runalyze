@@ -394,7 +394,6 @@ class Route implements AccountRelatedEntityInterface
                 $coordinates[1][] = round($coordinate->getLongitude(), 6);
             }
         }
-
         return $coordinates;
     }
 
