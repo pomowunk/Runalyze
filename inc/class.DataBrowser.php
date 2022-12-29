@@ -291,6 +291,31 @@ class DataBrowser {
 	}
 
 	/**
+	 * Show year links for the previous 20 years
+	 * #TSC
+	 */
+	protected function getYearLinks() {
+		$t = new DateTime('now', new DateTimeZone('UTC'));
+		$oneYear = new DateInterval('P1Y');
+		$selectedYear = (new LocalTime($this->TimestampStart))->format('Y');
+
+		echo '<table>';
+		for($i = 0; $i < 20; $i++) {
+			if($i % 4 == 0) {
+				echo '<tr>';
+			}
+			$year = $t->format('Y');
+			echo '<td' . ($year == $selectedYear ? ' style="background-color: #ff6"' : '') . '>' . 
+				DataBrowserLinker::yearLink($year, $t->getTimestamp()) . '</td>';
+			if($i % 4 == 3) {
+				echo '</tr>';
+			}
+			$t = $t->sub($oneYear);
+		}
+		echo '</table>';
+	}
+
+	/**
 	 * Get ajax-link for showing month-kilometer
 	 * @return string
 	 */

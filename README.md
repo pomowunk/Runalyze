@@ -199,6 +199,7 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 * 2022-12-29: Weather loading is processed only, if the bulk-imported activity is "outside"
 	* Support of HTTP proxy via configuration `weather_proxy` for _OpenWeatherMap_ and [MeteostatNet](https://meteostat.net/)
 	* If loading via _MeteostatNet_ fails, a `Exception` will be thrown
+* 2022-12-29: Fix JS error in dataview datepicker; add 20 previous years in dataview datepicker
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

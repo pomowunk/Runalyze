@@ -14,8 +14,18 @@ use Runalyze\Util\LocalTime;
 <div class="panel-content">
 	<div id="<?php echo DataBrowser::CALENDAR_ID; ?>">
 
-		<div id="widget-calendar">
-		</div>
+		<table>
+			<tr>
+				<td>
+				<div id="widget-calendar"></div>
+				</td>
+				<td style="vertical-align: middle;">
+					<div id="direct-timerange">
+						<?php $this->getYearLinks(); ?>
+					</div>
+				</td>
+			</tr>
+		</table>
 
 		<span id="calendar-result" class="hide"><?php _e('Choose a date ...'); ?></span>
 		<input id="calendar-start" type="hidden" value="<?php echo $this->TimestampStart; ?>000">
