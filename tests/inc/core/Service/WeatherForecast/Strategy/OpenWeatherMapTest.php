@@ -15,7 +15,7 @@ class OpenWeatherMapTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyResponse()
     {
-        $darkSky = new OpenWeatherMap('', $this->getMockForResponses([
+        $darkSky = new OpenWeatherMap('', null, $this->getMockForResponses([
             new Response(200, [], '')
         ]));
 
@@ -30,7 +30,7 @@ class OpenWeatherMapTest extends \PHPUnit_Framework_TestCase
 
     public function testSimpleResponse()
     {
-        $darkSky = new OpenWeatherMap('', $this->getMockForResponses([
+        $darkSky = new OpenWeatherMap('', null, $this->getMockForResponses([
             new Response(200, [], '{
 				"coord":{"lon":7.75,"lat":49.45},
 				"sys":{"message":0.0221,"country":"DE","sunrise":1401334144,"sunset":1401391431},
