@@ -102,6 +102,7 @@ class Frontend {
 			Yaml::parse(file_get_contents(FRONTEND_PATH.'/../data/config.yml'))['parameters']
 		);
 
+        define('WEATHER_PROXY', $this->yamlConfig['weather_proxy']);
         define('DARKSKY_API_KEY', $this->yamlConfig['darksky_api_key']);
         define('OPENWEATHERMAP_API_KEY', $this->yamlConfig['openweathermap_api_key']);
         define('METEOSTATNET_API_KEY', $this->yamlConfig['meteostatnet_api_key']);

@@ -34,17 +34,22 @@ class OpenWeatherMap implements StrategyInterface, LoggerAwareInterface
     /** @var string */
     protected $ApiKey;
 
+    /** @var string */
+    protected $Proxy;
+
     /** @var Client */
     protected $HttpClient;
 
     /**
      * @param string $apiKey
+     * @param string $proxy
      * @param Client $client
      * @param LoggerInterface|null $logger
      */
-    public function __construct($apiKey, Client $client, LoggerInterface $logger = null)
+    public function __construct($apiKey, $proxy, Client $client, LoggerInterface $logger = null)
     {
         $this->ApiKey = $apiKey;
+        $this->Proxy = $proxy;
         $this->HttpClient = $client;
         $this->logger = $logger;
     }
@@ -144,7 +149,12 @@ class OpenWeatherMap implements StrategyInterface, LoggerAwareInterface
     {
         if (!$location->isOlderThan(7200)) {
             try {
-                $response = $this->HttpClient->get($this->getUrlFor($location));
+                $headers = [];
+                if(!empty($this->Proxy)) {
+                    $headers['proxy'] = $this->Proxy;
+                }
+
+                $response = $this->HttpClient->get($this->getUrlFor($location), $headers);
                 $result = json_decode($response->getBody()->getContents(), true);
 
                 if (is_array($result)) {

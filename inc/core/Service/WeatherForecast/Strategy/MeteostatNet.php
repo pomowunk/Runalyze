@@ -31,17 +31,22 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
     /** @var string */
     protected $ApiKey;
 
+    /** @var string */
+    protected $Proxy;
+    
     /** @var Client */
     protected $HttpClient;
 
     /**
      * @param string $apiKey
+     * @param string $proxy
      * @param Client $client
      * @param LoggerInterface|null $logger
      */
-    public function __construct($apiKey, Client $client, LoggerInterface $logger = null)
+    public function __construct($apiKey, $proxy, Client $client, LoggerInterface $logger = null)
     {
         $this->ApiKey = $apiKey;
+        $this->Proxy = $proxy;
         $this->HttpClient = $client;
         $this->logger = $logger;
     }
@@ -131,10 +136,14 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
         $this->logger->debug(sprintf('url >> %s.', $url));
 
         try {
-
-            $response = $this->HttpClient->request('GET', $url, [ 'headers' => [
+            $headers = [ 'headers' => [
                 'x-rapidapi-host' => 'meteostat.p.rapidapi.com',
-                'x-rapidapi-key' => $this->ApiKey ]]);
+                'x-rapidapi-key' => $this->ApiKey ]];
+            if(!empty($this->Proxy)) {
+                $headers['proxy'] = $this->Proxy;
+            }
+
+            $response = $this->HttpClient->request('GET', $url, $headers);
             $statusCode = $response->getStatusCode();
 
             $repCont = $response->getBody()->getContents();
@@ -150,7 +159,8 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
                 }
             }
         } catch (RequestException $e) {
-            $this->logger->warning('MeteostatNet API request failed.', ['exception' => $e]);
+            $this->logger->error('MeteostatNet API request failed.', ['exception' => $e]);
+            throw new \Exception('MeteostatNet request result in error: ' . $e);
         }
 
         return [];
@@ -184,6 +194,9 @@ class MeteostatNet implements StrategyInterface, LoggerAwareInterface
         if ($location->hasPosition()) {
             $parameter[] = 'lat='.$location->getLatitude();
             $parameter[] = 'lon='.$location->getLongitude();
+        } else {
+            $this->logger->error('MeteostatNet cant build URL because we have no location.');
+            throw new \Exception('MeteostatNet cant build URL because we have no location.');   
         }
         $time = $location->hasDateTime() ? $location->getDateTime() : time();
         $ymd = $time->format('Y-m-d');

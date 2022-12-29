@@ -12,6 +12,7 @@ parameters:
   user_disable_account_activation: false
   maintenance: false
   garmin_api_key:
+  weather_proxy:
   openweathermap_api_key:
   meteostatnet_api_key:
   darksky_api_key:
@@ -39,5 +40,5 @@ parameters:
   router.request_context.host: localhost
   router.request_context.scheme: http
   router.request_context.base_url:
-  osm_overpass_url: 'https://overpass.kumi.systems/api/interpreter'
+  osm_overpass_url:
   osm_overpass_proxy:

@@ -39,6 +39,7 @@ twig:
   globals:
     RUNALYZE_VERSION: '%RUNALYZE_VERSION%'
     garmin_api_key: '%garmin_api_key%'
+    weather_proxy: '%weather_proxy%'
     openweathermap_api_key: '%openweathermap_api_key%'
     meteostatnet_api_key: '%meteostatnet_api_key%'
     darksky_api_key: '%darksky_api_key%'

@@ -392,12 +392,12 @@ services:
       - { name: monolog.logger, channel: external_services }
   app.weather_forecast.openweathermap:
     class: Runalyze\Service\WeatherForecast\Strategy\OpenWeatherMap
-    arguments: ["%openweathermap_api_key%", "@app.http_client", "@logger"]
+    arguments: ["%openweathermap_api_key%", "%weather_proxy%", "@app.http_client", "@logger"]
     tags:
       - { name: monolog.logger, channel: external_services }
   app.weather_forecast.meteostatnet:
     class: Runalyze\Service\WeatherForecast\Strategy\MeteostatNet
-    arguments: ["%meteostatnet_api_key%", "@app.http_client", "@logger"]
+    arguments: ["%meteostatnet_api_key%", "%weather_proxy%", "@app.http_client", "@logger"]
     tags:
       - { name: monolog.logger, channel: external_services }
   app.weather_forecast.cache:

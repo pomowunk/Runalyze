@@ -50,6 +50,11 @@ class ActivityContextAdapter
      */
     public function guessWeatherConditions($defaultLocationName, $account)
     {
+        // #TSC if not outside, no weather needed
+        if(!$this->Context->getSport()->getOutside()) {
+            return;
+        }
+
         $location = new Location();
         $location->setLocationName($defaultLocationName);
 

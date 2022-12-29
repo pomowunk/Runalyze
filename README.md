@@ -196,6 +196,9 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 		* `--nexted` fetch the next activity and also update it; so long as next activities exists (like multi update)
 		* `--override` overrides possible existing data with the newest determined informations
 	* With the configration parameters `osm_overpass_url` or/and `osm_overpass_proxy` you can configure the `Overpass` API endpoint and a proxy-server. A good `Overpass` (without limits) is `https://overpass.kumi.systems/api/interpreter` or your own local instance. The proxy can be used for `Tor` to "hide" your IP. If no `osm_overpass_url` is configured, no determination is occured
+* 2022-12-29: Weather loading is processed only, if the bulk-imported activity is "outside"
+	* Support of HTTP proxy via configuration `weather_proxy` for _OpenWeatherMap_ and [MeteostatNet](https://meteostat.net/)
+	* If loading via _MeteostatNet_ fails, a `Exception` will be thrown
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
