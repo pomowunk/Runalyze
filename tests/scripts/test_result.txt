@@ -9,7 +9,7 @@ Configuration: /app/runalyze/tests/config.xml
 ..E.FF..........................F......FEF.....................  63 / 109 ( 57%)
 ........F....F.....................F...E..E...                  109 / 109 (100%)
 
-Time: 4.93 minutes, Memory: 110.00MB
+Time: 4.82 minutes, Memory: 110.00MB
 
 There were 4 errors:
 
@@ -130,7 +130,7 @@ Configuration: /app/runalyze/tests/config.xml
 ........................................................F........ 65 / 83 ( 78%)
 ...............F..                                                83 / 83 (100%)
 
-Time: 36.77 seconds, Memory: 138.50MB
+Time: 35.53 seconds, Memory: 140.50MB
 
 There were 2 failures:
 
@@ -154,7 +154,7 @@ PHPUnit 5.7.27 by Sebastian Bergmann and contributors.
 Runtime:       PHP 7.3.31-1~deb10u1
 Configuration: /app/runalyze/tests/config.xml
 
-................................................F........F...   61 / 1163 (  5%)
+.........................................................F...   61 / 1163 (  5%)
 .............................................................  122 / 1163 ( 10%)
 ....................................F........................  183 / 1163 ( 15%)
 .............................................................  244 / 1163 ( 20%)
@@ -175,7 +175,7 @@ Configuration: /app/runalyze/tests/config.xml
 ............................................................. 1159 / 1163 ( 99%)
 ....                                                          1163 / 1163 (100%)
 
-Time: 10.7 seconds, Memory: 44.00MB
+Time: 10.6 seconds, Memory: 44.00MB
 
 There were 5 errors:
 
@@ -218,26 +218,15 @@ count(): Parameter must be an array or an object that implements Countable
 
 --
 
-There were 9 failures:
+There were 8 failures:
 
-1) Runalyze\Bundle\CoreBundle\Tests\Component\Tool\Backup\JsonImporterTest::testInserts
-Failed asserting that two strings are equal.
---- Expected
-+++ Actual
-@@ @@
--'34'
-+'2'
-
-/app/runalyze/tests/CoreBundle/Component/Tool/Backup/JsonImporterTest.php:162
-/app/runalyze/vendor/phpunit/phpunit/phpunit:52
-
-2) Runalyze\Bundle\CoreBundle\Tests\Component\Tool\DatabaseCleanup\JobLoopTest::testCompleteLoopForSingleActivity
+1) Runalyze\Bundle\CoreBundle\Tests\Component\Tool\DatabaseCleanup\JobLoopTest::testCompleteLoopForSingleActivity
 Failed asserting that null is not equal to 0.
 
 /app/runalyze/tests/CoreBundle/Component/Tool/DatabaseCleanup/JobLoopTest.php:65
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-3) Runalyze\Bundle\CoreBundle\Tests\Services\Recalculation\RecalculationManagerTest::testThatResultsOfTasksAreForwardedToConfiguration
+2) Runalyze\Bundle\CoreBundle\Tests\Services\Recalculation\RecalculationManagerTest::testThatResultsOfTasksAreForwardedToConfiguration
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
@@ -248,22 +237,22 @@ Failed asserting that two strings are equal.
 /app/runalyze/tests/CoreBundle/Services/Recalculation/RecalculationManagerTest.php:95
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-4) Runalyze\Activity\TrainingEffectTest::testInvalidValueTooSmall
+3) Runalyze\Activity\TrainingEffectTest::testInvalidValueTooSmall
 Failed asserting that exception of type "\InvalidArgumentException" is thrown.
 
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-5) Runalyze\Activity\TrainingEffectTest::testInvalidValueNonNumeric
+4) Runalyze\Activity\TrainingEffectTest::testInvalidValueNonNumeric
 Failed asserting that exception of type "\InvalidArgumentException" is thrown.
 
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-6) Runalyze\Activity\TrainingEffectTest::testInvalidValueString
+5) Runalyze\Activity\TrainingEffectTest::testInvalidValueString
 Failed asserting that exception of type "\InvalidArgumentException" is thrown.
 
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-7) Runalyze\Calculation\Activity\PaceCalculatorTest::testSmoothPaceForRuntasticData
+6) Runalyze\Calculation\Activity\PaceCalculatorTest::testSmoothPaceForRuntasticData
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -294,18 +283,18 @@ Failed asserting that two arrays are equal.
 /app/runalyze/tests/inc/core/Calculation/Activity/PaceCalculatorTest.php:39
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-8) Runalyze\Data\Laps\CalculatorTest::testSpareData
+7) Runalyze\Data\Laps\CalculatorTest::testSpareData
 Failed asserting that 200 matches expected 600.
 
 /app/runalyze/tests/inc/core/Data/Laps/CalculatorTest.php:79
 /app/runalyze/tests/inc/core/Data/Laps/CalculatorTest.php:240
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
-9) Runalyze\Tests\Parser\Activity\Data\ContinuousDataTest::testTotalDurationAndDistanceForEmptyArrays
+8) Runalyze\Tests\Parser\Activity\Data\ContinuousDataTest::testTotalDurationAndDistanceForEmptyArrays
 Failed asserting that 0 is null.
 
 /app/runalyze/tests/inc/core/Parser/Activity/Common/Data/ContinuousDataTest.php:47
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
 ERRORS!
-Tests: 1163, Assertions: 5272, Errors: 5, Failures: 9.
+Tests: 1163, Assertions: 5276, Errors: 5, Failures: 8.

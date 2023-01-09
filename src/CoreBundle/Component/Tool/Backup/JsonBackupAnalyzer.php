@@ -135,6 +135,7 @@ class JsonBackupAnalyzer
 			'runalyze_user',
 			'runalyze_equipment_type',
 			'runalyze_equipment_sport',
+			'runalyze_equipment_spor',
 			'runalyze_equipment',
 			'runalyze_activity_equipment',
 			'runalyze_activity_tag',

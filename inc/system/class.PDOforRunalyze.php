@@ -62,6 +62,7 @@ class PDOforRunalyze extends PDO {
 				&& strpos($statement, PREFIX.'activity_equipment') === false
 				&& strpos($statement, PREFIX.'activity_tag') === false
 				&& strpos($statement, PREFIX.'equipment_sport') === false
+				&& strpos($statement, PREFIX.'equipment_spor') === false
 				&& strpos($statement, PREFIX.'weathercache') === false
 				&& strpos($statement, PREFIX.'raceresult') === false
 				&& strpos($statement, '`accountid`') === false
@@ -155,7 +156,7 @@ class PDOforRunalyze extends PDO {
 		$table = str_replace(PREFIX, '', $table);
 
 		// TODO: TEST IT!
-		if ($table != 'account' && $table != 'plugin_conf' && $table != 'equipment_sport' && !in_array('accountid', $columns)) {
+		if ($table != 'account' && $table != 'plugin_conf' && $table != 'equipment_sport' && $table != 'equipment_spor' && !in_array('accountid', $columns)) {
 			$columns[] = 'accountid';
 			$values[]  = $this->accountID;
 		}

@@ -31,6 +31,8 @@
             {{ form_row(form.sport, {'div_class': 'w100 block with50erLabel'}) }}
             <p class="info margin-bottom">
                 {% trans %}You can limit equipment categories to specific sports.{% endtrans %}
+                <br/>
+                Falls du hier eine Sportart entfernst die auch einer konkreten Ausrüstung zugeordnet ist, bitte auch bei der Ausrüstung entfernen.
             </p>
 
             {{ form_row(form.maxKm, {'div_class': 'w100 block with50erLabel'}) }}
@@ -70,6 +72,7 @@
                             <th>{{ 'Start of use'|trans }}</th>
                             <th>{{ 'End of use'|trans }}</th>
                             <th>{{ 'Notes'|trans }}</th>
+                            <th>{{ 'Sport types'|trans }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -83,6 +86,7 @@
                                 <td>{{ entry.dateStart ? entry.dateStart|date('d.m.Y') : '-' }}</td>
                                 <td>{{ entry.dateEnd ? entry.dateEnd|date('d.m.Y') : '-' }}</td>
                                 <td>{{ entry.notes }}</td>
+                                <td>{% for asport in entry.sport %}<li>{{ asport.name }}</li>{% endfor %}</td>
                                 <td><a class="window color-danger" href="{{ url('equipment-delete', { 'id': entry.id, 't': csrf_token('deleteEquipment') }) }}" data-confirm="{% trans %}Do you really want to delete this?{% endtrans %}"><i class="fa fa-trash" title="{{ 'Delete'|trans }}"></i></a></td>
                             </tr>
                         {% endfor %}

@@ -85,6 +85,21 @@ class Equipment implements IdentifiableEntityInterface, NamedEntityInterface, Ac
     private $type;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Runalyze\Bundle\CoreBundle\Entity\Sport", inversedBy="equipment")
+     * @ORM\JoinTable(name="equipment_spor",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="equipment_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="sportid", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $sport;
+
+    /**
      * @var Account
      *
      * @ORM\ManyToOne(targetEntity="Runalyze\Bundle\CoreBundle\Entity\Account", inversedBy="equipment")
@@ -103,6 +118,7 @@ class Equipment implements IdentifiableEntityInterface, NamedEntityInterface, Ac
 
     public function __construct()
     {
+        $this->sport = new ArrayCollection();
         $this->activity = new ArrayCollection();
     }
 
@@ -328,6 +344,34 @@ class Equipment implements IdentifiableEntityInterface, NamedEntityInterface, Ac
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param Sport $sport
+     *
+     * @return $this
+     */
+    public function addSport(Sport $sport)
+    {
+        $this->sport[] = $sport;
+
+        return $this;
+    }
+
+    /**
+     * @param Sport $sport
+     */
+    public function removeSport(Sport $sport)
+    {
+        $this->sport->removeElement($sport);
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSport()
+    {
+        return $this->sport;
     }
 
     /**

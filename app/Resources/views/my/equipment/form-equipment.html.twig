@@ -33,9 +33,21 @@
             {{ form_row(form.dateEnd, {'div_class': 'w100 block with50erLabel', 'input_unit': '<i class="fa fa-fw fa-calendar"></i>'}) }}
             <p class="info margin-bottom">
                 {% trans %}Objects will be displayed as inactive as soon as they have reached their end date.{% endtrans %}
+                <br/>
+                Ausrüstungen, die zum Zeitpunkt einer Bulk-importierten Aktivität nicht gültig sind, werden nich automatisch zugeordnet.
             </p>
 
             {{ form_row(form.notes, {'div_class': 'w100 block with50erLabel'}) }}
+
+            <br/>
+
+            {{ form_row(form.sport, {'div_class': 'w100 block with50erLabel'}) }}
+            <p class="info margin-bottom">
+                Wenn im Bulk-Import diese konkrete Ausrüstung automatisch einer Aktivität zugeordnet werden soll,
+                musst du ein oder mehrere Sportarten (nur die Arten, die der Kategorie zugewiesen wurden, sind verfügbar) zuordnen.
+                Somit können für eine Ausrüstungskategorie mehrere gleichzeitig Ausrüstungen, aber zu verschiedenen Sportarten, automatisch zugeordnet werden;
+                oder die Ausrüstung wird beim Import ignoriert.
+            </p>
 
             {{ form_rest(form) }}
 

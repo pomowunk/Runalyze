@@ -27,7 +27,8 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
     /** @var array */
     protected $FailedImports = array();
 
-    private $sportEquipment;
+    // 2 dim-array with 1-Idx=sportId & 2-Idx=Equipment
+    private $sportEquipment = array();
 
     protected function configure()
     {
@@ -192,27 +193,24 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
 
     /**
      * #TSC
-     * Creates a array where first IDX=sportsId and second IDX=the equipment.
-     * this is only build with "single-choice" equipments.
-     * and the main-equipment category/type (see sports configuration); so one IDX_1/sport 
-     * can only have on equipment category with multiple (time-range based) equipments.
+     * Creates a two-array where first IDX=sportsId and second IDX=the_equipment.
+     * this is only build for "single-choice" equipments of the account.
+     * if there are more sports assigned, every sport/equipment combination is stored in the array.
      */
     private function createEquiqmentArray(Account $account, OutputInterface $output) {
         $accountEquipment = $account->getEquipment();
 
         // build a array where first index is the sports-id
         $this->sportEquipment = [];
-        $output->writeln('Use main equipments for automatic-equipment-mapping of '.$account->getUsername().':');
-        foreach ($accountEquipment as $acEqp) {
-            if($acEqp->getType()->getInput() == EquipmentType::CHOICE_SINGLE) {
+        $output->writeln('Use account equipments for automatic-equipment-mapping of '.$account->getUsername().':');
+        foreach ($accountEquipment as $eqp) {
+            if($eqp->getType()->getInput() == EquipmentType::CHOICE_SINGLE) {
+                // use only the sports from the equipment (for the bulk import)
+                foreach($eqp->getSport() as $sport) {
+                    $idx = $sport->getId();
+                    $this->sportEquipment[$idx][] = $eqp;
 
-                foreach ($acEqp->getType()->getSport() as $sports) {
-                    if($sports->getMainEquipmenttype() == $acEqp->getType()) {
-                        $idx = $sports->getId();
-                        $this->sportEquipment[$idx][] = $acEqp;
-
-                        $output->writeln('- '.$acEqp->getName(). ' for sport '.$idx.'/'.$sports->getName());
-                    }
+                    $output->writeln('- ' . $eqp->getType()->getName() . ':'.$eqp->getName(). ' -> sport='.$idx.'/'.$sport->getName());
                 }
             }
         }
@@ -221,45 +219,57 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
     /**
      * #TSC
      * automatic mapping of preloaded/preselected equipments (in method createEquiqmentArray) to the imported activity.
-     * this means, that the main equipment-type stored in the sportEquipment array are searched for ONE equipment that 
-     * fits to the activity date. if there more than one equipment found, the mapping is not done.
+     * this means, that the equipments stored in the sportEquipment array are searched for relevant equipment that 
+     * fits to the activity date. if there more than one equipment found within ONE type/category, the mapping is ignored.
      */
     private function setEquipmentIfPossible(Training $activity, OutputInterface $output) {
         $actDate = $activity->getDateTime();
         $sportId = $activity->getSport()->getId();
 
-        $foundEqp = null;
-        $foundEqpCount = 0;
+        // use equipmentId as key
+        $equipments = array();
+
+        // use typeId(categoryId) as key
+        $typeUnique = array();
 
         // are there equipments for this (activity) sport?
         if (isset($this->sportEquipment[$sportId])) {
-            // this sport has one equipment-type/category with multiple (time-range based) equipments
-            foreach ($this->sportEquipment[$sportId] as $acEqp) {
+            // got to all equipments for this sport
+            // its possible that several equipments exists with different time-ranges
+            foreach($this->sportEquipment[$sportId] as $eqp) {
 
-            // set the end-date to time 23:59 for the compare
-            $endDate = null;
-            if($acEqp->getDateEnd() !== null) {
-                $endDate = clone $acEqp->getDateEnd();
-                $endDate->setTime(23,59,59);
-            }
+                // set the end-date to time 23:59 for the compare
+                $endDate = null;
+                if($eqp->getDateEnd() !== null) {
+                    $endDate = clone $eqp->getDateEnd();
+                    $endDate->setTime(23,59,59);
+                }
 
-                if(($acEqp->getDateStart() === null || $acEqp->getDateStart() < $actDate) 
-                    && ($endDate === null || $actDate <= $endDate)){
+                if(($eqp->getDateStart() === null || $eqp->getDateStart() < $actDate) && ($endDate === null || $actDate <= $endDate)) {
+                    // the date fits
+                    $equipments[$eqp->getId()] = $eqp;
 
-                    $foundEqp = $acEqp;
-                    $foundEqpCount++;
-
-                    //$output->writeln('found: '.$acEqp->getName());
+                    // store if this type already selected (to avoid multiple mappings of the same category)
+                    if(!array_key_exists($eqp->getType()->getId(), $typeUnique)) {
+                        $typeUnique[$eqp->getType()->getId()] = true;
+                    } else {
+                        $typeUnique[$eqp->getType()->getId()] = false;
+                    }
                 }
             }
         }
 
-        if($foundEqpCount == 1 && $foundEqp != null) {
-            //$output->writeln('set: '.$foundEqp->getName());
-            $activity->addEquipment($foundEqp);
-        } elseif ($foundEqpCount > 1) {
-            $output->writeln('<fg=yellow>more than one main equipment found for sport '.$sportId.'/'.$activity->getSport()->getName().
-                ' and date '.$actDate->format('Y-m-d H:i').'; mapping canceled!</>');
+        if(!empty($equipments)) {
+            foreach($equipments as $k => $v) {
+                // add every equipment, if it not "unique"
+                if($typeUnique[$v->getType()->getId()]) {
+                    $activity->addEquipment($v);
+                } else {
+                    $output->writeln('<fg=yellow>more than one active equipment found for activity-date=' . $actDate->format('Y-m-d H:i') . 
+                        ': category=' . $v->getType()->getName() . ' and equipment=' . $v->getId() . '/' . $v->getName() .
+                        '; mapping canceled for this category!</>');    
+                }
+            }
         }
     }
 }

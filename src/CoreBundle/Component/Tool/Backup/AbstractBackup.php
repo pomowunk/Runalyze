@@ -73,6 +73,7 @@ abstract class AbstractBackup
 			$this->Prefix.'equipment_type',
 			$this->Prefix.'equipment_sport',
 			$this->Prefix.'equipment',
+			$this->Prefix.'equipment_spor',
 			$this->Prefix.'activity_equipment',
 			$this->Prefix.'tag',
 			$this->Prefix.'activity_tag',
@@ -135,6 +136,9 @@ abstract class AbstractBackup
 		} elseif ($tableName == $this->Prefix.'equipment_sport') {
 			$ids = $this->fetchEquipmentTypeIDs();
 			$query .= ' WHERE `equipment_typeid` IN('.implode(',', $ids).')';
+		} elseif ($tableName == $this->Prefix.'equipment_spor') {
+			$ids = $this->fetchEquipmentIDs();
+			$query .= ' WHERE `equipment_id` IN('.implode(',', $ids).')';
 		} elseif ($tableName == $this->Prefix.'activity_equipment') {
 			$ids = $this->fetchEquipmentIDs();
 			$query .= ' WHERE `equipmentid` IN('.implode(',', $ids).')';

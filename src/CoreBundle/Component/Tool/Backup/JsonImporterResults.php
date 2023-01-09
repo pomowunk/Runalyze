@@ -145,6 +145,7 @@ class JsonImporterResults
 			'runalyze_equipment'			=> __('Equipment'),
 			'runalyze_equipment_type'		=> __('Equipment types'),
 			'runalyze_equipment_sport'		=> __('Relation: equipment types to sports'),
+			'runalyze_equipment_spor'		=> __('Relation: equipment to sports'),
 			'runalyze_activity_equipment'	=> __('Relation: equipment to activities'),
 			'runalyze_tag'			=> __('Tags'),
 			'runalyze_activtiy_tag'		=> __('Relation: tag to activities'),

@@ -153,6 +153,13 @@ class JsonImporter
 		while ($Relation = $FetchEquipmentSportRelation->fetchColumn()) {
 			$this->ExistingData['runalyze_equipment_sport'][] = $Relation;
 		}
+
+		$FetchEquipmentSporRelation = $this->DB->query('SELECT CONCAT(`sportid`, "-", `equipment_id`) FROM `'.$this->DatabasePrefix.'equipment_spor`');
+		$this->ExistingData['runalyze_equipment_spor'] = [];
+
+		while ($Relation = $FetchEquipmentSporRelation->fetchColumn()) {
+			$this->ExistingData['runalyze_equipment_spor'][] = $Relation;
+		}
 	}
 
 	/**
@@ -183,6 +190,7 @@ class JsonImporter
 				'runalyze_user',
 				'runalyze_equipment_type',
 				'runalyze_equipment_sport',
+				'runalyze_equipment_spor',
 				'runalyze_equipment',
 				'runalyze_route',
 				'runalyze_training',
@@ -360,6 +368,11 @@ class JsonImporter
 				$this->equipmentSportRelationDoesExist($row['sportid'], $row['equipment_typeid'])
 			) {
 				// Hint: Don't insert this relation, it does exist already!
+            } elseif (
+				$tableName == 'runalyze_equipment_spor' &&
+				$this->equipmentSporRelationDoesExist($row['sportid'], $row['equipment_id'])
+			) {
+				// Hint: Don't insert this relation, it does exist already!
 			} else {
 				$this->correctValues($tableName, $row);
 
@@ -399,6 +412,27 @@ class JsonImporter
 	}
 
 	/**
+	 * @param int $sportid
+	 * @param int $equipmentid
+	 * @return boolean
+	 */
+	protected function equipmentSporRelationDoesExist($sportid, $equipmentId)
+    {
+		if (
+			isset($this->ReplaceIDs['runalyze_sport'][$sportid]) &&
+			isset($this->ReplaceIDs['runalyze_equipment'][$equipmentId]) &&
+			in_array(
+				$this->ReplaceIDs['runalyze_sport'][$sportid].'-'.$this->ReplaceIDs['runalyze_equipment'][$equipmentId],
+				$this->ExistingData['runalyze_equipment_spor']
+			)
+		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Correct values
 	 * @param string $tableName
 	 * @param array $row
@@ -428,6 +462,9 @@ class JsonImporter
 		} elseif ($tableName == 'runalyze_equipment_sport') {
 			$row['sportid'] = $this->correctID('runalyze_sport', $row['sportid']);
 			$row['equipment_typeid'] = $this->correctID('runalyze_equipment_type', $row['equipment_typeid']);
+		} elseif ($tableName == 'runalyze_equipment_spor') {
+			$row['sportid'] = $this->correctID('runalyze_sport', $row['sportid']);
+			$row['equipment_id'] = $this->correctID('runalyze_equipment', $row['equipment_id']);
 		} elseif ($tableName == 'runalyze_activity_equipment') {
 			$row['activityid'] = $this->correctID('runalyze_training', $row['activityid']);
 			$row['equipmentid'] = $this->correctID('runalyze_equipment', $row['equipmentid']);

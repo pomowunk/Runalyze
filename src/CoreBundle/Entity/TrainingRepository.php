@@ -587,6 +587,9 @@ class TrainingRepository extends EntityRepository
             $this->_em->remove($activity->getRoute());
         }
 
+        // #TSC: hacky request the lazy equipments here, so that while removing via EventListener the collection is filled
+        $activity->getEquipment()->count();
+
         $this->_em->remove($activity);
         $this->_em->flush();
     }

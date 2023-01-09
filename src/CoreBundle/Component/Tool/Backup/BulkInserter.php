@@ -40,6 +40,7 @@ class BulkInserter
 		if (
             $accountID !== false &&
             $tableName != $databasePrefix.'equipment_sport' &&
+            $tableName != $databasePrefix.'equipment_spor' &&
             $tableName != $databasePrefix.'activity_equipment' &&
             $tableName != $databasePrefix.'activity_tag'
         ) {

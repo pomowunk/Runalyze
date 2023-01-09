@@ -45,6 +45,9 @@ version=4.3
 {"42":{"name":"AB1","typeid":"32","notes":""}}
 {"43":{"name":"AB2","typeid":"32","notes":""}}
 
+{"TABLE":"runalyze_equipment_spor"}
+{"":{"sportid":"11","equipment_id":"41"}}
+
 {"TABLE":"runalyze_activity_equipment"}
 {"":{"activityid":"21","equipmentid":"41"}}
 {"":{"activityid":"22","equipmentid":"41"}}

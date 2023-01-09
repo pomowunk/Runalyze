@@ -200,6 +200,17 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Support of HTTP proxy via configuration `weather_proxy` for _OpenWeatherMap_ and [MeteostatNet](https://meteostat.net/)
 	* If loading via _MeteostatNet_ fails, a `Exception` will be thrown
 * 2022-12-29: Fix JS error in dataview datepicker; add 20 previous years in dataview datepicker
+* 2023-01-08: Add support for sports on equipment level is now relevant while bulk import
+	* Currently only sports can be assigned on equipment types (=category); now these sports from the type level can be detailed on equipment level
+	* This affects for a better automatic assigment during bulk imports and is **now required** for bulk import
+	* This also means if you want no assignment while bulk imports, do not assign a sports on this equipment
+	* Fixing: now the equipment duration&distance will be decreased, when a activities is being deleted
+	* Limitations:
+		* Automatic equipment assignment only works on bulk import (command) and if multiple active equipments for one type are found, this assignment will be ignored
+		* If you remove in the equipment-type dialog a assigned sports, please remove it also on the equipments (if you has assigned it too); i've skimp the programm support for this ;-)
+		* Not sure: but it's possible that the Runalyze backup feature is no more working with my changed regarding `equipment_spor`; test it before use it in production
+	* **Migration 20230101190000 is necessary!** to create the new table `runalyze_equipment_spor`
+	* **Don't forget to adds sports to your equipments, when you want auto assignment during bulk import**
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
