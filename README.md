@@ -211,6 +211,7 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 		* Not sure: but it's possible that the Runalyze backup feature is no more working with my changed regarding `equipment_spor`; test it before use it in production
 	* **Migration 20230101190000 is necessary!** to create the new table `runalyze_equipment_spor`
 	* **Don't forget to adds sports to your equipments, when you want auto assignment during bulk import**
+* 2023-01-11: Fixing: don't loose read-only _power_ value when update a activity via the edit dialog
 
 Please notice:
 * All the changes are only done for me to use this great product for me.
