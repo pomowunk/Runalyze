@@ -17,38 +17,32 @@ class RPE {
 	 * @return array
 	 */
 	public static function completeList() {
+		// #TSC change from old 6-15 Borg to CR10 Borg
 		return array(
-			6 => '6 - '.__('No exertion at all'),
-			7 => '7 - '.__('Extremely light'),
-			8 => '8',
-			9 => '9 - '.__('Very light'),
-			10 => '10',
-			11 => '11 - '.__('Light'),
-			12 => '12',
-			13 => '13 - '.__('Somewhat hard'),
-			14 => '14',
-			15 => '15 - '.__('Hard'),
-			16 => '16',
-			17 => '17 - '.__('Very Hard'),
-			18 => '18',
-			19 => '19 - '.__('Extremely hard'),
-			20 => '20 - '.__('Maximal exertion')
+			1 => '1 - '.__('Very light'),
+			2 => '2 - '.__('Light'),
+			3 => '3 - Moderat',
+			4 => '4 - '.__('Somewhat hard'),
+			5 => '5 - '.__('Hard'),
+			6 => '6 - '.__('Hard'),
+			7 => '7 - '.__('Very Hard'),
+			8 => '8 - '.__('Very Hard'),
+			9 => '9 - '.__('Extremely hard'),
+			10 => '10 - '.__('Maximal exertion')
 		);
 	}
 	
 	public static function validRPE($value) {
-	    if ($value >=6 && $value <=20) {
-		return true;
-	    } else {
-		return false;
-	    }
+		if ($value >=1 && $value <=10) {
+			return true;
+		} else {
+			return false;
+		}
 	}
         
 	public static function getString($value) {
-	    if (self::validRPE($value)) {
-		return self::completeList()[$value];
-	    }
+		if (self::validRPE($value)) {
+			return self::completeList()[$value];
+		}
 	}
-
 }
-

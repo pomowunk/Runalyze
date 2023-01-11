@@ -27,7 +27,7 @@ class OutOfRangeValueFilter extends AbstractFilter
         $this->checkValue($activityData->Duration, 0.00, 999999.99, 'Duration');
         $this->checkValue($activityData->Distance, 0.00, 9999.99, 'Distance');
         $this->checkValue($activityData->EnergyConsumption, 1, 65535, 'EnergyConsumption');
-        $this->checkValue($activityData->RPE, 6, 20, 'RPE');
+        $this->checkValue($activityData->RPE, 1, 10, 'RPE');
         $this->checkValue($activityData->AvgHeartRate, 30, 240, 'AvgHeartRate');
         $this->checkValue($activityData->MaxHeartRate, 30, 240, 'MaxHeartRate');
         // #TSC: check calculated heart-rate of active rounds

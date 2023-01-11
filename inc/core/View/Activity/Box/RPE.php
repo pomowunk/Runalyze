@@ -27,7 +27,9 @@ class RPE extends AbstractBox
 		parent::__construct(
 			$Context->dataview()->rpe(true),
 			'',
-			__('RPE')
+			__('RPE'),
+			'',
+			'rpe'
 		);
 		$this->defineAsFloatingBlock('w50');
 	}

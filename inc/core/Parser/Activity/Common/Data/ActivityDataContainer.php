@@ -7,6 +7,7 @@ use Runalyze\Parser\Activity\Common\Data\Round\RoundCollection;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollectionFiller;
 use Runalyze\Parser\Activity\Common\Filter\FilterCollection;
 use Runalyze\Activity;
+use Runalyze\Data\RPE;
 
 class ActivityDataContainer
 {
@@ -99,17 +100,25 @@ class ActivityDataContainer
             $this->WeatherData->Temperature = $this->ContinuousDataAdapter->getAverageTemperatur();
         }
 
+        $fitSelfEvalEffortUsed = false;
         // check that the type belongs to sport "running" not needed here; will be checked further in ActivityDataContainerToActivityContextConverter.tryToSetTypeFor
         if (empty($this->Metadata->getTypeName()) && !empty($this->FitDetails)) {
             // #TSC set RG=Regeneration Run
             if ($this->FitDetails->SelfEvaluationPerceivedEffort == 1 // anstrengung=sehr leicht=1
                 && $this->FitDetails->SelfEvaluationFeeling == Activity\SelfEvaluationFeeling::VERY_STRONG) { // gefuehl=sehr stark=5
                 $this->Metadata->setTypeName('RG');
+                $fitSelfEvalEffortUsed = true;
             } else if($this->FitDetails->SelfEvaluationPerceivedEffort == 10 // anstrengung=maximum=10
                 && $this->FitDetails->SelfEvaluationFeeling == Activity\SelfEvaluationFeeling::VERY_WEAK) { // gefuehl=sehr schwach=1
                 // #TSC TR=tempo run
                 $this->Metadata->setTypeName('TR');
+                $fitSelfEvalEffortUsed = true;
             }
+        }
+
+        // #TSC: map FIT SelfEvaluationPerceivedEffort to RPE
+        if(!$fitSelfEvalEffortUsed && !empty($this->FitDetails->SelfEvaluationPerceivedEffort)) {
+            $this->ActivityData->RPE = RPE::getString($this->FitDetails->SelfEvaluationPerceivedEffort);
         }
     }
 

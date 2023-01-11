@@ -1,32 +1,119 @@
 {% extends "GlossaryBundle::_base.html.twig" %}
 
+{% import 'GlossaryBundle::_macro/references.html.twig' as ref %}
+{% import 'GlossaryBundle::_macro/see_also.html.twig' as see %}
+
 {% block headline %}
     {% trans %}Rate of Perceived Exertion{% endtrans %} (RPE)
 {% endblock %}
 
 {% block glossaryContent %}
     <p class="text">
-        {% trans %}Rated Perceived Exertion (RPE) is a quantitive measure for the physical exertion of an activity. this rating is frequently used in studies and is measured by the Borg rating or RPE scale. The range of 6-20 follows the heart rate of a healthy young adult (by multiplying with 10).{% endtrans %}
+        Rated Perceived Exertion (RPE) ist ein quantitatives Maß für die körperliche Anstrengung einer Aktivität.
+        Dieses Rating wird häufig in Studien verwendet und wird anhand des Borg-Ratings oder der RPE-Skala gemessen.
+        <br/>
+        Hier wird die Borg CR-Skala mit Werten von 1 - 10 verwendet.
     </p>
 
-    <h2>{% trans %}RPE scale{% endtrans %}</h2>
-    <ul>
-        <li><strong>6</strong> &ndash; {% trans %}No exertion at all{% endtrans %}
-        <li><strong>7</strong> &ndash; {% trans %}Extremely light{% endtrans %}
-        <li><strong>8</strong>
-        <li><strong>9</strong> &ndash; {% trans %}Very light{% endtrans %}
-        <li><strong>10</strong>
-        <li><strong>11</strong> &ndash; {% trans %}Light{% endtrans %}
-        <li><strong>12</strong>
-        <li><strong>13</strong> &ndash; {% trans %}Somewhat hard{% endtrans %}
-        <li><strong>14</strong>
-        <li><strong>15</strong> &ndash; {% trans %}Hard{% endtrans %}
-        <li><strong>16</strong>
-        <li><strong>17</strong> &ndash; {% trans %}Very hard{% endtrans %}
-        <li><strong>18</strong>
-        <li><strong>19</strong> &ndash; {% trans %}Extremely hard{% endtrans %}
-        <li><strong>20</strong> &ndash; {% trans %}Maximal exertion{% endtrans %}
-    </ul>
+    <h2>RPE CR10 Skala</h2>
+    <table class="gloss" style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Stufe</th>
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>Atmung</th>
+                <th>Dauer</th>
+                <th>Borg Skala</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="border: 3px solid #225ea8;">
+                <td>1</td>
+                <td>Sehr leicht</td>
+                <td>Kaum anstrengend, fast wie schlafen oder fernsehen</td>
+                <td>Gemütlich</td>
+                <td>Kann den ganzen Tag gemacht werden</td>
+                <td>7 - 9</td>
+            </tr>
+            <tr style="border: 3px solid #41b6c4;">
+                <td>2</td>
+                <td>Leicht</td>
+                <td>Fühlt sich an als könnte man es stundenlang machen, wie gemütliches Spazieren gehen</td>
+                <td>Atmung entspannt</td>
+                <td>Stundenlang</td>
+                <td>10</td>
+            </tr>
+            <tr style="border: 3px solid #41b6c4;">
+                <td>3</td>
+                <td>Moderat</td>
+                <td>Flottes Spazieren gehen oder ganz leicher Lauf; man kann sich noch unterhalten</td>
+                <td>Atmung ist beschleunigt, aber nicht ausser Atem</td>
+                <td>Stundenlang</td>
+                <td>11 - 12</td>
+            </tr>
+            <tr style="border: 3px solid #a1dab4;">
+                <td>4</td>
+                <td>Etwas anstrengend</td>
+                <td>Energischere Aktivität; der Puls beginnt zu steigen</td>
+                <td>Atmung härter aber nicht ausser Atem; Unterhalten ist kein Problem</td>
+                <td>Mehrere Stunden</td>
+                <td>13</td>
+            </tr>
+            <tr style="border: 3px solid #a1dab4;">
+                <td>5</td>
+                <td>Anstrengend</td>
+                <td>Man muss sich anschieben um den Pace zu halten; kein Selbstläufer mehr; auf Dauer zunehmende Ermüdung spürbar</td>
+                <td>Man kann noch eine Unterhaltung führen aber atmet schneller</td>
+                <td>Ein paar Stunden</td>
+                <td>14</td>
+            </tr>
+            <tr style="border: 3px solid #fecc5c;">
+                <td>6</td>
+                <td>Anstrengend</td>
+                <td>Man muss sich mehr anschieben um den Pace zu halten; es wird langsam ernst &#128521;; höherer Puls</td>
+                <td>Man kann noch eine mittlere Unterhaltung führen</td>
+                <td>Ein paar Stunden</td>
+                <td>15</td>
+            </tr>
+            <tr style="border: 3px solid #fecc5c;">
+                <td>7</td>
+                <td>Sehr anstrengend</td>
+                <td>An der Grenze zum Ungemütlichen; aber noch machbar aber mit Anstrengung</td>
+                <td>Atmung schnell aber noch kontrolliert; kurze Sätze möglich; aber keine normale geregelte Unterhaltung</td>
+                <td>1 - 2 Stunden</td>
+                <td>16 - 17</td>
+            </tr>
+            <tr style="border: 3px solid #fd8d3c;">
+                <td>8</td>
+                <td>Sehr anstrengend</td>
+                <td>Grenzwertiges Level der Aktivität ohne Stoppen zu müssen</td>
+                <td>Hart ein paar Sätze zu sagen</td>
+                <td>30 Minuten</td>
+                <td>18</td>
+            </tr>
+            <tr style="border: 3px solid #fd8d3c;">
+                <td>9</td>
+                <td>Extrem anstrengend</td>
+                <td>Es ist schwer die Belastung zu halten</td>
+                <td>Hart zu sprechen; Atmung mühsam</td>
+                <td>Ok für mehrere Minuten (Intervalle)</td>
+                <td>19</td>
+            </tr>
+            <tr style="border: 3px solid #e31a1c;">
+                <td>10</td>
+                <td>Maximale Anstrengung</td>
+                <td>Fühlt sich an als wenn man nicht weitermachen kann; Sprinting</td>
+                <td>Ausser Atem und man kann nicht mehr reden</td>
+                <td>Nur für 20 - 30 Sekunden</td>
+                <td>20</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{ see.seeAlsoHead() }}
+    Die {{ see.seeAlsoLink(path('glossary-self-evaluation'), 'Selbsteinschätzung') }} der Anstrengung wird auf diese RPE 1:1 gemappt
+    {{ see.seeAlsoFoot() }}
 
     {{ ref.referencesHead() }}
     {{ ref.singleReferenceText("Borg, G. (1982) Psychophysical bases of perceived exertion. Medicine and Science in Sports and Exercise, 14 (5), p. 377-81") }}

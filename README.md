@@ -212,6 +212,11 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* **Migration 20230101190000 is necessary!** to create the new table `runalyze_equipment_spor`
 	* **Don't forget to adds sports to your equipments, when you want auto assignment during bulk import**
 * 2023-01-11: Fixing: don't loose read-only _power_ value when update a activity via the edit dialog
+* 2023-01-11: Change the Borg RPE (values from 6-20) to the Borg CR10 scale (values 1-10) and Emoji's for _self-evaluation feeling_
+	* When the imported activity has a Garmin Fenix self-evaluation (Selbsteinschätzung), this value will be also used for the RPE; this will not affected when the self-evaluation is used for the auto detection of the activity type (see #2022-12-07)
+	* Adapt the glossary
+	* During the migration existing `training.fit_self_evaluation_perceived_effort` will be assumed to RPE (if it not already set manually)
+	* **Migration 20230111150000 is necessary!** to migrate your existing values to the Borg CR10
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

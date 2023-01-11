@@ -6,12 +6,16 @@ class RpeColor
 {
     /** @var array */
     const LEVEL_COLORS = [
-        '#225ea8',
-        '#41b6c4',
-        '#a1dab4',
-        '#fecc5c',
-        '#fd8d3c',
-        '#e31a1c'
+        '#225ea8', // 1
+        '#41b6c4', // 2
+        '#41b6c4', // 3
+        '#a1dab4', // 4
+        '#a1dab4', // 5
+        '#fecc5c', // 6
+        '#fecc5c', // 7
+        '#fd8d3c', // 8
+        '#fd8d3c', // 9
+        '#e31a1c'  // 10
     ];
 
 	/** @var int|null */
@@ -31,7 +35,7 @@ class RpeColor
 	 */
 	public function setValue($value)
     {
-        if (!is_numeric($value) || $value < 6 || $value > 20) {
+        if (!is_numeric($value) || $value < 1 || $value > 10) {
             $this->Value = null;
         } else {
             $this->Value = (int)$value;
@@ -53,36 +57,10 @@ class RpeColor
 	 */
 	public function borderColor()
     {
-        switch ($this->Value) {
-            case 6:
-                return self::LEVEL_COLORS[0];
-
-            case 7:
-            case 8:
-            case 9:
-                return self::LEVEL_COLORS[1];
-
-            case 10:
-            case 11:
-            case 12:
-                return self::LEVEL_COLORS[2];
-
-            case 13:
-            case 14:
-            case 15:
-                return self::LEVEL_COLORS[3];
-
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-                return self::LEVEL_COLORS[4];
-
-            case 20:
-                return self::LEVEL_COLORS[5];
-
-            default:
-                return 'transparent';
+        if($this->Value != null) {
+            return self::LEVEL_COLORS[$this->Value - 1];
+        } else {
+            return 'transparent';
         }
 	}
 

@@ -73,15 +73,15 @@ class SelfEvaluationFeeling extends AbstractEnum
     {
         switch ($num) {
             case self::VERY_WEAK:
-                return 'Sehr schwach';
+                return 'Sehr schwach &#x1F61E;';
             case self::WEAK:
-                return 'Schwach';
+                return 'Schwach &#x1F626;';
             case self::NORMAL:
-                return 'Normal';
+                return 'Normal &#x1F610;';
             case self::STRONG:
-                return 'Stark';
+                return 'Stark &#x1F642;';
             case self::VERY_STRONG:
-                return 'Sehr stark';
+                return 'Sehr stark &#x1F600;';
             default:
                 return sprintf('Unknown %u', $num);
         }
