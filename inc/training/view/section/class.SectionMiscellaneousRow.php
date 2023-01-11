@@ -138,8 +138,6 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
 	 * Add cadence and power
 	 */
 	protected function addCadenceAndPower() {
-	    $oddNumberOfBoxes = false;
-
 		if ($this->showCadence && $this->Context->activity()->cadence() > 0) {
 			$Cadence = new BoxedValue(Helper::Unknown($this->Context->dataview()->cadence()->value(), '-'), $this->Context->dataview()->cadence()->unitAsString(), $this->Context->dataview()->cadence()->label());
 			$Cadence->defineAsFloatingBlock('w50');
@@ -155,14 +153,13 @@ class SectionMiscellaneousRow extends TrainingViewSectionRowTabbedPlot {
                 $StrideLength->defineAsFloatingBlock('w50');
 
                 $this->BoxedValues[] = $StrideLength;
-                $oddNumberOfBoxes = true;
 			}
 		}
 
 		if ($this->Context->activity()->power() > 0) {
 		    $icon = $this->Context->activity()->isPowerCalculated() ? '<i rel="tooltip" class="unimportant fa fa-fw fa-bolt atRight" title="'.__('This value has been calculated.').'"></i>' : '';
 			$Power = new BoxedValue($this->Context->activity()->power(), 'W', __('Power'), $icon);
-			$Power->defineAsFloatingBlock($oddNumberOfBoxes ? 'w50' : 'w100');
+			$Power->defineAsFloatingBlock('w50');
 
 			$this->BoxedValues[] = $Power;
 		}
