@@ -198,10 +198,11 @@ class DataBrowser {
 	 * Display links to navigate in calendar
 	 */
 	protected function displayNavigationLinks() {
-		echo $this->getCalenderLink();
-		echo $this->getPrevLink();
-		echo $this->getNextLink();
-		echo $this->getCurrentLink();
+		// #TSC more space between for better usablility on small devices
+		echo '<span style="width: 30px; text-align: center; display: inline-block;">' . $this->getCalenderLink() . '</span>';
+		echo '<span style="width: 30px; text-align: center; display: inline-block;">' . $this->getPrevLink() . '</span>';
+		echo '<span style="width: 30px; text-align: center; display: inline-block;">' . $this->getNextLink() . '</span>';
+		echo '<span style="width: 30px; text-align: center; display: inline-block;">' . $this->getCurrentLink() . '</span>';
 	}
 
 	/**
