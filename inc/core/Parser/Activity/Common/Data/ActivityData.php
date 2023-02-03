@@ -106,6 +106,9 @@ class ActivityData
     /** @var int|null [-] #TSC: added */
     public $MaxRespirationRate = null;
 
+    /** @var string|null [-] #TSC: added */
+    public $SplitsAdditional = null;
+
     /**
      * @return array
      */
@@ -143,7 +146,8 @@ class ActivityData
             'TotalCycles',
             'AvgTemperature',
             'AvgRespirationRate',
-            'MaxRespirationRate'
+            'MaxRespirationRate',
+            'SplitsAdditional'
         ];
     }
 

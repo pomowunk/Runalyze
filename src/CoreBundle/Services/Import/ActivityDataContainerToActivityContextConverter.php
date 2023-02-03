@@ -241,6 +241,7 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setAvgRespirationRate($activityData->AvgRespirationRate);
         $activity->setMaxRespirationRate($activityData->MaxRespirationRate);
         $activity->setTotalCycles($activityData->TotalCycles);
+        $activity->setSplitsAdditional($activityData->SplitsAdditional);
     }
 
     /**

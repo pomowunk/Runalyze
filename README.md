@@ -217,6 +217,11 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* Adapt the glossary
 	* During the migration existing `training.fit_self_evaluation_perceived_effort` will be assumed to RPE (if it not already set manually)
 	* **Migration 20230111150000 is necessary!** to migrate your existing values to the Borg CR10
+* 2023-02-03: Store additional informations of _strength training_ (=Krafttraining) in the new database field `training.splits_additional`
+	* This includes the FIT informations about weight, repetitions and the excercises (only in english Sdk names) name based on the FitSdk
+	* The new field `training.splits_additional` is a JSON structure, which can be used in future for other activities; details of structure see `inc/core/Parser/Activity/FileType/FitSplitsAdditionals.php`
+	* The activity details are shown in the UI laps-window table; all available values of the JSON will be shown dynamic
+	* **Migration 20230201200000 is necessary!**
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

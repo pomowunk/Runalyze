@@ -126,6 +126,15 @@ class FitActivity extends AbstractSingleParser
     // temperatur of the battery block (only as fallback)
     protected $batteryTemperature = [];
 
+    // additional infos for strength-training
+    protected $fitSplitsAdditionals = null;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fitSplitsAdditionals = new FitSplitsAdditionals();
+    }
+
     public function parse()
     {
         throw new \RuntimeException('FitActivity does not support parse().');
@@ -161,6 +170,11 @@ class FitActivity extends AbstractSingleParser
         // #TSC: set the 
         if (empty($this->Container->ActivityData->AvgTemperature) && !empty($this->batteryTemperature)) {
             $this->Container->ActivityData->AvgTemperature = array_sum($this->batteryTemperature)/count($this->batteryTemperature);
+        }
+
+        // #TSC: Save additional infos of splits (f.e. strong-training) as JSON
+        if($this->fitSplitsAdditionals->hasData()) {
+            $this->Container->ActivityData->SplitsAdditional = $this->fitSplitsAdditionals->getFinishedSplitsAdditional();
         }
     }
 
@@ -384,6 +398,10 @@ class FitActivity extends AbstractSingleParser
                 case 'user_profile':
                     $this->readUserProfile();
                     break;
+
+                case 'set': // #TSC a "set" of Krafttraining are interpreded as laps
+                    $this->readSet();
+                    break;
             }
         } elseif (isset($this->Header['NUMBER'])) {
             switch ($this->Header['NUMBER']) {
@@ -394,11 +412,7 @@ class FitActivity extends AbstractSingleParser
                 case 140:
                     $this->readUndocumentedDataBlob140();
                     break;
-
-                case '225': // #TSC a "set" of Krafttraining are interpreded as laps
-                    $this->readSet();
-                    break;
-                }
+            }
         }
     }
 
@@ -914,15 +928,10 @@ class FitActivity extends AbstractSingleParser
      */
     protected function readSet()
     {
-        // xxx0=duration in millis
-        if (isset($this->Values['xxx0']) && round($this->Values['xxx0'][0] / 1e3) > 0) {
-            $this->Container->Rounds->add(new Round(
-                0,
-                $this->Values['xxx0'][0] / 1e3,
-                // xxx5=set_type=1=active;0=rest
-                (isset($this->Values['xxx5']) && $this->Values['xxx5'][0] == 1)
-            ));
-        }
+        $round = $this->fitSplitsAdditionals->getSetRoundAndCollect($this->Values);
+        if(!is_null($round)) {
+            $this->Container->Rounds->add($round);
+        }   
     }
 
     // "NAME=lenght" is a swim lane

@@ -950,6 +950,7 @@ else {
      'field_description' => 206,
      'developer_data_id' => 207,
      'magnetometer_data' => 208,
+     'set' => 225,
      'mfg_range_min' => 0xFF00,
      'mfg_range_max' => 0xFFFE,
    },
@@ -4326,6 +4327,20 @@ sub named_type_value {
      81 => +{'name' => 'avg_cadence_position', 'unit' => 'rpm'},
      82 => +{'name' => 'max_cadence_position', 'unit' => 'rpm'},
      83 => +{'name' => 'manufacturer', 'type_name' => 'manufacturer'},
+   },
+
+   'set' => +{ # set
+     254 => +{'name' => 'timestamp', 'type_name' => 'date_time'},
+     0 => +{'name' => 'duration', 'scale' => 1000, 'unit' => 's'},
+     3 => +{'name' => 'repetitions'}, # wiederholungen
+     4 => +{'name' => 'weight', 'scale' => 16, 'unit' => 'kg'},
+     5 => +{'name' => 'type', 'type_name' => 'bool'}, # rest=0 active=1
+     6 => +{'name' => 'start_timestamp', 'type_name' => 'date_time'},
+     7 => +{'name' => 'category'}, # Profile.Type.EXERCISE_CATEGORY
+     8 => +{'name' => 'category_subtype'}, # Based on the associated category, see [category]_exercise_names
+     9 => +{'name' => 'weight_display_unit'}, # Profile.Type.FIT_BASE_UNIT: 0=other, 1=kilo, 2=pound
+     10 => +{'name' => 'message_index', 'type_name' => 'message_index'},
+     11 => +{'name' => 'wkt_step_index', 'type_name' => 'message_index'},
    },
 
    # =================== Segment list file messages ===================

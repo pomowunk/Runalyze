@@ -399,6 +399,7 @@ CREATE TABLE IF NOT EXISTS `runalyze_training` (
   `route` text,
   `routeid` int(10) unsigned DEFAULT NULL,
   `splits` mediumtext,
+  `splits_additional` JSON DEFAULT NULL,
   `title` text,
   `partner` text,
   `notes` text,

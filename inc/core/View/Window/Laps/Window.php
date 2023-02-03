@@ -359,7 +359,8 @@ class Window {
 			$this->Laps,
 			$this->DemandedTime,
 			$this->DemandedPace,
-			($this->Context->sport()->getInternalProfileEnum() == SportProfile::RUNNING)
+			($this->Context->sport()->getInternalProfileEnum() == SportProfile::RUNNING),
+			$this->Context->activity()->splitsAdditional()
 		);
 
 		if ($this->LapDistance > 0) {

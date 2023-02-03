@@ -559,6 +559,13 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     /**
      * @var string|null
      *
+     * @ORM\Column(name="splits_additional", type="json", length=2147483647, nullable=true)
+     */
+    private $splitsAdditional;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="title", type="text", length=65535, nullable=true)
      */
     private $title = null;
@@ -2152,6 +2159,26 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     public function getSplits()
     {
         return $this->splits;
+    }
+
+    /**
+     * @param null|string $splitsAdditional
+     *
+     * @return $this
+     */
+    public function setSplitsAdditional($splitsAdditional)
+    {
+        $this->splitsAdditional = $splitsAdditional;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSplitsAdditional()
+    {
+        return $this->splitsAdditional;
     }
 
     /**

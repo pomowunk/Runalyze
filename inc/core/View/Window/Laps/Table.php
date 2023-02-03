@@ -72,18 +72,33 @@ class Table {
 	protected $AdditionalKeys = array();
 
 	/**
+	 * @var array
+	 * contains the decoded splits-additional infos as a object array.
+	 */
+	protected $splitsAdditional = null;
+
+	/**
 	 * @param \Runalyze\Data\Laps\Laps $laps
 	 * @param \Runalyze\Activity\Duration $demandedTime
 	 * @param \Runalyze\Activity\Pace $demandedPace
 	 * @param bool $isRunning
+	 * @param string $splitsAdditional
 	 */
-	public function __construct(Laps $laps, Duration $demandedTime, Pace $demandedPace, $isRunning)
+	public function __construct(Laps $laps, Duration $demandedTime, Pace $demandedPace, $isRunning, ?string $splitsAdditional = null)
 	{
 		$this->Laps = $laps;
 		$this->DemandedTime = $demandedTime;
 		$this->DemandedPace = $demandedPace;
 
 		$this->defineAdditionalKeys($isRunning);
+
+		// #TSC: parse the additional infos (only if it has the same lap count)
+		if(!empty($splitsAdditional)) {
+			$js = json_decode($splitsAdditional, true);
+			if(count($js['data']) == $laps->num()) {
+				$this->splitsAdditional = $js;
+			}
+		}
 	}
 
 	/**
@@ -149,6 +164,7 @@ class Table {
 						'<th>'.__('max.').' '.__('HR').'</th>'.
 						'<th class="{sorter: false}">'.__('elevation').'</th>'.
 						$this->tableHeaderForAdditionalKeys().
+						$this->tableHeaderForSplitsAdditional().
 					'</tr>'.
 				'</thead>';
 	}
@@ -161,6 +177,26 @@ class Table {
 
 		foreach ($this->AdditionalKeys as $key) {
 			$Code .= '<th class="small">'.$this->labelForAdditionalValue($key).'</th>';
+		}
+
+		return $Code;
+	}
+
+	/**
+	 * shows the table header for the split-additional informations.
+	 * this is dynamical regarding the json content.
+	 * #TSC
+	 *
+	 * @return string
+	 */
+	protected function tableHeaderForSplitsAdditional() {
+		$Code = '';
+
+		// parse the json and select all keys
+		if(!empty($this->splitsAdditional)) {
+			foreach($this->splitsAdditional['keys'] as $key){
+				$Code .= '<th class="small">'. ucfirst($key) .'</th>';
+			}
 		}
 
 		return $Code;
@@ -202,6 +238,7 @@ class Table {
 				'<td>'.($Lap->hasHR() ? Helper::Unknown($Lap->HRmax()->string(), '-') : '-').'</td>'.
 				'<td>'.($Lap->hasElevation() ? '+'.Elevation::format($Lap->elevationUp(), false).'/-'.Elevation::format($Lap->elevationDown(), false) : '-').'</td>'.
 				$this->additionalTableCellsFor($Lap).
+				$this->splitsAdditionalCells($i).
 			'</tr>';
 	}
 
@@ -282,6 +319,34 @@ class Table {
 		}
 
 		return '';
+	}
+
+	/**
+	 * hows the cell values from the json.
+	 * this is dynamical regarding the json content.
+	 * #TSC
+	 *
+	 * @param idx table row index
+	 * @return string
+	 */
+	protected function splitsAdditionalCells(int $idx) {
+		$Code = '';
+
+		if(empty($this->splitsAdditional)) {
+			return $Code;
+		}
+
+		$obj = $this->splitsAdditional['data'][$idx];
+
+		foreach ($this->splitsAdditional['keys'] as $key) {
+			if(array_key_exists($key, $obj)) {
+				$Code .= '<td>'. $obj[$key] .'</td>';
+			} else {
+				$Code .= '<td></td>';
+			}
+		}
+
+		return $Code;
 	}
 
 	/**

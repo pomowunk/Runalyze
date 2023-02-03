@@ -425,6 +425,12 @@ class Entity extends Model\EntityWithID {
 	const SPLITS = 'splits';
 
 	/**
+	 * Key: splits_additional
+	 * @var string
+	 */
+	const SPLITS_ADDITIONAL = 'splits_additional';
+
+	/**
 	 * Key: title
 	 * @var string
 	 */
@@ -471,6 +477,12 @@ class Entity extends Model\EntityWithID {
 	 * @var \Runalyze\Model\Activity\Splits\Entity
 	 */
 	protected $Splits = null;
+
+	/**
+	 * Splits-additional
+	 * @var string
+	 */
+	protected $SplitsAdditional = null;
 
 	/**
 	 * Partner
@@ -560,6 +572,7 @@ class Entity extends Model\EntityWithID {
 			self::ROUTEID,
 			self::ROUTE,
 			self::SPLITS,
+			self::SPLITS_ADDITIONAL,
 			self::TITLE,
 			self::PARTNER,
 			self::NOTES,
@@ -1297,6 +1310,14 @@ class Entity extends Model\EntityWithID {
 		}
 
 		return $this->Splits;
+	}
+
+	/**
+	 * SplitsAdditional
+	 * @return string
+	 */
+	public function splitsAdditional() {
+		return $this->Data[self::SPLITS_ADDITIONAL];
 	}
 
 	/**
