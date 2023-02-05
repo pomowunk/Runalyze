@@ -11,11 +11,14 @@ use Runalyze\Activity\Elevation;
 use Runalyze\Activity\Pace;
 use Runalyze\Data\Laps\Laps;
 use Runalyze\Model\Activity;
+use Runalyze\Model\Swimdata;
 use Runalyze\View\Activity\Dataview;
+use Runalyze\Profile\Sport\SportProfile;
 
 use Ajax;
 use Helper;
 use FormularFieldset;
+use Runalyze\View\Leaflet\Activity as LeafletActivity;
 
 /**
  * Display table for laps
@@ -81,16 +84,16 @@ class Table {
 	 * @param \Runalyze\Data\Laps\Laps $laps
 	 * @param \Runalyze\Activity\Duration $demandedTime
 	 * @param \Runalyze\Activity\Pace $demandedPace
-	 * @param bool $isRunning
+	 * @param int $InternalProfileEnum
 	 * @param string $splitsAdditional
 	 */
-	public function __construct(Laps $laps, Duration $demandedTime, Pace $demandedPace, $isRunning, ?string $splitsAdditional = null)
+	public function __construct(Laps $laps, Duration $demandedTime, Pace $demandedPace, $internalSportProfileEnum, ?string $splitsAdditional = null)
 	{
 		$this->Laps = $laps;
 		$this->DemandedTime = $demandedTime;
 		$this->DemandedPace = $demandedPace;
 
-		$this->defineAdditionalKeys($isRunning);
+		$this->defineAdditionalKeys($internalSportProfileEnum == SportProfile::RUNNING);
 
 		// #TSC: parse the additional infos (only if it has the same lap count)
 		if(!empty($splitsAdditional)) {
@@ -248,6 +251,12 @@ class Table {
 	 */
 	protected function additionalTableCellsFor(\Runalyze\Data\Laps\Lap $Lap) {
 		$Code = '';
+
+		// #TSC show no values for rest-laps
+		if(!$Lap->isActive()) {
+			return $Code;
+		}
+
 		$View = new Dataview(new Activity\Entity(
 			$Lap->additionalValues()
 		));
@@ -286,6 +295,17 @@ class Table {
 					$Code .= '<td>'.$View->power().'</td>';
 					break;
 
+				case Swimdata\Entity::STROKE: // #TSC new info from swimming; i'm not using the $View for this
+					$Code .= '<td>'. round($Lap->additionalValues()[$key], 1) .'</td>';
+					break;
+
+				case Activity\Entity::TOTAL_STROKES: // #TSC new info from swimming
+				case Swimdata\Entity::SWOLF:
+				case Swimdata\Entity::SWOLFCYCLES:
+				case 'lanes':
+					$Code .= '<td>'. round($Lap->additionalValues()[$key]) .'</td>';
+					break;
+	
 				default:
 					$Code .= '<td></td>';
 			}
@@ -316,7 +336,17 @@ class Table {
 				return 'VO<sub>2</sub>max';
 			case Activity\Entity::POWER:
 				return __('Power');
-		}
+			case 'lanes':
+				return '# ' . __('Lanes');
+			case Swimdata\Entity::STROKE:
+				return '&#8709; ' .  __('Strokes') . '/' . __('Track');
+			case Activity\Entity::TOTAL_STROKES:
+				return __('Total strokes');
+			case Swimdata\Entity::SWOLF:
+				return '&#8709; ' . __('Swolf');
+			case Swimdata\Entity::SWOLFCYCLES:
+				return '&#8709; ' . __('SWOLFcycles');
+			}
 
 		return '';
 	}

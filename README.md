@@ -222,6 +222,9 @@ Here some fixes/improvements i have done in RUNALYZE (see details in the commits
 	* The new field `training.splits_additional` is a JSON structure, which can be used in future for other activities; details of structure see `inc/core/Parser/Activity/FileType/FitSplitsAdditionals.php`
 	* The activity details are shown in the UI laps-window table; all available values of the JSON will be shown dynamic
 	* **Migration 20230201200000 is necessary!**
+* 2023-02-05: Show more swimming details on the UI laps-window table
+	* strokes/lane, Swolf, Swolf-cycles, total-lanes, total-strokes for one (active) lane (these data are constructed from the `swimdata` array)
+	* store additionally the total-strokes of one lane in the `training.splits_additional` (for better further SQL analysis)
 
 Please notice:
 * All the changes are only done for me to use this great product for me.

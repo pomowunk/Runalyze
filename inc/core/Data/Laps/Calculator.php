@@ -7,10 +7,12 @@
 namespace Runalyze\Data\Laps;
 
 use Runalyze\Activity\Duration;
+use Runalyze\Bundle\CoreBundle\Entity\Swimdata as EntitySwimdata;
 use Runalyze\Calculation;
 use Runalyze\Configuration;
 use Runalyze\Model\Route;
 use Runalyze\Model\Trackdata;
+use Runalyze\Model\Swimdata;
 use Runalyze\Model\Activity;
 
 /**
@@ -45,6 +47,11 @@ class Calculator
 	 * @var \Runalyze\Model\Route\Loop
 	 */
 	protected $RouteLoop = null;
+
+	/**
+	 * @var \Runalyze\Model\Swimdata\Loop
+	 */
+	protected $SwimdataLoop = null;
 
 	/**
 	 * @var bool
@@ -105,11 +112,13 @@ class Calculator
 	/**
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
 	 * @param \Runalyze\Model\Route\Entity $route
+	 * @param \Runalyze\Model\Swimdata\Entity $swimdata
 	 */
-	public function calculateFrom(Trackdata\Entity $trackdata, Route\Entity $route = null)
+	public function calculateFrom(Trackdata\Entity $trackdata, Route\Entity $route = null, Swimdata\Entity $swimdata = null)
 	{
 		$this->TrackdataLoop = new Trackdata\Loop($trackdata);
 		$this->RouteLoop = !is_null($route) ? new Route\Loop($route) : null;
+		$this->SwimdataLoop = !is_null($swimdata) ? new Swimdata\Loop($swimdata) : null;
 
 		// #TSC debugging
 		// echo('# Calculator.calculateFrom ');
@@ -269,8 +278,11 @@ class Calculator
 
 		$AdditionalData = array();
 		$SlicedTrackdata = $this->TrackdataLoop->sliceObject();
-
 		$this->addTrackdataAveragesToDataFrom($SlicedTrackdata, $AdditionalData);
+
+		$SlicedSwimdata = $this->SwimdataLoop->sliceObject();
+		$this->addSwimmdataAveragesToDataFrom($SlicedSwimdata, $AdditionalData);
+
 		$this->addVO2maxToDataFrom($Lap, $AdditionalData);
 
 		$Lap->setAdditionalValues($AdditionalData);
@@ -298,6 +310,35 @@ class Calculator
 			if ($Object->has($trackdataKey)) {
 				$AdditionalData[$objectKey] = $NewLoop->average($trackdataKey);
 			}
+		}
+	}
+
+	/**
+	 * #TSC add swim-data for the laps-popup.
+	 * @param \Runalyze\Model\Swimdata\Entity $Object
+	 * @param array $AdditionalData
+	 */
+	protected function addSwimmdataAveragesToDataFrom(Swimdata\Entity $Object, array &$AdditionalData) {
+		$KeysToAverage = array(
+			Swimdata\Entity::STROKE => Swimdata\Entity::STROKE,
+			Swimdata\Entity::SWOLF => Swimdata\Entity::SWOLF,
+			Swimdata\Entity::SWOLFCYCLES => Swimdata\Entity::SWOLFCYCLES
+		);
+
+		$NewLoop = new Swimdata\Loop($Object);
+		$NewLoop->goToEnd();
+
+		foreach ($KeysToAverage as $objectKey => $dataKey) {
+			if ($Object->has($dataKey)) {
+				$AdditionalData[$objectKey] = $NewLoop->average($dataKey);
+			}
+		}
+
+		if ($Object->has(Swimdata\Entity::STROKE)) {
+			$AdditionalData['lanes'] = $NewLoop->num(Swimdata\Entity::STROKE);
+		}
+		if ($Object->has(Swimdata\Entity::STROKE)) {
+			$AdditionalData[Activity\Entity::TOTAL_STROKES] = $NewLoop->sum(Swimdata\Entity::STROKE);
 		}
 	}
 
@@ -339,6 +380,9 @@ class Calculator
 		if (!is_null($this->RouteLoop)) {
 			$this->RouteLoop->goToIndex($this->TrackdataLoop->index());
 		}
+		if (!is_null($this->SwimdataLoop)) {
+			$this->SwimdataLoop->goToIndex($this->TrackdataLoop->index());
+		}
 	}
 
 	/**
@@ -350,6 +394,9 @@ class Calculator
 
 		if (!is_null($this->RouteLoop)) {
 			$this->RouteLoop->goToIndex($this->TrackdataLoop->index());
+		}
+		if (!is_null($this->SwimdataLoop)) {
+			$this->SwimdataLoop->goToIndex($this->TrackdataLoop->index());
 		}
 	}
 

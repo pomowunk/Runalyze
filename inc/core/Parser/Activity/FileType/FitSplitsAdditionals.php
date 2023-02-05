@@ -69,10 +69,10 @@ class FitSplitsAdditionals {
                     $set['excercise'] = $this->fitExcerciseMapping->getFullMapping($cat, $sub);
                 }
                 if(isset($values['repetitions'])) {
-                    $set['repetitions'] = $values['repetitions'][0];
+                    $set['repetitions'] = (int)($values['repetitions'][0]);
                 }
                 if(isset($values['weight']) && $values['weight'][0] > 0) {
-                    $set['weight'] = $values['weight'][0];
+                    $set['weight'] = (int)($values['weight'][0]);
                 }
                 $this->data[] = $set;
             } else {
@@ -81,6 +81,26 @@ class FitSplitsAdditionals {
             }          
         }
         return $round;
+    }
+
+    /**
+     * #TSC read the sets of a strength-training as "normal" laps
+     */
+    public function collectSwimLap(&$values, bool $isActiveLap) {
+        $i = array();
+
+        if($isActiveLap) {
+            if (isset($values['total_strokes'])) {
+                $i['FIT strokes'] = (int)($values['total_strokes'][0]);
+            }
+        }
+        
+        if(!empty($i)) {
+            $this->data[] = $i;
+        } else {
+            // its a rest, use a empty element
+            $this->data[] = json_decode('{}');
+        }    
     }
 
     private function getUniqueKeys() {
@@ -99,11 +119,11 @@ class FitSplitsAdditionals {
 {
     "keys": ["excercise","repetitions"],                            <== all keys (not every key is available in the data) used for UI table headers
     "data": [
-        {"excercise":"curl, bench_press","repetitions":"35"},       <== data of lap/split/round 1
+        {"excercise":"curl, bench_press","repetitions":35},         <== data of lap/split/round 1
         {},                                                         <== rest lap without data
-        {"excercise":"curl, bench_press","repetitions":"16"},
+        {"excercise":"curl, bench_press","repetitions":16},
         {},
-        {"excercise":"row, curl","repetitions":"40"}
+        {"excercise":"row, curl","repetitions":40}
     ]
 }
 */

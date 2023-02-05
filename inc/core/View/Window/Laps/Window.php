@@ -9,7 +9,6 @@ namespace Runalyze\View\Window\Laps;
 use Runalyze\Configuration;
 use Runalyze\Data\Laps\Calculator;
 use Runalyze\Parameter\Application\DistanceUnitSystem;
-use Runalyze\Profile\Sport\SportProfile;
 use Runalyze\View\Activity\Context;
 use Runalyze\Activity\Duration;
 use Runalyze\Activity\Pace;
@@ -258,7 +257,7 @@ class Window {
 			$sum += $split->time();
 		}
 
-		$this->Laps->calculateFromTimes($Times, $this->Context->trackdata(), $this->Context->route());
+		$this->Laps->calculateFromTimes($Times, $this->Context->trackdata(), $this->Context->route(), $this->Context->swimdata());
 	}
 
 	/**
@@ -359,7 +358,7 @@ class Window {
 			$this->Laps,
 			$this->DemandedTime,
 			$this->DemandedPace,
-			($this->Context->sport()->getInternalProfileEnum() == SportProfile::RUNNING),
+			$this->Context->sport()->getInternalProfileEnum(),
 			$this->Context->activity()->splitsAdditional()
 		);
 

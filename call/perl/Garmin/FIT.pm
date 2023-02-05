@@ -3753,6 +3753,7 @@ sub named_type_value {
      70 => +{'name' => 'unknown70'}, # unknown UINT32
      71 => +{'name' => 'wkt_step_index', 'type_name' => 'message_index'},
      72 => +{'name' => 'unknown72'}, # unknown ENUM
+     73 => +{'name' => 'swim_swolf'}, # #TSC
      74 => +{'name' => 'opponent_score'},
      75 => +{'name' => 'stroke_count', 'unit' => 'counts'},
      76 => +{'name' => 'zone_count', 'unit' => 'counts'},

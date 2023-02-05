@@ -921,6 +921,11 @@ class FitActivity extends AbstractSingleParser
                 $this->isActiveLap() // #TSC is swimming and no real activity in this lap ==> pause/rest
             ));
         }
+
+        // #TSC additional infos for swimming
+        if ($this->IsSwimming) {
+            $this->fitSplitsAdditionals->collectSwimLap($this->Values, $this->isActiveLap());
+        }
     }
 
     /**

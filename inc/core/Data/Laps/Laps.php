@@ -8,6 +8,7 @@ namespace Runalyze\Data\Laps;
 
 use Runalyze\Model\Trackdata;
 use Runalyze\Model\Route;
+use Runalyze\Model\Swimdata;
 use Runalyze\Model\Activity\Splits;
 
 /**
@@ -38,6 +39,7 @@ class Laps {
 	 * @param array $distances
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
 	 * @param \Runalyze\Model\Route\Entity $route
+	 * @param \Runalyze\Model\Swimdata\Entity $swimdata
 	 */
 	public function calculateFrom(array $distances, Trackdata\Entity $trackdata, Route\Entity $route = null) {
 		$Calculator = new Calculator($this);
@@ -50,12 +52,13 @@ class Laps {
 	 * @param array $times
 	 * @param \Runalyze\Model\Trackdata\Entity $trackdata
 	 * @param \Runalyze\Model\Route\Entity $route
+	 * @param \Runalyze\Model\Swimdata\Entity $swimdata
 	 */
-	public function calculateFromTimes(array $times, Trackdata\Entity $trackdata, Route\Entity $route = null) {
+	public function calculateFromTimes(array $times, Trackdata\Entity $trackdata, Route\Entity $route = null, Swimdata\Entity $swimdata = null) {
 		$Calculator = new Calculator($this);
 		$Calculator->calculateAdditionalValues($this->CalculateAdditionalValues);
 		$Calculator->setTimes($times);
-		$Calculator->calculateFrom($trackdata, $route);
+		$Calculator->calculateFrom($trackdata, $route, $swimdata);
 	}
 
 	/**
