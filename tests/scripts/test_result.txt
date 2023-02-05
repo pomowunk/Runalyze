@@ -9,7 +9,7 @@ Configuration: /app/runalyze/tests/config.xml
 ..E.FF..........................F......FEF.....................  63 / 109 ( 57%)
 ........F....F.....................F...E..E...                  109 / 109 (100%)
 
-Time: 4.82 minutes, Memory: 110.00MB
+Time: 4.88 minutes, Memory: 110.00MB
 
 There were 4 errors:
 
@@ -17,7 +17,7 @@ There were 4 errors:
 Division by zero
 
 /app/runalyze/inc/core/Parser/Activity/Common/Data/ContinuousDataAdapter.php:254
-/app/runalyze/inc/core/Parser/Activity/Common/Data/ActivityDataContainer.php:99
+/app/runalyze/inc/core/Parser/Activity/Common/Data/ActivityDataContainer.php:100
 /app/runalyze/tests/inc/core/Parser/Activity/FileType/AbstractActivityParserTestCase.php:129
 /app/runalyze/tests/inc/core/Parser/Activity/FileType/AbstractActivityParserTestCase.php:103
 /app/runalyze/tests/inc/core/Parser/Activity/FileType/AbstractActivityParserTestCase.php:90
@@ -27,10 +27,10 @@ Division by zero
 2) Runalyze\Tests\Parser\Activity\FileType\FitTest::testEmptyRunScribeData
 A non-numeric value encountered
 
-/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:853
-/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:745
-/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:350
-/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:290
+/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:867
+/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:759
+/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:364
+/app/runalyze/inc/core/Parser/Activity/FileType/FitActivity.php:304
 /app/runalyze/inc/core/Parser/Activity/FileType/Fit.php:51
 /app/runalyze/inc/core/Parser/Common/LineByLineParserTrait.php:36
 /app/runalyze/inc/core/Parser/Activity/FileType/Fit.php:37
@@ -130,7 +130,7 @@ Configuration: /app/runalyze/tests/config.xml
 ........................................................F........ 65 / 83 ( 78%)
 ...............F..                                                83 / 83 (100%)
 
-Time: 35.53 seconds, Memory: 140.50MB
+Time: 36.72 seconds, Memory: 140.50MB
 
 There were 2 failures:
 
@@ -154,28 +154,28 @@ PHPUnit 5.7.27 by Sebastian Bergmann and contributors.
 Runtime:       PHP 7.3.31-1~deb10u1
 Configuration: /app/runalyze/tests/config.xml
 
-.........................................................F...   61 / 1163 (  5%)
-.............................................................  122 / 1163 ( 10%)
-....................................F........................  183 / 1163 ( 15%)
-.............................................................  244 / 1163 ( 20%)
-.............................................................  305 / 1163 ( 26%)
-......................F.FF...............E.....F.............  366 / 1163 ( 31%)
-.............................................................  427 / 1163 ( 36%)
-.............................................................  488 / 1163 ( 41%)
-...................................F.........................  549 / 1163 ( 47%)
-.............................................................  610 / 1163 ( 52%)
-.....................................................EEEE....  671 / 1163 ( 57%)
-.............................................................  732 / 1163 ( 62%)
-.............................................................  793 / 1163 ( 68%)
-.............................................................  854 / 1163 ( 73%)
-.............................................................  915 / 1163 ( 78%)
-.......F.....................................................  976 / 1163 ( 83%)
-............................................................. 1037 / 1163 ( 89%)
-............................................................. 1098 / 1163 ( 94%)
-............................................................. 1159 / 1163 ( 99%)
-....                                                          1163 / 1163 (100%)
+.........................................................F...   61 / 1173 (  5%)
+.............................................................  122 / 1173 ( 10%)
+....................................F........................  183 / 1173 ( 15%)
+.............................................................  244 / 1173 ( 20%)
+.............................................................  305 / 1173 ( 26%)
+......................F.FF...............E.....F.............  366 / 1173 ( 31%)
+.............................................................  427 / 1173 ( 36%)
+.............................................................  488 / 1173 ( 41%)
+...................................F.........................  549 / 1173 ( 46%)
+.............................................................  610 / 1173 ( 52%)
+.....................................................EEEE....  671 / 1173 ( 57%)
+.............................................................  732 / 1173 ( 62%)
+.............................................................  793 / 1173 ( 67%)
+.............................................................  854 / 1173 ( 72%)
+.............................................................  915 / 1173 ( 78%)
+.......F.....................................................  976 / 1173 ( 83%)
+............................................................. 1037 / 1173 ( 88%)
+............................................................. 1098 / 1173 ( 93%)
+............................................................. 1159 / 1173 ( 98%)
+..............                                                1173 / 1173 (100%)
 
-Time: 10.6 seconds, Memory: 44.00MB
+Time: 10.9 seconds, Memory: 44.00MB
 
 There were 5 errors:
 
@@ -297,4 +297,4 @@ Failed asserting that 0 is null.
 /app/runalyze/vendor/phpunit/phpunit/phpunit:52
 
 ERRORS!
-Tests: 1163, Assertions: 5276, Errors: 5, Failures: 8.
+Tests: 1173, Assertions: 5288, Errors: 5, Failures: 8.

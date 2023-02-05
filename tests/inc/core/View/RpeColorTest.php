@@ -16,11 +16,14 @@ class RpeColorTest extends \PHPUnit_Framework_TestCase
 
     public function testSetting()
     {
-        $viaConstructor = new RpeColor(17);
-        $this->assertEquals(17, $viaConstructor->value());
+        $viaConstructor = new RpeColor(1);
+        $this->assertEquals(1, $viaConstructor->value());
+
+        $viaConstructor = new RpeColor(10);
+        $this->assertEquals(10, $viaConstructor->value());
 
         $viaSet = new RpeColor();
-        $this->assertEquals(19, $viaSet->setValue(19)->value());
+        $this->assertEquals(null, $viaSet->setValue(19)->value());
     }
 
 	public function testBackgroundColor()
@@ -28,11 +31,11 @@ class RpeColorTest extends \PHPUnit_Framework_TestCase
         $rpe = new RpeColor();
 
         $this->assertEquals('transparent', $rpe->setValue(0)->borderColor());
-        $this->assertEquals('#225ea8', $rpe->setValue(6)->borderColor());
-        $this->assertEquals('#41b6c4', $rpe->setValue(9)->borderColor());
-        $this->assertEquals('#a1dab4', $rpe->setValue(12)->borderColor());
-        $this->assertEquals('#fecc5c', $rpe->setValue(14)->borderColor());
-        $this->assertEquals('#fd8d3c', $rpe->setValue(18)->borderColor());
-        $this->assertEquals('#e31a1c', $rpe->setValue(20)->borderColor());
+        $this->assertEquals('#225ea8', $rpe->setValue(1)->borderColor());
+        $this->assertEquals('#fecc5c', $rpe->setValue(6)->borderColor());
+        $this->assertEquals('#fd8d3c', $rpe->setValue(9)->borderColor());
+        $this->assertEquals('#fd8d3c', $rpe->setValue(9)->borderColor());
+        $this->assertEquals('#e31a1c', $rpe->setValue(10)->borderColor());
+        $this->assertEquals('transparent', $rpe->setValue(20)->borderColor());
     }
 }

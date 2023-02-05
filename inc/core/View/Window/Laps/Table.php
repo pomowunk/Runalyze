@@ -85,9 +85,9 @@ class Table {
 	 * @param \Runalyze\Activity\Duration $demandedTime
 	 * @param \Runalyze\Activity\Pace $demandedPace
 	 * @param int $InternalProfileEnum
-	 * @param string $splitsAdditional
+	 * @param array $splitsAdditional
 	 */
-	public function __construct(Laps $laps, Duration $demandedTime, Pace $demandedPace, $internalSportProfileEnum, ?string $splitsAdditional = null)
+	public function __construct(Laps $laps, Duration $demandedTime, Pace $demandedPace, $internalSportProfileEnum, ?array $splitsAdditional = null)
 	{
 		$this->Laps = $laps;
 		$this->DemandedTime = $demandedTime;
@@ -96,11 +96,8 @@ class Table {
 		$this->defineAdditionalKeys($internalSportProfileEnum == SportProfile::RUNNING);
 
 		// #TSC: parse the additional infos (only if it has the same lap count)
-		if(!empty($splitsAdditional)) {
-			$js = json_decode($splitsAdditional, true);
-			if(count($js['data']) == $laps->num()) {
-				$this->splitsAdditional = $js;
-			}
+		if(!empty($splitsAdditional) && count($splitsAdditional['data']) == $laps->num()) {
+			$this->splitsAdditional = $splitsAdditional;
 		}
 	}
 

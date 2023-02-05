@@ -557,7 +557,7 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     private $splits;
 
     /**
-     * @var string|null
+     * @var array|null
      *
      * @ORM\Column(name="splits_additional", type="json", length=2147483647, nullable=true)
      */
@@ -2162,7 +2162,7 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     }
 
     /**
-     * @param null|string $splitsAdditional
+     * @param null|array $splitsAdditional
      *
      * @return $this
      */
@@ -2174,7 +2174,7 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     }
 
     /**
-     * @return null|string
+     * @return null|array
      */
     public function getSplitsAdditional()
     {

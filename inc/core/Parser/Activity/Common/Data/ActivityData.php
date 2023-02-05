@@ -106,7 +106,7 @@ class ActivityData
     /** @var int|null [-] #TSC: added */
     public $MaxRespirationRate = null;
 
-    /** @var string|null [-] #TSC: added */
+    /** @var array|null [-] #TSC: added */
     public $SplitsAdditional = null;
 
     /**

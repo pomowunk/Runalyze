@@ -480,7 +480,7 @@ class Entity extends Model\EntityWithID {
 
 	/**
 	 * Splits-additional
-	 * @var string
+	 * @var array
 	 */
 	protected $SplitsAdditional = null;
 
@@ -1314,10 +1314,11 @@ class Entity extends Model\EntityWithID {
 
 	/**
 	 * SplitsAdditional
-	 * @return string
+	 * @return array
 	 */
 	public function splitsAdditional() {
-		return $this->Data[self::SPLITS_ADDITIONAL];
+		// #TSC the column is defined as ORM-JSON and should be a array, but it isn't; so make it here
+		return json_decode($this->Data[self::SPLITS_ADDITIONAL], true);
 	}
 
 	/**

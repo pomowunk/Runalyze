@@ -17,18 +17,18 @@ class FitSplitsAdditionals {
     private $data = array();
 
     public function hasData(): bool {
-        return !empty($this->data);
+        return !empty($this->data) && !empty($this->getUniqueKeys());
     }
 
     /**
      * gets the splits-additional as a JSON structure.
      */
-    public function getFinishedSplitsAdditional(): string {
+    public function getFinishedSplitsAdditional(): ?array {
         // #TSC: Save additional infos of splits (f.e. strong-training) as JSON
         if ($this->hasData()) {
             $all['keys'] = $this->getUniqueKeys();
             $all['data'] = $this->data;
-            return json_encode($all);
+            return $all;
         } else {
             return null;
         }
@@ -72,7 +72,7 @@ class FitSplitsAdditionals {
                     $set['repetitions'] = (int)($values['repetitions'][0]);
                 }
                 if(isset($values['weight']) && $values['weight'][0] > 0) {
-                    $set['weight'] = (int)($values['weight'][0]);
+                    $set['weight'] = (int)($values['weight'][0]) / 16;
                 }
                 $this->data[] = $set;
             } else {
@@ -84,17 +84,21 @@ class FitSplitsAdditionals {
     }
 
     /**
-     * #TSC read the sets of a strength-training as "normal" laps
+     * #TSC collect additional informations of the lap.
      */
-    public function collectSwimLap(&$values, bool $isActiveLap) {
+    public function collectLap(&$values, bool $isActiveLap, bool $isSwimming) {
         $i = array();
 
-        if($isActiveLap) {
-            if (isset($values['total_strokes'])) {
+        if($isActiveLap && $isSwimming) {
+            if (isset($values['total_strokes']) && $values['total_strokes'][0] > 0) {
                 $i['FIT strokes'] = (int)($values['total_strokes'][0]);
             }
         }
-        
+
+        if (isset($values['total_calories']) && $values['total_calories'][0] > 0) {
+            $i['FIT calories'] = (int)($values['total_calories'][0]);
+        }
+    
         if(!empty($i)) {
             $this->data[] = $i;
         } else {
