@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  webapp:
+    depends_on:
+      - db
+    build:
+      context: .
+      target: runalyze_php
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    ports:
+      - "8000:80"
+    volumes:
+      - ./web:/var/www/runalyze/web
+      - ./inc:/var/www/runalyze/inc
+      - ./app:/var/www/runalyze/app
+      - ./lib:/var/www/runalyze/lib
+      - ./tests:/var/www/runalyze/tests
+      - ./plugin:/var/www/runalyze/plugin
+      - ./src:/var/www/runalyze/src
+      - ./vendor:/tmp/vendor
+  db:
+    image: mariadb:10.11.2
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: runalyze
+      MYSQL_USER: runalyze
+      MYSQL_PASSWORD: password
+    ports:
+      - 3307:3306
+    volumes:
+      - db_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    depends_on:
+      - db
+    # restart: unless-stopped
+    ports:
+      - 8002:80
+    environment:
+      - PMA_HOST=db
+      - PMA_QUERYHISTORYDB=true
+      - UPLOAD_LIMIT=512M
+  assets:
+    image: node:16
+    user: "node"
+    command: sh -c 'npm install && ./node_modules/.bin/gulp'
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+
+volumes:
+  db_data:
