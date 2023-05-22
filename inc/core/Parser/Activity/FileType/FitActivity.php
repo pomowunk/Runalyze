@@ -599,6 +599,10 @@ class FitActivity extends AbstractSingleParser
             isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null
         );
         $this->Container->ContinuousData->Distance[] = isset($this->Values['distance']) ? (int)$this->Values['distance'][0] / 1e5 : end($this->Container->ContinuousData->Distance);
+        $this->Container->ContinuousData->Speed[] = isset($this->Values['enhanced_speed']) ? 
+            (int)$this->Values['enhanced_speed'][0] / 1e3 : (
+            isset($this->Values['speed']) ? (int)$this->Values['speed'][0] / 1e3 : null
+        );
         $this->Container->ContinuousData->HeartRate[] = isset($this->Values['heart_rate']) ? (int)$this->Values['heart_rate'][0] : null;
         $this->Container->ContinuousData->Cadence[] = isset($this->Values['cadence']) ? (int)$this->Values['cadence'][0] : null;
         $this->Container->ContinuousData->Power[] = isset($this->Values['power']) ? (int)$this->Values['power'][0] : null;
