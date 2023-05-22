@@ -45,6 +45,7 @@ class GoogleMaps extends AbstractStrategyFromExternalAPI
     {
         if (isset($json['error_message'])) {
             $this->logger->warning(sprintf('GoogleMaps request failed: %s', $json['error_message']));
+            return false;
         }
 
         if (isset($json['status']) && 'OVER_QUERY_LIMIT' == $json['status']) {
