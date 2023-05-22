@@ -743,7 +743,7 @@ class Entity extends Model\Entity implements Model\Loopable, Model\Common\WithNu
 		if (!$this->has(self::PACE)) {
 			if ($this->has(self::SPEED)) {
 				$this->set(self::PACE, array_map(
-					fn($s): float => $s == 0.0 ? 0.0 : 1000.0 / $s,
+					fn($s): float => (float)$s == 0.0 ? 0.0 : 1000.0 / (float)$s,
 					$this->get(self::SPEED)));
 			} else {
 				$PaceCalculator = new PaceCalculator($this);
