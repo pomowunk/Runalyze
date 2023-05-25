@@ -472,18 +472,27 @@ class FitActivity extends AbstractSingleParser
         if (isset($this->Values['unknown7'])) {
             $this->Container->FitDetails->VO2maxEstimate = round((int)$this->Values['unknown7'][1] / 64 * 3.5 / 1024, 2);
         }
+
+        if (is_null($this->Container->FitDetails->RecoveryTime) && isset($this->Values['unknown9'])) {
+            $this->Container->FitDetails->RecoveryTime = round((int)$this->Values['unknown9'][1], 0);
+        }
     }
 
     protected function readEvent()
     {
         if (isset($this->Values['event']) && isset($this->Values['data'])) {
+            $eventDataValueAsInt = (int)$this->Values['data'][1];
             switch ((int)$this->Values['event'][1]) {
                 case 37:
-                    $this->Container->FitDetails->VO2maxEstimate = (int)$this->Values['data'][1];
+                    $this->Container->FitDetails->VO2maxEstimate = $eventDataValueAsInt;
                     return;
 
                 case 38:
-                    $this->Container->FitDetails->RecoveryTime = (int)$this->Values['data'][1];
+                    if (is_null($this->Container->FitDetails->RecoveryTime)
+                        || $eventDataValueAsInt > $this->Container->FitDetails->RecoveryTime)
+                    {
+                        $this->Container->FitDetails->RecoveryTime = $eventDataValueAsInt;
+                    }
                     return;
 
                 case 39:
@@ -502,11 +511,11 @@ class FitActivity extends AbstractSingleParser
                         substr($creator, 0, 6) == 'fenix5' ||
                         substr($creator, 0, 6) == 'fenix6'
                     ) {
-                        if ((int)$this->Values['data'][1] >= 0 && (int)$this->Values['data'][1] <= 255) {
-                            $this->Container->FitDetails->PerformanceCondition = (int)$this->Values['data'][1];
+                        if ($eventDataValueAsInt >= 0 && $eventDataValueAsInt <= 255) {
+                            $this->Container->FitDetails->PerformanceCondition = $eventDataValueAsInt;
                         }
                     } else {
-                        $this->Container->FitDetails->HrvAnalysis = (int)$this->Values['data'][1];
+                        $this->Container->FitDetails->HrvAnalysis = $eventDataValueAsInt;
                     }
 
                     return;
