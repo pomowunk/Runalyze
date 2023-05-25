@@ -129,7 +129,11 @@ class ActivityDataContainerToActivityContextConverter
         $activity->setCreator($metadata->getCreator());
         $activity->setCreatorDetails($metadata->getCreatorDetails());
 
-        $activity->setTitle($metadata->getDescription());
+        if(empty($metadata->getDescription()) || substr_compare($metadata->getDescription(), $metadata->getUploadFilename(), 0) == 0) {
+            $activity->setTitle($metadata->getUploadFilename());
+        } else {
+            $activity->setTitle($metadata->getDescription().' / '.$metadata->getUploadFilename());
+        }
         $activity->setNotes($metadata->getNotes());
 
         $this->tryToSetSportFor($activity, $metadata);

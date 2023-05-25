@@ -118,7 +118,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $filename = 'bulk-import'.uniqid().$file;
+            $filename = 'bulk-import'.uniqid().'_'.$file;
             $fs->copy($path.'/'.$file, $this->importDirectory.$filename);
             $files[] = $this->importDirectory.$filename;
         }

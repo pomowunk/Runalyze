@@ -272,6 +272,7 @@ class FileImporter implements LoggerAwareInterface
         }
 
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileBasename = pathinfo($fileName, PATHINFO_BASENAME);
         $parserClass = $this->ParserMapping->getParserClassFor($extension);
 
         if (null === $parserClass) {
@@ -286,7 +287,12 @@ class FileImporter implements LoggerAwareInterface
         $numContainer = $parser->getNumberOfActivities();
 
         for ($i = 0; $i < $numContainer; ++$i) {
-            $container[] = $parser->getActivityDataContainer($i);
+            $activityDataContainer = $parser->getActivityDataContainer($i);
+            if (substr_compare($fileBasename, 'bulk-import', 0) == 0) {
+                $fileBasename = explode('_', $fileBasename, 2)[0];
+            }
+            $activityDataContainer->Metadata->setUploadFilename($fileBasename);
+            $container[] = $activityDataContainer;
         }
 
         return $container;
