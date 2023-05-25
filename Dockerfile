@@ -9,6 +9,16 @@ FROM composer/composer:2-bin AS composer
 FROM mlocati/php-extension-installer:latest AS php_extension_installer
 
 ###############################################################################
+# Assets
+###############################################################################
+FROM node:16 as runalyze_assets
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        gettext \
+    && rm -rf /var/cache/apt/archives /var/lib/apt/lists
+
+###############################################################################
 # Web Server
 ###############################################################################
 FROM php:${PHP_VERSION}-apache AS runalyze_php
@@ -19,19 +29,20 @@ WORKDIR /var/www/runalyze
 
 COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN apt-get update && apt-get install -y \
-    gettext \
-    git \
-    inkscape \
-    libsqlite3-mod-spatialite \
-    locales \
-    python3 \
-    python3-pip \
-    rsync \
-    sqlite3 \
-    unzip \
-    zip \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        gettext \
+        git \
+        inkscape \
+        libsqlite3-mod-spatialite \
+        locales \
+        python3 \
+        python3-pip \
+        rsync \
+        sqlite3 \
+        unzip \
+        zip
+    # && rm -rf /var/lib/apt/lists/*
 
 RUN echo "Europe/Berlin" > /etc/timezone && \
     dpkg-reconfigure --frontend=noninteractive tzdata && \
@@ -43,8 +54,9 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US
 
+# install-php-extensions clears the apt cache at the end
 RUN set -eux; \
-    install-php-extensions \
+    IPE_GD_WITHOUTAVIF=1 install-php-extensions \
         # apcu \
         gettext \
         intl \
@@ -91,4 +103,6 @@ RUN set -eux; \
         chmod +x bin/console; sync; \
     fi
 
-CMD [ "sh", "-c", "rsync -ru --delete vendor /tmp; apache2-foreground" ]
+ARG HOST_UID=1000
+ARG HOST_GID=1000
+CMD [ "sh", "-c", "rsync -ru --delete vendor /tmp; chown -R ${HOST_UID}:${HOST_GID} /tmp/vendor; apache2-foreground" ]

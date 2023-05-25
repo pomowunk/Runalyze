@@ -4,6 +4,7 @@ services:
   webapp:
     depends_on:
       - db
+      - assets
     build:
       context: .
       target: runalyze_php
@@ -45,7 +46,11 @@ services:
       - UPLOAD_LIMIT=512M
     restart: unless-stopped
   assets:
-    image: node:16
+    build:
+      context: .
+      target: runalyze_assets
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     user: "node"
     command: sh -c 'npm install && ./node_modules/.bin/gulp'
     working_dir: /home/node/app
