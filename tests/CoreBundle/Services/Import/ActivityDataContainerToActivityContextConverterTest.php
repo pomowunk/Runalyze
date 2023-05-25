@@ -123,7 +123,7 @@ class ActivityDataContainerToActivityContextConverterTest extends AbstractFixtur
         $activityContext = $this->Converter->getContextFor($this->Container);
 
         $this->assertNotNull($activityContext->getRoute());
-        $this->assertEmpty($activityContext->getRoute()->getElevationsOriginal());
+        $this->assertEquals($this->Container->ContinuousData->Altitude, $activityContext->getRoute()->getElevationsOriginal());
         $this->assertEquals($this->Container->ContinuousData->Altitude, $activityContext->getRoute()->getElevationsCorrected());
     }
 

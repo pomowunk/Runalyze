@@ -595,9 +595,21 @@ class FitActivity extends AbstractSingleParser
 
         $this->Container->ContinuousData->Latitude[] = isset($this->Values['position_lat']) ? substr($this->Values['position_lat'][1], 0, -4) : null;
         $this->Container->ContinuousData->Longitude[] = isset($this->Values['position_long']) ? substr($this->Values['position_long'][1], 0, -4) : null;
-        $this->Container->ContinuousData->Altitude[] = isset($this->Values['enhanced_altitude']) && (int)$this->Values['enhanced_altitude'][0] != 0 ? substr($this->Values['enhanced_altitude'][1], 0, -4) : (
-            isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0 ? substr($this->Values['altitude'][1], 0, -4) : null
-        );
+
+        if(is_null($this->Container->ContinuousData->IsAltitudeDataBarometric)) {
+            if(isset($this->Values['enhanced_altitude']) && (int)$this->Values['enhanced_altitude'][0] != 0) {
+                $this->Container->ContinuousData->IsAltitudeDataBarometric = true;
+            } else if(isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0) {
+                $this->Container->ContinuousData->IsAltitudeDataBarometric = false;
+            }
+        }
+
+        if($this->Container->ContinuousData->IsAltitudeDataBarometric) {
+            $this->Container->ContinuousData->Altitude[] = isset($this->Values['enhanced_altitude']) && (int)$this->Values['enhanced_altitude'][0] != 0 ? (int)substr($this->Values['enhanced_altitude'][1], 0, -4) : null;
+        } else {
+            $this->Container->ContinuousData->Altitude[] = isset($this->Values['altitude']) && (int)$this->Values['altitude'][0] != 0 ? (int)substr($this->Values['altitude'][1], 0, -4) : null;
+        }
+
         $this->Container->ContinuousData->Distance[] = isset($this->Values['distance']) ? (int)$this->Values['distance'][0] / 1e5 : end($this->Container->ContinuousData->Distance);
         $this->Container->ContinuousData->Speed[] = isset($this->Values['enhanced_speed']) ? 
             (int)$this->Values['enhanced_speed'][0] / 1e3 : (

@@ -377,10 +377,9 @@ class ActivityDataContainerToActivityContextConverter
         $route->setElevationDown($container->ActivityData->ElevationDescent);
 
         if (!empty($container->ContinuousData->Altitude)) {
+            $route->setElevationsOriginal($container->ContinuousData->Altitude);
             if ($container->ContinuousData->IsAltitudeDataBarometric) {
                 $route->setElevationsCorrected($container->ContinuousData->Altitude);
-            } else {
-                $route->setElevationsOriginal($container->ContinuousData->Altitude);
             }
         }
 
