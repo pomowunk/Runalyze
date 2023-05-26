@@ -240,7 +240,10 @@ abstract class Loop
 		if ($this->Object->has($key)) {
 			$start = $this->LastIndex == 0 ? $this->LastIndex : $this->LastIndex + 1;
 			for ($i = $start; $i <= $this->Index; ++$i) {
-				$sum += $this->Object->at($i, $key);
+				$v = $this->Object->at($i, $key);
+				if (is_numeric($v)) {
+					$sum += $v;
+				}
 			}
 		}
 
@@ -259,8 +262,9 @@ abstract class Loop
 		if ($this->Object->has($key)) {
 			$start = $this->LastIndex == 0 ? $this->LastIndex : $this->LastIndex + 1;
 			for ($i = $start; $i <= $this->Index; ++$i) {
-				if ($this->Object->at($i, $key) > $max) {
-					$max = $this->Object->at($i, $key);
+				$v = $this->Object->at($i, $key);
+				if (is_numeric($v) && $v > $max) {
+					$max = $v;
 				}
 			}
 		}
