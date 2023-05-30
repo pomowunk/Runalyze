@@ -2,12 +2,12 @@ imports:
     - { resource: config_shared.yml }
 
 parameters:
-  database_host: 127.0.0.1
+  database_host: db
   database_prefix: runalyze_test_
   database_port: 3306
   database_name: runalyze_test
   database_user: root
-  database_password:
+  database_password: password
 
 liip_functional_test:
   authentication:

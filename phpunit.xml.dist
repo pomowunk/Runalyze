@@ -2,10 +2,10 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
   backupGlobals="false"
-  bootstrap="../tests/bootstrap.php"
+  bootstrap="tests/bootstrap.php"
   colors="true"
   verbose="true"
-  cacheResultFile="../.build/test/phpunit.result.cache">
+  cacheResultFile=".build/test/phpunit.result.cache">
 
   <php>
     <env name="KERNEL_CLASS" value="AppKernel"/>
@@ -14,16 +14,16 @@
   </php>
 
   <testsuite name="PHPLOC">
-    <directory suffix="Test.php">../tests</directory>
+    <directory suffix="Test.php">./tests</directory>
   </testsuite>
 
-  <coverage cacheDirectory="../.build/coverage/cache">
+  <coverage cacheDirectory=".build/coverage/cache">
     <include>
-      <directory suffix=".php">../inc</directory>
+      <directory suffix=".php">./inc</directory>
     </include>
     <report>
-      <html outputDirectory="../.build/coverage/html" lowUpperBound="50" highLowerBound="90"/>
-      <text outputFile="../.build/coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+      <html outputDirectory=".build/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+      <text outputFile=".build/coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
     </report>
   </coverage>
 

@@ -2,6 +2,7 @@ imports:
     - { resource: config_test.yml }
 
 parameters:
+  database_name: runalyze_test_empty
   database_prefix: runalyze_test_empty_
 
 doctrine:

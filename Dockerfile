@@ -25,6 +25,8 @@ FROM php:${PHP_VERSION}-apache AS runalyze_php
 
 ENV SYMFONY_ENV=dev SYMFONY_DEBUG=1 XDEBUG_MODE=off
 
+RUN echo 'memory_limit = 1G' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
+
 WORKDIR /var/www/runalyze
 
 COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/local/bin/

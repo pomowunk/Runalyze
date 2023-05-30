@@ -13,13 +13,9 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./web:/var/www/runalyze/web
-      - ./inc:/var/www/runalyze/inc
-      - ./app:/var/www/runalyze/app
-      - ./lib:/var/www/runalyze/lib
-      - ./tests:/var/www/runalyze/tests
-      - ./plugin:/var/www/runalyze/plugin
-      - ./src:/var/www/runalyze/src
+      - ./:/var/www/runalyze/
+      - ignore_var:/var/www/runalyze/var
+      - ignore_vendor:/var/www/runalyze/vendor
       - ./vendor:/tmp/vendor
     restart: unless-stopped
   db:
@@ -59,3 +55,5 @@ services:
 
 volumes:
   db_data:
+  ignore_var:
+  ignore_vendor:
