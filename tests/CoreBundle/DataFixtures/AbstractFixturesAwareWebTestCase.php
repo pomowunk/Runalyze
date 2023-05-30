@@ -64,7 +64,6 @@ abstract class AbstractFixturesAwareWebTestCase extends WebTestCase
     protected function getDefaultAccount()
     {
         return $this->Fixtures->getReference('account-default');
-        // return $this->EntityManager->getReference(Account::class, $this->Fixtures->getReference('account-default')->getId());
     }
 
     /**

@@ -10,6 +10,9 @@ use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
+use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\MarathonShapeCalculation;
+use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\VO2maxCorrectionFactorCalculation;
+use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\VO2maxShapeCalculation;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -20,6 +23,12 @@ class RecalculationManagerTest extends TestCase
 
     /** @var  Account */
     protected $Account;
+
+    /** @var  TrainingRepository */
+    protected $TrainingRepository;
+
+    /** @var  RaceResultRepository */
+    protected $RaceResultRepository;
 
     /** @var ConfigurationManager */
     protected $ConfigurationManager;
@@ -41,14 +50,18 @@ class RecalculationManagerTest extends TestCase
         $list->set('data.VO2MAX_CORRECTOR', '1.00');
         $list->set('data.BASIC_ENDURANCE', '0');
 
+        $this->TrainingRepository = $this->getTrainingRepositoryMock();
+        $this->RaceResultRepository = $this->getRaceResultRepositoryMock();
         $this->ConfigurationUpdater = new ConfigurationUpdater($confRepository, $this->ConfigurationManager);
         
-        // TODO
         $this->Manager = new RecalculationManager(
             $this->ConfigurationManager,
             $this->ConfigurationUpdater,
-            $this->getTrainingRepositoryMock(),
-            $this->getRaceResultRepositoryMock()
+            $this->TrainingRepository,
+            $this->RaceResultRepository,
+            $this->getVO2maxShapeCalculationMock(),
+            $this->getMarathonShapeCalculationMock(),
+            $this->getVO2maxCorrectionFactorCalculationMock()
         );
     }
 
@@ -77,9 +90,11 @@ class RecalculationManagerTest extends TestCase
         $this->Manager->scheduleStartTimeCalculation($this->Account);
         $this->Manager->scheduleMarathonShapeCalculation($this->Account);
         $this->Manager->scheduleMarathonShapeCalculation($this->Account);
+        $this->Manager->scheduleEffectiveVO2maxShapeCalculation($this->Account);
+        $this->Manager->scheduleEffectiveVO2maxShapeCalculation($this->Account);
         $this->Manager->scheduleMarathonShapeCalculation($this->Account);
 
-        $this->assertEquals(2, $this->Manager->getNumberOfScheduledTasksFor($this->Account));
+        $this->assertEquals(3, $this->Manager->getNumberOfScheduledTasksFor($this->Account));
     }
 
     public function testThatResultsOfTasksAreForwardedToConfiguration()
@@ -153,10 +168,9 @@ class RecalculationManagerTest extends TestCase
 
     protected function getAccountMock()
     {
-        /** @var Account */
         $account = $this
             ->getMockBuilder(Account::class)
-            ->setMethods(['getId'])
+            ->onlyMethods(['getId'])
             ->getMock();
 
         $account
@@ -172,11 +186,10 @@ class RecalculationManagerTest extends TestCase
      */
     protected function getTrainingRepositoryMock()
     {
-        /** @var TrainingRepository */
         $repository = $this
             ->getMockBuilder(TrainingRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getStartTime', 'calculateVO2maxShape', 'calculateMarathonShape'])
+            ->onlyMethods(['getStartTime', 'calculateVO2maxShape', 'calculateMarathonShape'])
             ->getMock();
 
         $repository
@@ -202,11 +215,10 @@ class RecalculationManagerTest extends TestCase
      */
     protected function getRaceResultRepositoryMock()
     {
-        /** @var RaceresultRepository */
         $repository = $this
             ->getMockBuilder(RaceresultRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getEffectiveVO2maxCorrectionFactor'])
+            ->onlyMethods(['getEffectiveVO2maxCorrectionFactor'])
             ->getMock();
 
         $repository
@@ -222,11 +234,10 @@ class RecalculationManagerTest extends TestCase
      */
     protected function getConfRepositoryMock()
     {
-        /** @var ConfRepository */
         $repository = $this
             ->getMockBuilder(ConfRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findByAccount', 'findByAccountAndKey', 'save'])
+            ->onlyMethods(['findByAccount', 'findByAccountAndKey', 'save'])
             ->getMock();
 
         $repository
@@ -245,5 +256,47 @@ class RecalculationManagerTest extends TestCase
             ->will($this->returnValue(null));
 
         return $repository;
+    }
+
+    /**
+     * @return VO2maxShapeCalculation
+     */
+    protected function getVO2maxShapeCalculationMock()
+    {
+        $mock = $this
+            ->getMockBuilder(VO2maxShapeCalculation::class)
+            ->onlyMethods([])
+            ->setConstructorArgs([$this->TrainingRepository, $this->ConfigurationManager, $this->ConfigurationUpdater])
+            ->getMock();
+
+        return $mock;
+    }
+
+    /**
+     * @return MarathonShapeCalculation
+     */
+    protected function getMarathonShapeCalculationMock()
+    {
+        $mock = $this
+            ->getMockBuilder(MarathonShapeCalculation::class)
+            ->onlyMethods([])
+            ->setConstructorArgs([$this->TrainingRepository, $this->ConfigurationManager, $this->ConfigurationUpdater])
+            ->getMock();
+
+        return $mock;
+    }
+
+    /**
+     * @return VO2maxCorrectionFactorCalculation
+     */
+    protected function getVO2maxCorrectionFactorCalculationMock()
+    {
+        $mock = $this
+            ->getMockBuilder(VO2maxCorrectionFactorCalculation::class)
+            ->onlyMethods([])
+            ->setConstructorArgs([$this->RaceResultRepository, $this->ConfigurationManager, $this->ConfigurationUpdater])
+            ->getMock();
+
+        return $mock;
     }
 }

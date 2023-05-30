@@ -2,8 +2,6 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Command;
 
-use Doctrine\DBAL\Driver\PDOConnection;
-use Runalyze\Bundle\CoreBundle\Command\InstallDatabaseCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -58,7 +56,7 @@ class InstallDatabaseCommandTest extends KernelTestCase
     public function testExecute()
     {
         $application = new Application(static::$kernel);
-        $application->add(static::$kernel->getContainer()->get('Runalyze\Bundle\CoreBundle\Command\InstallDatabaseCommand'));
+        $application->add(static::$kernel->getContainer()->get('test.runalyze.installdatabasecommand'));
 
         $command = $application->find('runalyze:install:database');
         $commandTester = new CommandTester($command);

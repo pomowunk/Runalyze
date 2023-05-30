@@ -66,7 +66,7 @@ class NotificationRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
 
-        $this->_em->clear(Notification::class);
+        $this->_em->clear();
     }
 
     /**
@@ -81,7 +81,7 @@ class NotificationRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
 
-        $this->_em->clear(Notification::class);
+        $this->_em->clear();
 
         return $numDeleted;
     }

@@ -8,7 +8,6 @@ use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -33,7 +32,9 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
         $emptyAccount = new Account();
         $emptyAccount->setUsername('empty');
         $emptyAccount->setMail('empty@test.com');
-        $emptyAccount->setPassword('emptyPassword');
+
+        $encoder = $this->Container->get('test.security.encoder_factory')->getEncoder($emptyAccount);
+        $emptyAccount->setPassword($encoder->encodePassword('emptyPassword', $emptyAccount->getSalt()));
 
         $manager->persist($emptyAccount);
         $manager->flush();
@@ -58,7 +59,7 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
     protected function registerAccount(ObjectManager $manager, Account $account, $password)
     {
         $registration = new Registration($manager, $account);
-        $registration->setPassword($password, $this->Container->get('security.encoder_factory'));
+        $registration->setPassword($password, $this->Container->get('test.security.encoder_factory'));
         $registration->registerAccount();
 
         return $registration;

@@ -26,7 +26,7 @@ class PDOforRunalyzeTest extends TestCase
 	{
 		$this->object->exec('INSERT INTO `runalyze_training` (`s`, `accountid`, `sportid`, `time`) VALUES(100, 1, 0, 1477843525)');
 		$this->object->exec('INSERT INTO `runalyze_training` (`s`, `accountid`, `sportid`, `time`) VALUES(200, 1, 0, 1477843525)');
-		$this->object->exec('INSERT INTO `runalyze_training` (`s`, `accountid`, `sportid`, `time`) VALUES(66, 3, 0, 1477843525)');
+		$this->object->exec('INSERT INTO `runalyze_training` (`s`, `accountid`, `sportid`, `time`) VALUES(66, 0, 0, 1477843525)');
 
 		$this->object->setAccountID(1);
 		$this->object->startAddingAccountID();
@@ -34,7 +34,7 @@ class PDOforRunalyzeTest extends TestCase
 		$this->assertEquals( 300, $this->object->query('SELECT SUM(`s`) FROM `runalyze_training`')->fetchColumn() );
 		$this->assertEquals( 2, $this->object->query('SELECT COUNT(*) FROM `runalyze_training`')->fetchColumn() );
 
-		$this->object->setAccountID(3);
+		$this->object->setAccountID(0);
 
 		$this->assertEquals( 66, $this->object->query('SELECT SUM(`s`) FROM `runalyze_training`')->fetchColumn() );
 		$this->assertEquals( 1, $this->object->query('SELECT COUNT(*) FROM `runalyze_training`')->fetchColumn() );

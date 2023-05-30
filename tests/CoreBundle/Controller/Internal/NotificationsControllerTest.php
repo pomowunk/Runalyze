@@ -46,7 +46,10 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
 
     public function testThatReadNotificationThrowsAccessDeniedForUnknownId()
     {
-        $client = $this->makeAuthenticatedClient();
+        $client = $this->makeClientWithCredentials(
+            $this->Account->getUsername(),
+            'defaultPassword',
+        );
         $client->request('GET', '/_internal/notifications/read/314159');
 
         $this->assertStatusCode(404, $client);
@@ -55,11 +58,11 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     public function testThatReadNotificationThrowsAccessDeniedForWrongUser()
     {
         $id = $this->insertMessageFor($this->Account);
-        
-        $client = $this->makeClient(array(
-            'username' => $this->getEmptyAccount(),
-            'password' => 'default'
-        ));
+
+        $client = $this->makeClientWithCredentials(
+            $this->getEmptyAccount()->getUsername(),
+            'emptyPassword'
+        );
         $client->request('GET', '/_internal/notifications/read/'.$id);
 
         $this->isSuccessful($client->getResponse(), false);
@@ -69,10 +72,10 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     {
         $id = $this->insertMessageFor($this->Account);
 
-        $client = $this->makeClient(array(
-            'username' => $this->getDefaultAccount(),
-            'password' => 'default'
-        ));
+        $client = $this->makeClientWithCredentials(
+            $this->Account->getUsername(),
+            'defaultPassword',
+        );
         $client->request('GET', '/_internal/notifications/read/'.$id);
 
         $this->isSuccessful($client->getResponse());
@@ -81,24 +84,28 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     public function testThatNewNotificationActionIsEmptyForEmptyAccount()
     {
         $this->insertMessageFor($this->Account);
-        $client = $this->makeClient(array(
-            'username' => $this->getEmptyAccount(),
-            'password' => 'default'
-        ));
+
+        $client = $this->makeClientWithCredentials(
+            $this->getEmptyAccount()->getUsername(),
+            'emptyPassword'
+        );
+        $client->request('GET', '/_internal/notifications');
 
         $this->assertEquals(
             json_encode([]),
-            $this->fetchContent('/_internal/notifications')
+            $client->getResponse()->getContent()
         );
     }
 
     public function testThatNewNotificationActionReturnsCorrectTextAndLink()
     {
         $id = $this->insertMessageFor($this->Account);
-        $client = $this->makeClient(array(
-            'username' => $this->getDefaultAccount(),
-            'password' => 'default'
-        ));
+
+        $client = $this->makeClientWithCredentials(
+            $this->Account->getUsername(),
+            'defaultPassword',
+        );
+        $client->request('GET', '/_internal/notifications');
 
         $this->assertEquals(
             json_encode([[
@@ -108,7 +115,7 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
                 'size' => 'external',
                 'createdAt' => 10
             ]]),
-            $this->fetchContent('/_internal/notifications')
+            $client->getResponse()->getContent()
         );
     }
 }

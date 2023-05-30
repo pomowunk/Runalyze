@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InstallDatabaseCommand extends ContainerAwareCommand
 {
     /** @var string */
-    const DATABASE_STRUCTURE_FILE = 'inc/install/structure.sql';
+    const DATABASE_STRUCTURE_FILE = '/inc/install/structure.sql';
 
     /** @var Connection */
     protected $connection;
@@ -57,11 +57,10 @@ class InstallDatabaseCommand extends ContainerAwareCommand
         $output->writeln('');
 
         $this->importDatabaseStructure();
-
         $output->writeln('  <info>Database has been successfully initialized.</info>');
 
         $this->addAllMigrationsToDatabase();
-
+        $output->writeln('  <info>Database was migrated to current status.</info>');
     }
 
     /**

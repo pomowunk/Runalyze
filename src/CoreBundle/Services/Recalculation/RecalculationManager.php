@@ -41,6 +41,9 @@ class RecalculationManager
     /** @var MarathonShapeCalculation */
     protected $marathonShapeCalculation;
 
+    /** @var VO2maxCorrectionFactorCalculation */
+    protected $vo2maxCorrectionFactorCalculation;
+
     public function __construct(
         ConfigurationManager $manager,
         ConfigurationUpdater $updater,
@@ -144,13 +147,7 @@ class RecalculationManager
     public function scheduleEffectiveVO2maxShapeCalculation(Account $account)
     {
         if (!$this->isTaskScheduled($account, VO2maxShapeCalculation::class)) {
-            if ($this->isTaskScheduled($account, MarathonShapeCalculation::class)) {
-                $this->Tasks->offsetUnset($this->AccountRelatedTaskNames[$account->getId()][VO2maxShapeCalculation::class]);
-                unset($this->AccountRelatedTaskNames[$account->getId()][VO2maxShapeCalculation::class]);
-            }
-
             $this->scheduleTaskForAccount($account, $this->vo2maxShapeCalculation);
-
             $this->scheduleMarathonShapeCalculation($account);
         }
     }
