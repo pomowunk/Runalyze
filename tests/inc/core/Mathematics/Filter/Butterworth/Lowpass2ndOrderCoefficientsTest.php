@@ -21,7 +21,7 @@ class Lowpass2ndOrderCoefficientsTest extends TestCase
         $this->assertEqualsWithDelta(0.13491, $inputCoefficients[1], 0.00001);
         $this->assertEqualsWithDelta(0.06745, $inputCoefficients[2], 0.00001);
 
-        $this->assertEquals(1.0, $outputCoefficients[0]);
+        $this->assertEqualsWithDelta(1.0, $outputCoefficients[0], 1e-6);
         $this->assertEqualsWithDelta(-1.14298, $outputCoefficients[1], 0.00001);
         $this->assertEqualsWithDelta(0.41280, $outputCoefficients[2], 0.00001);
     }

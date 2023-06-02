@@ -58,17 +58,17 @@ class FlatOrHillyAnalyzerTest extends TestCase
         $activity->setTrackdata($trackdata);
         $activity->setRoute($route);
 
-        $this->assertEquals(0.30, $this->Analyzer->calculatePercentageHillyFor($activity, 0.01));
-        $this->assertEquals(0.58, $this->Analyzer->calculatePercentageHillyFor($activity, 0.02));
-        $this->assertEquals(0.78, $this->Analyzer->calculatePercentageHillyFor($activity, 0.03));
+        $this->assertEqualsWithDelta(0.30, $this->Analyzer->calculatePercentageHillyFor($activity, 0.01), 1e-6);
+        $this->assertEqualsWithDelta(0.58, $this->Analyzer->calculatePercentageHillyFor($activity, 0.02), 1e-6);
+        $this->assertEqualsWithDelta(0.78, $this->Analyzer->calculatePercentageHillyFor($activity, 0.03), 1e-6);
     }
 
     public function testArrayWithShortPeak()
     {
-        $this->assertEquals(0.625, $this->Analyzer->calculatePercentageFlatForArrays(
+        $this->assertEqualsWithDelta(0.625, $this->Analyzer->calculatePercentageFlatForArrays(
             [0.00, 0.01, 0.05, 0.10, 0.20, 1.00, 1.60],
             [100, 104, 104, 104, 104, 104, 175],
             0.05
-        ));
+        ), 1e-6);
     }
 }

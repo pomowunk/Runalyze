@@ -23,9 +23,7 @@ RUN apt-get update \
 ###############################################################################
 FROM php:${PHP_VERSION}-apache AS runalyze_php
 
-ENV SYMFONY_ENV=dev SYMFONY_DEBUG=1 XDEBUG_MODE=off
-
-RUN echo 'memory_limit = 1G' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
+ENV SYMFONY_ENV=dev SYMFONY_DEBUG=1 XDEBUG_MODE=develop
 
 WORKDIR /var/www/runalyze
 
@@ -60,6 +58,8 @@ ENV LANGUAGE=en_US
 RUN set -eux; \
     IPE_GD_WITHOUTAVIF=1 install-php-extensions \
         # apcu \
+        ast \
+        bcmath \
         gettext \
         intl \
         # opcache \
@@ -70,7 +70,11 @@ RUN set -eux; \
 
 RUN a2enmod rewrite
 
+RUN mkdir /var/www/sqlite3_ext && \
+    cp /usr/lib/x86_64-linux-gnu/mod_spatialite.so /var/www/sqlite3_ext/mod_spatialite.so
+
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+COPY --link docker/php-overrides.ini "$PHP_INI_DIR/conf.d/"
 
 ENV APACHE_DOCUMENT_ROOT /var/www/runalyze/web
 
@@ -83,7 +87,7 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 COPY --from=composer --link /composer /usr/bin/composer
 
-# prevent the reinstallation of vendors at every changes in the source code
+# prevent the reinstallation of vendors after every change in the source code
 COPY --link composer.* ./
 RUN set -eux; \
     if [ -f composer.json ]; then \

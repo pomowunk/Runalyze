@@ -11,7 +11,7 @@ class HoursTest extends TestCase
     {
         $unit = new Hours();
 
-        $this->assertEquals(1.0, $unit->fromBaseUnit(3600));
+        $this->assertEqualsWithDelta(1.0, $unit->fromBaseUnit(3600), 1e-6);
         $this->assertEquals(2700, $unit->toBaseUnit(0.75));
     }
 }

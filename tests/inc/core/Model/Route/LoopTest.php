@@ -21,7 +21,7 @@ class LoopTest extends TestCase {
 		$Loop->setStepSize(2);
 		$Loop->nextStep();
 		$this->assertEquals('u1xjhxf6b7s9', $Loop->geohash());
-		$this->assertEquals(0.0, $Loop->calculatedStepDistance());
+		$this->assertEqualsWithDelta(0.0, $Loop->calculatedStepDistance(), 1e-6);
 
 		$Loop->nextStep();
 		$this->assertTrue($Loop->isAtEnd());

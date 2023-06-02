@@ -11,10 +11,12 @@ class VerticalRatioCalculatorTest extends TestCase
 
 	public function testForActivity()
 	{
-		$this->assertEquals(53.0, VerticalRatioCalculator::forActivity(new Activity\Entity(array(
+		$Calculator = VerticalRatioCalculator::forActivity(new Activity\Entity(array(
 			Activity\Entity::VERTICAL_OSCILLATION => 53,
 			Activity\Entity::STRIDE_LENGTH => 100
-		))));
+		)));
+
+		$this->assertEqualsWithDelta(53.0, $Calculator, 1e-6);
 	}
 
 	public function testSingleValue()
@@ -40,10 +42,11 @@ class VerticalRatioCalculatorTest extends TestCase
 		);
 		$Calculator->calculate();
 
-		$this->assertEquals( 69.0, $Calculator->average());
-		$this->assertEquals(
+		$this->assertEqualsWithDelta(69.0, $Calculator->average(), 1e-6);
+		$this->assertEqualsWithDelta(
 			array(73, 67, 60, 67, 80),
-			$Calculator->verticalRatioData()
+			$Calculator->verticalRatioData(),
+			1e-6
 		);
 	}
 

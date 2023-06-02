@@ -27,8 +27,8 @@ class DistanceTypeTest extends TestCase
     public function testReverseTransform()
     {
         $this->assertEquals(null, $this->Type->reverseTransform(null));
-        $this->assertEquals(1.23, $this->Type->reverseTransform('1.23'));
-        $this->assertEquals(1.234, $this->Type->reverseTransform('1.234'));
-        $this->assertEquals(7.69, $this->Type->reverseTransform('7,69'));
+        $this->assertEqualsWithDelta(1.23, $this->Type->reverseTransform('1.23'), 1e-6);
+        $this->assertEqualsWithDelta(1.234, $this->Type->reverseTransform('1.234'), 1e-6);
+        $this->assertEqualsWithDelta(7.69, $this->Type->reverseTransform('7,69'), 1e-6);
     }
 }

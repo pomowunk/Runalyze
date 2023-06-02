@@ -9,15 +9,11 @@ use Runalyze\Bundle\CoreBundle\Form\Settings\ChangePasswordType;
 use Runalyze\Bundle\CoreBundle\Form\Settings\DatasetCollectionType;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Dataset\DefaultConfiguration;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Repository\DatasetRepository;
 use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Runalyze\Bundle\CoreBundle\Form\Settings\AccountType;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
@@ -25,7 +21,10 @@ use Runalyze\Configuration;
 use Runalyze\Language;
 use Runalyze\Dataset as RunalyzeDataset;
 use Runalyze\Dataset\Keys;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -167,9 +166,8 @@ class SettingsController extends Controller
     }
 
     /**
-     * @Route("/settings/dataset", name="settings-dataset-update")
+     * @Route("/settings/dataset", name="settings-dataset-update", methods={"POST"})
      * @Security("has_role('ROLE_USER')")
-     * @Method("POST")
      */
     public function datasetPostAction(
         Account $account,
@@ -201,7 +199,6 @@ class SettingsController extends Controller
     /**
      * @Route("/settings/dataset", name="settings-dataset")
      * @Security("has_role('ROLE_USER')")
-     * @Method("GET")
      */
     public function datasetAction(
         Account $account,

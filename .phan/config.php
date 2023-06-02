@@ -314,11 +314,11 @@ return [
     // Thus, both first-party and third-party code being used by
     // your application should be included in this list.
     'directory_list' => [
+        'vendor',
         'inc',
         'plugin',
         'src',
         'tests',
-        'vendor',
     ],
 
     // A regular expression to match files to be excluded

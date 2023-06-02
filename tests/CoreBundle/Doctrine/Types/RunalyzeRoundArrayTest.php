@@ -48,13 +48,13 @@ class RunalyzeRoundArrayTest extends TestCase
         $newCollection = $this->Type->convertToPHPValue($this->Type->convertToDatabaseValue($collection, $this->PlatformMock), $this->PlatformMock);
 
         $this->assertEquals(3, $newCollection->count());
-        $this->assertEquals(1.0, $newCollection[0]->getDistance());
+        $this->assertEqualsWithDelta(1.0, $newCollection[0]->getDistance(), 1e-6);
         $this->assertEquals(311, $newCollection[0]->getDuration());
         $this->assertFalse($newCollection[0]->isActive());
-        $this->assertEquals(1.0, $newCollection[1]->getDistance());
+        $this->assertEqualsWithDelta(1.0, $newCollection[1]->getDistance(), 1e-6);
         $this->assertEquals(189, $newCollection[1]->getDuration());
         $this->assertTrue($newCollection[1]->isActive());
-        $this->assertEquals(1.0, $newCollection[2]->getDistance());
+        $this->assertEqualsWithDelta(1.0, $newCollection[2]->getDistance(), 1e-6);
         $this->assertEquals(267, $newCollection[2]->getDuration());
         $this->assertFalse($newCollection[2]->isActive());
     }

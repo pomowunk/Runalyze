@@ -32,7 +32,7 @@ class AbstractDistributionTest extends TestCase
         $this->assertEquals(15, $dist->median());
         $this->assertEquals(15, $dist->mode());
         $this->assertEquals(20, $dist->max());
-        $this->assertEquals(12.5, $dist->variance());
+        $this->assertEqualsWithDelta(12.5, $dist->variance(), 1e-6);
         $this->assertEqualsWithDelta(3.5, $dist->stdDev(), 0.1);
         $this->assertEqualsWithDelta(3.5 / 15, $dist->coefficientOfVariation(), 0.1);
     }
@@ -47,7 +47,7 @@ class AbstractDistributionTest extends TestCase
         $this->assertEquals(85, $dist->median());
         $this->assertEquals(90, $dist->mode());
         $this->assertEquals(90, $dist->max());
-        $this->assertEquals(818.75, $dist->variance());
+        $this->assertEqualsWithDelta(818.75, $dist->variance(), 1e-6);
         $this->assertEqualsWithDelta(28.6, $dist->stdDev(), 0.1);
         $this->assertEqualsWithDelta(28.6 / 75, $dist->coefficientOfVariation(), 0.1);
     }

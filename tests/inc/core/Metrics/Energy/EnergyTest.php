@@ -17,6 +17,6 @@ class EnergyTest extends TestCase
 
     public function testSettingMetabolicEquivalent()
     {
-        $this->assertEquals(40.0, $this->Energy->setByMetabolicEquivalent(5.0, 80.0, 0.1)->getValue());
+        $this->assertEqualsWithDelta(40.0, $this->Energy->setByMetabolicEquivalent(5.0, 80.0, 0.1)->getValue(), 1e-6);
     }
 }

@@ -20,11 +20,11 @@ use Runalyze\View\Activity\Context;
 use Runalyze\View\Leaflet\Map;
 use Runalyze\View\Window\Laps\Window;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ViewController extends Controller
@@ -194,6 +194,7 @@ class ViewController extends Controller
      */
     public function subSegmentInfoAction(
         $id,
+        Training $activity,
         Account $account,
         TrackdataRepository $trackdataRepository,
         TrainingRepository $trainingRepository)

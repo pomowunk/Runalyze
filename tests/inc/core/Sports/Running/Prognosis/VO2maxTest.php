@@ -63,8 +63,8 @@ class VO2maxTest extends TestCase
 
         $this->VO2max->adjustForMarathonShape(false);
 
-        $this->assertEquals(30.0, $this->VO2max->getAdjustedVO2maxForDistanceIfWanted(0.0));
-        $this->assertEquals(30.0, $this->VO2max->getAdjustedVO2maxForDistanceIfWanted(50.0));
+        $this->assertEqualsWithDelta(30.0, $this->VO2max->getAdjustedVO2maxForDistanceIfWanted(0.0), 1e-6);
+        $this->assertEqualsWithDelta(30.0, $this->VO2max->getAdjustedVO2maxForDistanceIfWanted(50.0), 1e-6);
     }
 
     public function testGetAdjustedVO2maxForDistance()

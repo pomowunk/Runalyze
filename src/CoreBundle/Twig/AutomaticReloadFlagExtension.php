@@ -4,8 +4,9 @@ namespace Runalyze\Bundle\CoreBundle\Twig;
 
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Twig\Extension\AbstractExtension;
 
-class AutomaticReloadFlagExtension extends \Twig_Extension
+class AutomaticReloadFlagExtension extends AbstractExtension
 {
     /**
      * @return string

@@ -11,7 +11,7 @@ class SimpleTest extends TestCase
     {
         $unit = new Simple('foo');
 
-        $this->assertEquals(0.79, $unit->fromBaseUnit(0.79));
+        $this->assertEqualsWithDelta(0.79, $unit->fromBaseUnit(0.79), 1e-6);
         $this->assertEquals(42, $unit->toBaseUnit(42));
         $this->assertEquals('foo', $unit->getAppendix());
     }

@@ -17,8 +17,8 @@ class CardinalDirectionTest extends TestCase
     {
         $Direction = new CardinalDirection(90.5);
 
-        $this->assertEquals(90.5, $Direction->value());
-        $this->assertEquals(12.3, $Direction->setDegree(12.3)->value());
+        $this->assertEqualsWithDelta(90.5, $Direction->value(), 1e-6);
+        $this->assertEqualsWithDelta(12.3, $Direction->setDegree(12.3)->value(), 1e-6);
     }
 
     public function testDirections()

@@ -12,7 +12,7 @@ class BaseUnitTraitTest extends TestCase
         /** @var BaseUnitTrait $mock */
         $mock = $this->getMockForTrait(BaseUnitTrait::class);
 
-        $this->assertEquals(3.14, $mock->fromBaseUnit(3.14));
-        $this->assertEquals(42.195, $mock->toBaseUnit(42.195));
+        $this->assertEqualsWithDelta(3.14, $mock->fromBaseUnit(3.14), 1e-6);
+        $this->assertEqualsWithDelta(42.195, $mock->toBaseUnit(42.195), 1e-6);
     }
 }

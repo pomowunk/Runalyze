@@ -22,9 +22,9 @@ class RoundCollectionFillerTest extends TestCase
             [0.0, 0.2, 0.4, 0.6, 0.8, 0.9]
         );
 
-        $this->assertEquals(0.9, $collection->getTotalDistance());
-        $this->assertEquals(0.4, $collection[0]->getDistance());
-        $this->assertEquals(0.5, $collection[1]->getDistance());
+        $this->assertEqualsWithDelta(0.9, $collection->getTotalDistance(), 1e-6);
+        $this->assertEqualsWithDelta(0.4, $collection[0]->getDistance(), 1e-6);
+        $this->assertEqualsWithDelta(0.5, $collection[1]->getDistance(), 1e-6);
     }
 
     public function testEasyCompletionByTimeArray()

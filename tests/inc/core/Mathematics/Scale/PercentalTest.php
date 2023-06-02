@@ -50,10 +50,10 @@ class PercentalTest extends TestCase
         $this->Scale->setMinimum(1);
         $this->Scale->setMaximum(10);
 
-        $this->assertEquals(0, $this->Scale->transform(0.9));
-        $this->assertEquals(5, $this->Scale->transform(1.45));
-        $this->assertEquals(50, $this->Scale->transform(5.5));
-        $this->assertEqualsWithDelta(69, $this->Scale->transform(7.2), 0.5);
-        $this->assertEqualsWithDelta(89, $this->Scale->transform(9.0), 0.5);
+        $this->assertEqualsWithDelta(0, $this->Scale->transform(0.9), 1e-6);
+        $this->assertEqualsWithDelta(5, $this->Scale->transform(1.45), 1e-6);
+        $this->assertEqualsWithDelta(50, $this->Scale->transform(5.5), 1e-6);
+        $this->assertEqualsWithDelta(69, $this->Scale->transform(7.2), 0.2);
+        $this->assertEqualsWithDelta(89, $this->Scale->transform(9.0), 0.2);
     }
 }

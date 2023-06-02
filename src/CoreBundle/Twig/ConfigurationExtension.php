@@ -5,8 +5,9 @@ namespace Runalyze\Bundle\CoreBundle\Twig;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Twig\Extension\AbstractExtension;
 
-class ConfigurationExtension extends \Twig_Extension
+class ConfigurationExtension extends AbstractExtension
 {
     /** @var ConfigurationManager */
     protected $ConfigurationManager;

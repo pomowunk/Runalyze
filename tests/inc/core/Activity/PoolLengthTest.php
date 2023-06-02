@@ -36,13 +36,13 @@ class PoolLengthTest extends TestCase
 		$PoolLength = new PoolLength();
 		$PoolLength->setYards(27.34);
 
-		$this->assertEquals(27.34, $PoolLength->yards());
+		$this->assertEqualsWithDelta(27.34, $PoolLength->yards(), 1e-6);
 		$this->assertEquals('27.34&nbsp;'.DistanceUnitSystem::YARDS, $PoolLength->stringYards());
 	}
 
 	public function testSettingInPreferredUnit()
 	{
 		$this->assertEquals(25, (new PoolLength(0, new DistanceUnitSystem(DistanceUnitSystem::METRIC)))->setInPreferredUnit(25)->meter());
-		$this->assertEquals(54.68, (new PoolLength(0, new DistanceUnitSystem(DistanceUnitSystem::IMPERIAL)))->setInPreferredUnit(54.68)->yards());
+		$this->assertEqualsWithDelta(54.68, (new PoolLength(0, new DistanceUnitSystem(DistanceUnitSystem::IMPERIAL)))->setInPreferredUnit(54.68)->yards(), 1e-6);
 	}
 }

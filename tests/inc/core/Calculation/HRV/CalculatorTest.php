@@ -65,8 +65,8 @@ class CalculatorTest extends TestCase {
 		)), null);
 		$CalculatorWithoutFilter->calculate();
 		
-		$this->assertEquals(362.5, $CalculatorWithoutFilter->mean());
-		$this->assertEquals(0.0, $CalculatorWithoutFilter->percentageAnomalies());
+		$this->assertEqualsWithDelta(362.5, $CalculatorWithoutFilter->mean(), 1e-6);
+		$this->assertEqualsWithDelta(0.0, $CalculatorWithoutFilter->percentageAnomalies(), 1e-6);
 
 		$CalculatorWithNormalFilter = new Calculator(new Entity(array(
 			Entity::DATA => array(300, 350, 400, 701, 99, 400, 350, 300)
@@ -74,7 +74,7 @@ class CalculatorTest extends TestCase {
 		$CalculatorWithNormalFilter->calculate();
 		
 		$this->assertEquals(350, $CalculatorWithNormalFilter->mean());
-		$this->assertEquals(0.25, $CalculatorWithNormalFilter->percentageAnomalies());
+		$this->assertEqualsWithDelta(0.25, $CalculatorWithNormalFilter->percentageAnomalies(), 1e-6);
 
 		$CalculatorWithJumpInData = new Calculator(new Entity(array(
 			Entity::DATA => array(300, 350, 400, 800, 750, 700)
@@ -82,7 +82,7 @@ class CalculatorTest extends TestCase {
 		$CalculatorWithJumpInData->calculate();
 		
 		$this->assertEquals(550, $CalculatorWithJumpInData->mean());
-		$this->assertEquals(0.0, $CalculatorWithJumpInData->percentageAnomalies());
+		$this->assertEqualsWithDelta(0.0, $CalculatorWithJumpInData->percentageAnomalies(), 1e-6);
 	}
 
 	/**
@@ -107,6 +107,6 @@ class CalculatorTest extends TestCase {
 		$Calculator->calculate();
 
 		$this->assertEquals(342, $Calculator->mean());
-		$this->assertEquals(0.1, $Calculator->percentageAnomalies());
+		$this->assertEqualsWithDelta(0.1, $Calculator->percentageAnomalies(), 1e-6);
 	}
 }

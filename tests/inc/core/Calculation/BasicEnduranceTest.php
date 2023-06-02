@@ -44,12 +44,12 @@ class BasicEnduranceTest extends TestCase {
 
 	public function testSetterAndGetterForPercentages() {
 		$this->object->setPercentageForLongjogs(0.4);
-		$this->assertEquals(0.4, $this->object->getPercentageForLongjogs());
-		$this->assertEquals(0.6, $this->object->getPercentageForWeekKilometer());
+		$this->assertEqualsWithDelta(0.4, $this->object->getPercentageForLongjogs(), 1e-6);
+		$this->assertEqualsWithDelta(0.6, $this->object->getPercentageForWeekKilometer(), 1e-6);
 
 		$this->object->setPercentageForWeekKilometer(0.1);
-		$this->assertEquals(0.9, $this->object->getPercentageForLongjogs());
-		$this->assertEquals(0.1, $this->object->getPercentageForWeekKilometer());
+		$this->assertEqualsWithDelta(0.9, $this->object->getPercentageForLongjogs(), 1e-6);
+		$this->assertEqualsWithDelta(0.1, $this->object->getPercentageForWeekKilometer(), 1e-6);
 
 		$this->object->setPercentageForLongjogs(15);
 		$this->assertEquals(1, $this->object->getPercentageForLongjogs());

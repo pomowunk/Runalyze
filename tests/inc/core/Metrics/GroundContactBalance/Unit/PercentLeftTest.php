@@ -11,7 +11,7 @@ class PercentLeftTest extends TestCase
     {
         $unit = new PercentLeft();
 
-        $this->assertEquals(49.5, $unit->fromBaseUnit(4950));
+        $this->assertEqualsWithDelta(49.5, $unit->fromBaseUnit(4950), 1e-6);
         $this->assertEquals(5120, $unit->toBaseUnit(51.2));
     }
 }

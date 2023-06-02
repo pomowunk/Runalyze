@@ -75,7 +75,7 @@ class ActivityDataTest extends TestCase
         $this->Data->completeFromContinuousData($this->getExampleForFilledContinuousData());
 
         $this->assertEquals(10, $this->Data->Duration);
-        $this->assertEquals(0.05, $this->Data->Distance);
+        $this->assertEqualsWithDelta(0.05, $this->Data->Distance, 1e-6);
         $this->assertEquals(100, $this->Data->AvgPower);
         $this->assertEquals(150, $this->Data->MaxPower);
         $this->assertEquals(120, $this->Data->AvgHeartRate);
@@ -102,7 +102,7 @@ class ActivityDataTest extends TestCase
         $this->Data->completeFromContinuousData($this->getExampleForFilledContinuousData());
 
         $this->assertEquals(120, $this->Data->Duration);
-        $this->assertEquals(0.5, $this->Data->Distance);
+        $this->assertEqualsWithDelta(0.5, $this->Data->Distance, 1e-6);
         $this->assertEquals(320, $this->Data->AvgPower);
         $this->assertEquals(475, $this->Data->MaxPower);
         $this->assertEquals(169, $this->Data->AvgHeartRate);
@@ -167,7 +167,7 @@ class ActivityDataTest extends TestCase
         ]));
 
         $this->assertEquals(161, $this->Data->Duration);
-        $this->assertEquals(1.0, $this->Data->Distance);
+        $this->assertEqualsWithDelta(1.0, $this->Data->Distance, 1e-6);
     }
 
     public function testThatRoundsCanNotOverwrite()
@@ -179,6 +179,6 @@ class ActivityDataTest extends TestCase
         ]));
 
         $this->assertEquals(127, $this->Data->Duration);
-        $this->assertEquals(0.8, $this->Data->Distance);
+        $this->assertEqualsWithDelta(0.8, $this->Data->Distance, 1e-6);
     }
 }

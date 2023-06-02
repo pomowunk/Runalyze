@@ -10,7 +10,7 @@ class TriweightTest extends TestCase
     {
         $Kernel = new Triweight(2);
 
-        $this->assertEquals([
+        $this->assertEqualsWithDelta([
             0.0,
             0.421875,
             1.0,
@@ -20,14 +20,14 @@ class TriweightTest extends TestCase
             -0.5,
             0.0,
             0.75
-        ]));
+        ]), 1e-6);
     }
 
     public function testSomeValuesForWidth10()
     {
         $Kernel = new Triweight(10);
 
-        $this->assertEquals([
+        $this->assertEqualsWithDelta([
             0.0,
             0.421875,
             1.0,
@@ -37,6 +37,6 @@ class TriweightTest extends TestCase
             -2.5,
             0.0,
             3.0
-        ]));
+        ]), 1e-6);
     }
 }

@@ -12,6 +12,6 @@ class CentimeterTest extends TestCase
         $unit = new Centimeter();
 
         $this->assertEquals(100, $unit->fromBaseUnit(0.001));
-        $this->assertEquals(0.001, $unit->toBaseUnit(100));
+        $this->assertEqualsWithDelta(0.001, $unit->toBaseUnit(100), 1e-6);
     }
 }

@@ -4,13 +4,14 @@ namespace Runalyze\Bundle\CoreBundle\Services;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class AccountMailer
 {
     /** @var \Swift_Mailer */
     protected $Mailer;
 
-    /** @var \Twig_Environment */
+    /** @var Environment */
     protected $Twig;
 
     /** @var TranslatorInterface */
@@ -19,7 +20,7 @@ class AccountMailer
     /** @var array */
     protected $Sender = [];
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, TranslatorInterface $translator)
+    public function __construct(\Swift_Mailer $mailer, Environment $twig, TranslatorInterface $translator)
     {
         $this->Mailer = $mailer;
         $this->Twig = $twig;
@@ -44,7 +45,7 @@ class AccountMailer
     public function sendMailTo(Account $account, $subject, $template, array $templateData)
     {
         $template = $this->customLanguageTemplates($template, $account->getLanguage());
-        $message = \Swift_Message::newInstance($subject)
+        $message = (new \Swift_Message($subject))
             ->setTo([$account->getMail() => $account->getUsername()])
             ->setFrom($this->Sender);
         $message->setBody($this->Twig->render($template, $templateData), 'text/html');
@@ -64,7 +65,7 @@ class AccountMailer
         $content .= 'Mail: '.$account->getMail()."\n";
         $content .= 'Message:'."\n".$customText;
 
-        $message = \Swift_Message::newInstance($subject)
+        $message = (new \Swift_Message($subject))
             ->setTo($mailTo)
             ->setFrom($this->Sender)
             ->setReplyTo([$account->getMail() => $account->getUsername()]);

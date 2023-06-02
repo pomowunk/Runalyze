@@ -9,9 +9,9 @@ class AbstractPointReductionAlgorithmTest extends TestCase
 {
     public function testPerpendicularDistanceForPointsOutsideTheLinesXRegion()
     {
-        $this->assertEquals(5.0, AbstractPointReductionAlgorithm::shortestDistance(
+        $this->assertEqualsWithDelta(5.0, AbstractPointReductionAlgorithm::shortestDistance(
             -4.0, 3.0, 0.0, 0.0, 2.0, 2.0
-        ));
+        ), 1e-6);
         $this->assertEqualsWithDelta(4.95, AbstractPointReductionAlgorithm::perpendicularDistance(
             -4.0, 3.0, 0.0, 0.0, 2.0, 2.0
         ), 0.005);
@@ -19,36 +19,36 @@ class AbstractPointReductionAlgorithmTest extends TestCase
 
     public function testDistanceForPointsOnTheLine()
     {
-        $this->assertEquals(0.0, AbstractPointReductionAlgorithm::shortestDistance(
+        $this->assertEqualsWithDelta(0.0, AbstractPointReductionAlgorithm::shortestDistance(
             1.0, 1.0, 0.0, 0.0, 2.0, 2.0
-        ));
-        $this->assertEquals(0.0, AbstractPointReductionAlgorithm::perpendicularDistance(
+        ), 1e-6);
+        $this->assertEqualsWithDelta(0.0, AbstractPointReductionAlgorithm::perpendicularDistance(
             1.0, 1.0, 0.0, 0.0, 2.0, 2.0
-        ));
+        ), 1e-6);
 
-        $this->assertEquals(0.0, AbstractPointReductionAlgorithm::shortestDistance(
+        $this->assertEqualsWithDelta(0.0, AbstractPointReductionAlgorithm::shortestDistance(
             1.0, 1.0, 1.0, 1.0, 2.0, 2.0
-        ));
-        $this->assertEquals(0.0, AbstractPointReductionAlgorithm::perpendicularDistance(
+        ), 1e-6);
+        $this->assertEqualsWithDelta(0.0, AbstractPointReductionAlgorithm::perpendicularDistance(
             1.0, 1.0, 1.0, 1.0, 2.0, 2.0
-        ));
+        ), 1e-6);
 
-        $this->assertEquals(0.0, AbstractPointReductionAlgorithm::shortestDistance(
+        $this->assertEqualsWithDelta(0.0, AbstractPointReductionAlgorithm::shortestDistance(
             2.0, 2.0, 2.0, 2.0, 0.0, 0.0
-        ));
-        $this->assertEquals(0.0, AbstractPointReductionAlgorithm::perpendicularDistance(
+        ), 1e-6);
+        $this->assertEqualsWithDelta(0.0, AbstractPointReductionAlgorithm::perpendicularDistance(
             2.0, 2.0, 2.0, 2.0, 0.0, 0.0
-        ));
+        ), 1e-6);
     }
 
     public function testDistanceToHorizontalLine()
     {
-        $this->assertEquals(2.3, AbstractPointReductionAlgorithm::shortestDistance(
+        $this->assertEqualsWithDelta(2.3, AbstractPointReductionAlgorithm::shortestDistance(
             6.9, 5.5, 0.0, 3.2, 10.0, 3.2
-        ));
-        $this->assertEquals(2.3, AbstractPointReductionAlgorithm::perpendicularDistance(
+        ), 1e-6);
+        $this->assertEqualsWithDelta(2.3, AbstractPointReductionAlgorithm::perpendicularDistance(
             6.9, 5.5, 0.0, 3.2, 10.0, 3.2
-        ));
+        ), 1e-6);
     }
 
     public function testDistanceToSomeUnspecificLine()

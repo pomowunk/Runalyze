@@ -16,8 +16,9 @@ use Runalyze\Metrics\Velocity\Unit\AbstractPaceInTimeFormatUnit;
 use Runalyze\Metrics\Velocity\Unit\AbstractPaceUnit;
 use Runalyze\Metrics\Temperature\Unit\AbstractTemperatureUnit;
 use Runalyze\Metrics\Weight\Unit\AbstractWeightUnit;
+use Twig\Extension\AbstractExtension;
 
-class ValueExtension extends \Twig_Extension
+class ValueExtension extends AbstractExtension
 {
     /** @var UnitSystem */
     protected $UnitSystem;

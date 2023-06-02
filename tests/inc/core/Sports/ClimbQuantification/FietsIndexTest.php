@@ -71,7 +71,7 @@ class FietsIndexTest extends TestCase
 
     public function testThatAltitudeAtTopCantDominateScore()
     {
-        $this->assertEquals(1.5, $this->Fiets->getScoreFor(1.0, 100, 5000));
+        $this->assertEqualsWithDelta(1.5, $this->Fiets->getScoreFor(1.0, 100, 5000), 1e-6);
     }
 
     public function testManuaKea()

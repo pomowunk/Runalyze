@@ -19,7 +19,7 @@ class MultipleTimeSeriesTest extends TestCase
         $this->assertInstanceOf(EmpiricalDistribution::class, $object->getDistribution('foo'));
         $this->assertInstanceOf(EmpiricalDistribution::class, $object->getDistribution('bar'));
         $this->assertEquals(11, $object->getDistribution('foo')->mean());
-        $this->assertEquals(2.4, $object->getDistribution('bar')->mean());
+        $this->assertEqualsWithDelta(2.4, $object->getDistribution('bar')->mean(), 1e-6);
     }
 
     public function testAskingForUnknownDistribution()

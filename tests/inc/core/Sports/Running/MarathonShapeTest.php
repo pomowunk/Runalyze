@@ -37,10 +37,10 @@ class MarathonShapeTest extends TestCase
 
         $this->assertEqualsWithDelta(32.5, $shape->getTargetForLongJogEachWeek(), 1.0);
         $this->assertEqualsWithDelta(104.0, $shape->getTargetForWeeklyMileage(), 1.0);
-        $this->assertEquals(75.0, $shape->getShapeFor(52.0, 1.0));
-        $this->assertEquals(75.0, $shape->getShapeFor(104.0, 0.5));
-        $this->assertEquals(100.0, $shape->getShapeFor(104.0, 1.0));
-        $this->assertEquals(125.0, $shape->getShapeFor(52.0, 2.0));
-        $this->assertEquals(100.0, $shape->getShapeFor(0.0, 2.0));
+        $this->assertEqualsWithDelta(75.0, $shape->getShapeFor(52.0, 1.0), 1e-6);
+        $this->assertEqualsWithDelta(75.0, $shape->getShapeFor(104.0, 0.5), 1e-6);
+        $this->assertEqualsWithDelta(100.0, $shape->getShapeFor(104.0, 1.0), 1e-6);
+        $this->assertEqualsWithDelta(125.0, $shape->getShapeFor(52.0, 2.0), 1e-6);
+        $this->assertEqualsWithDelta(100.0, $shape->getShapeFor(0.0, 2.0), 1e-6);
     }
 }

@@ -21,7 +21,6 @@
 
 .editorconfig
 .build/
-.phan/
 
 node_modules/
 # var/

@@ -54,7 +54,7 @@ class HrmTest extends AbstractActivityParserTestCase
         $this->assertEquals(60, $this->Container->Metadata->getTimezoneOffset());
 
         $this->assertEquals(61 * 60 + 29.1, $this->Container->ActivityData->Duration);
-        $this->assertEquals(0.0, $this->Container->ActivityData->Distance);
+        $this->assertEqualsWithDelta(0.0, $this->Container->ActivityData->Distance, 1e-6);
 
         $this->assertNotEmpty($this->Container->ContinuousData->HeartRate);
     }
@@ -67,7 +67,7 @@ class HrmTest extends AbstractActivityParserTestCase
         $this->assertEquals(60, $this->Container->Metadata->getTimezoneOffset());
 
         $this->assertEquals(63 * 60 + 34.8, $this->Container->ActivityData->Duration);
-        $this->assertEquals(0.0, $this->Container->ActivityData->Distance);
+        $this->assertEqualsWithDelta(0.0, $this->Container->ActivityData->Distance, 1e-6);
 
         $this->assertNotEmpty($this->Container->ContinuousData->HeartRate);
     }

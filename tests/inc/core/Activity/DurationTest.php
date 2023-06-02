@@ -12,7 +12,7 @@ class DurationTest extends TestCase {
 	public function testFromSeconds() {
 		$Time = new Duration(17.23);
 
-		$this->assertEquals(17.23, $Time->seconds());
+		$this->assertEqualsWithDelta(17.23, $Time->seconds(), 1e-6);
 		$this->assertEquals(127, $Time->fromSeconds(127)->seconds());
 	}
 
@@ -23,7 +23,7 @@ class DurationTest extends TestCase {
 		$this->assertEquals(17*60 + 21, $Time->fromString("17:21")->seconds());
 		$this->assertEquals(3*60 + 54.2, $Time->fromString("3:54,2")->seconds());
 		$this->assertEquals(12, $Time->fromString("0:12")->seconds());
-		$this->assertEquals(10.05, $Time->fromString("10.05")->seconds());
+		$this->assertEqualsWithDelta(10.05, $Time->fromString("10.05")->seconds(), 1e-6);
 	}
 
 	public function testAddAndSubtract() {

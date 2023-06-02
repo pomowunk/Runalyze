@@ -36,7 +36,7 @@ class EntityTest extends TestCase {
 
 		$this->assertEquals('Test route', $T->name());
 		$this->assertEquals(array('City A', 'City B'), $T->citiesAsArray());
-		$this->assertEquals(3.14, $T->distance());
+		$this->assertEqualsWithDelta(3.14, $T->distance(), 1e-6);
 		$this->assertEquals(20, $T->elevation());
 		$this->assertEquals(20, $T->elevationUp());
 		$this->assertEquals(15, $T->elevationDown());

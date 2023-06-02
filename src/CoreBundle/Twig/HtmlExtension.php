@@ -1,7 +1,9 @@
 <?php
 namespace Runalyze\Bundle\CoreBundle\Twig;
 
-class HtmlExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+
+class HtmlExtension extends AbstractExtension
 {
     /**
      * @return string

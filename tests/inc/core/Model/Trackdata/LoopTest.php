@@ -83,19 +83,19 @@ class LoopTest extends TestCase {
 		)));
 
 		$Loop->nextKilometer();
-		$this->assertEquals(1.0, $Loop->distance());
+		$this->assertEqualsWithDelta(1.0, $Loop->distance(), 1e-6);
 		$Loop->nextKilometer();
-		$this->assertEquals(2.0, $Loop->distance());
+		$this->assertEqualsWithDelta(2.0, $Loop->distance(), 1e-6);
 		$Loop->moveDistance(0.4);
-		$this->assertEquals(3.0, $Loop->distance());
+		$this->assertEqualsWithDelta(3.0, $Loop->distance(), 1e-6);
 		$Loop->moveDistance(0.4);
-		$this->assertEquals(3.5, $Loop->distance());
+		$this->assertEqualsWithDelta(3.5, $Loop->distance(), 1e-6);
 
 		$Loop->reset();
 		$Loop->moveToDistance(2.9);
-		$this->assertEquals(3.0, $Loop->current(Entity::DISTANCE));
+		$this->assertEqualsWithDelta(3.0, $Loop->current(Entity::DISTANCE), 1e-6);
 		$Loop->moveToDistance(3.7);
-		$this->assertEquals(3.7, $Loop->current(Entity::DISTANCE));
+		$this->assertEqualsWithDelta(3.7, $Loop->current(Entity::DISTANCE), 1e-6);
 	}
 
 	public function testTimeMove() {

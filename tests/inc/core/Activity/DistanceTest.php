@@ -13,12 +13,12 @@ class DistanceTest extends TestCase
 		$this->assertTrue($Distance->isZero());
 		$this->assertFalse($Distance->isNegative());
 
-		$this->assertEquals(10, $Distance->set(10)->kilometer());
-		$this->assertEquals(20, $Distance->multiply(2)->kilometer());
-		$this->assertEquals(21.1, $Distance->add(new Distance(1.1))->kilometer());
+		$this->assertEqualsWithDelta(10, $Distance->set(10)->kilometer(), 1e-6);
+		$this->assertEqualsWithDelta(20, $Distance->multiply(2)->kilometer(), 1e-6);
+		$this->assertEqualsWithDelta(21.1, $Distance->add(new Distance(1.1))->kilometer(), 1e-6);
 		$this->assertFalse($Distance->isZero());
 
-		$this->assertEquals(-0.9, $Distance->subtract(new Distance(22))->kilometer());
+		$this->assertEqualsWithDelta(-0.9, $Distance->subtract(new Distance(22))->kilometer(), 1e-6);
 		$this->assertTrue($Distance->isNegative());
 	}
 

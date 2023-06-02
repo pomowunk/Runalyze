@@ -21,8 +21,8 @@ class CompletorForDistanceTest extends TestCase {
 		);
 		$Completor->completeSplits();
 
-		$this->assertEquals(1.0, $Splits->at(0)->distance());
-		$this->assertEquals(1.3, $Splits->at(1)->distance());
+		$this->assertEqualsWithDelta(1.0, $Splits->at(0)->distance(), 1e-6);
+		$this->assertEqualsWithDelta(1.3, $Splits->at(1)->distance(), 1e-6);
 	}
 
 }

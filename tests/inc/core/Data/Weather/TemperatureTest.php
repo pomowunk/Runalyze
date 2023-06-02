@@ -69,7 +69,7 @@ class TemperatureTest extends TestCase {
 
 		$Temp->setTemperature(7);
 		$Temp->toKelvin();
-		$this->assertEquals(280.15, $Temp->value());
+		$this->assertEqualsWithDelta(280.15, $Temp->value(), 1e-6);
 	}
 
 	public function testDynamicUnit() {

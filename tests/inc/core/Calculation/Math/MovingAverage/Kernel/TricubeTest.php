@@ -10,7 +10,7 @@ class TricubeTest extends TestCase
     {
         $Kernel = new Tricube(2);
 
-        $this->assertEquals([
+        $this->assertEqualsWithDelta([
             0.0,
             0.669921875,
             1.0,
@@ -20,14 +20,14 @@ class TricubeTest extends TestCase
             -0.5,
             0.0,
             0.75
-        ]));
+        ]), 1e-6);
     }
 
     public function testSomeValuesForWidth10()
     {
         $Kernel = new Tricube(10);
 
-        $this->assertEquals([
+        $this->assertEqualsWithDelta([
             0.0,
             0.669921875,
             1.0,
@@ -37,6 +37,6 @@ class TricubeTest extends TestCase
             -2.5,
             0.0,
             3.0
-        ]));
+        ]), 1e-6);
     }
 }

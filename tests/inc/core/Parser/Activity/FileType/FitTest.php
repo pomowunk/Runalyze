@@ -199,7 +199,7 @@ class FitTest extends AbstractActivityParserTestCase
 
         $this->assertEquals(2116, $this->Container->ActivityData->Duration);
         $this->assertEquals(2354, $this->Container->ActivityData->ElapsedTime);
-        $this->assertEquals(1.95, $this->Container->ActivityData->Distance);
+        $this->assertEqualsWithDelta(1.95, $this->Container->ActivityData->Distance, 1e-6);
 
 		$this->assertEquals('fr910xt', $this->Container->Metadata->getCreator());
 		$this->assertEquals(2500, $this->Container->ActivityData->PoolLength);
@@ -224,7 +224,7 @@ class FitTest extends AbstractActivityParserTestCase
 
         $this->assertEquals(3272, $this->Container->ActivityData->Duration);
         $this->assertEquals(3817, $this->Container->ActivityData->ElapsedTime);
-        $this->assertEquals(2.05, $this->Container->ActivityData->Distance);
+        $this->assertEqualsWithDelta(2.05, $this->Container->ActivityData->Distance, 1e-6);
 
 		$this->assertEquals('fenix3', $this->Container->Metadata->getCreator());
 		$this->assertEquals(5000, $this->Container->ActivityData->PoolLength);
@@ -299,7 +299,7 @@ class FitTest extends AbstractActivityParserTestCase
         $this->assertNotEmpty($this->Container->ContinuousData->Temperature);
         $this->assertNotEmpty($this->Container->ContinuousData->Power);
 
-		$this->assertEquals(47.64, $this->Container->FitDetails->VO2maxEstimate);
+		$this->assertEqualsWithDelta(47.64, $this->Container->FitDetails->VO2maxEstimate, 1e-6);
 	}
 
 	public function testMultisportTriathlonFileFromFenix3()
@@ -430,7 +430,7 @@ class FitTest extends AbstractActivityParserTestCase
         $this->assertNotEmpty($this->Container->ContinuousData->GroundContactBalance);
 
         $this->assertEqualsWithDelta(5199, $this->Container->ActivityData->AvgGroundContactBalance, 0.5);
-        $this->assertEquals(3.6, $this->Container->FitDetails->TrainingEffect);
+        $this->assertEqualsWithDelta(3.6, $this->Container->FitDetails->TrainingEffect, 1e-6);
 	}
 
 	public function testDataFromFR70WithCompressedSpeedDistance()
@@ -470,9 +470,9 @@ class FitTest extends AbstractActivityParserTestCase
         $this->assertEquals(819, $this->Container->ActivityData->Duration);
         $this->assertEqualsWithDelta(2.029, $this->Container->ActivityData->Distance, 0.001);
 
-        $this->assertEquals(40.58, $this->Container->FitDetails->VO2maxEstimate);
+        $this->assertEqualsWithDelta(40.58, $this->Container->FitDetails->VO2maxEstimate, 1e-6);
         $this->assertEquals(1307, $this->Container->FitDetails->RecoveryTime);
-        $this->assertEquals(3.2, $this->Container->FitDetails->TrainingEffect);
+        $this->assertEqualsWithDelta(3.2, $this->Container->FitDetails->TrainingEffect, 1e-6);
         $this->assertEquals(100, $this->Container->FitDetails->PerformanceCondition);
         $this->assertEquals(98, $this->Container->FitDetails->PerformanceConditionEnd);
 
@@ -498,7 +498,7 @@ class FitTest extends AbstractActivityParserTestCase
 
         $this->assertEquals(22, $this->Container->Rounds->count());
         $this->assertEquals(4961, $this->Container->Rounds->getTotalDuration());
-        $this->assertEquals(15.220, $this->Container->Rounds->getTotalDistance());
+        $this->assertEqualsWithDelta(15.220, $this->Container->Rounds->getTotalDistance(), 1e-6);
 	}
 
 	/**
@@ -540,7 +540,7 @@ class FitTest extends AbstractActivityParserTestCase
         $this->assertNotEmpty($this->Container->ContinuousData->GroundContactBalance);
         $this->assertNotEmpty($this->Container->ContinuousData->VerticalOscillation);
 
-        $this->assertEquals(52.12, $this->Container->FitDetails->VO2maxEstimate);
+        $this->assertEqualsWithDelta(52.12, $this->Container->FitDetails->VO2maxEstimate, 1e-6);
 	}
 
 	/**
@@ -835,9 +835,9 @@ class FitTest extends AbstractActivityParserTestCase
         $this->assertEquals(2671, $this->Container->ActivityData->Duration);
         $this->assertEqualsWithDelta(10.194, $this->Container->ActivityData->Distance, 0.001);
 
-        $this->assertEquals(63.59, $this->Container->FitDetails->VO2maxEstimate);
+        $this->assertEqualsWithDelta(63.59, $this->Container->FitDetails->VO2maxEstimate, 1e-6);
         $this->assertEquals(1842, $this->Container->FitDetails->RecoveryTime);
-        $this->assertEquals(3.6, $this->Container->FitDetails->TrainingEffect);
+        $this->assertEqualsWithDelta(3.6, $this->Container->FitDetails->TrainingEffect, 1e-6);
         $this->assertEquals(107, $this->Container->FitDetails->PerformanceCondition);
         $this->assertEquals(98, $this->Container->FitDetails->PerformanceConditionEnd);
 

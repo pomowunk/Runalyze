@@ -18,13 +18,13 @@ class VerticalRatioTest extends TestCase
 		$Ratio = new VerticalRatio(49);
 
 		$this->assertEquals(49, $Ratio->value());
-		$this->assertEquals(4.9, $Ratio->inPercent());
+		$this->assertEqualsWithDelta(4.9, $Ratio->inPercent(), 1e-6);
 
 		$Ratio->set(50);
-		$this->assertEquals(5.0, $Ratio->inPercent());
+		$this->assertEqualsWithDelta(5.0, $Ratio->inPercent(), 1e-6);
 
 		$Ratio->setPercent(5.5);
-		$this->assertEquals(5.5, $Ratio->inPercent());
+		$this->assertEqualsWithDelta(5.5, $Ratio->inPercent(), 1e-6);
 		$this->assertEquals(55, $Ratio->value());
 	}
 

@@ -11,7 +11,7 @@ class FloatingPointTest extends TestCase
 	{
 		$object = new FloatingPoint(3.14);
 
-		$this->assertEquals(3.14, $object->value());
+		$this->assertEqualsWithDelta(3.14, $object->value(), 1e-6);
 		$this->assertEquals('3.14', $object->valueAsString());
 
 		$object->set(5);
@@ -25,13 +25,13 @@ class FloatingPointTest extends TestCase
     public function testMinMaxOptions()
     {
         $object = new FloatingPoint(1.23, ['min' => 1.0, 'max' => 2.0]);
-        $this->assertEquals(1.23, $object->value());
+        $this->assertEqualsWithDelta(1.23, $object->value(), 1e-6);
 
         $object->set(0.12);
-        $this->assertEquals(1.0, $object->value());
+        $this->assertEqualsWithDelta(1.0, $object->value(), 1e-6);
 
         $object->set(2.34);
-        $this->assertEquals(2.0, $object->value());
+        $this->assertEqualsWithDelta(2.0, $object->value(), 1e-6);
     }
 
     public function testEmptyStringForNotNull()

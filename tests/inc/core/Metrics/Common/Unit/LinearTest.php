@@ -15,8 +15,8 @@ class LinearTest extends TestCase
             'foo', 1
         );
 
-        $this->assertEquals(7.0, $unit->fromBaseUnit(1.0));
-        $this->assertEquals(1.0, $unit->toBaseUnit(7.0));
+        $this->assertEqualsWithDelta(7.0, $unit->fromBaseUnit(1.0), 1e-6);
+        $this->assertEqualsWithDelta(1.0, $unit->toBaseUnit(7.0), 1e-6);
         $this->assertEquals('foo', $unit->getAppendix());
     }
 }

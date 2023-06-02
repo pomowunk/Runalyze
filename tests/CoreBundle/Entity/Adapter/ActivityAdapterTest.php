@@ -110,7 +110,7 @@ class ActivityAdapterTest extends TestCase
 
         $this->Adapter->calculateClimbScore();
 
-        $this->assertEquals(0.4, $this->Activity->getPercentageHilly());
+        $this->assertEqualsWithDelta(0.4, $this->Activity->getPercentageHilly(), 1e-6);
         $this->assertGreaterThan(0.0, $this->Activity->getClimbScore());
         $this->assertLessThan(10.0, $this->Activity->getClimbScore());
 

@@ -41,7 +41,7 @@ class WithKernelTest extends TestCase
         $Object->setKernel(new Kernel\Uniform(0.4));
         $Object->calculate();
 
-        $this->assertEquals([
+        $this->assertEqualsWithDelta([
             16.66666666666666,
             20.0,
             24.0,
@@ -50,6 +50,6 @@ class WithKernelTest extends TestCase
             50.0,
             41.66666666666666,
             41.66666666666666
-        ], $Object->movingAverage());
+        ], $Object->movingAverage(), 1e-6);
     }
 }

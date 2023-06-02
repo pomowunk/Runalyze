@@ -37,10 +37,10 @@ class RaceresultRepositoryTest extends AbstractRepositoryTestCase
         $this->assertNull($this->RaceresultRepository->findByActivity(1));
         $this->assertNull($this->RaceresultRepository->findForAccount(1, 1));
 
-        $this->assertEquals(1.0, $this->RaceresultRepository->getEffectiveVO2maxCorrectionFactor(
+        $this->assertEqualsWithDelta(1.0, $this->RaceresultRepository->getEffectiveVO2maxCorrectionFactor(
             $this->Account,
             $this->getDefaultAccountsRunningSport()->getId()
-        ));
+        ), 1e-6);
     }
 
     public function testSingleRace()

@@ -2,7 +2,7 @@
 
 namespace Runalyze\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\ClimbScoreCalculator;
@@ -22,12 +22,12 @@ class Version20170615090403 extends AbstractMigration implements ContainerAwareI
         $this->container = $container;
     }
 
-    public function isTransactional()
+    public function isTransactional(): bool
     {
         return false;
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         /** @var EntityManager $em */
         $em = $this->container->get('doctrine.orm.entity_manager');
@@ -130,7 +130,7 @@ class Version20170615090403 extends AbstractMigration implements ContainerAwareI
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

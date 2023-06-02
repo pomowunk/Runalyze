@@ -16,7 +16,7 @@ class UnitConversionByFactorTraitTest extends TestCase
 
         /** @var UnitConversionByFactorTrait $mock */
 
-        $this->assertEquals(2.46, $mock->fromBaseUnit(2.0));
-        $this->assertEquals(2.0, $mock->toBaseUnit(2.46));
+        $this->assertEqualsWithDelta(2.46, $mock->fromBaseUnit(2.0), 1e-6);
+        $this->assertEqualsWithDelta(2.0, $mock->toBaseUnit(2.46), 1e-6);
     }
 }

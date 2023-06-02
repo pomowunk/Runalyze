@@ -25,7 +25,7 @@ class BisectionTest extends TestCase
 		$Bisection->setIterations(4);
 		$Bisection->setEpsilon(0.01);
 
-		$this->assertEquals(0.9375, $Bisection->findValue());
+		$this->assertEqualsWithDelta(0.9375, $Bisection->findValue(), 1e-6);
 	}
 
 	public function testSimpleApproximation()

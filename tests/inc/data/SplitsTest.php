@@ -232,14 +232,14 @@ class SplitsTest extends TestCase {
 
 		$asArray1 = $Splits->asArray();
 		$this->assertEquals(4, count($asArray1));
-		$this->assertEquals(1.5, $asArray1[3]['km']);
+		$this->assertEqualsWithDelta(1.5, $asArray1[3]['km'], 1e-6);
 		$this->assertEquals('7:30', $asArray1[3]['time']);
 
 		$Splits->addLastSplitToComplete(5, 1500);
 
 		$asArray2 = $Splits->asArray();
 		$this->assertEquals(5, count($asArray2));
-		$this->assertEquals(0.5, $asArray2[4]['km']);
+		$this->assertEqualsWithDelta(0.5, $asArray2[4]['km'], 1e-6);
 		$this->assertEquals('2:30', $asArray2[4]['time']);
 
 		$Splits->addLastSplitToComplete(4, 1200);

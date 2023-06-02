@@ -2,7 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Twig;
 
-class UtilityExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+
+class UtilityExtension extends AbstractExtension
 {
     /**
      * @return string

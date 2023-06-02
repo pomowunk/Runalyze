@@ -12,7 +12,7 @@ class SplitTest extends TestCase {
 	public function testStringConstructor() {
 		$Split = new Split('R1.00|4:20');
 
-		$this->assertEquals(1.00, $Split->distance());
+		$this->assertEqualsWithDelta(1.00, $Split->distance(), 1e-6);
 		$this->assertEquals(260, $Split->time());
 		$this->assertFalse($Split->isActive());
 	}
@@ -20,7 +20,7 @@ class SplitTest extends TestCase {
 	public function testParameterConstructor() {
 		$Split = new Split(1.00, 260, false);
 
-		$this->assertEquals(1.00, $Split->distance());
+		$this->assertEqualsWithDelta(1.00, $Split->distance(), 1e-6);
 		$this->assertEquals(260, $Split->time());
 		$this->assertFalse($Split->isActive());
 	}
@@ -36,7 +36,7 @@ class SplitTest extends TestCase {
 		$Split->setResting();
 
 		$this->assertFalse($Split->isEmpty());
-		$this->assertEquals(1.00, $Split->distance());
+		$this->assertEqualsWithDelta(1.00, $Split->distance(), 1e-6);
 		$this->assertEquals(300, $Split->time());
 		$this->assertFalse($Split->isActive());
 	}

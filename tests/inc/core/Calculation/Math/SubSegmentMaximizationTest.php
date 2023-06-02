@@ -32,10 +32,10 @@ class SubSegmentMaximizationTest extends TestCase
         $Maximization = new SubSegmentMaximization([42], [5], [1, 2, 3, 4, 5]);
         $Maximization->maximize();
 
-        $this->assertEquals(8.4, $Maximization->getMaximumForLengthIndex(0));
-        $this->assertEquals(16.8, $Maximization->getMaximumForLengthIndex(1));
-        $this->assertEquals(25.2, $Maximization->getMaximumForLengthIndex(2));
-        $this->assertEquals(33.6, $Maximization->getMaximumForLengthIndex(3));
+        $this->assertEqualsWithDelta(8.4, $Maximization->getMaximumForLengthIndex(0), 1e-6);
+        $this->assertEqualsWithDelta(16.8, $Maximization->getMaximumForLengthIndex(1), 1e-6);
+        $this->assertEqualsWithDelta(25.2, $Maximization->getMaximumForLengthIndex(2), 1e-6);
+        $this->assertEqualsWithDelta(33.6, $Maximization->getMaximumForLengthIndex(3), 1e-6);
         $this->assertEquals(42, $Maximization->getMaximumForLengthIndex(4));
     }
 

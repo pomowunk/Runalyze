@@ -57,10 +57,10 @@ class EquipmentRepositoryTest extends AbstractRepositoryTestCase
 
         $this->assertEquals(2, $statistics->getCount());
         $this->assertEquals(2, $statistics->getStatistics()[0]->getNumberOfActivities());
-        $this->assertEquals(10.0, $statistics->getStatistics()[0]->getMaximalDistance());
+        $this->assertEqualsWithDelta(10.0, $statistics->getStatistics()[0]->getMaximalDistance(), 1e-6);
         $this->assertEquals(240, $statistics->getStatistics()[0]->getMaximalPace());
         $this->assertEquals(1, $statistics->getStatistics()[1]->getNumberOfActivities());
-        $this->assertEquals(12.0, $statistics->getStatistics()[1]->getMaximalDistance());
+        $this->assertEqualsWithDelta(12.0, $statistics->getStatistics()[1]->getMaximalDistance(), 1e-6);
         $this->assertEquals(300, $statistics->getStatistics()[1]->getMaximalPace());
     }
 }

@@ -38,7 +38,7 @@ class EntityTest extends TestCase
 			Entity::ACTIVITY_ID => 2
 		));
 
-		$this->assertEquals(10.50, $RaceResult->officialDistance());
+		$this->assertEqualsWithDelta(10.50, $RaceResult->officialDistance(), 1e-6);
 		$this->assertEquals(2400, $RaceResult->officialTime());
 		$this->assertTrue($RaceResult->officiallyMeasured());
 		$this->assertEquals(10, $RaceResult->placeTotal());

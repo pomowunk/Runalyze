@@ -64,7 +64,7 @@ class ClimbProfileTest extends TestCase
         );
 
         $this->assertEquals(5, $profile->count());
-        $this->assertEquals([1.0, 1.0, 3.0, 1.1, 0.2], $profile->getDistances());
+        $this->assertEqualsWithDelta([1.0, 1.0, 3.0, 1.1, 0.2], $profile->getDistances(), 1e-6);
         $this->assertEquals([20, 30, 50, 30, 10], $profile->getElevations());
     }
 }

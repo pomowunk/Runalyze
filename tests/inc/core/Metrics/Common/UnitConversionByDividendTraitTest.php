@@ -16,7 +16,7 @@ class UnitConversionByDividendTraitTest extends TestCase
 
         /** @var UnitConversionByDividendTrait $mock */
 
-        $this->assertEquals(2.5, $mock->fromBaseUnit(2.0));
-        $this->assertEquals(2.0, $mock->toBaseUnit(2.5));
+        $this->assertEqualsWithDelta(2.5, $mock->fromBaseUnit(2.0), 1e-6);
+        $this->assertEqualsWithDelta(2.0, $mock->toBaseUnit(2.5), 1e-6);
     }
 }

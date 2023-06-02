@@ -28,7 +28,7 @@ class LogbookTest extends AbstractActivityParserTestCase
         $this->assertEquals('2008-09-06 18:01', LocalTime::date('Y-m-d H:i', $this->Container[0]->Metadata->getTimestamp()));
         $this->assertEquals(120, $this->Container[0]->Metadata->getTimezoneOffset());
         $this->assertEquals(9382, $this->Container[0]->ActivityData->Duration);
-        $this->assertEquals(26.743, $this->Container[0]->ActivityData->Distance);
+        $this->assertEqualsWithDelta(26.743, $this->Container[0]->ActivityData->Distance, 1e-6);
         $this->assertEquals(943, $this->Container[0]->ActivityData->EnergyConsumption);
         $this->assertEquals("Buxtehuder Abendlauf", $this->Container[0]->Metadata->getDescription());
         $this->assertEquals("Buxtehude", $this->Container[0]->Metadata->getRouteDescription());
@@ -38,7 +38,7 @@ class LogbookTest extends AbstractActivityParserTestCase
         $this->assertEquals('2009-03-28 15:03', LocalTime::date('Y-m-d H:i', $this->Container[1]->Metadata->getTimestamp()));
         $this->assertEquals(60, $this->Container[1]->Metadata->getTimezoneOffset());
         $this->assertEquals(10837, $this->Container[1]->ActivityData->Duration);
-        $this->assertEquals(25.864, $this->Container[1]->ActivityData->Distance);
+        $this->assertEqualsWithDelta(25.864, $this->Container[1]->ActivityData->Distance, 1e-6);
         $this->assertEquals(365, $this->Container[1]->ActivityData->ElevationAscent);
         $this->assertEquals(156, $this->Container[1]->ActivityData->AvgHeartRate);
         $this->assertEquals(167, $this->Container[1]->ActivityData->MaxHeartRate);
@@ -51,7 +51,7 @@ class LogbookTest extends AbstractActivityParserTestCase
         $this->assertEquals('2009-03-31 20:22', LocalTime::date('Y-m-d H:i', $this->Container[2]->Metadata->getTimestamp()));
         $this->assertEquals(120, $this->Container[2]->Metadata->getTimezoneOffset());
         $this->assertEquals(2310, $this->Container[2]->ActivityData->Duration);
-        $this->assertEquals(6.904, $this->Container[2]->ActivityData->Distance);
+        $this->assertEqualsWithDelta(6.904, $this->Container[2]->ActivityData->Distance, 1e-6);
 
         $this->checkExpectedRoundDataFor($this->Container[2], [
             [337, 1.000],
@@ -64,6 +64,6 @@ class LogbookTest extends AbstractActivityParserTestCase
         ]);
 
         $this->assertEquals("Rennrad", $this->Container[4]->Metadata->getSportName());
-        $this->assertEqualsWithDelta(19.0, $this->Container[4]->WeatherData->Temperature, 0.5);
+        $this->assertEqualsWithDelta(19.0, $this->Container[4]->WeatherData->Temperature, 1e-3);
     }
 }

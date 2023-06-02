@@ -20,7 +20,7 @@ class StrideLengthTest extends TestCase {
 		$StrideLength = new StrideLength();
 		$StrideLength->setMeter(1.07);
 
-		$this->assertEquals(1.07, $StrideLength->meter());
+		$this->assertEqualsWithDelta(1.07, $StrideLength->meter(), 1e-6);
 		$this->assertEquals('1.07&nbsp;'.DistanceUnitSystem::METER, $StrideLength->stringMeter());
 	}
 
@@ -36,14 +36,14 @@ class StrideLengthTest extends TestCase {
 		$StrideLength = new StrideLength();
 		$StrideLength->setFeet(3.2);
 
-		$this->assertEquals(3.2, $StrideLength->feet());
+		$this->assertEqualsWithDelta(3.2, $StrideLength->feet(), 1e-6);
 		$this->assertEquals('3.2&nbsp;'.DistanceUnitSystem::FEET, $StrideLength->stringFeet());
 	}
 
 	public function testSettingInPreferredUnit()
 	{
-		$this->assertEquals(1.23, (new StrideLength(0, new DistanceUnitSystem(DistanceUnitSystem::METRIC)))->setInPreferredUnit(1.23)->meter());
-		$this->assertEquals(3.2, (new StrideLength(0, new DistanceUnitSystem(DistanceUnitSystem::IMPERIAL)))->setInPreferredUnit(3.2)->feet());
+		$this->assertEqualsWithDelta(1.23, (new StrideLength(0, new DistanceUnitSystem(DistanceUnitSystem::METRIC)))->setInPreferredUnit(1.23)->meter(), 1e-6);
+		$this->assertEqualsWithDelta(3.2, (new StrideLength(0, new DistanceUnitSystem(DistanceUnitSystem::IMPERIAL)))->setInPreferredUnit(3.2)->feet(), 1e-6);
 	}
 
 }

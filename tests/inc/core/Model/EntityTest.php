@@ -163,7 +163,7 @@ class EntityTest extends TestCase {
 
 		$O->set('int', 3.14);
 		$O->synchronize();
-		$this->assertEquals(3.14, $O->get('int'));
+		$this->assertEqualsWithDelta(3.14, $O->get('int'), 1e-6);
 
 		$O->set('int', '');
 		$O->synchronize(1);

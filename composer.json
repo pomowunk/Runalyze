@@ -10,16 +10,15 @@
         "bernard/bernard-bundle": "^2.0",
         "doctrine/doctrine-bundle": "1.12.*",
         "doctrine/doctrine-cache-bundle": "^1.3",
-        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "doctrine/doctrine-migrations-bundle": "^2.0",
         "doctrine/orm": "^2.5",
         "guzzlehttp/guzzle": "^6.0",
         "jms/translation-bundle": "^1.6",
-        "league/geotools": "^0.7.0",
-        "monolog/monolog": "^1.20",
+        "league/geotools": "^0.8",
         "mrihtar/garmin-fit": "^0.33",
         "nojacko/email-validator": "~1.0",
         "p3k/picofeed": "@stable",
-        "php": ">=7.3",
+        "php": ">=7.4,<=8.0.9",
         "phpfastcache/phpfastcache": "^8.0",
         "predis/predis": "^1.0",
         "runalyze/age-grade": "^1.2",
@@ -29,14 +28,14 @@
         "runalyze/glossary": "dev-master",
         "runalyze/gpxtrackposter": "^1.0.0",
         "runalyze/translations": "dev-master",
-        "sensio/framework-extra-bundle": "^3.0",
+        "sensio/framework-extra-bundle": "^5.0",
         "snc/redis-bundle": "2.*",
-        "swiftmailer/swiftmailer": "@stable",
-        "symfony/monolog-bundle": "3.1.*",
-        "symfony/swiftmailer-bundle": "2.6.*",
+        "symfony/monolog-bundle": "^3.6",
+        "symfony/swiftmailer-bundle": "3.2.*",
         "symfony/symfony": "^3.4.49",
-        "twig/twig": "^1.44.5",
-        "laminas/laminas-zendframework-bridge": "^1.5"
+        "twig/twig": "^2.0",
+        "laminas/laminas-zendframework-bridge": "^1.5",
+        "laminas/laminas-code": "4.7.*"
     },
     "autoload": {
         "files": ["src/functions.php", "app/AppKernel.php"],
@@ -55,9 +54,9 @@
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "liip/functional-test-bundle": "^4.3",
         "liip/test-fixtures-bundle": "^1.12",
-        "phpunit/phpunit": "^9.0",
         "runalyze/playground": "dev-master",
-        "symfony/phpunit-bridge": "^6.0"
+        "symfony/phpunit-bridge": "^6.0",
+        "phan/phan": "^5.4"
     },
     "repositories": [
         {
@@ -84,5 +83,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }

@@ -13,15 +13,15 @@ class DistanceModifierTest extends TestCase {
 		$Modifier = new DistanceModifier(10, 200, 100);
 		$Modifier->setCorrectionValues(+2, -1);
 
-		$this->assertEquals(0.3, $Modifier->additionalDistance());
-		$this->assertEquals(10.3, $Modifier->correctedDistance());
+		$this->assertEqualsWithDelta(0.3, $Modifier->additionalDistance(), 1e-6);
+		$this->assertEqualsWithDelta(10.3, $Modifier->correctedDistance(), 1e-6);
 	}
 
 	public function testNoModification() {
 		$Modifier = new DistanceModifier(10);
 
-		$this->assertEquals(0.0, $Modifier->additionalDistance());
-		$this->assertEquals(10.0, $Modifier->correctedDistance());
+		$this->assertEqualsWithDelta(0.0, $Modifier->additionalDistance(), 1e-6);
+		$this->assertEqualsWithDelta(10.0, $Modifier->correctedDistance(), 1e-6);
 	}
 
 	public function testNegativeModification() {
@@ -29,7 +29,7 @@ class DistanceModifierTest extends TestCase {
 		$Modifier->setCorrectionValues(+2, -1);
 
 		$this->assertEquals(-0.1, $Modifier->additionalDistance());
-		$this->assertEquals(9.9, $Modifier->correctedDistance());
+		$this->assertEqualsWithDelta(9.9, $Modifier->correctedDistance(), 1e-6);
 	}
 
 	public function testConfigurationSettings() {

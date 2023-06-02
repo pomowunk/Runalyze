@@ -11,7 +11,7 @@ class RoundTest extends TestCase
     {
         $round = new Round(1.0, 265);
 
-        $this->assertEquals(1.0, $round->getDistance());
+        $this->assertEqualsWithDelta(1.0, $round->getDistance(), 1e-6);
         $this->assertEquals(265, $round->getDuration());
         $this->assertTrue($round->isActive());
     }
@@ -30,7 +30,7 @@ class RoundTest extends TestCase
         $round->setDuration(104);
         $round->setActive();
 
-        $this->assertEquals(0.5, $round->getDistance());
+        $this->assertEqualsWithDelta(0.5, $round->getDistance(), 1e-6);
         $this->assertEquals(104, $round->getDuration());
         $this->assertTrue($round->isActive());
     }

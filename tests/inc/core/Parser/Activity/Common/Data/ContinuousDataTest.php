@@ -28,7 +28,7 @@ class ContinuousDataTest extends TestCase
         $this->Data->Distance = [0.005, 0.011, 0.016, 0.020, 0.024, 0.026];
 
         $this->assertEquals(6, $this->Data->getTotalDuration());
-        $this->assertEquals(0.026, $this->Data->getTotalDistance());
+        $this->assertEqualsWithDelta(0.026, $this->Data->getTotalDistance(), 1e-6);
     }
 
     public function testTotalDurationAndDistanceIfNotPresent()

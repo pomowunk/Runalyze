@@ -67,7 +67,7 @@ class ShapeTest extends TestCase {
 		$Shape = new Shape($this->PDO, 1, 1, new CategoryFake());
 		$Shape->calculate();
 
-		$this->assertEquals(62.5, $Shape->value());
+		$this->assertEqualsWithDelta(62.5, $Shape->value(), 1e-6);
 	}
 
 	public function testSimpleCalculationWithElevation() {

@@ -25,7 +25,7 @@ class TemperatureTest extends TestCase
 		$Temperature = new Temperature();
 		$Temperature->set(15);
 
-		$this->assertEquals(15.00, $Temperature->celsius());
+		$this->assertEqualsWithDelta(15.00, $Temperature->celsius(), 1e-6);
 		$this->assertEqualsWithDelta(59.00, $Temperature->fahrenheit(), 0.01);
 	}
 
@@ -34,7 +34,7 @@ class TemperatureTest extends TestCase
 		$Temperature = new Temperature();
 		$Temperature->setFahrenheit(59);
 
-		$this->assertEquals(59.00, $Temperature->fahrenheit());
+		$this->assertEqualsWithDelta(59.00, $Temperature->fahrenheit(), 1e-6);
 		$this->assertEqualsWithDelta(15, $Temperature->celsius(), 0.01);
 	}
 

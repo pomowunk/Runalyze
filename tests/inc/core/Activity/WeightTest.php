@@ -31,7 +31,7 @@ class WeightTest extends TestCase
 		$Weight = new Weight();
 		$Weight->set(10);
 
-		$this->assertEquals(10.00, $Weight->kg());
+		$this->assertEqualsWithDelta(10.00, $Weight->kg(), 1e-6);
 		$this->assertEqualsWithDelta(22.04, $Weight->pounds(), 0.01);
 		$this->assertEqualsWithDelta(1.57, $Weight->stones(), 0.01);
 	}
@@ -41,7 +41,7 @@ class WeightTest extends TestCase
 		$Weight = new Weight();
 		$Weight->setPounds(10);
 
-		$this->assertEquals(10.00, $Weight->pounds());
+		$this->assertEqualsWithDelta(10.00, $Weight->pounds(), 1e-6);
 		$this->assertEqualsWithDelta(4.54, $Weight->kg(), 0.01);
 		$this->assertEqualsWithDelta(0.71, $Weight->stones(), 0.01);
 	}
@@ -51,7 +51,7 @@ class WeightTest extends TestCase
 		$Weight = new Weight();
 		$Weight->setStones(10);
 
-		$this->assertEquals(10.00, $Weight->stones());
+		$this->assertEqualsWithDelta(10.00, $Weight->stones(), 1e-6);
 		$this->assertEqualsWithDelta(63.50, $Weight->kg(), 0.01);
 		$this->assertEqualsWithDelta(140.0, $Weight->pounds(), 0.01);
 	}

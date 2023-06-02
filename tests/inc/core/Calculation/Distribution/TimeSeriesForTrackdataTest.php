@@ -25,13 +25,13 @@ class TimeSeriesForTrackdataTest extends TestCase {
 			array(Trackdata\Entity::CADENCE, Trackdata\Entity::GROUNDCONTACT)
 		);
 
-		$this->assertEquals( array(
+		$this->assertEqualsWithDelta(array(
 			120 => 90,
 			150 => 150,
 			180 => 60
-		), $Dist->histogram() );
+		), $Dist->histogram(), 1e-6);
 
-		$this->assertEquals( array(
+		$this->assertEqualsWithDelta(array(
 			120 => array(
 				Trackdata\Entity::DISTANCE => 0.3,
 				Trackdata\Entity::CADENCE => 83,
@@ -47,7 +47,7 @@ class TimeSeriesForTrackdataTest extends TestCase {
 				Trackdata\Entity::CADENCE => 100,
 				Trackdata\Entity::GROUNDCONTACT => 120
 			)
-		), $Dist->data() );
+		), $Dist->data(), 1e-6);
 	}
 
 }

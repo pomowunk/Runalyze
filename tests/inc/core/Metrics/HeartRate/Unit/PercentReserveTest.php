@@ -28,10 +28,10 @@ class PercentReserveTest extends TestCase
         $this->assertEquals(175, $unit->getMaximalHeartRate());
         $this->assertEquals(75, $unit->getRestingHeartRate());
 
-        $this->assertEquals(0.45, $unit->fromBaseUnit(120));
+        $this->assertEqualsWithDelta(0.45, $unit->fromBaseUnit(120), 1e-6);
         $this->assertEquals(120, $unit->toBaseUnit(0.45));
 
-        $this->assertEquals(0.75, $unit->fromBaseUnit(150));
+        $this->assertEqualsWithDelta(0.75, $unit->fromBaseUnit(150), 1e-6);
         $this->assertEquals(150, $unit->toBaseUnit(0.75));
     }
 }

@@ -34,11 +34,11 @@ class TwoPartPercentalTest extends TestCase
         $this->Scale->setMaximum(10);
 
         $this->assertEquals(0, $this->Scale->transform(1));
-        $this->assertEquals(5, $this->Scale->transform(1.1));
-        $this->assertEquals(25, $this->Scale->transform(1.5));
-        $this->assertEquals(50, $this->Scale->transform(2.0));
-        $this->assertEquals(50, $this->Scale->transform(2.0));
-        $this->assertEqualsWithDelta(56, $this->Scale->transform(3.0), 0.5);
-        $this->assertEquals(75, $this->Scale->transform(6.0));
+        $this->assertEqualsWithDelta(5, $this->Scale->transform(1.1), 1e-6);
+        $this->assertEqualsWithDelta(25, $this->Scale->transform(1.5), 1e-6);
+        $this->assertEqualsWithDelta(50, $this->Scale->transform(2.0), 1e-6);
+        $this->assertEqualsWithDelta(50, $this->Scale->transform(2.0), 1e-6);
+        $this->assertEqualsWithDelta(56, $this->Scale->transform(3.0), 0.3);
+        $this->assertEqualsWithDelta(75, $this->Scale->transform(6.0), 1e-6);
     }
 }

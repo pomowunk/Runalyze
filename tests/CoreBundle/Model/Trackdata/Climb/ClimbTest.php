@@ -20,7 +20,7 @@ class ClimbTest extends TestCase
     {
         $climb = new Climb(1.0, 50);
 
-        $this->assertEquals(1.0, $climb->getDistance());
+        $this->assertEqualsWithDelta(1.0, $climb->getDistance(), 1e-6);
         $this->assertEquals(50, $climb->getElevation());
         $this->assertFalse($climb->knowsAltitudeAtTop());
         $this->assertFalse($climb->knowsClimbProfile());
@@ -51,9 +51,9 @@ class ClimbTest extends TestCase
 
     public function testGradient()
     {
-        $this->assertEquals(0.05, (new Climb(1.0, 50))->getGradient());
-        $this->assertEquals(0.16, (new Climb(0.2, 32))->getGradient());
-        $this->assertEquals(0.06, (new Climb(0.5, 30))->getGradient());
+        $this->assertEqualsWithDelta(0.05, (new Climb(1.0, 50))->getGradient(), 1e-6);
+        $this->assertEqualsWithDelta(0.16, (new Climb(0.2, 32))->getGradient(), 1e-6);
+        $this->assertEqualsWithDelta(0.06, (new Climb(0.5, 30))->getGradient(), 1e-6);
         $this->assertEqualsWithDelta(0.033, (new Climb(3.0, 100))->getGradient(), 0.001);
     }
 

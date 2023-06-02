@@ -105,12 +105,12 @@ class SportRepositoryTest extends AbstractRepositoryTestCase
 
         $this->assertEquals(2, $allTimeStatistics->getCount());
 
-        $this->assertEquals(7000.0, $allTimeStatisticsRunning->getTotalDuration());
-        $this->assertEquals(22.0, $allTimeStatisticsRunning->getTotalDistance());
+        $this->assertEqualsWithDelta(7000.0, $allTimeStatisticsRunning->getTotalDuration(), 1e-6);
+        $this->assertEqualsWithDelta(22.0, $allTimeStatisticsRunning->getTotalDistance(), 1e-6);
         $this->assertEquals(2, $allTimeStatisticsRunning->getNumberOfActivities());
 
-        $this->assertEquals(7600.0, $allTimeStatisticsCycling->getTotalDuration());
-        $this->assertEquals(63.5, $allTimeStatisticsCycling->getTotalDistance());
+        $this->assertEqualsWithDelta(7600.0, $allTimeStatisticsCycling->getTotalDuration(), 1e-6);
+        $this->assertEqualsWithDelta(63.5, $allTimeStatisticsCycling->getTotalDistance(), 1e-6);
         $this->assertEquals(1, $allTimeStatisticsCycling->getNumberOfActivities());
     }
 }

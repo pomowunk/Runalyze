@@ -33,9 +33,9 @@ class VO2maxCalculatorTest extends TestCase
     {
         $this->Calculator->calculateFor($this->Activity, 200, 0, 0);
 
-        $this->assertEquals(0.0, $this->Activity->getVO2maxByTime());
-        $this->assertEquals(0.0, $this->Activity->getVO2max());
-        $this->assertEquals(0.0, $this->Activity->getVO2maxWithElevation());
+        $this->assertEqualsWithDelta(0.0, $this->Activity->getVO2maxByTime(), 1e-6);
+        $this->assertEqualsWithDelta(0.0, $this->Activity->getVO2max(), 1e-6);
+        $this->assertEqualsWithDelta(0.0, $this->Activity->getVO2maxWithElevation(), 1e-6);
     }
 
     public function testCalculationForSimpleActivityAtExpectedHeartRate()

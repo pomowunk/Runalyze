@@ -161,8 +161,8 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
         $statistics = $this->TrainingRepository->getAccountStatistics($this->Account);
 
         $this->assertEquals(0, $statistics->getNumberOfActivities());
-        $this->assertEquals(0.0, $statistics->getTotalDuration());
-        $this->assertEquals(0.0, $statistics->getTotalDistance());
+        $this->assertEqualsWithDelta(0.0, $statistics->getTotalDuration(), 1e-6);
+        $this->assertEqualsWithDelta(0.0, $statistics->getTotalDistance(), 1e-6);
     }
 
     public function testAccountStatisticsWithData()
@@ -174,8 +174,8 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
         $statistics = $this->TrainingRepository->getAccountStatistics($this->Account);
 
         $this->assertEquals(3, $statistics->getNumberOfActivities());
-        $this->assertEquals(14400.0, $statistics->getTotalDuration());
-        $this->assertEquals(85.5, $statistics->getTotalDistance());
+        $this->assertEqualsWithDelta(14400.0, $statistics->getTotalDuration(), 1e-6);
+        $this->assertEqualsWithDelta(85.5, $statistics->getTotalDistance(), 1e-6);
     }
 
     public function testPosterStats()
@@ -343,7 +343,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
         $result = $this->TrainingRepository->findForAccount($activity->getId(), $this->getDefaultAccount()->getId());
 
         $this->assertTrue($result->hasRaceresult());
-        $this->assertEquals(3.0, $result->getRaceresult()->getOfficialDistance());
+        $this->assertEqualsWithDelta(3.0, $result->getRaceresult()->getOfficialDistance(), 1e-6);
 
         $this->TrainingRepository->remove($activity);
 
@@ -447,12 +447,12 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
     public function testVO2maxShapeCalculationForEmptyAccount()
     {
-        $this->assertEquals(0.0, $this->TrainingRepository->calculateVO2maxShape(
+        $this->assertEqualsWithDelta(0.0, $this->TrainingRepository->calculateVO2maxShape(
             $this->getDefaultAccount(),
             new VO2max(),
             $this->getDefaultAccountsRunningSport()->getId(),
             time()
-        ));
+        ), 1e-6);
     }
 
     public function testVO2maxShapeCalculationForASingleActivity()
@@ -496,14 +496,14 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
     public function testMarathonShapeCalculationForEmptyAccount()
     {
-        $this->assertEquals(0.0,
+        $this->assertEqualsWithDelta(0.0,
             $this->TrainingRepository->calculateMarathonShape(
                 $this->getDefaultAccount(),
                 new BasicEndurance(),
                 50.0,
                 $this->getDefaultAccountsRunningSport()->getId(),
                 time()
-            )
+            ), 1e-6
         );
     }
 
@@ -517,14 +517,14 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
         $this->insertActivityForDefaultAccount($date - 5 * 86400, 10800, 32.5);
 
-        $this->assertEquals(70.0,
+        $this->assertEqualsWithDelta(70.0,
             $this->TrainingRepository->calculateMarathonShape(
                 $this->getDefaultAccount(),
                 $config,
                 60.0,
                 $this->getDefaultAccountsRunningSport()->getId(),
                 $date
-            )
+            ), 1e-6
         );
     }
 
@@ -539,17 +539,17 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
         $this->insertActivityForDefaultAccount($date - 7 * 86400, 10800, 32.5);
 
-        $this->assertEquals(16.0, 
+        $this->assertEqualsWithDelta(16.0, 
             $this->TrainingRepository->calculateMarathonShape(
                 $this->getDefaultAccount(),
                 $config,
                 60.0,
                 $this->getDefaultAccountsRunningSport()->getId(),
                 $date
-            )
+            ), 1e-6
         );
 
-        $this->assertEquals(31.0, 
+        $this->assertEqualsWithDelta(31.0, 
             $this->TrainingRepository->calculateMarathonShape(
                 $this->getDefaultAccount(),
                 $config,
@@ -557,7 +557,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
                 $this->getDefaultAccountsRunningSport()->getId(),
                 $date,
                 $date - 7 * 86400
-            )
+            ), 1e-6
         );
     }
 
@@ -602,11 +602,11 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
             $this->TrainingRepository->save($activity);
 
             $this->assertEquals(3600, $someEquipment[0]->getTime());
-            $this->assertEquals(10.0, $someEquipment[0]->getDistance());
+            $this->assertEqualsWithDelta(10.0, $someEquipment[0]->getDistance(), 1e-6);
             $this->assertEquals(0, $someEquipment[1]->getTime());
-            $this->assertEquals(0.0, $someEquipment[1]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[1]->getDistance(), 1e-6);
             $this->assertEquals(0, $someEquipment[2]->getTime());
-            $this->assertEquals(0.0, $someEquipment[2]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[2]->getDistance(), 1e-6);
 
             $activity->addEquipment($someEquipment[1]);
             $activity->setDistance(12.0);
@@ -617,11 +617,11 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
             $this->refreshEquipment($someEquipment);
 
             $this->assertEquals(3580, $someEquipment[0]->getTime());
-            $this->assertEquals(12.0, $someEquipment[0]->getDistance());
+            $this->assertEqualsWithDelta(12.0, $someEquipment[0]->getDistance(), 1e-6);
             $this->assertEquals(3580, $someEquipment[1]->getTime());
-            $this->assertEquals(12.0, $someEquipment[1]->getDistance());
+            $this->assertEqualsWithDelta(12.0, $someEquipment[1]->getDistance(), 1e-6);
             $this->assertEquals(0, $someEquipment[2]->getTime());
-            $this->assertEquals(0.0, $someEquipment[2]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[2]->getDistance(), 1e-6);
 
             $activity->removeEquipment($someEquipment[0]);
             $activity->addEquipment($someEquipment[2]);
@@ -631,22 +631,22 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
             $this->refreshEquipment($someEquipment);
 
             $this->assertEquals(0, $someEquipment[0]->getTime());
-            $this->assertEquals(0.0, $someEquipment[0]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[0]->getDistance(), 1e-6);
             $this->assertEquals(3580, $someEquipment[1]->getTime());
-            $this->assertEquals(12.0, $someEquipment[1]->getDistance());
+            $this->assertEqualsWithDelta(12.0, $someEquipment[1]->getDistance(), 1e-6);
             $this->assertEquals(3580, $someEquipment[2]->getTime());
-            $this->assertEquals(12.0, $someEquipment[2]->getDistance());
+            $this->assertEqualsWithDelta(12.0, $someEquipment[2]->getDistance(), 1e-6);
 
             $this->TrainingRepository->remove($activity);
 
             $this->refreshEquipment($someEquipment);
 
             $this->assertEquals(0, $someEquipment[0]->getTime());
-            $this->assertEquals(0.0, $someEquipment[0]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[0]->getDistance(), 1e-6);
             $this->assertEquals(0, $someEquipment[1]->getTime());
-            $this->assertEquals(0.0, $someEquipment[1]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[1]->getDistance(), 1e-6);
             $this->assertEquals(0, $someEquipment[2]->getTime());
-            $this->assertEquals(0.0, $someEquipment[2]->getDistance());
+            $this->assertEqualsWithDelta(0.0, $someEquipment[2]->getDistance(), 1e-6);
         }
     }
 

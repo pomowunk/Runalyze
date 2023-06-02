@@ -26,9 +26,9 @@ class EntityTest extends TestCase {
 		$this->assertTrue($Equipment->isInUse());
 		$this->assertEquals(null, $Equipment->endDate());
 
-		$this->assertEquals(123.45, $Equipment->distance());
+		$this->assertEqualsWithDelta(123.45, $Equipment->distance(), 1e-6);
 		$this->assertEquals(50, $Equipment->additionalDistance());
-		$this->assertEquals(173.45, $Equipment->totalDistance());
+		$this->assertEqualsWithDelta(173.45, $Equipment->totalDistance(), 1e-6);
 	}
 
 }

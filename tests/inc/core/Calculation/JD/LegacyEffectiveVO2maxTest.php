@@ -20,8 +20,8 @@ class LegacyEffectiveVO2maxTest extends TestCase
     {
         $Value = new LegacyEffectiveVO2max(50.1234);
 
-        $this->assertEquals(50.12, $Value->value());
-        $this->assertEquals(50.1234, $Value->exactValue());
+        $this->assertEqualsWithDelta(50.12, $Value->value(), 1e-6);
+        $this->assertEqualsWithDelta(50.1234, $Value->exactValue(), 1e-6);
     }
 
     public function testWithCorrector()

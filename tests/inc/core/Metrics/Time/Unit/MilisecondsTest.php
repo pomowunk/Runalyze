@@ -11,7 +11,7 @@ class MilisecondsTest extends TestCase
     {
         $unit = new Miliseconds();
 
-        $this->assertEquals(234.0, $unit->fromBaseUnit(0.234));
-        $this->assertEquals(0.75, $unit->toBaseUnit(750));
+        $this->assertEqualsWithDelta(234.0, $unit->fromBaseUnit(0.234), 1e-6);
+        $this->assertEqualsWithDelta(0.75, $unit->toBaseUnit(750), 1e-6);
     }
 }

@@ -39,10 +39,10 @@ class TrainingEffectTest extends TestCase
         $Effect = new TrainingEffect(3.1);
 
         $this->assertTrue($Effect->isKnown());
-        $this->assertEquals(3.1, $Effect->value());
+        $this->assertEqualsWithDelta(3.1, $Effect->value(), 1e-6);
         $this->assertEquals(TrainingEffectLevel::IMPROVING, $Effect->level());
 
-        $this->assertEquals(2.9, $Effect->set(2.9)->value());
+        $this->assertEqualsWithDelta(2.9, $Effect->set(2.9)->value(), 1e-6);
         $this->assertEquals(TrainingEffectLevel::MAINTAINING, $Effect->level());
 
         $this->assertFalse($Effect->set(null)->isKnown());

@@ -61,7 +61,7 @@ class ActivityCacheTest extends TestCase
         $result = $this->Cache->get($this->Cache->save($activityToCache), $activityToMerge);
 
         $this->assertNotNull($result);
-        $this->assertEquals(12.3, $result->getDistance());
+        $this->assertEqualsWithDelta(12.3, $result->getDistance(), 1e-6);
         $this->assertEquals(3625, $result->getElapsedTime());
         $this->assertEquals($mergerAccount, $result->getAccount());
         $this->assertEquals($mergerAccount, $result->getRoute()->getAccount());
@@ -70,7 +70,7 @@ class ActivityCacheTest extends TestCase
         $this->assertEquals($mergerAccount, $result->getHrv()->getAccount());
         $this->assertEquals($mergerAccount, $result->getRaceresult()->getAccount());
 
-        $this->assertEquals(10.0, $result->getRoute()->getDistance());
+        $this->assertEqualsWithDelta(10.0, $result->getRoute()->getDistance(), 1e-6);
         $this->assertEquals([0.0, 5.0, 10.0], $result->getTrackdata()->getDistance());
         $this->assertEquals(5000, $result->getSwimdata()->getPoolLength());
         $this->assertEquals([820, 800, 850], $result->getHrv()->getData());

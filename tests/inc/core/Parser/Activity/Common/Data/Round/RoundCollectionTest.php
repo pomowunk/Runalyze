@@ -24,14 +24,14 @@ class RoundCollectionTest extends TestCase
         ]);
 
         $this->assertEquals(2, $this->Collection->count());
-        $this->assertEquals(2.0, $this->Collection->getTotalDistance());
+        $this->assertEqualsWithDelta(2.0, $this->Collection->getTotalDistance(), 1e-6);
         $this->assertEquals(545, $this->Collection->getTotalDuration());
     }
 
     public function testDefaultConstructor()
     {
         $this->assertEquals(0, $this->Collection->count());
-        $this->assertEquals(0.0, $this->Collection->getTotalDistance());
+        $this->assertEqualsWithDelta(0.0, $this->Collection->getTotalDistance(), 1e-6);
         $this->assertEquals(0, $this->Collection->getTotalDuration());
         $this->assertTrue($this->Collection->isEmpty());
         $this->assertFalse($this->Collection->offsetExists(0));

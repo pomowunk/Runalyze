@@ -37,7 +37,7 @@ class ContextTest extends TestCase
 
 		$this->assertEquals('30.10.2015', date('d.m.Y', $Context->activity()->timestamp()));
 		$this->assertEquals(3600, $Context->activity()->duration());
-		$this->assertEquals(12.3, $Context->activity()->distance());
+		$this->assertEqualsWithDelta(12.3, $Context->activity()->distance(), 1e-6);
 		$this->assertEquals(42, $Context->data('more-data'));
 		$this->assertFalse($Context->hasSport());
 		$this->assertFalse($Context->hasType());

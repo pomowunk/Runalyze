@@ -11,8 +11,8 @@ class FactorialTest extends TestCase
     {
         $unit = new Factorial('foo', 10);
 
-        $this->assertEquals(7.9, $unit->fromBaseUnit(0.79));
-        $this->assertEquals(4.2, $unit->toBaseUnit(42));
+        $this->assertEqualsWithDelta(7.9, $unit->fromBaseUnit(0.79), 1e-6);
+        $this->assertEqualsWithDelta(4.2, $unit->toBaseUnit(42), 1e-6);
         $this->assertEquals('foo', $unit->getAppendix());
     }
 

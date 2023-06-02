@@ -11,8 +11,8 @@ class NoneTest extends TestCase
     {
         $unit = new None();
 
-        $this->assertEquals(1.23, $unit->fromBaseUnit(1.23));
-        $this->assertEquals(3.14, $unit->toBaseUnit(3.14));
+        $this->assertEqualsWithDelta(1.23, $unit->fromBaseUnit(1.23), 1e-6);
+        $this->assertEqualsWithDelta(3.14, $unit->toBaseUnit(3.14), 1e-6);
         $this->assertEquals('', $unit->getAppendix());
     }
 }
