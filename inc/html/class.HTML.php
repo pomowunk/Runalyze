@@ -276,11 +276,8 @@ class HTML {
 	 * @param string $name Name for this select-box
 	 * @param array $options Array containing values as indices, displayed text as values (may be array: 'text' => ..., 'data-...' => ...)
 	 * @param mixed $selected Value to be selected
-	 * @param string $id [optional]
-	 * @param string $class
-	 * @return string
 	 */
-	public static function selectBox($name, $options, $selected = false, $id = '', $class = '') {
+	public static function selectBox($name, $options, $selected = false, string $id = '', string $class = ''): string {
 		if ($selected === false && isset($_POST[$name]))
 			$selected = $_POST[$name];
 
@@ -307,7 +304,7 @@ class HTML {
 
 	/**
 	 * Get ' selected' if boolean value is true
-	 * @param bool $value
+	 * @param bool|string $value
 	 * @param mixed $value_to_be_checked [optional]
 	 * @return string
 	 */

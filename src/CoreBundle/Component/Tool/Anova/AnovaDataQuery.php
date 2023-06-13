@@ -75,8 +75,10 @@ class AnovaDataQuery
 
         foreach ($iterator as $row) {
             $data = array_shift($row);
-
-            $this->Groups[(int)$data['grouping']]['data'][] = $unit->fromBaseUnit((float)$data['value']);
+            
+            if ($data) {
+                $this->Groups[(int)$data['grouping']]['data'][] = $unit->fromBaseUnit((float)$data['value']);
+            }
         }
 
         $this->filterEmptyGroups();

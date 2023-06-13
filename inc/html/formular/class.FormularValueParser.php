@@ -39,7 +39,7 @@ class FormularValueParser {
 	 * @param string $key
 	 * @param string $parser
 	 * @param array $parserOptions
-	 * @return boolean
+	 * @return true|string
 	 */
 	public static function validatePost($key, $parser, $parserOptions = array()) {
 		if (is_null($parser))
@@ -99,7 +99,7 @@ class FormularValueParser {
 	/**
 	 * Validator: date-string => timestamp
 	 * @param string $key
-	 * @return boolean
+	 * @return true|string
 	 */
 	private static function validateDate($key) {
 		$dateParts = self::removeEmptyValues(explode('.', $_POST[$key]));
@@ -108,7 +108,7 @@ class FormularValueParser {
 		if ($numParts == 3) {
 			$_POST[$key] = mktime(0, 0, 0, (int)$dateParts[1], (int)$dateParts[0], (int)$dateParts[2]);
 		} elseif ($numParts == 2) {
-			$_POST[$key] = mktime(0, 0, 0, (int)$dateParts[1], (int)$dateParts[0], date('Y'));
+			$_POST[$key] = mktime(0, 0, 0, (int)$dateParts[1], (int)$dateParts[0], (int)date('Y'));
 		} else {
 			return __('The date could not be parsed.');
 		}
@@ -126,14 +126,14 @@ class FormularValueParser {
 	 */
 	private static function parseDate(&$value) {
 		if (is_numeric($value))
-			$value = date('d.m.Y', $value);
+			$value = date('d.m.Y', (int)$value);
 	}
 
 	/**
 	 * Validator: time-string => time in seconds
 	 * @param string $key
 	 * @param array $options
-	 * @return boolean
+	 * @return true|string
 	 */
 	private static function validateTime($key, $options) {
 		$Time = new Duration($_POST[$key]);

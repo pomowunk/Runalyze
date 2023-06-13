@@ -49,9 +49,8 @@ class Cache {
 
 	/**
 	 * Set Cache
-	 * @param int $time
 	 */
-	public static function set($keyword, $data, $time, $nousercache = 0) {
+	public static function set(string $keyword, $data, int $time, $nousercache = 0) {
 		$key = $keyword;
 		if($nousercache == 0) { 
 			$key .= (string)SessionAccountHandler::getId();
@@ -65,7 +64,7 @@ class Cache {
 	/**
 	 * Get Cache
 	 */
-	public static function get($keyword, $nousercache = 0) {
+	public static function get(string $keyword, $nousercache = 0) {
 		if ($nousercache == 0 && !in_array($keyword, self::$ignoreKeywords)) {
             $cacheItem = self::$cache->getItem($keyword . SessionAccountHandler::getId());
 			$lastcacheclean = self::$LASTCLEAN;

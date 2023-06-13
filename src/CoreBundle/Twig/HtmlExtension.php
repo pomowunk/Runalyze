@@ -2,6 +2,7 @@
 namespace Runalyze\Bundle\CoreBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 class HtmlExtension extends AbstractExtension
 {
@@ -16,19 +17,19 @@ class HtmlExtension extends AbstractExtension
     }
 
     /**
-     * @return \Twig_SimpleFilter[]
+     * @return TwigFilter[]
      *
      * @codeCoverageIgnore
      */
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('info', array($this, 'info'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('error', array($this, 'error'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('warning', array($this, 'warning'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('okay', array($this, 'okay'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('nbsp', array($this, 'nbsp'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('nonbsp', array($this, 'nonbsp'), array('is_safe' => array('html'))),
+            new TwigFilter('info', array($this, 'info'), array('is_safe' => array('html'))),
+            new TwigFilter('error', array($this, 'error'), array('is_safe' => array('html'))),
+            new TwigFilter('warning', array($this, 'warning'), array('is_safe' => array('html'))),
+            new TwigFilter('okay', array($this, 'okay'), array('is_safe' => array('html'))),
+            new TwigFilter('nbsp', array($this, 'nbsp'), array('is_safe' => array('html'))),
+            new TwigFilter('nonbsp', array($this, 'nonbsp'), array('is_safe' => array('html'))),
         );
     }
 

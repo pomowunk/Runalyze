@@ -90,7 +90,7 @@ class BackupToolController extends Controller
                 'accountid' => $account->getId(),
                 'export-type' => $formdata['fileFormat']
             ]));
-            $flashBag->set('runalyze.backupjob.created', true);
+            $flashBag->set('runalyze.backupjob.created', 'true');
         }
 
         $fileHandler = new FilenameHandler($account->getId());

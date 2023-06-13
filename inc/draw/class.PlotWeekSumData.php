@@ -33,7 +33,7 @@ class PlotWeekSumData extends PlotSumData {
 				$yearEnd = (int)Request::param('y');
 			}
 
-			$this->timerEnd = date("W", mktime(0,0,0,12,28,$yearEnd)); // http://de.php.net/manual/en/function.date.php#49457
+			$this->timerEnd = (int)date("W", mktime(0, 0, 0, 12, 28, $yearEnd)); // http://de.php.net/manual/en/function.date.php#49457
 		}
 
 		parent::__construct();
@@ -62,7 +62,7 @@ class PlotWeekSumData extends PlotSumData {
 	protected function getXLabels() {
 		$weeks = array();
 		$add = ($this->Year == parent::LAST_6_MONTHS || $this->Year == parent::LAST_12_MONTHS) ? 0 : $this->WeekStart->phpWeek() - $this->timerEnd;
-		$yearDiff = $add == 0 ? 0 : (int)date('Y') - $this->Year;
+		$yearDiff = $add == 0 ? 0 : (int)date('Y') - (int)$this->Year;
 
 		for ($w = $this->timerStart; $w <= $this->timerEnd; $w++) {
 			$time = strtotime($this->WeekStart->lastDayOfWeekForStrtotime()." -".($this->timerEnd - $w + $add)." weeks -".$yearDiff." years");

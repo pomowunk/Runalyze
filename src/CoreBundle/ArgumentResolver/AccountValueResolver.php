@@ -8,27 +8,17 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class AccountValueResolver implements ArgumentValueResolverInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * @param Request $request
-     * @param ArgumentMetadata $argument
-     * @return bool
-     */
-    public function supports(Request $request, ArgumentMetadata $argument)
+    public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         if (Account::class !== $argument->getType()) {
             return false;
@@ -43,12 +33,7 @@ class AccountValueResolver implements ArgumentValueResolverInterface
         return $token->getUser() instanceof Account;
     }
 
-    /**
-     * @param Request $request
-     * @param ArgumentMetadata $argument
-     * @return Account|UserInterface
-     */
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
         yield $this->tokenStorage->getToken()->getUser();
     }

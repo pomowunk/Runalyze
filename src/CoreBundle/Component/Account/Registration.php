@@ -9,8 +9,9 @@ use Runalyze\Bundle\CoreBundle\Entity\Equipment;
 use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
 use Runalyze\Bundle\CoreBundle\Entity\Plugin;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Type;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Runalyze\Parameter\Application\Timezone;
 use Runalyze\Profile\Sport\SportProfile;
@@ -18,23 +19,31 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class Registration
 {
-    /** @var Account */
-    protected $Account;
+    protected Account $Account;
 
-    /** @var EntityManagerInterface */
-    protected $em;
+    protected SportRepository $sportRepository;
 
-    /** @var object[] */
-    protected $specialVars;
+    protected EquipmentTypeRepository $equipmentTypeRepository;
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param Account $account
-     */
-    public function __construct(EntityManagerInterface $em, Account $account)
+    protected EntityManagerInterface $em;
+
+    protected Sport $runningSport;
+    protected Sport $bikeSport;
+    protected EquipmentType $bikes;
+    protected EquipmentType $clothes;
+    protected EquipmentType $shoes;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Account $account,
+        SportRepository $sportRepository,
+        EquipmentTypeRepository $equipmentTypeRepository
+    )
     {
         $this->em = $em;
         $this->Account = $account;
+        $this->sportRepository = $sportRepository;
+        $this->equipmentTypeRepository = $equipmentTypeRepository;
     }
 
     /**
@@ -187,7 +196,7 @@ class Registration
             $Type->setAbbr($tData[1]);
             $Type->setHrAvg($tData[2]);
             $Type->setQualitySession($tData[3]);
-            $Type->setSport($this->specialVars['RUNNINGSPORT']);
+            $Type->setSport($this->runningSport);
             $this->em->persist($Type);
         }
 
@@ -196,31 +205,22 @@ class Registration
 
     private function collectSpecialVars()
     {
-        /** @var SportRepository */
-        $sportRepository = $this->em->getRepository('CoreBundle:Sport');
-        /** @var Sport[] $sport */
-        $sport = $sportRepository->findByAccount($this->Account);
+        $sport = $this->sportRepository->findByAccount($this->Account);
 
         foreach ($sport as $item) {
             switch ($item->getImg()) {
                 case 'icons8-Running':
-                    $this->specialVars['RUNNINGSPORT'] = $item;
+                    $this->runningSport = $item;
                     break;
                 case 'icons8-Regular-Biking':
-                    $this->specialVars['BIKESPORT'] = $item;
+                    $this->bikeSport = $item;
                     break;
             }
         }
 
-        $equipmentType = $this->em->getRepository('CoreBundle:EquipmentType');
-        $equipmentClothes = $equipmentType->findOneBy(array('name' => __('Clothes'), 'account' => $this->Account->getId()));
-        $equipmentShoes = $equipmentType->findOneBy(array('name' => __('Shoes'), 'account' => $this->Account->getId()));
-        $equipmentBikes = $equipmentType->findOneBy(array('name' => __('Bikes'), 'account' => $this->Account->getId()));
-
-        $this->specialVars['EQUIPMENT_CLOTHES'] = $equipmentClothes;
-        $this->specialVars['EQUIPMENT_SHOES'] = $equipmentShoes;
-        $this->specialVars['EQUIPMENT_BIKES'] = $equipmentBikes;
-
+        $this->clothes = $this->equipmentTypeRepository->findOneBy(array('name' => __('Clothes'), 'account' => $this->Account->getId()));
+        $this->shoes = $this->equipmentTypeRepository->findOneBy(array('name' => __('Shoes'), 'account' => $this->Account->getId()));
+        $this->bikes = $this->equipmentTypeRepository->findOneBy(array('name' => __('Bikes'), 'account' => $this->Account->getId()));
     }
 
     private function setSpecialVars()
@@ -230,7 +230,7 @@ class Registration
             $Equipment = new Equipment();
             $Equipment->setAccount($this->Account);
             $Equipment->setName($cloth);
-            $Equipment->setType($this->specialVars['EQUIPMENT_CLOTHES']);
+            $Equipment->setType($this->clothes);
             $this->em->persist($Equipment);
         }
 
@@ -239,18 +239,18 @@ class Registration
             $Conf->setAccount($this->Account);
             $Conf->setCategory('general');
             $Conf->setKey($cKey);
-            $Conf->setValue($this->specialVars['RUNNINGSPORT']->getId());
+            $Conf->setValue($this->runningSport->getId());
             $this->em->persist($Conf);
         }
 
-        $Running = $this->specialVars['RUNNINGSPORT'];
-        $Running->setMainEquipmenttype($this->specialVars['EQUIPMENT_SHOES']);
-        $Running->addEquipmentType($this->specialVars['EQUIPMENT_CLOTHES']);
-        $Running->addEquipmentType($this->specialVars['EQUIPMENT_SHOES']);
+        $Running = $this->runningSport;
+        $Running->setMainEquipmenttype($this->shoes);
+        $Running->addEquipmentType($this->clothes);
+        $Running->addEquipmentType($this->shoes);
         $this->em->persist($Running);
 
-        $Biking = $this->specialVars['BIKESPORT'];
-        $Biking->addEquipmentType($this->specialVars['EQUIPMENT_BIKES']);
+        $Biking = $this->bikeSport;
+        $Biking->addEquipmentType($this->bikes);
         $this->em->persist($Biking);
         $this->em->flush();
         // $this->em->clear();
@@ -273,11 +273,11 @@ class Registration
      */
     public function getRegisteredSportForRunning()
     {
-        if (!isset($this->specialVars['RUNNINGSPORT'])) {
+        if (!isset($this->runningSport)) {
             throw new \LogicException('Account has to be registered first.');
         }
 
-        return $this->specialVars['RUNNINGSPORT'];
+        return $this->runningSport;
     }
 
     /**
@@ -285,11 +285,11 @@ class Registration
      */
     public function getRegisteredSportForCycling()
     {
-        if (!isset($this->specialVars['BIKESPORT'])) {
+        if (!isset($this->bikeSport)) {
             throw new \LogicException('Account has to be registered first.');
         }
 
-        return $this->specialVars['BIKESPORT'];
+        return $this->bikeSport;
     }
 
     /**
@@ -297,11 +297,11 @@ class Registration
      */
     public function getRegisteredEquipmentTypeClothes()
     {
-        if (!isset($this->specialVars['EQUIPMENT_CLOTHES'])) {
+        if (!isset($this->clothes)) {
             throw new \LogicException('Account has to be registered first.');
         }
 
-        return $this->specialVars['EQUIPMENT_CLOTHES'];
+        return $this->clothes;
     }
 
     /**

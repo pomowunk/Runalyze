@@ -111,4 +111,4 @@ RUN set -eux; \
 
 ARG HOST_UID=1000
 ARG HOST_GID=1000
-CMD [ "sh", "-c", "rsync -ru --delete vendor /tmp; chown -R ${HOST_UID}:${HOST_GID} /tmp/vendor; apache2-foreground" ]
+CMD [ "sh", "-c", "rsync -rA --delete vendor /tmp; chown -R ${HOST_UID}:${HOST_GID} /tmp/vendor; apache2-foreground" ]

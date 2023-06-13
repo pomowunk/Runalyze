@@ -72,7 +72,7 @@ class RaceresultRepository extends ServiceEntityRepository
 
     /**
      * @param Account $account
-     * @return array|Raceresult[]
+     * @return Raceresult[]
      */
     public function findAllWithActivityStats(Account $account)
     {
@@ -88,12 +88,7 @@ class RaceresultRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @param Account $account
-     * @param int $sportId
-     * @return float
-     */
-    public function getEffectiveVO2maxCorrectionFactor(Account $account, $sportId)
+    public function getEffectiveVO2maxCorrectionFactor(Account $account, int $sportId): float
     {
         $result = $this->createQueryBuilder('r')
             ->join('r.activity', 't')

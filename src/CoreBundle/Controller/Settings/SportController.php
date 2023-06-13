@@ -2,14 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Controller\Settings;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Type;
 use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
-use Runalyze\Bundle\CoreBundle\Form;
+use Runalyze\Bundle\CoreBundle\Form\Settings\SportType;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Profile\Sport\SportProfile;
 use Runalyze\Profile\View\DataBrowserRowProfile;
@@ -66,13 +66,11 @@ class SportController extends Controller
     /**
      * @Route("/{sportid}/type/add", name="sport-type-add", requirements={"sportid" = "\d+"})
      */
-    public function typeAddAction(Request $request, $sportid, Account $account)
+    public function typeAddAction(Request $request, $sportid, Account $account, EntityManagerInterface $em)
     {
-        /** @var EntityManager */
-        $em = $this->getDoctrine()->getManager();
         $type = new Type();
         $type->setAccount($account);
-        $form = $this->createForm(Form\Settings\SportTypeType::class, $type ,[
+        $form = $this->createForm(SportTypeType::class, $type ,[
             'action' => $this->generateUrl('sport-type-add', ['sportid' => $sportid])
         ]);
         $form->handleRequest($request);
@@ -100,7 +98,7 @@ class SportController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(Form\Settings\SportTypeType::class, $type ,[
+        $form = $this->createForm(SportTypeType::class, $type ,[
             'action' => $this->generateUrl('sport-type-edit', ['id' => $type->getId()])
         ]);
         $form->handleRequest($request);
@@ -125,7 +123,8 @@ class SportController extends Controller
         Request $request,
         Type $type,
         Account $account,
-        TranslatorInterface $translator)
+        TranslatorInterface $translator,
+        EntityManagerInterface $em)
     {
         if (!$this->isCsrfTokenValid('deleteSportType', $request->get('t'))) {
             $this->addFlash('error', $translator->trans('Invalid token.'));
@@ -138,7 +137,6 @@ class SportController extends Controller
         }
 
         if ($type->getTrainings()->count() == NULL) {
-            $em = $this->getDoctrine()->getManager();
             $em->remove($type);
             $em->flush();
             $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_DATA_BROWSER);
@@ -168,7 +166,7 @@ class SportController extends Controller
             ]);
         }
 
-        $form = $this->createForm(Form\Settings\SportType::class, $sport,[
+        $form = $this->createForm(SportType::class, $sport,[
             'action' => $this->generateUrl('sport-add')
         ]);
         $form->handleRequest($request);
@@ -194,7 +192,7 @@ class SportController extends Controller
         if ($sport->getAccount()->getId() != $account->getId()) {
             throw $this->createNotFoundException();
         }
-        $form = $this->createForm(Form\Settings\SportType::class, $sport,[
+        $form = $this->createForm(SportType::class, $sport,[
             'action' => $this->generateUrl('sport-edit', ['id' => $sport->getId()])
         ]);
         $form->handleRequest($request);

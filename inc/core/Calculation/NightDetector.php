@@ -41,8 +41,8 @@ class NightDetector
             throw new \InvalidArgumentException('Provided timestamp must be numerical.');
         }
 
-        $isAfterSunset = $timestamp > date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, $coordinate->getLatitude(), $coordinate->getLongitude(), self::ZENITH);
-        $isBeforeSunrise = $timestamp < date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, $coordinate->getLatitude(), $coordinate->getLongitude(), self::ZENITH);
+        $isAfterSunset = $timestamp > date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, (float)$coordinate->getLatitude(), (float)$coordinate->getLongitude(), self::ZENITH);
+        $isBeforeSunrise = $timestamp < date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, (float)$coordinate->getLatitude(), (float)$coordinate->getLongitude(), self::ZENITH);
 
         $this->Value = $isAfterSunset || $isBeforeSunrise ? 1 : 0;
 

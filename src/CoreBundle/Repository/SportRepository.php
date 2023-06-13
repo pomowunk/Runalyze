@@ -19,35 +19,24 @@ class SportRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Account $account
      * @return Sport[]
      */
-    public function findAllFor(Account $account)
+    public function findAllFor(Account $account): array
     {
         return $this->findBy([
             'account' => $account->getId()
         ]);
     }
 
-    /**
-     * @param int $internalTypeId
-     * @param Account $account
-     * @return null|Sport
-     */
-    public function findInternalIdFor($internalTypeId, Account $account)
+    public function findInternalIdFor(int $internalTypeId, Account $account): ?Sport
     {
         return $this->findOneBy([
             'account' => $account->getId(),
-            'internalSportId' => (int)$internalTypeId
+            'internalSportId' => $internalTypeId
         ]);
     }
 
-    /**
-     * @param Account $account
-     * @param bool $returnNull
-     * @return null|Sport
-     */
-    public function findRunningFor(Account $account, $returnNull = false)
+    public function findRunningFor(Account $account, bool $returnNull = false): ?Sport
     {
         $sport = $this->findInternalIdFor(SportProfile::RUNNING, $account);
 
@@ -60,10 +49,9 @@ class SportRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Account $account
      * @return Sport[]
      */
-    public function findWithDistancesFor(Account $account)
+    public function findWithDistancesFor(Account $account): array
     {
         return $this->findBy([
             'account' => $account->getId(),
@@ -72,11 +60,9 @@ class SportRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $sportId
-     * @param Account $account
      * @return null|Sport|object
      */
-    public function findThisOrAny($sportId, Account $account)
+    public function findThisOrAny(int $sportId, Account $account)
     {
         /** @var null|Sport $requestedSport */
         $requestedSport = $this->find($sportId);
@@ -100,7 +86,7 @@ class SportRepository extends ServiceEntityRepository
         return $requestedSport;
     }
 
-    public function findEquipmentCategoryIdsFor(array $sportIds)
+    public function findEquipmentCategoryIdsFor(array $sportIds): array
     {
         // TODO: this query results in two joins with one of them being useless
         // SELECT r0_.id AS id_0, r1_.id AS id_1 FROM runalyze_sport r0_ INNER JOIN runalyze_equipment_sport r2_ ON r0_.id = r2_.sportid INNER JOIN runalyze_equipment_type r1_ ON r1_.id = r2_.equipment_typeid WHERE r0_.id IN (?)
@@ -115,10 +101,9 @@ class SportRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Account $account
-     * @return array internal sport ids
+     * @return int[] internal sport ids
      */
-    public function getUsedInternalSportIdsFor(Account $account)
+    public function getUsedInternalSportIdsFor(Account $account): array
     {
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder
@@ -130,21 +115,12 @@ class SportRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult("COLUMN_HYDRATOR");
     }
 
-    /**
-     * @param int $internalTypeId
-     * @param Account $account
-     * @return bool
-     */
-    public function isInternalTypeFree($internalTypeId, Account $account)
+    public function isInternalTypeFree(int $internalTypeId, Account $account): bool
     {
         return null === $this->findInternalIdFor((int)$internalTypeId, $account);
     }
 
-    /**
-     * @param Account $account
-     * @return array
-     */
-    public function getFreeInternalTypes(Account $account)
+    public function getFreeInternalTypes(Account $account): array
     {
         $allTypes = array_flip(SportProfile::getChoices());
 
@@ -162,12 +138,10 @@ class SportRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int|null $timestamp
-     * @param Account $account
      * @param bool $raw if enabled, raw array data is returned
      * @return SportStatistics|array
      */
-    public function getSportStatisticsSince($timestamp, Account $account, $raw = false)
+    public function getSportStatisticsSince(?int $timestamp, Account $account, bool $raw = false)
     {
         $queryBuilder = $this->_em->createQueryBuilder()
             ->select('s')

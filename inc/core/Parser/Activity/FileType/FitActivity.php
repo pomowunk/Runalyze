@@ -474,7 +474,7 @@ class FitActivity extends AbstractSingleParser
         }
 
         if (is_null($this->Container->FitDetails->RecoveryTime) && isset($this->Values['unknown9'])) {
-            $this->Container->FitDetails->RecoveryTime = round((int)$this->Values['unknown9'][1], 0);
+            $this->Container->FitDetails->RecoveryTime = (int)$this->Values['unknown9'][1];
         }
     }
 

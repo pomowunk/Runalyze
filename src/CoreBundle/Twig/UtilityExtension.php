@@ -3,6 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 class UtilityExtension extends AbstractExtension
 {
@@ -17,16 +18,16 @@ class UtilityExtension extends AbstractExtension
     }
 
     /**
-     * @return \Twig_SimpleFilter[]
+     * @return TwigFilter[]
      *
      * @codeCoverageIgnore
      */
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('duration', array($this, 'duration')),
-            new \Twig_SimpleFilter('filesize', array($this, 'filesizeAsString')),
-            new \Twig_SimpleFilter('md5', array($this, 'md5'))
+            new TwigFilter('duration', array($this, 'duration')),
+            new TwigFilter('filesize', array($this, 'filesizeAsString')),
+            new TwigFilter('md5', array($this, 'md5'))
         );
     }
 

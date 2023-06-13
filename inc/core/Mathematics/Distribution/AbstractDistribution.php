@@ -151,7 +151,7 @@ abstract class AbstractDistribution
         }
 
         $this->setStatistic(self::MEDIAN, $median);
-        $this->setStatistic(self::VARIANCE, $this->Statistic[self::NUM] != 0 ? $var / $this->Statistic[self::NUM] : 0.0);
+        $this->setStatistic(self::VARIANCE, $num != 0 ? $var / $num : 0.0);
     }
 
     /**
@@ -239,10 +239,7 @@ abstract class AbstractDistribution
      */
     final public function coefficientOfVariation()
     {
-        if (0 == $this->Statistic[self::MEAN]) {
-            return false;
-        } else {
-            return sqrt($this->Statistic[self::VARIANCE]) / $this->Statistic[self::MEAN];
-        }
+        $mean = $this->Statistic[self::MEAN];
+        return $mean != 0 ? sqrt($this->Statistic[self::VARIANCE]) / $mean : false;
     }
 }

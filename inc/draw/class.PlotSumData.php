@@ -281,14 +281,8 @@ abstract class PlotSumData extends Plot {
 
 	/**
 	 * Link to plot
-	 * @param string $text
-	 * @param int $year
-	 * @param int $sportid
-	 * @param string $group
-	 * @param boolean $current
-	 * @return string
 	 */
-	private function link($text, $year, $sportid, $group, $current = false, $analysis = false) {
+	private function link(string $text, string $year, int $sportid, string $group, bool $current = false, bool $analysis = false): string {
 		if (!$analysis) {
 			$analysis = $this->Analysis;
 		}
@@ -299,22 +293,11 @@ abstract class PlotSumData extends Plot {
 			return Ajax::window('<li'.($current ? ' class="active"' : '').'><a href="'.self::$URL.'?type='.$this->ParamType.'&y='.$year.'&sportid='.$sportid.'&group='.$group.'&analysis='.$analysis.'">'.$text.'</a></li>');
 	}
 
-	/**
-	 * Get CSS id
-	 * @return string
-	 */
-	abstract protected function getCSSid();
+	abstract protected function getCSSid(): string;
 
-	/**
-	 * Get title
-	 * @return string
-	 */
-	abstract protected function getTitle();
+	abstract protected function getTitle(): string;
 
-	/**
-	 * @return string
-	 */
-	protected function getTitleAppendix() {
+	protected function getTitleAppendix(): string {
 		if ($this->Year == self::LAST_6_MONTHS) {
 			return __('last 6 months');
 		} elseif ($this->Year == self::LAST_12_MONTHS) {
@@ -324,15 +307,8 @@ abstract class PlotSumData extends Plot {
 		return $this->Year;
 	}
 
-	/**
-	 * Get X labels
-	 * @return array
-	 */
-	abstract protected function getXLabels();
+	abstract protected function getXLabels(): array;
 
-	/**
-	 * Init
-	 */
 	private function init() {
 		$this->initData();
 		$this->adjustDataForUnit();
@@ -354,9 +330,6 @@ abstract class PlotSumData extends Plot {
         }
     }
 
-	/**
-	 * Set axis
-	 */
 	private function setAxis() {
 		$this->setXLabels($this->getXLabels());
 		$this->addYAxis(1, 'left');
@@ -372,9 +345,6 @@ abstract class PlotSumData extends Plot {
 		}
 	}
 
-	/**
-	 * Set options
-	 */
 	private function setOptions() {
 		$this->showBars(true);
 		$this->setTitle($this->getTitle());
@@ -382,9 +352,6 @@ abstract class PlotSumData extends Plot {
 		$this->stacked();
 	}
 
-	/**
-	 * Init data
-	 */
 	private function initData() {
 		if (START_TIME != time() && (
 			($this->Year >= START_YEAR && $this->Year <= date('Y') && START_TIME != time()) ||
@@ -399,9 +366,6 @@ abstract class PlotSumData extends Plot {
 		}
 	}
 
-	/**
-	 * Define analysis
-	 */
 	private function defineAnalysis() {
 		$request = Request::param('analysis');
 
@@ -412,9 +376,6 @@ abstract class PlotSumData extends Plot {
 		}
 	}
 
-	/**
-	 * Init to show year
-	 */
 	private function loadData() {
 		$whereSport = ('sport' == $this->ParamGroup || 'mainsport' == $this->ParamGroup) ? '' : '`sportid`='.$this->Sport->id().' AND';
 
@@ -449,10 +410,7 @@ abstract class PlotSumData extends Plot {
 		)->fetchAll();
 	}
 
-	/**
-	 * @return string
-	 */
-	protected function whereDate() {
+	protected function whereDate(): string {
 		if (is_numeric($this->Year)) {
 			return '`time` BETWEEN UNIX_TIMESTAMP(\''.(int)$this->Year.'-01-01\') AND UNIX_TIMESTAMP(\''.((int)$this->Year+1).'-01-01\')-1';
 		} elseif ($this->Year == self::LAST_6_MONTHS) {
@@ -462,21 +420,14 @@ abstract class PlotSumData extends Plot {
 		}
 	}
 
-	/**
-	 * @return int
-	 */
-	abstract protected function beginningOfLast6Months();
+	abstract protected function beginningOfLast6Months(): int;
 
-	/**
-	 * @return int
-	 */
-	abstract protected function beginningOfLast12Months();
+	abstract protected function beginningOfLast12Months(): int;
 
 	/**
 	 * Sum data for query
-	 * @return string
 	 */
-	private function dataSum() {
+	private function dataSum(): string {
 		if ($this->Analysis == self::ANALYSIS_TRIMP) {
 			return 'SUM(`trimp`)';
 		} elseif ($this->usesDistance) {
@@ -488,15 +439,13 @@ abstract class PlotSumData extends Plot {
 
 	/**
 	 * Timer table for query
-	 * @return string
 	 */
-	abstract protected function timer();
+	abstract protected function timer(): string;
 
 	/**
 	 * Group by table for query
-	 * @return string
 	 */
-	private function groupBy() {
+	private function groupBy(): string {
 		if ('sport' == $this->ParamGroup || 'mainsport' == $this->ParamGroup)
 			return '`sportid`';
 
@@ -523,9 +472,6 @@ abstract class PlotSumData extends Plot {
 			$this->setYLimitsFromData();
 	}
 
-	/**
-	 * Set Y limits from data
-	 */
 	private function setYLimitsFromData() {
 		$values = array();
 

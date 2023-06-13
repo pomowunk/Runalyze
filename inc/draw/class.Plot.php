@@ -548,7 +548,7 @@ class Plot {
 	 * Set size for ticks on y-axis
 	 * @param int $axis
 	 * @param float|null $tickSize
-	 * @param bool $decimals
+	 * @param int|bool $decimals
 	 */
 	public function setYTicks($axis, $tickSize, $decimals = false) {
 		$this->Options['yaxes'][$axis-1]['minTickSize'] = $tickSize;

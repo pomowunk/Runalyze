@@ -251,14 +251,12 @@ class CreateNotificationCommand extends ContainerAwareCommand
             'SELECT ?, ?, ?, ?, `a`.`id` FROM `'.$this->databasePrefix.'account` AS `a` WHERE '.$accountWhere
         );
 
-        $statement->execute([
+        return $statement->executeStatement([
             $notification->getMessageType(),
             $notification->getCreatedAt(),
             $notification->getExpirationAt(),
             $notification->getData()
         ]);
-
-        return $statement->rowCount();
     }
 
     /**

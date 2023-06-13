@@ -58,7 +58,10 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 
     protected function registerAccount(ObjectManager $manager, Account $account, $password)
     {
-        $registration = new Registration($manager, $account);
+        $sportRepo = $manager->getRepository('CoreBundle:Sport');
+        $equipmentTypeRepo = $manager->getRepository('CoreBundle:EquipmentType');
+        
+        $registration = new Registration($manager, $account, $sportRepo, $equipmentTypeRepo);
         $registration->setPassword($password, $this->Container->get('test.security.encoder_factory'));
         $registration->registerAccount();
 

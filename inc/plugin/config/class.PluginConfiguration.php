@@ -64,7 +64,7 @@ class PluginConfiguration {
 				'WHERE `pluginid` IN ('.implode(',', PluginFactory::allIDs()).')'
 			)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
 
-			Cache::set(self::CACHE_KEY, $ResultFromDB, '60');
+			Cache::set(self::CACHE_KEY, $ResultFromDB, 60);
 		}
 
 		$this->checkValuesFromDatabase($ResultFromDB);

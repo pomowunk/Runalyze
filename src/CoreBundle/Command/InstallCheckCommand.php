@@ -25,10 +25,10 @@ class InstallCheckCommand extends ContainerAwareCommand
     const ERROR = 0x10;
 
     /** @var int current return code */
-    protected $ReturnCode = 0x00;
+    protected int $ReturnCode = 0x00;
 
-    /** @var array */
-    protected $Checks = [
+    /** @var array[] */
+    protected array $Checks = [
         [
             'method' => 'checkPhpVersion',
             'message' => 'Check PHP version'
@@ -50,8 +50,8 @@ class InstallCheckCommand extends ContainerAwareCommand
         ]
     ];
 
-    /** @var array */
-    protected $DirectoriesThatMustBeWritable = [
+    /** @var String[] */
+    protected array $DirectoriesThatMustBeWritable = [
         '/data/backup-tool/backup/',
         '/data/backup-tool/import/',
         '/data/cache/',
@@ -65,14 +65,11 @@ class InstallCheckCommand extends ContainerAwareCommand
         '/var/tmp/'
     ];
 
-    /** @var Connection */
-    protected $connection;
+    protected Connection $connection;
 
-    /** @var string */
-    protected $projectDirectory;
+    protected string $projectDirectory;
 
-    /** @var string */
-    protected $databasePrefix;
+    protected string $databasePrefix;
 
     public function __construct(
         Connection $connection, 
@@ -95,12 +92,9 @@ class InstallCheckCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
      * @return null|int null or 0 if everything went fine, or an error code
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $output->writeln('<info>Check requirements...</info>');
         $output->writeln('');
@@ -129,10 +123,7 @@ class InstallCheckCommand extends ContainerAwareCommand
         }
     }
 
-    /**
-     * @return string
-     */
-    protected function getFinalMessage()
+    protected function getFinalMessage(): string
     {
         if ($this->ReturnCode & self::ERROR) {
             return '<error>Not all requirements are fulfilled, installation not possible.</error>';
@@ -143,12 +134,7 @@ class InstallCheckCommand extends ContainerAwareCommand
         return '<info>All requirements are fulfilled.</info>';
     }
 
-    /**
-     * @param int $returnCode
-     * @param null|string $message
-     * @return string
-     */
-    protected function styleReturnCode($returnCode, $message = null)
+    protected function styleReturnCode(int $returnCode, string $message = null): string
     {
         switch ($returnCode) {
             case self::WARNING:
@@ -167,10 +153,7 @@ class InstallCheckCommand extends ContainerAwareCommand
         return '<'.$tag.'>'.($message ? $message : $tag).'</'.$tag.'>';
     }
 
-    /**
-     * @return int
-     */
-    protected function checkPhpVersion()
+    protected function checkPhpVersion(): int
     {
         if (version_compare(self::REQUIRED_PHP_VERSION, PHP_VERSION) == 1) {
             return self::ERROR;
@@ -179,24 +162,18 @@ class InstallCheckCommand extends ContainerAwareCommand
         return self::OKAY;
     }
 
-    /**
-     * @return int
-     */
-    protected function prefixIsNotUsed()
+    protected function prefixIsNotUsed(): int
     {
         $prefix = $this->databasePrefix;
 
-        if (0 !== $this->connection->query('SHOW TABLES LIKE "'.$prefix.'%"')->rowCount()) {
+        if (0 !== $this->connection->executeQuery('SHOW TABLES LIKE "'.$prefix.'%"')->rowCount()) {
             return self::ERROR;
         }
 
         return self::OKAY;
     }
 
-    /**
-     * @return int
-     */
-    protected function directoriesAreWritable()
+    protected function directoriesAreWritable(): int
     {
         foreach ($this->DirectoriesThatMustBeWritable as $directory) {
             if (!is_writable($this->projectDirectory.$directory)) {

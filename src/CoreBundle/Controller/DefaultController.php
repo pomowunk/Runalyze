@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Runalyze\Activity\Distance;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
 use Runalyze\Bundle\CoreBundle\Form\FeedbackType;
@@ -9,13 +10,12 @@ use Runalyze\Bundle\CoreBundle\Form\RegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
 use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
-use Symfony\Bridge\Twig\TwigEngine;
-use Symfony\Bundle\TwigBundle\DependencyInjection\Compiler\TwigEnvironmentPass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -97,7 +97,10 @@ class DefaultController extends AbstractPluginsAwareController
         EncoderFactoryInterface $encoderFactory,
         AccountMailer $accountMailer,
         AccountRepository $accountRepository,
-        TrainingRepository $trainingRepository)
+        TrainingRepository $trainingRepository,
+        SportRepository $sportRepository,
+        EquipmentTypeRepository $equipmentTypeRepository,
+        EntityManagerInterface $em)
     {
         if (!$this->userCanRegister) {
             return $this->render('register/disabled.html.twig');
@@ -108,7 +111,7 @@ class DefaultController extends AbstractPluginsAwareController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $registration = new Registration($this->getDoctrine()->getManager(), $account);
+            $registration = new Registration($em, $account, $sportRepository,$equipmentTypeRepository);
             $formdata = $request->request->get($form->getName());
 
             $registration->setLocale($request->getLocale());

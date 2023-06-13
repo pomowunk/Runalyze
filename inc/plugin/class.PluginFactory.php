@@ -41,7 +41,7 @@ class PluginFactory {
 
 		if ($data === null) {
 			$data = self::fetchAllPluginsFrom(DB::getInstance(), SessionAccountHandler::getId());
-			Cache::set(self::CACHE_KEY, $data, '3600');
+			Cache::set(self::CACHE_KEY, $data, 3600);
 		}
 
 		return $data;

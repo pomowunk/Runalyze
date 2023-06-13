@@ -140,7 +140,7 @@ if (START_TIME != time()) {
 				ORDER BY
 					`time` ASC')->fetchAll();
 
-			Cache::set('prognosePlotDistanceData'.$distance, $ResultsData, '600');
+			Cache::set('prognosePlotDistanceData'.$distance, $ResultsData, 600);
 		}
 
 		foreach ($ResultsData as $dat) {

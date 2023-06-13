@@ -159,7 +159,7 @@ class Kml extends AbstractFileExporter
      */
     protected function addCoordinateToCurrentPath(CoordinateInterface $coordinate)
     {
-        if (abs($coordinate->getLatitude()) > 1e-5 || abs($coordinate->getLongitude()) > 1e-5) {
+        if (abs((float)$coordinate->getLatitude()) > 1e-5 || abs((float)$coordinate->getLongitude()) > 1e-5) {
             $this->CurrentPath .= $coordinate->getLongitude().','.$coordinate->getLatitude().NL;
         }
     }
