@@ -40,9 +40,6 @@ services:
       $geonamesUsername: "%geonames_username%"
       $openWeatherMapApiKey: "%openweathermap_api_key%"
 
-  Bernard\Producer:
-    alias: bernard.producer
-
   Doctrine\ORM\EntityManager:
     alias: doctrine.orm.default_entity_manager
     public: false
@@ -97,11 +94,9 @@ services:
 
   Runalyze\Bundle\CoreBundle\Queue\Receiver\BackupReceiver:
     public: true
-    tags: [ {name: bernard.receiver, message: userBackup} ]
   Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver:
     public: true
     tags:
-      - { name: bernard.receiver, message: posterGenerator }
       - { name: monolog.logger, channel: queue }
 
   Runalyze\Bundle\CoreBundle\Repository\:

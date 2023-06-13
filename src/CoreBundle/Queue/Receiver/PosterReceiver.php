@@ -2,7 +2,6 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
-use Bernard\Message\PlainMessage;
 use Psr\Log\LoggerInterface;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\PosterGeneratedMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\AbstractSvgToPngConverter;
@@ -80,7 +79,7 @@ class PosterReceiver
         $this->InkscapePath = $inkscapePath;
     }
 
-    public function posterGenerator(PlainMessage $message)
+    public function posterGenerator($message = null)
     {
         $account = $this->AccountRepository->find((int)$message->get('accountid'));
         $sport = $this->SportRepository->find((int)$message->get('sportid'));

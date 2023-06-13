@@ -2,7 +2,6 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
-use Bernard\Message\PlainMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonBackup;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\SqlBackup;
@@ -42,7 +41,7 @@ class BackupReceiver
         $this->runalyzeVersion = $runalyzeVersion;
     }
 
-    public function userBackup(PlainMessage $message)
+    public function userBackup($message = null)
     {
         $Frontend = new \FrontendShared(true);
 

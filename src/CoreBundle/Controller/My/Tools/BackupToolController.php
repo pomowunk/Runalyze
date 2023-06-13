@@ -2,8 +2,6 @@
 
 namespace Runalyze\Bundle\CoreBundle\Controller\My\Tools;
 
-use Bernard\Message\PlainMessage;
-use Bernard\Producer;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Repository\RouteRepository;
@@ -70,47 +68,47 @@ class BackupToolController extends Controller
      * @Route("", name="tools-backup")
      * @Security("has_role('ROLE_USER')")
      */
-    public function backupAction(
-        Account $account,
-        Request $request,
-        RouteRepository $routeRepository,
-        TrainingRepository $trainingRepository,
-        Producer $producer,
-        FlashBagInterface $flashBag)
-    {
-        $lockedRoutes = $routeRepository->accountHasLockedRoutes($account);
-        $hasLockedTrainings = $trainingRepository->accountHasLockedTrainings($account);
+    // public function backupAction(
+    //     Account $account,
+    //     Request $request,
+    //     RouteRepository $routeRepository,
+    //     TrainingRepository $trainingRepository,
+    //     Producer $producer,
+    //     FlashBagInterface $flashBag)
+    // {
+    //     $lockedRoutes = $routeRepository->accountHasLockedRoutes($account);
+    //     $hasLockedTrainings = $trainingRepository->accountHasLockedTrainings($account);
 
-        $form = $this->createForm(BackupExportType::class);
-        $form->handleRequest($request);
+    //     $form = $this->createForm(BackupExportType::class);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formdata = $request->request->get($form->getName());
-            $producer->produce(new PlainMessage('userBackup', [
-                'accountid' => $account->getId(),
-                'export-type' => $formdata['fileFormat']
-            ]));
-            $flashBag->set('runalyze.backupjob.created', 'true');
-        }
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $formdata = $request->request->get($form->getName());
+    //         $producer->produce(new PlainMessage('userBackup', [
+    //             'accountid' => $account->getId(),
+    //             'export-type' => $formdata['fileFormat']
+    //         ]));
+    //         $flashBag->set('runalyze.backupjob.created', 'true');
+    //     }
 
-        $fileHandler = new FilenameHandler($account->getId());
-        $finder = new Finder();
-        $finder
-            ->files()
-            ->in($this->backupPath)
-            ->filter(function(\SplFileInfo $file) use ($fileHandler) {
-                return $fileHandler->validateInternalFilename($file->getFilename());
-            })
-        ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
-            return ($b->getMTime() - $a->getMTime());
-        });
+    //     $fileHandler = new FilenameHandler($account->getId());
+    //     $finder = new Finder();
+    //     $finder
+    //         ->files()
+    //         ->in($this->backupPath)
+    //         ->filter(function(\SplFileInfo $file) use ($fileHandler) {
+    //             return $fileHandler->validateInternalFilename($file->getFilename());
+    //         })
+    //     ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
+    //         return ($b->getMTime() - $a->getMTime());
+    //     });
 
-        return $this->render('tools/backup/export.html.twig', [
-            'backupjobWasCreated' => $flashBag->get('runalyze.backupjob.created'),
-            'hasFiles' => $finder->count() > 0,
-            'files' => $finder->getIterator(),
-            'hasLocks' => ($lockedRoutes || $hasLockedTrainings),
-            'form' => $form->createView()
-        ]);
-    }
+    //     return $this->render('tools/backup/export.html.twig', [
+    //         'backupjobWasCreated' => $flashBag->get('runalyze.backupjob.created'),
+    //         'hasFiles' => $finder->count() > 0,
+    //         'files' => $finder->getIterator(),
+    //         'hasLocks' => ($lockedRoutes || $hasLockedTrainings),
+    //         'form' => $form->createView()
+    //     ]);
+    // }
 }

@@ -21,8 +21,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Bernard\Message\PlainMessage;
-use Bernard\Producer;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Availability;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
 use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
@@ -238,48 +236,49 @@ class ToolsController extends Controller
         Account $account,
         TranslatorInterface $translator,
         FileHandler $fileHandler,
-        Producer $producer)
+        $producer = null)
     {
-        $form = $this->createForm(PosterType::class, [
-            'postertype' => ['heatmap'],
-            'year' => (int)date('Y') - 1,
-            'title' => ' '
-        ]);
-        $form->handleRequest($request);
+        throw $this->createNotFoundException('Poster generation is temporarily disabled.');
+        // $form = $this->createForm(PosterType::class, [
+        //     'postertype' => ['heatmap'],
+        //     'year' => (int)date('Y') - 1,
+        //     'title' => ' '
+        // ]);
+        // $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formdata = $request->request->get($form->getName());
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $formdata = $request->request->get($form->getName());
 
-            $numberOfActivities = $this->trainingRepository->getNumberOfActivitiesFor($account, (int)$formdata['year'], (int)$formdata['sport']);
-            if ($numberOfActivities <= 1) {
-                $this->addFlash('error', $translator->trans('There are not enough activities to generate a poster. Please change your selection.'));
-            } else {
-                $message = new PlainMessage('posterGenerator', array(
-                    'accountid' => $account->getId(),
-                    'year' => $formdata['year'],
-                    'types' => $formdata['postertype'],
-                    'sportid' => $formdata['sport'],
-                    'title' => $formdata['title'],
-                    'size' => $formdata['size'],
-                    'backgroundColor' => $formdata['backgroundColor'],
-                    'trackColor' => $formdata['trackColor'],
-                    'textColor' => $formdata['textColor'],
-                    'raceColor' => $formdata['raceColor'],
-                ));
-                $producer->produce($message);
+        //     $numberOfActivities = $this->trainingRepository->getNumberOfActivitiesFor($account, (int)$formdata['year'], (int)$formdata['sport']);
+        //     if ($numberOfActivities <= 1) {
+        //         $this->addFlash('error', $translator->trans('There are not enough activities to generate a poster. Please change your selection.'));
+        //     } else {
+        //         $message = new PlainMessage('posterGenerator', array(
+        //             'accountid' => $account->getId(),
+        //             'year' => $formdata['year'],
+        //             'types' => $formdata['postertype'],
+        //             'sportid' => $formdata['sport'],
+        //             'title' => $formdata['title'],
+        //             'size' => $formdata['size'],
+        //             'backgroundColor' => $formdata['backgroundColor'],
+        //             'trackColor' => $formdata['trackColor'],
+        //             'textColor' => $formdata['textColor'],
+        //             'raceColor' => $formdata['raceColor'],
+        //         ));
+        //         $producer->produce($message);
 
-                return $this->render('tools/poster_success.html.twig', [
-                    'posterStoragePeriod' => $this->posterStoragePeriod,
-                    'listing' => $fileHandler->getFileList($account)
-                ]);
-            }
-        }
+        //         return $this->render('tools/poster_success.html.twig', [
+        //             'posterStoragePeriod' => $this->posterStoragePeriod,
+        //             'listing' => $fileHandler->getFileList($account)
+        //         ]);
+        //     }
+        // }
 
-        return $this->render('tools/poster.html.twig', [
-            'form' => $form->createView(),
-            'posterStoragePeriod' => $this->posterStoragePeriod,
-            'listing' => $fileHandler->getFileList($account)
-        ]);
+        // return $this->render('tools/poster.html.twig', [
+        //     'form' => $form->createView(),
+        //     'posterStoragePeriod' => $this->posterStoragePeriod,
+        //     'listing' => $fileHandler->getFileList($account)
+        // ]);
     }
 
     /**

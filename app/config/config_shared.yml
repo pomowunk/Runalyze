@@ -2,7 +2,6 @@ imports:
   - { resource: languages.yml }
   - { resource: security.yml }
   - { resource: services.yml }
-  - { resource: queue.yml }
   - { resource: expert_config.yml }
   - { resource: config.yml }
 
