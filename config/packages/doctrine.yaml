@@ -49,13 +49,3 @@ doctrine:
                 year: DoctrineExtensions\Query\Mysql\Year
             numeric_functions:
                 round: DoctrineExtensions\Query\Mysql\Round
-        # TODO: remove doctrine cache bundle
-        # metadata_cache_driver:
-        #     type: service
-        #     id: doctrine_cache.providers.vendor_filesystem_metadata_cache
-        # result_cache_driver:
-        #     type: service
-        #     id: doctrine_cache.providers.vendor_filesystem_result_cache
-        # query_cache_driver:
-        #     type: service
-        #     id: doctrine_cache.providers.vendor_filesystem_query_cache
