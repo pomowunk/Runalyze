@@ -29,7 +29,7 @@ class Version20161017223115 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('DROP TABLE IF EXISTS `'.$prefix.'sessions`');
     }
 

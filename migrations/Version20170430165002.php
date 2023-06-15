@@ -22,7 +22,7 @@ class Version20170430165002 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('ALTER TABLE `'.$prefix.'notification` DROP foreign key `FK_F99B51889B6B5FBA`');
         $this->addSql('ALTER TABLE `'.$prefix.'notification` ADD CONSTRAINT FK_F99B51889B6B5FBA FOREIGN KEY (account_id) REFERENCES `'.$prefix.'account` (id) ON DELETE CASCADE ON UPDATE CASCADE');

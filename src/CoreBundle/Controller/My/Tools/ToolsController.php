@@ -26,6 +26,7 @@ use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
 use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -65,14 +66,18 @@ class ToolsController extends Controller
      * @Route("/my/tools/cleanup", name="tools-cleanup")
      * @Security("has_role('ROLE_USER')")
      */
-    public function cleanupAction(Request $request, Account $account, TokenStorageInterface $tokenStorage)
-    {
+    public function cleanupAction(
+        Request $request,
+        Account $account,
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+    ) {
         $defaultData = array();
         $form = $this->createForm(DatabaseCleanupType::class, $defaultData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && null !== $form->getData()['mode']) {
-            $Frontend = new \Frontend(true, $tokenStorage);
+            $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
             if ('general' === $form->getData()['mode']) {
                 $job = new JobGeneral($form->getData(), \DB::getInstance(), $account->getId(), $this->databasePrefix);
@@ -136,9 +141,12 @@ class ToolsController extends Controller
      * @Route("/my/tools/vo2max-analysis", name="tools-vo2max-analysis")
      * @Security("has_role('ROLE_USER')")
      */
-    public function vo2maxAnalysisAction(Account $account, TokenStorageInterface $tokenStorage)
-    {
-        $Frontend = new \Frontend(true, $tokenStorage);
+    public function vo2maxAnalysisAction(
+        Account $account, 
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+    ) {
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
         $configuration = $this->configurationManager->getList();
         $correctionFactor = $configuration->getVO2maxCorrectionFactor();

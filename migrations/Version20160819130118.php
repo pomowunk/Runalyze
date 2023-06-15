@@ -24,7 +24,7 @@ class Version20160819130118 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'account` ADD `role` tinyint(3) unsigned NOT NULL DEFAULT 1, ADD `allow_support` tinyint(1) unsigned NOT NULL DEFAULT 0 AFTER `allow_mails`');
     }
 
@@ -33,7 +33,7 @@ class Version20160819130118 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'account` DROP `allow_support`, DROP `role`');
     }
 }

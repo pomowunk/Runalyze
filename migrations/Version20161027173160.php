@@ -30,7 +30,7 @@ class Version20161027173160 extends AbstractMigration implements ContainerAwareI
     public function up(Schema $schema): void
     {
         //Table: conf
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('DELETE FROM `'.$prefix.'equipment` WHERE `typeid` = 0');
         $this->addSql('ALTER TABLE `'.$prefix.'equipment`
                   MODIFY `typeid` int(10) unsigned NOT NULL');

@@ -15,6 +15,7 @@ use Runalyze\View\Activity\Context;
 use Runalyze\View\Activity\Feed;
 use Runalyze\View\Activity\Linker;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,7 +46,13 @@ class SharedController extends Controller
      * @Route("/shared/{activityHash}&{foo}", requirements={"activityHash": "[a-zA-Z0-9]+"})
      * @Route("/shared/{activityHash}", requirements={"activityHash": "[a-zA-Z0-9]+"}, name="shared-activity")
      */
-    public function sharedTrainingAction($activityHash, Request $request, ActivityContextFactory $activityContextFactory, PrivacyGuard $privacyGuard)
+    public function sharedTrainingAction(
+        $activityHash,
+        Request $request,
+        ActivityContextFactory $activityContextFactory,
+        PrivacyGuard $privacyGuard,
+        ParameterBagInterface $parameterBag,
+    )
     {
         /** @var null|Training $activity */
         $activity = $this->trainingRepository->find((int)base_convert((string)$activityHash, 35, 10));
@@ -58,7 +65,7 @@ class SharedController extends Controller
         $account = $this->accountRepository->findByUsername($activity->getAccount()->getUsername());
         $publicList = $this->configurationManager->getList($account)->getPrivacy()->isListPublic();
 
-        $Frontend = new \FrontendShared(true);
+        $Frontend = new \FrontendShared($parameterBag, true);
         $activityContext = $activityContextFactory->getContext($activity);
         $activityContextLegacy = new Context($activity->getId(), $activity->getAccount()->getId());
 
@@ -99,7 +106,7 @@ class SharedController extends Controller
     /**
      * @Route("/athlete/{username}", name="shared-athlete")
      */
-    public function sharedUserAction($username, Request $request) {
+    public function sharedUserAction($username, Request $request, ParameterBagInterface $parameterBag) {
         /** @var null|Account $account */
         $account = $this->accountRepository->findByUsername($username);
         $privacy = $this->configurationManager->getList($account)->getPrivacy();
@@ -110,7 +117,7 @@ class SharedController extends Controller
 
         $_GET['user'] = $username;
 
-        $Frontend = new \FrontendSharedList();
+        $Frontend = new \FrontendSharedList($parameterBag);
 
         if (isset($_GET['type'])) {
             return $this->render('shared/athlete/base_plot_sum_data.html.twig', [

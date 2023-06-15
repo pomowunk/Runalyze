@@ -12,6 +12,8 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     ports:
       - "8000:80"
+    environment:
+      - DATABASE_URL=mysql://runalyze:password@db:3306/runalyze?serverVersion=mariadb-10.11.2
     volumes:
       - ./:/var/www/runalyze/
       - ignore_var:/var/www/runalyze/var

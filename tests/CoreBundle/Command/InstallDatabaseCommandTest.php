@@ -23,7 +23,7 @@ class InstallDatabaseCommandTest extends KernelTestCase
         static::bootKernel(['environment' => 'test_empty']);
 
         $this->Connection = static::$kernel->getContainer()->get('doctrine')->getConnection();
-        $this->DatabasePrefix = static::$kernel->getContainer()->getParameter('database_prefix');
+        $this->DatabasePrefix = static::$kernel->getContainer()->getParameter('app.database_prefix');
 
         if (null === $this->Connection) {
             $this->markTestSkipped('No doctrine connection available, maybe cache needs to be cleared.');

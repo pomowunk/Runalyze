@@ -23,7 +23,7 @@ class Version20160822120408 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'account` DROP `lastlogin`');
     }
 
@@ -32,7 +32,7 @@ class Version20160822120408 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'account` ADD `lastlogin` int(11) NOT NULL DEFAULT 0');
     }
 }

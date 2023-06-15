@@ -1,0 +1,14 @@
+# doctrine_cache:
+#     providers:
+#         vendor_filesystem_metadata_cache:
+#             file_system:
+#                 extension: cache
+#                 directory: "%kernel.root_dir%/../var/cache/doctrine"
+#         vendor_filesystem_result_cache:
+#             file_system:
+#                 extension: cache
+#                 directory: "%kernel.root_dir%/../var/cache/doctrine"
+#         vendor_filesystem_query_cache:
+#             file_system:
+#                 extension: cache
+#                 directory: "%kernel.root_dir%/../var/cache/doctrine"

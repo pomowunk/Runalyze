@@ -22,6 +22,7 @@ use Runalyze\Language;
 use Runalyze\Dataset as RunalyzeDataset;
 use Runalyze\Dataset\Keys;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,9 +43,10 @@ class SettingsController extends Controller
         TranslatorInterface $translator,
         AutomaticReloadFlagSetter $automaticReloadFlagSetter,
         AccountRepository $accountRepository,
-        SessionInterface $session)
-    {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        SessionInterface $session,
+        ParameterBagInterface $parameterBag,
+    ) {
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
         $currentLanguage = $account->getLanguage();
         $form = $this->createForm(AccountType::class, $account, array(
@@ -207,9 +209,10 @@ class SettingsController extends Controller
         DatasetRepository $datasetRepository,
         ConfigurationManager $configurationManager,
         TagRepository $tagRepository,
-        EquipmentRepository $equipmentRepository)
-    {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        EquipmentRepository $equipmentRepository,
+        ParameterBagInterface $parameterBag,
+    ) {
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
         $dataset = $datasetRepository->findAllFor($account);
         $missingKeyObjects = array_flip(RunalyzeDataset\Keys::getEnum());

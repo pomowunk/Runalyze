@@ -1,14 +1,10 @@
 <?php
-/**
- * This file contains the class::Frontend to create and print the HTML-Page.
- * @package Runalyze\Frontend
- */
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Configuration;
 use Runalyze\Timezone;
-use Symfony\Component\Yaml\Yaml;
-use \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Frontend class for setting up everything
@@ -17,40 +13,26 @@ use \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
  * It sets the autoloader, constants and mysql-connection.
  * By default, constructing a new frontend will print a html-header.
  *
- * Standard initialization of Runalyze:
- * <code>
- *  require 'inc/class.Frontend.php';
- *  $Frontend = new Frontend();
- * </code>
- *
  * @author Hannes Christiansen
  * @package Runalyze\Frontend
  */
 class Frontend {
-	/**
-	 * Symfony token storage for user
-	 * @var TokenStorage|null
-	 */
-	protected $symfonyToken = null;
-
-	/**
-	 * Yaml Configuration
-	 * @var array
-	 */
-	protected $yamlConfig = array();
+	protected ?TokenStorageInterface $symfonyToken = null;
+	protected ParameterBagInterface $parameterBag;
 
 	protected $HideFooter = false;
 
 	/**
-	 * Constructor
-	 *
 	 * Constructing a new Frontend includes all files and sets the correct header.
 	 * Runalyze is not usable without setting up the environment with this class.
-	 *
-	 * @param bool $hideHeaderAndFooter By default a html-header is directly shown
-	 * @param TokenStorage|null $symfonyToken
 	 */
-	public function __construct($hideHeaderAndFooter = false, $symfonyToken = null) {
+	public function __construct(
+		ParameterBagInterface $parameterBag,
+		bool $hideHeaderAndFooter = false,
+		?TokenStorageInterface $symfonyToken = null,
+	)
+	{
+		$this->parameterBag = $parameterBag;
 		$this->symfonyToken = $symfonyToken;
 
 		$this->initSystem();
@@ -97,25 +79,17 @@ class Frontend {
 	 * Setup config
 	 */
 	private function initConfig() {
-		$this->yamlConfig = array_merge(
-			Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/config_shared.yml'))['parameters'],
-            Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/expert_config.yml'))['parameters'],
-            Yaml::parse(file_get_contents(FRONTEND_PATH.'/../app/config/config.yml'))['parameters']
-		);
-
-        define('DARKSKY_API_KEY', $this->yamlConfig['darksky_api_key']);
-        define('OPENWEATHERMAP_API_KEY', $this->yamlConfig['openweathermap_api_key']);
-	    define('NOKIA_HERE_APPID', $this->yamlConfig['nokia_here_appid']);
-	    define('NOKIA_HERE_TOKEN', $this->yamlConfig['nokia_here_token']);
-	    define('THUNDERFOREST_API_KEY', $this->yamlConfig['thunderforest_api_key']);
-        define('MAPBOX_API_KEY', $this->yamlConfig['mapbox_api_key']);
-	    define('PERL_PATH', $this->yamlConfig['perl_path']);
-	    define('TTBIN_PATH', $this->yamlConfig['ttbin_path']);
-	    define('GEONAMES_USERNAME', $this->yamlConfig['geonames_username']);
-	    define('USER_DISABLE_ACCOUNT_ACTIVATION', $this->yamlConfig['user_disable_account_activation']);
-	    define('SQLITE_MOD_SPATIALITE', $this->yamlConfig['sqlite_mod_spatialite']);
-        define('RUNALYZE_VERSION', $this->yamlConfig['RUNALYZE_VERSION']);
-        define('DATA_DIRECTORY', str_replace('%kernel.root_dir%', FRONTEND_PATH.'/../app', $this->yamlConfig['data_directory']));
+	    define('NOKIA_HERE_APPID', $this->parameterBag->get('app.nokia_here_appid'));
+	    define('NOKIA_HERE_TOKEN', $this->parameterBag->get('app.nokia_here_token'));
+	    define('THUNDERFOREST_API_KEY', $this->parameterBag->get('app.thunderforest_api_key'));
+        define('MAPBOX_API_KEY', $this->parameterBag->get('app.mapbox_api_key'));
+	    define('PERL_PATH', $this->parameterBag->get('app.perl_path'));
+	    define('TTBIN_PATH', $this->parameterBag->get('app.ttbin_path'));
+	    define('GEONAMES_USERNAME', $this->parameterBag->get('app.geonames_username'));
+	    define('USER_DISABLE_ACCOUNT_ACTIVATION', $this->parameterBag->get('app.user_disable_account_activation'));
+	    define('SQLITE_MOD_SPATIALITE', $this->parameterBag->get('app.sqlite_mod_spatialite'));
+        define('RUNALYZE_VERSION', $this->parameterBag->get('app.version'));
+        define('DATA_DIRECTORY', $this->parameterBag->get('app.data_directory'));
 	}
 
 	/**
@@ -156,9 +130,15 @@ class Frontend {
 	 * Connect to database
 	 */
 	private function initDatabase() {
-		define('PREFIX', $this->yamlConfig['database_prefix']);
+		define('PREFIX', $this->parameterBag->get('app.database_prefix'));
 
-		DB::connect($this->yamlConfig['database_host'], $this->yamlConfig['database_port'], $this->yamlConfig['database_user'], $this->yamlConfig['database_password'], $this->yamlConfig['database_name']);
+		DB::connect(
+			$this->parameterBag->get('app.database_host'),
+			$this->parameterBag->get('app.database_port'),
+			$this->parameterBag->get('app.database_user'),
+			$this->parameterBag->get('app.database_password'),
+			$this->parameterBag->get('app.database_name')
+		);
 	}
 
 	/**

@@ -7,20 +7,55 @@ doctrine:
         #server_version: '15'
 
         # only needed for MySQL
-        charset: utf8mb4
-        default_table_options:
-            collate: utf8mb4_unicode_ci
+        # charset: utf8mb4
+        # default_table_options:
+        #     collate: utf8mb4_unicode_ci
+
+        # TODO: migrate to utf8mb4
+        charset:  UTF8
+        options: {1002: "SET time_zone = '+00:00'"}
+        mapping_types:
+            enum:   string
+
+        types:
+            casted_decimal_1: Runalyze\Bundle\CoreBundle\Doctrine\Types\CastedDecimalScale1Type
+            casted_decimal_2: Runalyze\Bundle\CoreBundle\Doctrine\Types\CastedDecimalScale2Type
+            tinyint: Runalyze\Bundle\CoreBundle\Doctrine\Types\TinyIntType
+            pipe_array: Runalyze\Bundle\CoreBundle\Doctrine\Types\PipeDelimitedArray
+            geohash_array: Runalyze\Bundle\CoreBundle\Doctrine\Types\GeohashArray
+            runalyze_pause_array: Runalyze\Bundle\CoreBundle\Doctrine\Types\RunalyzePauseArray
+            runalyze_round_array: Runalyze\Bundle\CoreBundle\Doctrine\Types\RunalyzeRoundArray
 
         # backtrace queries in profiler (increases memory usage per request)
-        #profiling_collect_backtrace: '%kernel.debug%'
+        profiling_collect_backtrace: '%kernel.debug%'
     orm:
-        auto_generate_proxy_classes: true
+        auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
+            CoreBundle:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                dir: '%kernel.project_dir%/src/CoreBundle/Entity'
+                prefix: 'Runalyze\Bundle\CoreBundle\Entity'
+                alias: CoreBundle
+        hydrators:
+            COLUMN_HYDRATOR: Runalyze\Bundle\CoreBundle\Doctrine\Hydrator\ColumnHydrator
+        dql:
+            datetime_functions:
+                from_unixtime: DoctrineExtensions\Query\Mysql\FromUnixtime
+                month: DoctrineExtensions\Query\Mysql\Month
+                week: DoctrineExtensions\Query\Mysql\Week
+                year: DoctrineExtensions\Query\Mysql\Year
+            numeric_functions:
+                round: DoctrineExtensions\Query\Mysql\Round
+        # TODO: remove doctrine cache bundle
+        # metadata_cache_driver:
+        #     type: service
+        #     id: doctrine_cache.providers.vendor_filesystem_metadata_cache
+        # result_cache_driver:
+        #     type: service
+        #     id: doctrine_cache.providers.vendor_filesystem_result_cache
+        # query_cache_driver:
+        #     type: service
+        #     id: doctrine_cache.providers.vendor_filesystem_query_cache

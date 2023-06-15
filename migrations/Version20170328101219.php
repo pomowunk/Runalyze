@@ -23,7 +23,7 @@ class Version20170328101219 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` ADD `internal_sport_id` TINYINT NULL AFTER `default_typeid`, ADD `is_main` tinyint(1) unsigned NOT NULL DEFAULT 0 AFTER `default_typeid`');
 
         $this->addSql('UPDATE `'.$prefix.'sport` s LEFT JOIN `'.$prefix.'conf` c ON s.accountid=c.accountid AND c.`key`="RUNNINGSPORT" SET internal_sport_id='.SportProfile::RUNNING.', is_main=1 WHERE CONCAT(s.id, "")=c.value');
@@ -47,7 +47,7 @@ class Version20170328101219 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` DROP INDEX `unique_internal_id`');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` DROP COLUMN `internal_sport_id`, DROP COLUMN `is_main`');
     }

@@ -22,7 +22,7 @@ class Version20180113231353 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('ALTER TABLE `'.$prefix.'training` ADD `is_power_calculated` TINYINT(1) DEFAULT NULL AFTER `power`');
 
@@ -33,7 +33,7 @@ class Version20180113231353 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('ALTER TABLE `'.$prefix.'training` DROP `is_power_calculated`');
     }

@@ -22,7 +22,7 @@ class Version20171217215800 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('ALTER TABLE `'.$prefix.'sport` ADD `default_privacy` TINYINT(1) NOT NULL AFTER `outside`');
 
@@ -33,7 +33,7 @@ class Version20171217215800 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('ALTER TABLE `'.$prefix.'sport` DROP `default_privacy`');
     }

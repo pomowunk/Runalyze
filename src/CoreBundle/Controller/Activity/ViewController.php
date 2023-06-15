@@ -22,6 +22,7 @@ use Runalyze\View\Window\Laps\Window;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,6 +30,23 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ViewController extends Controller
 {
+    protected TrainingRepository $trainingRepository;
+    protected TrackdataRepository $trackdataRepository;
+    protected TokenStorageInterface $tokenStorage;
+    protected ParameterBagInterface $parameterBag;
+
+    public function __construct(
+        TrainingRepository $trainingRepository,
+        TrackdataRepository $trackdataRepository,
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+    ) {
+        $this->trainingRepository = $trainingRepository;
+        $this->trackdataRepository = $trackdataRepository;
+        $this->tokenStorage = $tokenStorage;
+        $this->parameterBag = $parameterBag;
+    }
+
     protected function checkThatEntityBelongsToActivity(AccountRelatedEntityInterface $entity, Account $account)
     {
         if ($entity->getAccount()->getId() != $account->getId()) {
@@ -45,25 +63,23 @@ class ViewController extends Controller
         Request $request,
         Training $activity,
         Account $account,
-        TrainingRepository $trainingRepository,
-        LegacyCache $legacyCache,
-        TokenStorageInterface $tokenStorage)
+        LegacyCache $legacyCache,)
     {
         $this->checkThatEntityBelongsToActivity($activity, $account);
 
         switch ($request->query->get('action')) {
             case 'changePrivacy':
-                $trainingRepository->save($activity->togglePrivacy());
+                $this->trainingRepository->save($activity->togglePrivacy());
                 $legacyCache->clearActivityCache($activity);
                 break;
             case 'delete':
-                $trainingRepository->remove($activity);
+                $this->trainingRepository->remove($activity);
 
                 return $this->render('activity/activity_has_been_removed.html.twig');
         }
 
         if (!$request->query->get('silent')) {
-            $frontend = new \Frontend(true, $tokenStorage);
+            $frontend = new \Frontend($this->parameterBag, true, $this->tokenStorage);
             $context = new Context($activity->getId(), $account->getId());
 
             $view = new \TrainingView($context);
@@ -99,13 +115,9 @@ class ViewController extends Controller
      * @Route("/activity/{id}/splits-info", requirements={"id" = "\d+"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function splitsInfoAction(
-        $id,
-        Account $account,
-        TokenStorageInterface $tokenStorage)
-    {
+    public function splitsInfoAction($id, Account $account) {
         
-        $Frontend = new \Frontend(false, $tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
 
         $context = new Context($id, $account->getId());
 
@@ -123,25 +135,20 @@ class ViewController extends Controller
      * @Route("/activity/{id}/elevation-info", requirements={"id" = "\d+"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function elevationInfoAction(
-        $id, 
-        Request $request,
-        Account $account,
-        TrainingRepository $trainingRepository,
-        TokenStorageInterface $tokenStorage)
+    public function elevationInfoAction($id, Request $request, Account $account)
     {
         if ($request->get('use-calculated-value') == 'true') {
             /** @var Training $activity */
-            $activity = $trainingRepository->find($id);
+            $activity = $this->trainingRepository->find($id);
 
             $this->checkThatEntityBelongsToActivity($activity, $account);
 
             $activity->getAdapter()->useElevationFromRoute();
 
-            $trainingRepository->save($activity);
+            $this->trainingRepository->save($activity);
         }
 
-        $Frontend = new \Frontend(false, $tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
 
         $context = new Context($id, $account->getId());
 
@@ -159,13 +166,11 @@ class ViewController extends Controller
      * @Route("/activity/{id}/time-series-info", requirements={"id" = "\d+"}, name="activity-tool-time-series-info")
      * @Security("has_role('ROLE_USER')")
      */
-    public function timeSeriesInfoAction(
-        $id,
-        Account $account,
-        TrackdataRepository $trackdataRepository,
-        TrainingRepository $trainingRepository)
+    public function timeSeriesInfoAction($id, Account $account)
     {
-        $trackdata = $trackdataRepository->findByActivity($id, $account);
+        // TODO: fix whatever this is
+
+        $trackdata = $this->trackdataRepository->findByActivity($id, $account);
 
         if (null === $trackdata) {
             return $this->render('activity/tool/not_possible.html.twig');
@@ -174,7 +179,7 @@ class ViewController extends Controller
         $trackdataModel = $trackdata->getLegacyModel();
 
         $paceUnit = PaceEnum::get(
-            $trainingRepository->getSpeedUnitFor($id, $account->getId())
+            $this->trainingRepository->getSpeedUnitFor($id, $account->getId())
         );
 
         $statistics = new TimeSeriesStatistics($trackdataModel);
@@ -192,14 +197,11 @@ class ViewController extends Controller
      * @ParamConverter("activity", class="CoreBundle:Training")
      * @Security("has_role('ROLE_USER')")
      */
-    public function subSegmentInfoAction(
-        $id,
-        Training $activity,
-        Account $account,
-        TrackdataRepository $trackdataRepository,
-        TrainingRepository $trainingRepository)
+    public function subSegmentInfoAction($id, Training $activity, Account $account, ConfigurationManager $confManager)
     {
-        $trackdata = $trackdataRepository->findByActivity($id, $account);
+        // TODO: fix whatever this is
+
+        $trackdata = $this->trackdataRepository->findByActivity($id, $account);
 
         if (!$activity->hasTrackdata()) {
             return $this->render('activity/tool/not_possible.html.twig');
@@ -208,7 +210,7 @@ class ViewController extends Controller
         $trackdataModel = $activity->getTrackdata()->getLegacyModel();
 
         $paceUnit = PaceEnum::get(
-            $trainingRepository->getSpeedUnitFor($id, $account->getId())
+            $this->trainingRepository->getSpeedUnitFor($id, $account->getId())
         );
 
         $statistics = new BestSubSegmentsStatistics($trackdataModel);
@@ -220,7 +222,7 @@ class ViewController extends Controller
         $segments = [];
 
         if ($activity->hasRoute() && $activity->getRoute()->hasGeohashes()) {
-            $Frontend = new \Frontend(true, $this->get('security.token_storage'));
+            $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
             $routeModel = $activity->getRoute()->getLegacyModel();
             $mapRoute = new \Runalyze\View\Leaflet\Activity(
                 'route-'.$activity->getId(),
@@ -228,7 +230,7 @@ class ViewController extends Controller
                 $trackdataModel
             );
 
-            $precision = (int)$this->get('app.configuration_manager')->getList()->getActivityView()->get('GMAP_PATH_PRECISION');
+            $precision = (int)$confManager->getList()->getActivityView()->get('GMAP_PATH_PRECISION');
             $distanceSegments = $statistics->getDistanceSegmentPaths($routeModel, $precision);
             $timeSegments = $statistics->getTimeSegmentPaths($routeModel, $precision);
             $segments = [

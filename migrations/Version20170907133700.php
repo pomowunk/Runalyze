@@ -25,7 +25,7 @@ class Version20170907133700 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql("DELETE FROM `".$prefix."conf` WHERE `key`='SEARCH_RESULTS_PER_PAGE'");
     }
 

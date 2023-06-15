@@ -23,7 +23,7 @@ class Version20170328101217 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('UPDATE `'.$prefix.'sport` SET `speed`='.PaceEnum::KILOMETER_PER_HOUR.' WHERE `speed`="km/h"');
         $this->addSql('UPDATE `'.$prefix.'sport` SET `speed`='.PaceEnum::MILES_PER_HOUR.' WHERE `speed`="mph"');
@@ -44,7 +44,7 @@ class Version20170328101217 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` MODIFY `speed` varchar(10) NOT NULL DEFAULT "min/km"');
         $this->addSql('UPDATE `'.$prefix.'sport` SET `speed`="km/h" WHERE `speed`="'.PaceEnum::KILOMETER_PER_HOUR.'"');
         $this->addSql('UPDATE `'.$prefix.'sport` SET `speed`="mph" WHERE `speed`="'.PaceEnum::MILES_PER_HOUR.'"');

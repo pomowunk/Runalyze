@@ -22,7 +22,7 @@ class Version20170202220915 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('UPDATE `'.$prefix.'route` SET `geohashes` = NULL WHERE `geohashes`= ""');
         $this->addSql('UPDATE `'.$prefix.'route` SET `elevations_original` = NULL WHERE `elevations_original`= ""');

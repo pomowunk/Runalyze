@@ -22,7 +22,7 @@ class Version20180116214552 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql("DELETE FROM `".$prefix."conf` WHERE  `key`='COMPUTE_POWER'");
     }

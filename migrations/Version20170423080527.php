@@ -22,7 +22,7 @@ class Version20170423080527 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'training` ADD `fit_performance_condition_end` tinyint(3) unsigned DEFAULT NULL AFTER `fit_performance_condition`');
     }
 
@@ -31,7 +31,7 @@ class Version20170423080527 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'training` DROP COLUMN `fit_performance_condition_end`');
     }
 }

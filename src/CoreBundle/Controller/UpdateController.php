@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UpdateController extends Controller
 {
     /**
-     * @Route("/update", name="update", condition="'%update_disabled%' == 'no'")
+     * @Route("/update", name="update", condition="'%app.allow_update%' == true")
      */
     public function updateAction(KernelInterface $kernel, $entity_manager = 'default')
     {
@@ -57,7 +57,7 @@ class UpdateController extends Controller
     }
 
     /**
-     * @Route("/update/start", name="update_start", condition="'%update_disabled%' == 'no'")
+     * @Route("/update/start", name="update_start", condition="'%app.allow_update%' == true")
      */
     public function updateStartAction(KernelInterface $kernel)
     {

@@ -8,12 +8,24 @@ use Runalyze\Export\Share;
 use Runalyze\View\Activity\Context;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ExportController extends Controller
 {
+    protected TokenStorageInterface $tokenStorageInterface;
+    protected ParameterBagInterface $parameterBag;
+
+    public function __construct(
+        TokenStorageInterface $tokenStorageInterface,
+        ParameterBagInterface $parameterBag,
+    ) {
+        $this->tokenStorageInterface = $tokenStorageInterface;
+        $this->parameterBag = $parameterBag;
+    }
+
     /**
      * @Route("/activity/{id}/export/social/{typeid}", requirements={"id" = "\d+"})
      * @Security("has_role('ROLE_USER')")
@@ -22,9 +34,8 @@ class ExportController extends Controller
         $id, 
         $typeid, 
         Account $account, 
-        TokenStorageInterface $tokenStorageInterface)
-    {
-        $Frontend = new \Frontend(true, $tokenStorageInterface);
+    ) {
+        $Frontend = new \Frontend($this->parameterBag, true, $this->tokenStorageInterface);
 
         if (Share\Types::isValidValue((int)$typeid)) {
             $context = new Context((int)$id, $account->getId());
@@ -46,9 +57,8 @@ class ExportController extends Controller
         $id,
         $typeid,
         Account $account,
-        TokenStorageInterface $tokenStorageInterface)
-    {
-        $Frontend = new \Frontend(true, $tokenStorageInterface);
+    ) {
+        $Frontend = new \Frontend($this->parameterBag, true, $this->tokenStorageInterface);
 
         if (File\Types::isValidValue((int)$typeid)) {
             $context = new Context((int)$id, $account->getId());

@@ -8,6 +8,7 @@ use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonImporter;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,9 +106,10 @@ class JsonImportToolController extends Controller
         Request $request,
         Account $account,
         TokenStorageInterface $tokenStorage,
-        FlashBagInterface $flashBag)
-    {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        FlashBagInterface $flashBag,
+        ParameterBagInterface $parameterBag,
+    ) {
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
         if (!$flashBag->has('json-import.file')) {
             return $this->redirectToRoute('tools-backup-json');

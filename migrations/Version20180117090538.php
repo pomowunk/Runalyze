@@ -24,7 +24,7 @@ class Version20180117090538 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'trackdata` ADD `impact_gs_left` longtext AFTER `thb_0`,
                                 ADD `impact_gs_right` longtext AFTER `impact_gs_left`,
                                 ADD `braking_gs_left` longtext AFTER `impact_gs_right`,
@@ -41,7 +41,7 @@ class Version20180117090538 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'trackdata`
                                 DROP `impact_gs_left`,
                                 DROP `impact_gs_right`,

@@ -8,6 +8,7 @@ use Runalyze\Bundle\CoreBundle\Entity\Plugin;
 use Runalyze\Bundle\CoreBundle\Repository\PluginRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,15 +19,17 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class PluginController extends AbstractPluginsAwareController
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    protected TokenStorageInterface $tokenStorage;
+    protected ParameterBagInterface $parameterBag;
+    protected PluginRepository $pluginRepository;
 
-    /** @var PluginRepository */
-    protected $pluginRepository;
-
-    public function __construct(TokenStorageInterface $tokenStorage, PluginRepository $pluginRepository)
-    {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+        PluginRepository $pluginRepository,
+    ) {
         $this->tokenStorage = $tokenStorage;
+        $this->parameterBag = $parameterBag;
         $this->pluginRepository = $pluginRepository;
     }
 
@@ -42,7 +45,7 @@ class PluginController extends AbstractPluginsAwareController
         }
 
         // Only as long as PluginFactory's cache is in use
-        $Frontend = new \Frontend(true, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, true, $this->tokenStorage);
         \PluginFactory::clearCache();
 
         $this->pluginRepository->toggleHidden($plugin);
@@ -62,7 +65,7 @@ class PluginController extends AbstractPluginsAwareController
         }
 
         // Only as long as PluginFactory's cache is in use
-        $Frontend = new \Frontend(true, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, true, $this->tokenStorage);
         \PluginFactory::clearCache();
 
         $this->pluginRepository->movePanelUp($plugin);
@@ -82,7 +85,7 @@ class PluginController extends AbstractPluginsAwareController
         }
 
         // Only as long as PluginFactory's cache is in use
-        $Frontend = new \Frontend(true, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, true, $this->tokenStorage);
         \PluginFactory::clearCache();
 
         $this->pluginRepository->movePanelDown($plugin);
@@ -96,7 +99,7 @@ class PluginController extends AbstractPluginsAwareController
      */
     public function contentPanelsAction(Request $request, Account $account)
     {
-        $Frontend = new \Frontend(false, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
 
         return $this->getResponseForAllEnabledPanels($request, $account);
     }

@@ -4,6 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,11 +12,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PluginController extends AbstractPluginsAwareController
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
+    private ParameterBagInterface $parameterBag;
 
-    public function __construct(TokenStorageInterface $tokenStorage) {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+    )
+    {
         $this->tokenStorage = $tokenStorage;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -24,7 +30,7 @@ class PluginController extends AbstractPluginsAwareController
      */
     public function pluginInstallAction()
     {
-        $Frontend = new \Frontend(false, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
         $Pluginkey = filter_input(INPUT_GET, 'key');
 
         $Installer = new \PluginInstaller($Pluginkey);
@@ -60,7 +66,7 @@ class PluginController extends AbstractPluginsAwareController
     */
     public function pluginDisplayAction($id, Request $request, Account $account)
     {
-        $Frontend = new \Frontend(false, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
 
         return $this->getResponseFor($id, $request, $account);
     }
@@ -71,7 +77,7 @@ class PluginController extends AbstractPluginsAwareController
     */
     public function pluginConfigAction()
     {
-        $Frontend = new \Frontend(false, $this->tokenStorage);
+        $Frontend = new \Frontend($this->parameterBag, false, $this->tokenStorage);
         $Factory = new \PluginFactory();
 
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {

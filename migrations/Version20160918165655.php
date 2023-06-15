@@ -29,7 +29,7 @@ class Version20160918165655 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER TABLE `'.$prefix.'sport` CHANGE `main_equipmenttypeid` `main_equipmenttypeid` int(10) unsigned DEFAULT NULL, CHANGE `accountid` `accountid` int(11) unsigned NOT NULL');
         $this->addSql('UPDATE `'.$prefix.'sport` SET `main_equipmenttypeid` = NULL WHERE `main_equipmenttypeid`= 0');
     }

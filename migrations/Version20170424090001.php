@@ -29,7 +29,7 @@ class Version20170424090001 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('ALTER table `'.$prefix.'dataset` DROP INDEX `unique_key`');
     }
 

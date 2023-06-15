@@ -4,6 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,9 +26,9 @@ class CallController extends Controller
      * @Route("databrowser", name="databrowser")
      * @Security("has_role('ROLE_USER')")
      */
-    public function dataBrowserAction(TokenStorageInterface $tokenStorage)
+    public function dataBrowserAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
         $DataBrowser = new \DataBrowser();
         $DataBrowser->display();
 
@@ -66,8 +67,11 @@ class CallController extends Controller
      */
     public function windowConfigAction(
         Request $request,
-        TokenStorageInterface $tokenStorage) {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        ParameterBagInterface $parameterBag,
+        TokenStorageInterface $tokenStorage,
+    )
+    {
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
         $ConfigTabs = new \ConfigTabs();
         $ConfigTabs->addDefaultTab(new  \ConfigTabGeneral());
         $ConfigTabs->addTab(new \ConfigTabPlugins());
@@ -82,9 +86,9 @@ class CallController extends Controller
      * @Route("/call/ajax.change.Config.php")
      * @Security("has_role('ROLE_USER')")
      */
-    public function ajaxChanceConfigAction(TokenStorageInterface $tokenStorage)
+    public function ajaxChanceConfigAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
         switch ($_GET['key']) {
         	case 'garmin-ignore':
@@ -109,9 +113,9 @@ class CallController extends Controller
      * @Route("/my/search", name="my-search")
      * @Security("has_role('ROLE_USER')")
      */
-    public function windowSearchAction(TokenStorageInterface $tokenStorage)
+    public function windowSearchAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(false, $tokenStorage);
+        $Frontend = new \Frontend($parameterBag, false, $tokenStorage);
         $showResults = !empty($_POST);
 
         if (isset($_GET['get']) && $_GET['get'] == 'true') {
@@ -157,9 +161,9 @@ class CallController extends Controller
     /**
      * @Route("/call/window.plotSumData.php")
      */
-    public function windowsPlotSumDataAction(TokenStorageInterface $tokenStorage)
+    public function windowsPlotSumDataAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {
-        $Frontend = new \Frontend(false, $tokenStorage);
+        $Frontend = new \Frontend($parameterBag, false, $tokenStorage);
         $this->getPlotSumData()->display();
 
         return new Response();

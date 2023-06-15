@@ -30,7 +30,7 @@ class Version20161027173150 extends AbstractMigration implements ContainerAwareI
     public function up(Schema $schema): void
     {
         //Table: conf
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
         $this->addSql('DELETE FROM `'.$prefix.'conf` WHERE `accountid` = \'-1\'');
         $this->addSql('ALTER TABLE `'.$prefix.'conf`
                   MODIFY `id` int(10) unsigned auto_increment NOT NULL,

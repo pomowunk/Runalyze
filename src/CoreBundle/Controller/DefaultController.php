@@ -16,6 +16,7 @@ use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,9 +65,9 @@ class DefaultController extends AbstractPluginsAwareController
      * @Route("/dashboard", name="dashboard")
      * @Security("has_role('ROLE_USER')")
      */
-    public function dashboardAction(Request $request, Account $account, TokenStorageInterface $tokenStorage)
+    public function dashboardAction(Request $request, Account $account, TokenStorageInterface $tokenStorage, ParameterBagInterface $parameterBag)
     {
-        $Frontend = new \Frontend(true, $tokenStorage);
+        $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
         $panelsContent = $this->getResponseForAllEnabledPanels($request, $account)->getContent();
 
@@ -199,9 +200,11 @@ class DefaultController extends AbstractPluginsAwareController
     public function pluginAction(
         $plugin,
         $file,
-        TokenStorageInterface $tokenStorage)
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+    )
     {
-        $Frontend = new \Frontend(false, $tokenStorage);
+        $Frontend = new \Frontend($parameterBag, false, $tokenStorage);
         
         include '../plugin/'.$plugin.'/'.$file;
 
@@ -214,10 +217,12 @@ class DefaultController extends AbstractPluginsAwareController
     public function indexPhpAction(
         Request $request,
         Account $account,
-        TokenStorageInterface $tokenStorage)
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
+    )
     {
         if ($request->isXmlHttpRequest()) {
-            $Frontend = new \Frontend(true, $tokenStorage);
+            $Frontend = new \Frontend($parameterBag, true, $tokenStorage);
 
             $panelsContent = $this->getResponseForAllEnabledPanels($request, $account)->getContent();
 

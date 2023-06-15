@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class InstallController extends Controller
 {
      /**
-      * @Route("/install", name="install", condition="'%update_disabled%' == 'no'")
+      * @Route("/install", name="install", condition="'%app.allow_update%' == true")
       */
     public function installAction(Request $request, KernelInterface $kernel)
     {
@@ -47,7 +47,7 @@ class InstallController extends Controller
     }
 
     /**
-     * @Route("/install/start", name="install_start", condition="'%update_disabled%' == 'no'")
+     * @Route("/install/start", name="install_start", condition="'%app.allow_update%' == true")
      */
     public function startAction(Request $request, KernelInterface $kernel)
     {
@@ -84,7 +84,7 @@ class InstallController extends Controller
     }
 
     /**
-     * @Route("/install/finish", name="install_finish", condition="'%update_disabled%' == 'no'")
+     * @Route("/install/finish", name="install_finish", condition="'%app.allow_update%' == true")
      */
     public function finishAction(Request $request)
     {

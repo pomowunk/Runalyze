@@ -22,7 +22,7 @@ class Version20170225101217 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('DELETE FROM `'.$prefix.'plugin_conf` WHERE `config`="show_trainingpaces" OR `config`="show_jd_intensity" OR `config`="model-jd" OR `config`="model-cpp" OR `config`="model-steffny" OR `config`="model-cameron"');
         $this->addSql('UPDATE `'.$prefix.'plugin_conf` SET `config`="show_vo2max" WHERE `config`="show_vdot"');
@@ -41,7 +41,7 @@ class Version20170225101217 extends AbstractMigration implements ContainerAwareI
      */
     public function down(Schema $schema): void
     {
-        $prefix = $this->container->getParameter('database_prefix');
+        $prefix = $this->container->getParameter('app.database_prefix');
 
         $this->addSql('UPDATE `'.$prefix.'plugin_conf` SET `config`="show_vdot" WHERE `config`="show_vo2max"');
         $this->addSql('UPDATE `'.$prefix.'plugin_conf` SET `value`="jd" WHERE `config`="model" AND `value`="vo2max"');
