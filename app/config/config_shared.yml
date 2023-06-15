@@ -12,24 +12,6 @@ framework:
   form: ~
   csrf_protection: true
   assets: ~
-  templating:
-    engines: ['twig']
-
-twig:
-  globals:
-    RUNALYZE_VERSION: '%RUNALYZE_VERSION%'
-    garmin_api_key: '%garmin_api_key%'
-    openweathermap_api_key: '%openweathermap_api_key%'
-    darksky_api_key: '%darksky_api_key%'
-    nokia_here_appid: '%nokia_here_appid%'
-    nokia_here_token: '%nokia_here_token%'
-    thunderforest_api_key: '%thunderforest_api_key%'
-    mapbox_api_key: '%mapbox_api_key%'
-    locales: '%locales%'
-  paths:
-    '%data_directory%/views': __main__
-  form_themes:
-     - 'form/fields.html.twig'
 
 monolog:
     channels: ['queue', 'console', 'external_services', 'activity_uploads']

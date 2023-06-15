@@ -62,8 +62,8 @@
         {%- set attr = attr|merge({'class': errorClass}) -%}
     {%- endif -%}
     {%- set type = type|default('text') -%}
-    {% if input_unit %}<span class="input-with-unit">{% endif %}
+    {% if input_unit|default(null) %}<span class="input-with-unit">{% endif %}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-    {% if input_unit %}<label for="{{ id }}" class="input-unit">{{ input_unit|raw }}</label></span>{% endif %}
+    {% if input_unit|default(null) %}<label for="{{ id }}" class="input-unit">{{ input_unit|raw }}</label></span>{% endif %}
 {%- endblock form_widget_simple -%}
 
