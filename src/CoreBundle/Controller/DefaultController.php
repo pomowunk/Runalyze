@@ -87,7 +87,7 @@ class DefaultController extends AbstractPluginsAwareController
             return $this->redirect($this->generateUrl('dashboard'));
         }
 
-        return $this->forward('CoreBundle:Default:register', $request->attributes->all());
+        return $this->forward($this::class.'::registerAction', $request->attributes->all());
     }
 
     /**

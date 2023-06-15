@@ -2,6 +2,6 @@
 	Options -MultiViews
 	RewriteEngine On
 	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^(.*)$ app.php [QSA,L]
+	RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 

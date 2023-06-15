@@ -5,5 +5,5 @@ jms_translation:
             output_dir: '%kernel.root_dir%/../vendor/runalyze/translations/xlf'
             ignored_domains: [routes]
             excluded_names: ["*TestCase.php", "*Test.php"]
-            excluded_dirs: [cache, data, log, logs, test, doctrine]
+            excluded_dirs: [cache, data, log, test, doctrine]
             output-format: 'xlf'
