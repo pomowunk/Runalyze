@@ -7,22 +7,22 @@
       ]
     },
     "installer": {
-      "root": "./app/Resources/public/css",
+      "root": "./assets/css",
       "src": [
-        "./app/Resources/public/css/runalyze-installer.less"
+        "./assets/css/runalyze-installer.less"
       ]
     },
-    "dest": "./web/assets/css"
+    "dest": "./public/assets/css"
   },
   "js": {
     "src": [
-      "./app/Resources/public/js/polyfill.js",
-      "./web/vendor/jquery/dist/jquery.js",
+      "./assets/js/polyfill.js",
+      "./public/vendor/jquery/dist/jquery.js",
 
       "./lib/jquery.metadata.js",
 
-      "./web/vendor/tablesorter/js/jquery.tablesorter.js",
-      "./web/vendor/tablesorter/addons/pager/jquery.tablesorter.pager.js",
+      "./public/vendor/tablesorter/js/jquery.tablesorter.js",
+      "./public/vendor/tablesorter/addons/pager/jquery.tablesorter.pager.js",
 
       "./lib/bootstrap-tooltip.js",
 
@@ -67,36 +67,36 @@
       "./lib/runalyze.lib.plot.flot.js",
 
       "./lib/geohash.js",
-      "./web/vendor/leaflet/dist/leaflet.js",
+      "./public/vendor/leaflet/dist/leaflet.js",
       "./lib/leaflet/runalyze.leaflet.js",
       "./lib/leaflet/runalyze.map.js",
       "./lib/leaflet/runalyze.leaflet.layers.js",
       "./lib/leaflet/runalyze.leaflet.routes.js",
 
-      "./web/vendor/d3/d3.js",
-      "./web/vendor/d3-tip/index.js",
+      "./public/vendor/d3/d3.js",
+      "./public/vendor/d3-tip/index.js",
       "./node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.min.js",
 
-      "./app/Resources/public/js/d3js-runalyzeplot.js",
-      "./app/Resources/public/js/d3js-boxplot.js",
-      "./app/Resources/public/js/climb-score.js",
+      "./assets/js/d3js-runalyzeplot.js",
+      "./assets/js/d3js-boxplot.js",
+      "./assets/js/climb-score.js",
 
-      "./app/Resources/public/js/views/climb-score-view.js",
-      "./app/Resources/public/js/views/race-performance-chart-view.js",
+      "./assets/js/views/climb-score-view.js",
+      "./assets/js/views/race-performance-chart-view.js",
 
-      "./app/Resources/public/js/vendor/d3-annotation.js",
+      "./assets/js/vendor/d3-annotation.js",
 
-      "./web/vendor/fontIconPicker/jquery.fonticonpicker.js",
+      "./public/vendor/fontIconPicker/jquery.fonticonpicker.js",
 
-      "./web/vendor/moment/moment.js",
-      "./web/vendor/moment-timezone/builds/moment-timezone-with-data-2012-2022.min.js",
-      "./web/vendor/moment-duration-format/lib/moment-duration-format.js",
+      "./public/vendor/moment/moment.js",
+      "./public/vendor/moment-timezone/builds/moment-timezone-with-data-2012-2022.min.js",
+      "./public/vendor/moment-duration-format/lib/moment-duration-format.js",
 
-      "./web/vendor/ifvisible.js/src/ifvisible.js",
-      "./web/vendor/jquery-timeago/jquery.timeago.js",
+      "./public/vendor/ifvisible.js/src/ifvisible.js",
+      "./public/vendor/jquery-timeago/jquery.timeago.js",
 
-      "./web/vendor/regression-js/build/regression.min.js"
+      "./public/vendor/regression-js/build/regression.min.js"
     ],
-    "dest": "./web/assets/js"
+    "dest": "./public/assets/js"
   }
 }

@@ -76,7 +76,7 @@ RUN mkdir /var/www/sqlite3_ext && \
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY --link docker/php-overrides.ini "$PHP_INI_DIR/conf.d/"
 
-ENV APACHE_DOCUMENT_ROOT /var/www/runalyze/web
+ENV APACHE_DOCUMENT_ROOT /var/www/runalyze/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf

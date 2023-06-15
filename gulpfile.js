@@ -51,12 +51,6 @@ function scripts() {
 }
 scripts.description = 'Combine and minify javascript files.';
 
-function tests() {
-    return gulp.src('./tests/config.xml')
-        .pipe(phpunit('./vendor/bin/phpunit', { bootstrap: './tests/bootstrap.php', statusLine: false }));
-}
-tests.description = 'Run phpunit.';
-
 function translate() {
   return gulp.src('./vendor/runalyze/translations/gettext/*/*/*.po', {read: false})
     .pipe(shell([
@@ -78,7 +72,6 @@ exports.clean = clean;
 exports.styles = styles;
 exports.stylesInstaller = stylesInstaller;
 exports.scripts = scripts;
-exports.tests = tests;
 exports.translate = translate;
 
 var build = gulp.series(clean, gulp.parallel(styles, stylesInstaller, scripts));

@@ -1035,7 +1035,7 @@ EXCLUDE_SYMLINKS       = NO
 
 EXCLUDE_PATTERNS       = */vendor/* \
                         */node_modules/* \
-                        */web/vendor/* \
+                        */public/vendor/* \
                         */var/* \
                         */data/* \
                         */.build/* \
