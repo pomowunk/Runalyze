@@ -2,9 +2,6 @@ imports:
   - { resource: expert_config.yml }
   - { resource: config.yml }
 
-framework:
-  assets: ~
-
 monolog:
     channels: ['queue', 'console', 'external_services', 'activity_uploads']
     handlers:
