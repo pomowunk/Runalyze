@@ -34,11 +34,13 @@
         "snc/redis-bundle": "2.*",
         "symfony/console": "*",
         "symfony/flex": "^2.3",
+        "symfony/form": "4.4.*",
         "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.6",
         "symfony/security-bundle": "4.4.*",
         "symfony/swiftmailer-bundle": "3.2.*",
         "symfony/twig-bundle": "4.4.*",
+        "symfony/validator": "4.4.*",
         "symfony/yaml": "*",
         "twig/twig": "^2.0"
     },
