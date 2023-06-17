@@ -45,6 +45,8 @@ class QueueConsumeCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        throw new \Exception("Queue consumption is currently disabled, until bernard is replaced with symfony/messenger!", 1);
+
         $arguments = array(
             'command' => 'bernard:consume',
             'queue' => $this->InternalQueues,

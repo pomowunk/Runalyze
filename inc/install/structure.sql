@@ -385,21 +385,6 @@ CREATE TABLE IF NOT EXISTS `runalyze_raceresult` (
   CONSTRAINT `runalyze_raceresult_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `runalyze_training` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `bernard_messages` (
-`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `queue` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `message` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT '1',
-  `sentAt` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `message_status` (`queue`,`sentAt`,`visible`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `bernard_queues` (
-`name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `runalyze_notification` (
 `id` int(10) unsigned AUTO_INCREMENT NOT NULL,
   `messageType` tinyint unsigned NOT NULL,
