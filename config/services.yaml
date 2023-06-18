@@ -10,6 +10,7 @@ parameters:
     app.version: '4.3.0'
     env(RUNALYZE_LOCALE): 'en'
     app.locale: '%env(string:RUNALYZE_LOCALE)%'
+    app.secret: '%env(APP_SECRET)%'
 
     env(MAINTENANCE_MODE): false
     app.maintenanceMode: '%env(bool:MAINTENANCE_MODE)%'
@@ -20,6 +21,7 @@ parameters:
     env(USER_DISABLE_ACCOUNT_ACTIVATION): false
     app.user_disable_account_activation: '%env(bool:USER_DISABLE_ACCOUNT_ACTIVATION)%'
 
+    app.database_url: '%env(DATABASE_URL)%'
     app.database_host: '%env(string:key:host:url:DATABASE_URL)%'
     app.database_port: '%env(int:key:port:url:DATABASE_URL)%'
     app.database_user: '%env(string:key:user:url:DATABASE_URL)%'
@@ -90,7 +92,7 @@ services:
             $posterStoragePeriod: '%app.poster_storage_period%'
             $dataDirectory: '%app.data_directory%'
             $kernelRootDir: '%kernel.root_dir%'
-            $legacyCachePath: '%app.data_directory%'
+            $legacyCachePath: '%kernel.project_dir%/var/legacy_cache/'
             $projectDirectory: '%kernel.project_dir%'
             $srtmDirectory: '%app.data_directory%/srtm'
             $inkscapePath: '%app.inkscape_path%'

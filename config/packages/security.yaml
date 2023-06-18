@@ -6,12 +6,11 @@ security:
     providers:
         runalyzeuser:
             entity:
-                class: CoreBundle:Account
+                class: 'Runalyze\Bundle\CoreBundle\Entity\Account'
     firewalls:
         default:
             anonymous: lazy
             provider: runalyzeuser
-            http_basic: ~
             switch_user: { role: ROLE_ADMIN, parameter: _switch_user }
             logout_on_user_change: true
             logout:
@@ -23,7 +22,7 @@ security:
                 csrf_token_generator: security.csrf.token_manager
                 use_referer: true
             remember_me:
-                secret: '%env(APP_SECRET)%'
+                secret: '%app.secret%'
                 lifetime: 604800 # 1 week in seconds
                 path: /
         dev:

@@ -1,0 +1,15 @@
+services:
+    # public aliases for accessing private services in tests
+    # TODO: remove in symfony >= 4.1
+    test.security.encoder_factory:
+        alias: security.encoder_factory
+        public: true
+    test.runalyze.recalculationmanager:
+        alias: Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager
+        public: true
+    test.runalyze.configurationmanager:
+        alias: Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager
+        public: true
+    test.runalyze.installdatabasecommand:
+        alias: Runalyze\Bundle\CoreBundle\Command\InstallDatabaseCommand
+        public: true

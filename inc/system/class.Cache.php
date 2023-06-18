@@ -14,7 +14,7 @@ class Cache {
 	 * Path for cache, relative to runalyze root
 	 * @var string
 	 */
-	const PATH = 'data';
+	const PATH = 'var/legacy_cache';
 
 	/**
 	 * Last cache clean date

@@ -1,0 +1,4 @@
+security:
+    firewalls:
+        default:
+            http_basic: ~

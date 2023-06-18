@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
+ * @backupGlobals enabled
+ *
  * @group requiresKernel
  * @group requiresDoctrine
  */
@@ -16,15 +18,17 @@ class InstallDatabaseCommandTest extends KernelTestCase
     protected $Connection;
 
     /** @var string */
-    protected $DatabasePrefix;
+    protected $DatabasePrefix = 'test_empty_';
 
     protected function setUp(): void
     {
-        static::bootKernel(['environment' => 'test_empty']);
+        $_ENV['DATABASE_PREFIX'] = $this->DatabasePrefix;
+        static::bootKernel();
+        if($this->DatabasePrefix !== static::$container->getParameter('app.database_prefix')) {
+            $this->markTestSkipped('Failed to override the database prefix.');
+        }
 
         $this->Connection = static::$kernel->getContainer()->get('doctrine')->getConnection();
-        $this->DatabasePrefix = static::$kernel->getContainer()->getParameter('app.database_prefix');
-
         if (null === $this->Connection) {
             $this->markTestSkipped('No doctrine connection available, maybe cache needs to be cleared.');
         }

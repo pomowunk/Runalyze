@@ -57,7 +57,7 @@
         {{ tablesorter.pager('#list-of-all-body-values', true) }}
     </div>
 
-    {% if reloadRequested %}
+    {% if reloadRequested|default(null) %}
         <script>Runalyze.reloadContent();</script>
     {% endif %}
 {% endblock %}
