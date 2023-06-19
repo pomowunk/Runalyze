@@ -13,13 +13,6 @@ data/timezone.sqlite
 inc/locale/*.po
 /.htaccess
 
-#config
-app/config/config.yml
-app/config/config_prod.yml
-app/config/config_dev.yml
-app/config/config_test.yml
-app/config/config_test_empty.yml
-
 #assets
 node_modules/
 public/assets/css/*.css
@@ -27,13 +20,6 @@ public/assets/js/*.js
 public/assets/js/*.map
 public/vendor/
 npm-debug.log
-
-#symfony
-/var/
-!/var/cache/.gitkeep
-!/var/logs/.gitkeep
-
-!.gitkeep
 
 ###> phpunit/phpunit ###
 /phpunit.xml
@@ -51,6 +37,6 @@ npm-debug.log
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/var/
+# /var/
 /vendor/
 ###< symfony/framework-bundle ###
