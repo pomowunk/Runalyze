@@ -41,12 +41,14 @@ class RegistrationTest extends WebTestCase
 
     protected function setUp(): void
     {
+        self::bootKernel();
+
         $this->loadFixtures([])->getReferenceRepository();
 
-        $this->Client = $this->getContainer()->get('test.client');
+        $this->Client = self::$container->get('test.client');
         $this->Client->disableReboot();
 
-        $this->EntityManager = $this->getContainer()->get('doctrine')->getManager();
+        $this->EntityManager = self::$container->get('doctrine')->getManager();
         $this->EntityManager->clear();
 
         $this->AccountRepository = $this->EntityManager->getRepository('CoreBundle:Account');
@@ -64,7 +66,7 @@ class RegistrationTest extends WebTestCase
         
         $registration = new Registration($this->EntityManager, $account, $this->SportRepository, $this->EquipmentTypeRepository);
         $registration->requireAccountActivation();
-        $registration->setPassword('Pa$$w0rd', $this->getContainer()->get('test.security.encoder_factory'));
+        $registration->setPassword('Pa$$w0rd', self::$container->get('test.security.encoder_factory'));
         $registeredAccount = $registration->registerAccount();
 
         $this->assertEquals('foobar', $this->AccountRepository->find($registeredAccount->getId())->getUsername());

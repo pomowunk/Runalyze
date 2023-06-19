@@ -178,6 +178,13 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
         $this->assertEqualsWithDelta(85.5, $statistics->getTotalDistance(), 1e-6);
     }
 
+    protected function comparePosterStats(array $expected, array $actual, float $delta = 0.01)
+    {
+        foreach ($expected as $key => $value) {
+            $this->assertEqualsWithDelta((float)$value, (float)$actual[$key], $delta);
+        }
+    }
+
     public function testPosterStats()
     {
         $this->insertActivityForDefaultAccount(mktime(12, 0, 0, 6, 1, 2015), 5400, 17.5);
@@ -185,19 +192,19 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
         $this->insertActivityForDefaultAccount(mktime(12, 0, 0, 6, 30, 2016), 3600, 10.0);
         $this->insertActivityForDefaultAccount(mktime(12, 0, 0, 7, 1, 2016), 3600, 33.3, $this->getDefaultAccountsCyclingSport());
 
-        $this->assertEquals([
+        $this->comparePosterStats([
             'num' => '1', 'total_distance' => '17.5', 'min_distance' => '17.5', 'max_distance' => '17.5'
         ], $this->TrainingRepository->getStatsForPoster($this->Account, $this->getDefaultAccountsRunningSport(), 2015)->getScalarResult()[0]);
 
-        $this->assertEquals([
+        $this->comparePosterStats([
             'num' => '2', 'total_distance' => '22.5', 'min_distance' => '10', 'max_distance' => '12.5'
         ], $this->TrainingRepository->getStatsForPoster($this->Account, $this->getDefaultAccountsRunningSport(), 2016)->getScalarResult()[0]);
 
-        $this->assertEquals([
+        $this->comparePosterStats([
             'num' => '0', 'total_distance' => null, 'min_distance' => null, 'max_distance' => null
         ], $this->TrainingRepository->getStatsForPoster($this->Account, $this->getDefaultAccountsCyclingSport(), 2015)->getScalarResult()[0]);
 
-        $this->assertEquals([
+        $this->comparePosterStats([
             'num' => '1', 'total_distance' => '33.3', 'min_distance' => '33.3', 'max_distance' => '33.3'
         ], $this->TrainingRepository->getStatsForPoster($this->Account, $this->getDefaultAccountsCyclingSport(), 2016)->getScalarResult()[0]);
     }

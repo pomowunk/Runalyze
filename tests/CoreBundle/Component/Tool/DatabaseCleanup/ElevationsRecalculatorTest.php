@@ -21,7 +21,7 @@ class ElevationsRecalculatorTest extends TestCase
     {
 		$this->PDO = new \PDO('sqlite::memory:');
 		$this->PDO->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-		$this->PDO->exec('CREATE TABLE IF NOT EXISTS `runalyze_route` (
+		$this->PDO->exec('CREATE TABLE IF NOT EXISTS `'.PREFIX.'route` (
 			`accountid` int,
 			`id` int,
 			`elevation` smallint,
@@ -35,20 +35,20 @@ class ElevationsRecalculatorTest extends TestCase
 
 	protected function tearDown(): void
     {
-		$this->PDO->exec('DROP TABLE `runalyze_route`');
+		$this->PDO->exec('DROP TABLE `'.PREFIX.'route`');
 	}
 
 	public function testSimpleRecalculations()
     {
-		$this->PDO->exec('INSERT INTO `runalyze_route` VALUES('.$this->AccountId.', 1,   0,   0,  0, "100|200|150", "")');
-		$this->PDO->exec('INSERT INTO `runalyze_route` VALUES('.$this->AccountId.', 2, 100, 100, 50, "100|200|150", "")');
-		$this->PDO->exec('INSERT INTO `runalyze_route` VALUES('.$this->AccountId.', 3,   0,   0,  0, "", "150|200|100")');
-		$this->PDO->exec('INSERT INTO `runalyze_route` VALUES('.$this->AccountId.', 4, 100,   0,  0, "", "")');
+		$this->PDO->exec('INSERT INTO `'.PREFIX.'route` VALUES('.$this->AccountId.', 1,   0,   0,  0, "100|200|150", "")');
+		$this->PDO->exec('INSERT INTO `'.PREFIX.'route` VALUES('.$this->AccountId.', 2, 100, 100, 50, "100|200|150", "")');
+		$this->PDO->exec('INSERT INTO `'.PREFIX.'route` VALUES('.$this->AccountId.', 3,   0,   0,  0, "", "150|200|100")');
+		$this->PDO->exec('INSERT INTO `'.PREFIX.'route` VALUES('.$this->AccountId.', 4, 100,   0,  0, "", "")');
 
-		$Job = new ElevationsRecalculator($this->PDO, $this->AccountId, 'runalyze_');
+		$Job = new ElevationsRecalculator($this->PDO, $this->AccountId, PREFIX);
 		$Job->run();
 
-		$Fetch = $this->PDO->prepare('SELECT `elevation`, `elevation_up`, `elevation_down` FROM `runalyze_route` WHERE `id`=:id');
+		$Fetch = $this->PDO->prepare('SELECT `elevation`, `elevation_up`, `elevation_down` FROM `'.PREFIX.'route` WHERE `id`=:id');
 		$Fetch->setFetchMode(\PDO::FETCH_NUM);
 
 		$this->assertEquals(2, $Job->numberOfRoutes());

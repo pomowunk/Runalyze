@@ -31,7 +31,7 @@ class QueryTest extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->PDO->exec('DELETE FROM `runalyze_training`');
+		$this->PDO->exec('DELETE FROM `'.PREFIX.'training`');
 	}
 
 	protected function insertActivity(array $data)
@@ -48,7 +48,7 @@ class QueryTest extends TestCase
 			$data['is_public'] = 1;
 		}
 
-		$this->PDO->query('INSERT INTO `runalyze_training` (`'.implode('`, `', array_keys($data)).'`) VALUES ("'.implode('", "', $data).'")');
+		$this->PDO->query('INSERT INTO `'.PREFIX.'training` (`'.implode('`, `', array_keys($data)).'`) VALUES ("'.implode('", "', $data).'")');
 	}
 
 	public function testThatMethodsWorkForDefaultConfiguration()
@@ -70,8 +70,8 @@ class QueryTest extends TestCase
 	{
 		$this->expectNotToPerformAssertions();
 
-		$this->PDO->query('SELECT '.$this->Query->queryToSelectAllKeys().' FROM `runalyze_training` AS `t` LIMIT 1')->fetch();
-		$this->PDO->query('SELECT '.$this->Query->queryToSelectActiveKeys().' FROM `runalyze_training` AS `t` LIMIT 1')->fetch();
+		$this->PDO->query('SELECT '.$this->Query->queryToSelectAllKeys().' FROM `'.PREFIX.'training` AS `t` LIMIT 1')->fetch();
+		$this->PDO->query('SELECT '.$this->Query->queryToSelectActiveKeys().' FROM `'.PREFIX.'training` AS `t` LIMIT 1')->fetch();
 	}
 
 	public function testTimerangeAndPrivacyForSingleActivities()

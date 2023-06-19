@@ -21,7 +21,7 @@ class AbstractBackupTest extends TestCase
     public function setUp(): void
     {
         $mockBuilder = $this->getMockBuilder(AbstractBackup::class);
-        $mockBuilder->setConstructorArgs([__DIR__.self::TESTFILE, 1, \DB::getInstance(), 'runalyze_', '3.2.0']);
+        $mockBuilder->setConstructorArgs([__DIR__.self::TESTFILE, 1, \DB::getInstance(), PREFIX, '3.2.0']);
         $this->Backup = $mockBuilder->getMockForAbstractClass();
     }
 

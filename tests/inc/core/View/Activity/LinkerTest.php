@@ -32,10 +32,10 @@ class LinkerTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->PDO = \DB::getInstance();
-		$this->PDO->exec('DELETE FROM `runalyze_training`');
-		$this->PDO->exec('DELETE FROM `runalyze_account` WHERE `username` = "LinkerOther"');
+		$this->PDO->exec('DELETE FROM `'.PREFIX.'training`');
+		$this->PDO->exec('DELETE FROM `'.PREFIX.'account` WHERE `username` = "LinkerOther"');
 		$this->ThisAccountID = \SessionAccountHandler::getId();
-		$this->PDO->exec('INSERT INTO `runalyze_account` (`username`, `name`, `mail`) VALUES ("LinkerOther", "LinkerOther", "linker@other.com")');
+		$this->PDO->exec('INSERT INTO `'.PREFIX.'account` (`username`, `name`, `mail`) VALUES ("LinkerOther", "LinkerOther", "linker@other.com")');
 		$this->OtherAccountID = $this->PDO->lastInsertId();
 
 		$activities = [
@@ -49,7 +49,7 @@ class LinkerTest extends TestCase {
 			[6, $this->OtherAccountID]
 		];
 		foreach ($activities as $data) {
-			$this->PDO->exec('INSERT INTO `runalyze_training` (`time`, `accountid`, `sportid`, `s`) VALUES ('.$data[0].', '.$data[1].', 0, 2)');
+			$this->PDO->exec('INSERT INTO `'.PREFIX.'training` (`time`, `accountid`, `sportid`, `s`) VALUES ('.$data[0].', '.$data[1].', 0, 2)');
 
 			if ($data[1] == $this->ThisAccountID) {
 				$this->ThisIDs[] = $this->PDO->lastInsertId();
@@ -58,7 +58,7 @@ class LinkerTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		$this->PDO->exec('DELETE FROM `runalyze_training`');
+		$this->PDO->exec('DELETE FROM `'.PREFIX.'training`');
 	}
 
 	public function testPrevAndNext() {

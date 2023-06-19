@@ -13,8 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface, ORMFixtureInterface
 {
-    /** @var ContainerInterface|null */
-    protected $Container;
+    protected ?ContainerInterface $Container;
+    public static Account $emptyAccount;
+    public static Account $defaultAccount;
 
     public function setContainer(ContainerInterface $container = null)
     {
@@ -29,28 +30,28 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 
     protected function addEmptyAccount(ObjectManager $manager)
     {
-        $emptyAccount = new Account();
-        $emptyAccount->setUsername('empty');
-        $emptyAccount->setMail('empty@test.com');
+        static::$emptyAccount = new Account();
+        static::$emptyAccount->setUsername('empty');
+        static::$emptyAccount->setMail('empty@test.com');
 
-        $encoder = $this->Container->get('test.security.encoder_factory')->getEncoder($emptyAccount);
-        $emptyAccount->setPassword($encoder->encodePassword('emptyPassword', $emptyAccount->getSalt()));
+        $encoder = $this->Container->get('test.security.encoder_factory')->getEncoder(static::$emptyAccount);
+        static::$emptyAccount->setPassword($encoder->encodePassword('emptyPassword', static::$emptyAccount->getSalt()));
 
-        $manager->persist($emptyAccount);
+        $manager->persist(static::$emptyAccount);
         $manager->flush();
 
-        $this->addReference('account-empty', $emptyAccount);
+        $this->addReference('account-empty', static::$emptyAccount);
     }
 
     protected function registerDefaultAccount(ObjectManager $manager)
     {
-        $defaultAccount = new Account();
-        $defaultAccount->setUsername('default');
-        $defaultAccount->setMail('default@test.com');
+        static::$defaultAccount = new Account();
+        static::$defaultAccount->setUsername('default');
+        static::$defaultAccount->setMail('default@test.com');
 
-        $registration = $this->registerAccount($manager, $defaultAccount, 'defaultPassword');
+        $registration = $this->registerAccount($manager, static::$defaultAccount, 'defaultPassword');
 
-        $this->addReference('account-default', $defaultAccount);
+        $this->addReference('account-default', static::$defaultAccount);
         $this->addReference('account-default.sport-running', $registration->getRegisteredSportForRunning());
         $this->addReference('account-default.sport-cycling', $registration->getRegisteredSportForCycling());
         $this->addReference('account-default.equipment-type-clothes', $registration->getRegisteredEquipmentTypeClothes());
