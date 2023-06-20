@@ -5,7 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Runalyze\Bundle\CoreBundle\Model\Sport\SportStatistics;
 use Runalyze\Profile\Sport\Running;
 use Runalyze\Profile\Sport\SportProfile;
@@ -13,7 +13,7 @@ use Runalyze\Util\LocalTime;
 
 class SportRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sport::class);
     }
