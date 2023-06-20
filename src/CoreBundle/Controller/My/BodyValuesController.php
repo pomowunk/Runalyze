@@ -11,7 +11,7 @@ use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Metrics\HeartRate\Unit\BeatsPerMinute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/my/body-values")
  * @Security("has_role('ROLE_USER')")
  */
-class BodyValuesController extends Controller
+class BodyValuesController extends AbstractController
 {
     /**
      * @Route("/add", name="body-values-add")

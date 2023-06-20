@@ -21,7 +21,7 @@ use Runalyze\Configuration;
 use Runalyze\Language;
 use Runalyze\Dataset as RunalyzeDataset;
 use Runalyze\Dataset\Keys;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class SettingsController extends Controller
+class SettingsController extends AbstractController
 {
     /**
      * @Route("/settings/account", name="settings-account")

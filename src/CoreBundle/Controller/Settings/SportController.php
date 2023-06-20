@@ -15,7 +15,7 @@ use Runalyze\Profile\Sport\SportProfile;
 use Runalyze\Profile\View\DataBrowserRowProfile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @Route("/settings/sport")
  * @Security("has_role('ROLE_USER')")
  */
-class SportController extends Controller
+class SportController extends AbstractController
 {
     /** @var AutomaticReloadFlagSetter */
     protected $automaticReloadFlagSetter;

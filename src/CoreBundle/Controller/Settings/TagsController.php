@@ -8,7 +8,7 @@ use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
 use Runalyze\Bundle\CoreBundle\Form\Settings\TagType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @Route("/settings/tags")
  * @Security("has_role('ROLE_USER')")
  */
-class TagsController extends Controller
+class TagsController extends AbstractController
 {
     /** @var TagRepository */
     protected $tagRepository;

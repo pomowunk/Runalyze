@@ -5,7 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Controller;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * @Route("/notifications")
  */
-class NotificationsController extends Controller
+class NotificationsController extends AbstractController
 {
     /**
      * @Route("", name="notifications-list")

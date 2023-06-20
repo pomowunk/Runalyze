@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Controller\Internal;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/_internal/upload")
  */
-class UploadController extends Controller
+class UploadController extends AbstractController
 {
     /** @var string */
     protected $activityImportDirectory;

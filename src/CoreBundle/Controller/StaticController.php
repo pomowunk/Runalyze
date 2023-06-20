@@ -3,10 +3,10 @@
 namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StaticController extends Controller
+class StaticController extends AbstractController
 {
     /** @var string */
     protected $runalyzeVersion;

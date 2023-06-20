@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Michael Pohl <michael@runalyze.de>
  * @package Runalyze\Bundle\CoreBundle\Controller
  */
-class UpdateController extends Controller
+class UpdateController extends AbstractController
 {
     /**
      * @Route("/update", name="update", condition="'%app.allow_update%' == true")

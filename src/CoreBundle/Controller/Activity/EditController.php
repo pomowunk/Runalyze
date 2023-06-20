@@ -22,13 +22,13 @@ use Runalyze\Service\ElevationCorrection\Strategy\GeoTiff;
 use Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class EditController extends Controller
+class EditController extends AbstractController
 {
     /** @var AutomaticReloadFlagSetter */
     protected $automaticReloadFlagSetter;

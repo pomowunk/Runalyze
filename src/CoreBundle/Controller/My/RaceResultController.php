@@ -13,7 +13,7 @@ use Runalyze\Bundle\CoreBundle\Form\RaceResultType;
 use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup;
 use Runalyze\Bundle\CoreBundle\Services\LegacyCache;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/my/raceresult")
  * @Security("has_role('ROLE_USER')")
  */
-class RaceResultController extends Controller
+class RaceResultController extends AbstractController
 {
     /**
      * @return RaceresultRepository

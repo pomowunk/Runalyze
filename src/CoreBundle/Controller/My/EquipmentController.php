@@ -12,7 +12,7 @@ use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @Route("/my/equipment")
  * @Security("has_role('ROLE_USER')")
  */
-class EquipmentController extends Controller
+class EquipmentController extends AbstractController
 {
     /** @var AutomaticReloadFlagSetter */
     protected $automaticReloadFlagSetter;

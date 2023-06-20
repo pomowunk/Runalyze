@@ -8,12 +8,12 @@ use Runalyze\Bundle\CoreBundle\Form\Settings\PrivacyType;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class PrivacyController extends Controller
+class PrivacyController extends AbstractController
 {
     /**
      * @Route("/settings/privacy", name="settings-privacy")
