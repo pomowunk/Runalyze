@@ -29,7 +29,11 @@
                             <li class="separator"></li>
                             <li><a class="window" href="{{ url('settings-account') }}"><i class="fa fa-fw fa-cogs"></i>&nbsp;{% trans %}Account settings{% endtrans %}</a></li>
                             <li><a class="window" href="{{ url('settings-privacy') }}"><i class="fa fa-fw fa-unlock-alt"></i>&nbsp;{% trans %}Privacy settings{% endtrans %}</a></li>
-                            <li><a class="window" href="{{ url('logout') }}"><i class="fa fa-fw fa-sign-out"></i>&nbsp;{% trans %}Logout{% endtrans %}</a></li>
+                            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <li><a href="{{ impersonation_exit_path(path('dashboard')) }}"><i class="fa fa-fw fa-sign-out"></i>&nbsp;{% trans %}Exit Impersonation{% endtrans %}</a></li>
+                            {% else %}
+                                <li><a class="window" href="{{ url('logout') }}"><i class="fa fa-fw fa-sign-out"></i>&nbsp;{% trans %}Logout{% endtrans %}</a></li>
+                            {% endif %}
                         </ul>
                     </div>
 

@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * SwitchUserListener allows a user to impersonate another one temporarily
@@ -28,7 +28,7 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SwitchUserListener implements ListenerInterface
+class SwitchUserListener
 {
     private $tokenStorage;
     private $provider;
@@ -64,7 +64,7 @@ class SwitchUserListener implements ListenerInterface
      *
      * @throws \LogicException if switching to a user failed
      */
-    public function handle(GetResponseEvent $event)
+    public function __invoke(RequestEvent $event)
     {
         $request = $event->getRequest();
 

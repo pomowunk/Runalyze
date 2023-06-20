@@ -49,7 +49,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
                 <li class="separator"></li>
                 <li><a class="window" href="<?php echo $this->get('router')->generate('settings-account'); ?>"><i class="fa fa-fw fa-cogs"></i>&nbsp;<?php _e('Account settings'); ?></a></li>
                 <li><a class="window" href="<?php echo $this->get('router')->generate('settings-privacy'); ?>"><i class="fa fa-fw fa-unlock-alt"></i>&nbsp;<?php _e('Privacy settings'); ?></a></li>
-                <li><a class="window" href="<?php echo $this->get('router')->generate('logout'); ?>"><i class="fa fa-fw fa-sign-out"></i>&nbsp;<?php _e('Logout'); ?></a></li>
+	            <?php if ($this instanceof AbstractController && $this->get('security.authorization_checker')->isGranted('ROLE_PREVIOUS_ADMIN')): ?>
+                    <li><a href="<?php echo $this->get('router')->generate('dashboard', ['_switch_user' => '_exit']); ?>"><i class="fa fa-fw fa-sign-out"></i>&nbsp;<?php _e('Exit impersonation'); ?></a></li>
+                <?php else: ?>
+                    <li><a class="window" href="<?php echo $this->get('router')->generate('logout'); ?>"><i class="fa fa-fw fa-sign-out"></i>&nbsp;<?php _e('Logout'); ?></a></li>
+                <?php endif; ?>
             </ul>
         </div>
 
