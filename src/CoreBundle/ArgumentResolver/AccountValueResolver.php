@@ -20,21 +20,11 @@ class AccountValueResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        if (Account::class !== $argument->getType()) {
-            return false;
-        }
-
-        $token = $this->tokenStorage->getToken();
-
-        if (!$token instanceof TokenInterface) {
-            return false;
-        }
-
-        return $token->getUser() instanceof Account;
+        return Account::class === $argument->getType();
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
-        yield $this->tokenStorage->getToken()->getUser();
+        yield $this->tokenStorage->getToken()->getUser() ?? null;
     }
 }
