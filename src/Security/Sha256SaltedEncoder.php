@@ -1,6 +1,6 @@
 <?php
 
-namespace Runalyze\Bundle\CoreBundle\Services;
+namespace App\Security;
 
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
@@ -25,5 +25,10 @@ class Sha256SaltedEncoder implements PasswordEncoderInterface
     public function isPasswordValid($encoded, $raw, $salt)
     {
         return $encoded === $this->encodePassword($raw, $salt);
+    }
+
+    public function needsRehash(string $encoded): bool
+    {
+        return false;
     }
 }

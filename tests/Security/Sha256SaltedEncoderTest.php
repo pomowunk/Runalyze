@@ -1,9 +1,9 @@
 <?php
 
-namespace Runalyze\Bundle\CoreBundle\Tests\Services;
+namespace App\Tests\Security;
 
 use PHPUnit\Framework\TestCase;
-use Runalyze\Bundle\CoreBundle\Services\Sha256SaltedEncoder;
+use App\Security\Sha256SaltedEncoder;
 
 class Sha256SaltedEncoderTest extends TestCase
 {

@@ -1,7 +1,7 @@
 security:
     encoders:
         Runalyze\Bundle\CoreBundle\Entity\Account:
-            id: Runalyze\Bundle\CoreBundle\Services\Sha256SaltedEncoder
+            id: App\Security\Sha256SaltedEncoder
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         runalyzeuser:
