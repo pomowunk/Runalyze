@@ -8,7 +8,7 @@
             </ul>
         </div>
 
-        {% if isNew %}
+        {% if isNew|default(false) %}
             <h1>{{ 'Add body values'|trans }}</h1>
         {% else %}
             <h1>{{ 'Edit body values'|trans }}</h1>

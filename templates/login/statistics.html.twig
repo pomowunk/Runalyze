@@ -1,4 +1,4 @@
-{% if num.user > 0 %}
+{% if num|default(null) and num.user > 0 %}
 <p class="text small c login-window-stats">
     {% transchoice num.user %}{1} Until now <strong>%count%</strong> athlete is registered and|]1,Inf[ Until now <strong>%count%</strong> athletes are registered and{% endtranschoice %}
 

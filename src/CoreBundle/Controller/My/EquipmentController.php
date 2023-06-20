@@ -51,7 +51,7 @@ class EquipmentController extends AbstractController
         $equipmentStatistics = $this->equipmentRepository->getStatisticsForType($typeid, $account);
 
         if (null === $equipmentType) {
-            throw $this->createAccessDeniedException();
+            return $this->overviewAction($account);
         }
 
         $unitSystem = $configurationManager->getList()->getUnitSystem();

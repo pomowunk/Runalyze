@@ -2,10 +2,10 @@
 
 {% block messages %}
     <p class="info">
-        {% if username %}
+        {% if username|default(null) %}
         {% trans with {'%username%': username}%}Hi %username%{% endtrans %}<br>
         {% endif %}
-        {% if alreadyActivated %}
+        {% if alreadyActivated|default(null) %}
             {% trans %}Your account has already been activated.{% endtrans %}
         {% else %}
             {% trans %}Your account has been activated.{% endtrans %}

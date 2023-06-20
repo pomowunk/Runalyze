@@ -193,7 +193,7 @@
             </fieldset>
             {% endif %}
 
-            {% if form.data_series_remover %}
+            {% if form.data_series_remover|default(null) %}
             <fieldset id="fieldset-remove-data-series" class="collapsed">
                 <legend onclick="Runalyze.toggleFieldset(this, 'fieldset-remove-data-series', false, '')">{% trans %}Remove data series{% endtrans %}</legend>
 
@@ -226,11 +226,11 @@
         {{ form_end(form) }}
     </div>
 
-    {% if prev_activity_id is not null and not isMulti %}
+    {% if prev_activity_id is not null and not isMulti|default(null) %}
     <a data-size="small" id="ajax-prev" class="window black-rounded-icon" href="{{ url('activity-edit', {'id': prev_activity_id}) }}"><i class="fa fa-fw fa-chevron-left"></i></a>
     {% endif %}
 
-    {% if next_activity_id is not null and not isMulti %}
+    {% if next_activity_id is not null and not isMulti|default(null) %}
         <a data-size="small" id="ajax-next" class="window black-rounded-icon" href="{{ url('activity-edit', {'id': next_activity_id}) }}"><i class="fa fa-fw fa-chevron-right"></i></a>
     {% endif %}
 
@@ -242,7 +242,7 @@
             loadWeather: {{ configVar('activity-form.TRAINING_LOAD_WEATHER') }}
         });
 
-        {% if isMulti %}
+        {% if isMulti|default(null) %}
         var $nav = $("#ajax-navigation");
         $nav.find("tr.link.highlight").removeClass("highlight").addClass("edited");
         $nav.find("tr[data-activity={{ activity_id }}]").removeClass("edited").addClass("highlight");

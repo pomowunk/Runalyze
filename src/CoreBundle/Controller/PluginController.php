@@ -3,6 +3,10 @@
 namespace Runalyze\Bundle\CoreBundle\Controller;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +22,16 @@ class PluginController extends AbstractPluginsAwareController
     public function __construct(
         TokenStorageInterface $tokenStorage,
         ParameterBagInterface $parameterBag,
+        SportRepository $sportRepository,
+        ConfigurationManager $configurationManager,
+        SportSelectionFactory $sportSelectionFactory,
+        TrainingRepository $trainingRepository,
     )
     {
         $this->tokenStorage = $tokenStorage;
         $this->parameterBag = $parameterBag;
+
+        parent::__construct($sportRepository, $configurationManager, $sportSelectionFactory, $trainingRepository);
     }
 
     /**
