@@ -17,7 +17,7 @@ class NotificationsController extends AbstractController
 {
     /**
      * @Route("", name="notifications-list")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function newNotificationsAction(
         Account $account,

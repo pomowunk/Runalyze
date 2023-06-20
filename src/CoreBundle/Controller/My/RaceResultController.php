@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/my/raceresult")
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('ROLE_USER')")
  */
 class RaceResultController extends AbstractController
 {
@@ -104,7 +104,7 @@ class RaceResultController extends AbstractController
 
     /**
      * @Route("/performance-chart", name="race-results-performance-chart")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function performanceChartAction(
         Account $account,

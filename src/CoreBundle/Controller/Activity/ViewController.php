@@ -56,7 +56,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}", name="ActivityShow", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @ParamConverter("activity", class="CoreBundle:Training")
      */
     public function displayAction(
@@ -92,7 +92,7 @@ class ViewController extends AbstractController
     /**
      * @Route("/activity/{id}/vo2max-info")
      * @ParamConverter("activity", class="CoreBundle:Training")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function vo2maxInfoAction(
         Training $activity,
@@ -113,7 +113,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/splits-info", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function splitsInfoAction($id, Account $account) {
         
@@ -133,7 +133,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/elevation-info", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function elevationInfoAction($id, Request $request, Account $account)
     {
@@ -164,7 +164,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/time-series-info", requirements={"id" = "\d+"}, name="activity-tool-time-series-info")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function timeSeriesInfoAction($id, Account $account)
     {
@@ -195,7 +195,7 @@ class ViewController extends AbstractController
     /**
      * @Route("/activity/{id}/sub-segments-info", requirements={"id" = "\d+"}, name="activity-tool-sub-segments-info")
      * @ParamConverter("activity", class="CoreBundle:Training")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function subSegmentInfoAction($id, Training $activity, Account $account, ConfigurationManager $confManager)
     {

@@ -28,7 +28,7 @@ class ExportController extends AbstractController
 
     /**
      * @Route("/activity/{id}/export/social/{typeid}", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function exporterExportAction(
         $id, 
@@ -51,7 +51,7 @@ class ExportController extends AbstractController
 
     /**
      * @Route("/activity/{id}/export/file/{typeid}", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function fileExportAction(
         $id,

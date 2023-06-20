@@ -19,7 +19,7 @@ class PanelController extends AbstractController
 
     /**
      * @Route("/sport", name="internal-sport-panel")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function sportStatAction(Request $request, Account $account, SportRepository $sportRepository)
     {

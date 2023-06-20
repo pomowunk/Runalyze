@@ -19,7 +19,7 @@ class RaceResultsController extends AbstractController
 {
     /**
      * @Route("/all", name="internal-data-race-results-all")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function allRaceResultsAction(
         Account $account,

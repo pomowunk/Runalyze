@@ -22,7 +22,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/settings/sport")
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('ROLE_USER')")
  */
 class SportController extends AbstractController
 {

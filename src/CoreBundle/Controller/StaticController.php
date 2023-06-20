@@ -19,7 +19,7 @@ class StaticController extends AbstractController
 
     /**
      * @Route("/dashboard/help", name="help")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function dashboardHelpAction()
     {
@@ -30,7 +30,7 @@ class StaticController extends AbstractController
 
     /**
      * @Route("/dashboard/help-calculations", name="help-calculations")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function dashboardHelpCalculationsAction()
     {

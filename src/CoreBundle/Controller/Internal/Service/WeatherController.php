@@ -23,7 +23,7 @@ class WeatherController extends AbstractController
 {
     /**
      * @Route("", name="internal-service-weather")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function fetchWeatherDataAction(
         Request $request,

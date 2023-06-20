@@ -29,7 +29,7 @@ class NotificationsController extends AbstractController
 
     /**
      * @Route("/read/all", name="internal-notifications-read-all")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function readAllNotificationsAction(Account $account)
     {
@@ -41,7 +41,7 @@ class NotificationsController extends AbstractController
     /**
      * @Route("/read/{id}", name="internal-notifications-read")
      * @ParamConverter("notification", class="CoreBundle:Notification")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function readNotificationAction(Notification $notification, Account $account)
     {
@@ -56,7 +56,7 @@ class NotificationsController extends AbstractController
 
     /**
      * @Route("", name="internal-notifications-list")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function newNotificationsAction(Request $request, Account $account, RouterInterface $router, TranslatorInterface $translator)
     {

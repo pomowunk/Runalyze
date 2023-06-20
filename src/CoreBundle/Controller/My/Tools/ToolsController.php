@@ -64,7 +64,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/cleanup", name="tools-cleanup")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function cleanupAction(
         Request $request,
@@ -99,7 +99,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/tables/vo2max-pace", name="tools-tables-vo2max-pace")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function tableVo2maxPaceAction()
     {
@@ -115,7 +115,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/tables/general-pace", name="tools-tables-general-pace")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function tableGeneralPaceAction()
     {
@@ -125,7 +125,7 @@ class ToolsController extends AbstractController
     /**
      * @Route("/my/tools/tables/vo2max", name="tools-tables-vo2max")
      * @Route("/my/tools/tables", name="tools-tables")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function tableVo2maxRaceResultAction()
     {
@@ -139,7 +139,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/vo2max-analysis", name="tools-vo2max-analysis")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function vo2maxAnalysisAction(
         Account $account, 
@@ -166,7 +166,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/anova", name="tools-anova")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function anovaAction(Request $request, Account $account)
     {
@@ -202,7 +202,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/trend-analysis", name="tools-trend-analysis")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function trendAnalysisAction(Request $request, Account $account)
     {
@@ -237,7 +237,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/poster", name="poster")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @todo Fix poster generation by migrating to symfony/messenger.
      */
     public function posterAction(
@@ -291,7 +291,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools/poster/{name}", name="poster-download", requirements={"name": ".+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function posterDownloadAction(Account $account, $name, FileHandler $fileHandler)
     {
@@ -300,7 +300,7 @@ class ToolsController extends AbstractController
 
     /**
      * @Route("/my/tools", name="tools")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function overviewAction(Availability $availability)
     {

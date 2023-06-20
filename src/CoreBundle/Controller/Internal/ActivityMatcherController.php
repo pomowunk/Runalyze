@@ -15,7 +15,7 @@ class ActivityMatcherController extends AbstractController
 {
     /**
      * @Route("/_internal/activity/matcher", name="internal-activity-matcher")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function ajaxActivityMatcher(DuplicateFinder $duplicateFinder, ConfigurationManager $configurationManager)
     {

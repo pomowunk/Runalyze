@@ -26,7 +26,7 @@ class UploadController extends AbstractController
 
     /**
      * @Route("", name="internal-activity-upload")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function uploadAction(Request $request)
     {
@@ -60,7 +60,7 @@ class UploadController extends AbstractController
 
     /**
      * @Route("/tcx", name="internal-activity-upload-tcx")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function ajaxSaveTcxAction(Request $request)
     {

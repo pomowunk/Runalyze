@@ -39,7 +39,7 @@ class JsonImportToolController extends AbstractController
 
     /**
      * @Route("/upload", name="tools-backup-json-upload")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function backupUploadAction(Request $request, FlashBagInterface $flashBag)
     {
@@ -69,7 +69,7 @@ class JsonImportToolController extends AbstractController
 
     /**
      * @Route("/import", name="tools-backup-json-import")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function backupImportAction(FlashBagInterface $flashBag)
     {
@@ -103,7 +103,7 @@ class JsonImportToolController extends AbstractController
 
     /**
      * @Route("/import/do", name="tools-backup-json-import-do")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function backupImportDoAction(
         Request $request,
@@ -147,7 +147,7 @@ class JsonImportToolController extends AbstractController
 
     /**
      * @Route("", name="tools-backup-json")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function uploadFormAction()
     {

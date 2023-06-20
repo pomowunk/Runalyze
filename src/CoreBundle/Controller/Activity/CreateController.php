@@ -94,7 +94,7 @@ class CreateController extends AbstractController
 
     /**
      * @Route("/activity/add", name="activity-add")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function createAction()
     {
@@ -111,7 +111,7 @@ class CreateController extends AbstractController
 
     /**
      * @Route("/activity/communicator", name="activity-communicator")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function communicatorAction()
     {
@@ -120,7 +120,7 @@ class CreateController extends AbstractController
 
     /**
      * @Route("/activity/communicator/iframe", name="activity-communicator-iframe")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function communicatorIFrameAction()
     {
@@ -131,7 +131,7 @@ class CreateController extends AbstractController
 
     /**
      * @Route("/activity/upload", name="activity-upload")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function uploadAction(Request $request, Account $account, FileImporter $fileImporter, ActivityDataContainerFilter $filter)
     {
@@ -229,7 +229,7 @@ class CreateController extends AbstractController
 
     /**
      * @Route("/activity/multi-import", name="activity-multi-importer")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function multiImporterAction(Request $request, Account $account)
     {
@@ -275,7 +275,7 @@ class CreateController extends AbstractController
 
     /**
      * @Route("/activity/new", name="activity-new")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function newAction(Request $request, Account $account)
     {

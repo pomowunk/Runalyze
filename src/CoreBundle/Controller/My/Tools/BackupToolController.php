@@ -32,7 +32,7 @@ class BackupToolController extends AbstractController
 
     /**
      * @Route("/download/{filename}", name="tools-backup-download", requirements={"filename": ".+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      *
      * @param string $filename
      * @param Account $account
@@ -66,7 +66,7 @@ class BackupToolController extends AbstractController
 
     /**
      * @Route("", name="tools-backup")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @todo Fix backup by migrating to symfony/messenger.
      */
     public function backupAction(

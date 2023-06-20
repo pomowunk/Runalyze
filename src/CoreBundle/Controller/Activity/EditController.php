@@ -63,7 +63,7 @@ class EditController extends AbstractController
 
     /**
      * @Route("/activity/{id}/edit", name="activity-edit", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @ParamConverter("activity", class="CoreBundle:Training")
      */
     public function activityEditAction(Request $request, Training $activity, Account $account, DataSeriesRemover $dataSeriesRemover, RaceresultRepository $raceresultRepository, ActivityContextFactory $activityContextFactory)
@@ -118,7 +118,7 @@ class EditController extends AbstractController
 
     /**
      * @Route("/activity/multi-editor", name="multi-editor")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function multiEditorAction(Request $request, Account $account)
     {
@@ -145,7 +145,7 @@ class EditController extends AbstractController
 
    /**
     * @Route("/activity/{id}/delete", name="activity-delete", requirements={"id" = "\d+"})
-    * @Security("has_role('ROLE_USER')")
+    * @Security("is_granted('ROLE_USER')")
     * @ParamConverter("activity", class="CoreBundle:Training")
     */
    public function deleteAction(Training $activity, Account $account)
@@ -163,7 +163,7 @@ class EditController extends AbstractController
 
     /**
      * @Route("/activity/{id}/elevation-correction", name="activity-elevation-correction", requirements={"id" = "\d+"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @ParamConverter("activity", class="CoreBundle:Training")
      */
     public function elevationCorrectionAction(Request $request, Training $activity, Account $account, ElevationCorrection $elevationCorrection, GeoTiff $geotiff, Geonames $geonames, GoogleMaps $googleMaps)

@@ -24,7 +24,7 @@ class CallController extends AbstractController
     /**
      * @Route("/call/call.DataBrowser.display.php")
      * @Route("databrowser", name="databrowser")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function dataBrowserAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {
@@ -38,7 +38,7 @@ class CallController extends AbstractController
     /**
      * @Route("/call/call.garminCommunicator.php")
      * @Route("/upload/garminCommunicator")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function garminCommunicatorAction()
     {
@@ -49,7 +49,7 @@ class CallController extends AbstractController
 
     /**
      * @Route("/call/savePng.php", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function savePngAction()
     {
@@ -63,7 +63,7 @@ class CallController extends AbstractController
 
     /**
      * @Route("/settings", name="settings")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function windowConfigAction(
         Request $request,
@@ -84,7 +84,7 @@ class CallController extends AbstractController
 
     /**
      * @Route("/call/ajax.change.Config.php")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function ajaxChanceConfigAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {
@@ -111,7 +111,7 @@ class CallController extends AbstractController
 
     /**
      * @Route("/my/search", name="my-search")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function windowSearchAction(ParameterBagInterface $parameterBag, TokenStorageInterface $tokenStorage)
     {

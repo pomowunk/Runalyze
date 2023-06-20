@@ -15,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/settings/tags")
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('ROLE_USER')")
  */
 class TagsController extends AbstractController
 {

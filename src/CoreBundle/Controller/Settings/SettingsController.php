@@ -34,7 +34,7 @@ class SettingsController extends AbstractController
 {
     /**
      * @Route("/settings/account", name="settings-account")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsAccountAction(
         Request $request,
@@ -86,7 +86,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/password", name="settings-password")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsPasswordAction(
         Request $request,
@@ -116,7 +116,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/mail", name="settings-mail")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsMailAction(
         Request $request,
@@ -151,7 +151,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/account/delete", name="settings-account-delete")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function windowDeleteAction(
@@ -169,7 +169,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/dataset", name="settings-dataset-update", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function datasetPostAction(
         Account $account,
@@ -200,7 +200,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/dataset", name="settings-dataset")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function datasetAction(
         Account $account,

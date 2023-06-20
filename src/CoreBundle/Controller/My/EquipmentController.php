@@ -19,7 +19,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/my/equipment")
- * @Security("has_role('ROLE_USER')")
+ * @Security("is_granted('ROLE_USER')")
  */
 class EquipmentController extends AbstractController
 {

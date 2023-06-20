@@ -17,7 +17,7 @@ class PrivacyController extends AbstractController
 {
     /**
      * @Route("/settings/privacy", name="settings-privacy")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsAccountAction(
         Request $request,

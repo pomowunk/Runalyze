@@ -63,7 +63,7 @@ class DefaultController extends AbstractPluginsAwareController
 
     /**
      * @Route("/dashboard", name="dashboard")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function dashboardAction(Request $request, Account $account, TokenStorageInterface $tokenStorage, ParameterBagInterface $parameterBag)
     {
@@ -281,7 +281,7 @@ class DefaultController extends AbstractPluginsAwareController
 
     /**
      * @Route("/feedback", name="feedback")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function feedbackAction(
         Request $request,
