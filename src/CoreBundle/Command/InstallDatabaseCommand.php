@@ -3,25 +3,21 @@
 namespace Runalyze\Bundle\CoreBundle\Command;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InstallDatabaseCommand extends ContainerAwareCommand
+class InstallDatabaseCommand extends Command
 {
-    /** @var string */
     const DATABASE_STRUCTURE_FILE = '/inc/install/structure.sql';
 
-    /** @var Connection */
-    protected $connection;
+    protected static $defaultName = 'runalyze:install:database';
 
-    /** @var string */
-    protected $projectDirectory;
-
-    /** @var string */
-    protected $databasePrefix;
+    protected Connection $connection;
+    protected string $projectDirectory;
+    protected string $databasePrefix;
 
     public function __construct(
         Connection $connection,
@@ -38,18 +34,11 @@ class InstallDatabaseCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:install:database')
             ->setDescription('Setup RUNALYZE database.')
         ;
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Setup RUNALYZE database...</info>');
         $output->writeln('');
@@ -61,6 +50,8 @@ class InstallDatabaseCommand extends ContainerAwareCommand
 
         $this->addAllMigrationsToDatabase();
         $output->writeln('  <info>Database was migrated to current status.</info>');
+
+        return 0;
     }
 
     /**
@@ -107,14 +98,7 @@ class InstallDatabaseCommand extends ContainerAwareCommand
         $app->run($input, $output);
     }
 
-    /**
-     * Import a sql-file
-     * @param string $filename
-     * @param string $databasePrefix
-     * @param bool $removeDelimiter
-     * @return array
-     */
-    public function getSqlFileAsArray($filename, $databasePrefix, $removeDelimiter = true)
+    public function getSqlFileAsArray(string $filename, string $databasePrefix, bool $removeDelimiter = true): array
     {
         $MRK = array('DELIMITER', 'USE', 'SET', 'LOCK', 'SHOW', 'DROP', 'GRANT', 'ALTER', 'UNLOCK', 'CREATE', 'INSERT', 'UPDATE', 'DELETE', 'REVOKE', 'REPLACE', 'RENAME', 'TRUNCATE');
         $SQL = @file($filename);

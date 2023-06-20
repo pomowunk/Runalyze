@@ -5,15 +5,12 @@ namespace Runalyze\Bundle\CoreBundle\Command;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 
-class InstallCheckCommand extends ContainerAwareCommand
+class InstallCheckCommand extends Command
 {
     /** @var string */
-    const REQUIRED_PHP_VERSION = '5.5.9';
-
-    /** @var int exit code */
-    const CHECK_FAILED = 1;
+    const REQUIRED_PHP_VERSION = '8.0.0';
 
     /** @var int bit flag for return code */
     const OKAY = 0x00;
@@ -24,7 +21,8 @@ class InstallCheckCommand extends ContainerAwareCommand
     /** @var int bit flag for return code */
     const ERROR = 0x10;
 
-    /** @var int current return code */
+    protected static $defaultName = 'runalyze:install:check';
+
     protected int $ReturnCode = 0x00;
 
     /** @var array[] */
@@ -54,11 +52,8 @@ class InstallCheckCommand extends ContainerAwareCommand
     protected array $DirectoriesThatMustBeWritable = [
         '/var/',
     ];
-
     protected Connection $connection;
-
     protected string $projectDirectory;
-
     protected string $databasePrefix;
 
     public function __construct(
@@ -76,15 +71,11 @@ class InstallCheckCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:install:check')
             ->setDescription('Check requirements for installing RUNALYZE.')
         ;
     }
 
-    /**
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Check requirements...</info>');
         $output->writeln('');
@@ -108,9 +99,7 @@ class InstallCheckCommand extends ContainerAwareCommand
 
         $output->writeln('  '.$this->getFinalMessage());
 
-        if ($this->ReturnCode & self::ERROR) {
-            return self::CHECK_FAILED;
-        }
+        return $this->ReturnCode & self::ERROR ? 1 : 0;
     }
 
     protected function getFinalMessage(): string

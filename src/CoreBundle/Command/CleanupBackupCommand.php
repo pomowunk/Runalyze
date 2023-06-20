@@ -2,15 +2,17 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class CleanupBackupCommand extends ContainerAwareCommand
+class CleanupBackupCommand extends Command
 {
+    protected static $defaultName = 'runalyze:cleanup:backups';
+
     protected Filesystem $filesystem;
     protected string $backupExportDirectory;
     protected string $backupStoragePeriod;
@@ -27,19 +29,12 @@ class CleanupBackupCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:cleanup:backups')
             ->setDescription('Cleanup user backups older than parameter: backup_storage_period')
             ->addArgument('days', InputArgument::OPTIONAL, 'min. age backups')
         ;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = $input->getArgument('days') ?: $this->backupStoragePeriod;
         $output->writeln(sprintf('<info>Delete all backups older than %s days</info>', $days));

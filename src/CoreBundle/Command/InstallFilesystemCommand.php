@@ -2,17 +2,17 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class InstallFilesystemCommand extends ContainerAwareCommand
+class InstallFilesystemCommand extends Command
 {
+    protected static $defaultName = 'runalyze:install:filesystem';
 
-    /** @var string */
-    protected $projectDirectory;
+    protected string $projectDirectory;
 
     public function __construct(string $projectDirectory)
     {
@@ -24,18 +24,11 @@ class InstallFilesystemCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:install:filesystem')
             ->setDescription('Setup RUNALYZE file system.')
         ;
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Setup RUNALYZE file system...</info>');
         $output->writeln('');
@@ -44,11 +37,10 @@ class InstallFilesystemCommand extends ContainerAwareCommand
 
         $output->writeln('<info>... done.</info>');
         $output->writeln('');
+
+        return 0;
     }
 
-    /**
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     */
     protected function tryToCopyHtaccess(OutputInterface $output)
     {
         $output->writeln('  <info>Copying .htaccess.dist to .htaccess ...</info>');
