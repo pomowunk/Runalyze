@@ -5,13 +5,13 @@ namespace Runalyze\Bundle\CoreBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Runalyze\Bundle\CoreBundle\Entity\Common\IdentifiableEntityInterface;
-use Runalyze\Parameter\Application\Timezone;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Runalyze\Model\Account\UserRole;
-use Runalyze\Profile\Athlete\Gender;
 use Runalyze\Bundle\CoreBundle\Validator\Constraints as RunalyzeAssert;
+use Runalyze\Model\Account\UserRole;
+use Runalyze\Parameter\Application\Timezone;
+use Runalyze\Profile\Athlete\Gender;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Account
@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("mail", message="This mail address is already in use")
  * @UniqueEntity("username", message="This username is already in use")
  */
-class Account implements AdvancedUserInterface, \Serializable, IdentifiableEntityInterface
+class Account implements UserInterface, \Serializable, IdentifiableEntityInterface
 {
     /**
      * @var string
@@ -786,25 +786,5 @@ class Account implements AdvancedUserInterface, \Serializable, IdentifiableEntit
 	        $this->activationHash,
 	        $this->language
         ) = unserialize($serialized);
-    }
-
-    public function isAccountNonExpired()
-    {
-	    return true;
-    }
-
-    public function isAccountNonLocked()
-    {
-	    return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-	    return true;
-    }
-
-    public function isEnabled()
-    {
-	    return empty($this->getActivationHash());
     }
 }
