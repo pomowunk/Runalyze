@@ -11,19 +11,14 @@ use Symfony\Component\Finder\Finder;
 
 class CleanupBackupCommand extends ContainerAwareCommand
 {
-    /** @var Filesystem */
-    protected $filesystem;
+    protected Filesystem $filesystem;
+    protected string $backupExportDirectory;
+    protected string $backupStoragePeriod;
 
-    /** @var string */
-    protected $dataDirectory;
-
-    /** @var string */
-    protected $backupStoragePeriod;
-
-    public function __construct(Filesystem $filesystem, string $dataDirectory, string $backupStoragePeriod)
+    public function __construct(Filesystem $filesystem, string $backupExportDirectory, string $backupStoragePeriod)
     {
         $this->filesystem = $filesystem;
-        $this->dataDirectory = $dataDirectory;
+        $this->backupExportDirectory = $backupExportDirectory;
         $this->backupStoragePeriod = $backupStoragePeriod;
 
         parent::__construct();
@@ -53,7 +48,7 @@ class CleanupBackupCommand extends ContainerAwareCommand
         $finder
             ->files()
             ->name('*.gz')
-            ->in($this->dataDirectory.'/backup-tool/backup')
+            ->in($this->backupExportDirectory)
             ->date(sprintf('until %s days ago', $days));
 
         $deleted= $finder->count();

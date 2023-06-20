@@ -77,39 +77,27 @@ class CyclingPowerCalculator extends AbstractPowerCalculator {
 		$Fwpr = 0.5 * self::AREA * self::CW * $this->rho();
 		$Fslp = $weight * self::GRAVITY;
 
-		try {
-			for ($i = 0; $i < $this->Size - 1; $i++) {
-				if ($i%$everyNthPoint == 0) {
-					if ($i + $n > $this->Size - 1) {
-						$n = $this->Size - $i - 1;
-					}
-
-					$distance = ($ArrayDist[$i+$n] - $ArrayDist[$i]) * 1000;
-					$grade = ($distance == 0 || !$calcGrade) ? 0 : ($ArrayElev[$i+$n] - $ArrayElev[$i]) / $distance;
+		for ($i = 0; $i < $this->Size - 1; $i++) {
+			if ($i%$everyNthPoint == 0) {
+				if ($i + $n > $this->Size - 1) {
+					$n = $this->Size - $i - 1;
 				}
 
-				$distance = $ArrayDist[$i+1] - $ArrayDist[$i];
-				$time = $ArrayTime[$i+1] - $ArrayTime[$i];
-
-				if ($time > 0) {
-					$Vmps = $distance * 1000 / $time;
-					$Fw   = $Fwpr * $Vmps * $Vmps;
-					$Fsl  = $Fslp * $grade;
-					$this->Power[] = (int)round(max($powerFactor * ($Frl + $Fw + $Fsl) * $Vmps, 0));
-				} else {
-					$this->Power[] = 0;
-				}
+				$distance = ($ArrayDist[$i+$n] - $ArrayDist[$i]) * 1000;
+				$grade = ($distance == 0 || !$calcGrade) ? 0 : ($ArrayElev[$i+$n] - $ArrayElev[$i]) / $distance;
 			}
-		} catch (\Throwable $th) {
-			file_put_contents('/home/felix/runalyze/Runalyze/data/dbg.txt', print_r([
-				'elev' => $ArrayElev,
-				'size' => $this->Size,
-				'distsize' => count($ArrayDist),
-				'elevsize' => count($ArrayElev),
-				'everynth' => $everyNthPoint,
-				'grade?' => $calcGrade
-			], 1));
-			throw $th;
+
+			$distance = $ArrayDist[$i+1] - $ArrayDist[$i];
+			$time = $ArrayTime[$i+1] - $ArrayTime[$i];
+
+			if ($time > 0) {
+				$Vmps = $distance * 1000 / $time;
+				$Fw   = $Fwpr * $Vmps * $Vmps;
+				$Fsl  = $Fslp * $grade;
+				$this->Power[] = (int)round(max($powerFactor * ($Frl + $Fw + $Fsl) * $Vmps, 0));
+			} else {
+				$this->Power[] = 0;
+			}
 		}
 
 		$this->Power[] = $this->Power[$this->Size-2]; /* XXX */

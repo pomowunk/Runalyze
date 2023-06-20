@@ -51,7 +51,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
     protected $trainingRepository;
 
     /** @var string */
-    protected $importDirectory;
+    protected $activityImportDirectory;
 
     public function __construct(
         AccountRepository $accountRepository,
@@ -62,7 +62,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         FileImporter $fileImporter,
         TokenStorageInterface $tokenStorage,
         TrainingRepository $trainingRepository,
-        string $dataDirectory)
+        string $activityImportDirectory)
     {
         $this->accountRepository = $accountRepository;
         $this->activityContextAdapterFactory = $activityContextAdapterFactory;
@@ -72,7 +72,7 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
         $this->fileImporter = $fileImporter;
         $this->tokenStorage = $tokenStorage;
         $this->trainingRepository = $trainingRepository;
-        $this->importDirectory = $dataDirectory.'/import/';
+        $this->activityImportDirectory = $activityImportDirectory;
 
         parent::__construct();
     }
@@ -111,6 +111,10 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
 
         $files = [];
 
+        if (!is_dir($this->activityImportDirectory)) {
+            mkdir($this->activityImportDirectory, 0777, true);
+        }
+
         foreach ($it as $fileinfo) {
             $file = $fileinfo->getFilename();
 
@@ -119,8 +123,8 @@ class ActivityBulkImportCommand extends ContainerAwareCommand
             }
 
             $filename = 'bulk-import'.uniqid().'_'.$file;
-            $fs->copy($path.'/'.$file, $this->importDirectory.$filename);
-            $files[] = $this->importDirectory.$filename;
+            $fs->copy($path.'/'.$file, $this->activityImportDirectory.$filename);
+            $files[] = $this->activityImportDirectory.$filename;
         }
 
         $importResult = $this->fileImporter->importFiles($files);

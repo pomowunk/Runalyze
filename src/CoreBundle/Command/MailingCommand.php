@@ -16,23 +16,16 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class MailingCommand extends ContainerAwareCommand
 {
-    /** @var string */
-    protected $customMailDirectory = '/mail/custom/';
-
     /** @var AccountMailer */
     protected $accountMailer;
 
     /** @var AccountRepository */
     protected $accountRepository;
 
-    /** @var string */
-    protected $dataDirectory;
-
-    public function __construct(AccountMailer $accountMailer, AccountRepository $accountRepository, string $dataDirectory)
+    public function __construct(AccountMailer $accountMailer, AccountRepository $accountRepository)
     {
         $this->accountMailer = $accountMailer;
         $this->accountRepository = $accountRepository;
-        $this->dataDirectory = $dataDirectory;
 
         parent::__construct();
     }
@@ -42,7 +35,7 @@ class MailingCommand extends ContainerAwareCommand
     {
         $this
             ->setName('runalyze:mails:send')
-            ->setDescription('Send out a mails to users with custom templates in data/vies/mail/custom')
+            ->setDescription('Send out a mails to users with custom templates')
             ->addArgument('template', InputArgument::REQUIRED, 'Template file')
             ->addOption('subject', null, InputOption::VALUE_REQUIRED, 'Mail subject')
             ->addOption('lang', null, InputOption::VALUE_REQUIRED, 'Languages to select accounts')
@@ -81,7 +74,7 @@ class MailingCommand extends ContainerAwareCommand
         }
         foreach($accounts as $account) {
             /** @var Account $account */
-            $this->accountMailer->sendMailTo($account, $input->getOption('subject'), $this->customMailDirectory . $input->getArgument('template'), ['account' => $account]);
+            $this->accountMailer->sendMailTo($account, $input->getOption('subject'), $input->getArgument('template'), ['account' => $account]);
         }
         $output->writeln(sprintf('<info>%u mail(s) have been sent.</info>', count($accounts)));
         $output->writeln('');
@@ -141,7 +134,7 @@ class MailingCommand extends ContainerAwareCommand
     protected function validateInput(InputInterface $input, OutputInterface $output)
     {
         return (
-            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template must exist in /data/views/mail/custom.') &&
+            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template not found.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('lang')), $output, 'Language keys must be alphabetic strings.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('exclude-lang')), $output, 'Language keys to exclude must be alphabetic strings.') &&
             $this->checkValidation($this->validateAccountIds($input->getOption('account')), $output, 'Account IDs must be integers.')
@@ -167,13 +160,12 @@ class MailingCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $templateName
+     * @param string $templatePath
      * @return bool
      */
-    protected function validateTemplate($templateName)
+    protected function validateTemplate($templatePath)
     {
-        $source = $this->dataDirectory.'/views'.$this->customMailDirectory.$templateName;
-        return (new Filesystem())->exists($source);
+        return (new Filesystem())->exists($templatePath);
     }
 
     /**

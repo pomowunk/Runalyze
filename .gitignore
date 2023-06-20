@@ -6,20 +6,18 @@
 php.ini
 
 #Runalyze
-public/assets/v2.x/img/backgrounds/My-*
-data/sessions/sess*
-data/timezone.sqlite
+/public/assets/v2.x/img/backgrounds/My-*
 *.mo
-inc/locale/*.po
+/inc/locale/*.po
 /.htaccess
 
 #assets
-node_modules/
-public/assets/css/*.css
-public/assets/js/*.js
-public/assets/js/*.map
-public/vendor/
-npm-debug.log
+/node_modules/
+/public/assets/css/*.css
+/public/assets/js/*.js
+/public/assets/js/*.map
+/public/vendor/
+/npm-debug.log
 
 ###> phpunit/phpunit ###
 /phpunit.xml
@@ -37,6 +35,6 @@ npm-debug.log
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-# /var/
+/var/
 /vendor/
 ###< symfony/framework-bundle ###

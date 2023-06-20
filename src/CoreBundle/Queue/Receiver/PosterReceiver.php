@@ -45,7 +45,7 @@ class PosterReceiver
     protected $AccountMailer;
 
     /** @var string */
-    protected $dataDirectory;
+    protected $posterExportDirectory;
 
     /** @var string */
     protected $RsvgPath;
@@ -62,7 +62,7 @@ class PosterReceiver
         GeneratePoster $generatePoster,
         FileHandler $posterFileHandler,
         AccountMailer $accountMailer,
-        string $dataDirectory,
+        string $posterExportDirectory,
         string $rsvgPath,
         string $inkscapePath)
     {
@@ -74,7 +74,7 @@ class PosterReceiver
         $this->GeneratePoster = $generatePoster;
         $this->FileHandler = $posterFileHandler;
         $this->AccountMailer = $accountMailer;
-        $this->dataDirectory = $dataDirectory;
+        $this->posterExportDirectory = $posterExportDirectory;
         $this->RsvgPath = $rsvgPath;
         $this->InkscapePath = $inkscapePath;
     }
@@ -86,6 +86,10 @@ class PosterReceiver
 
         if (null === $account || null === $sport || $sport->getAccount()->getId() != $account->getId()) {
             return;
+        }
+
+        if (!is_dir($this->posterExportDirectory)) {
+            mkdir($this->posterExportDirectory, 0777, true);
         }
 
         $generatedFiles = 0;
@@ -109,7 +113,7 @@ class PosterReceiver
                     );
 
                     $finalName = $this->FileHandler->buildFinalFileName($account, $sport, $message->get('year'), $type, $message->get('size'));
-                    $finalFile = $this->exportDirectory().$finalName;
+                    $finalFile = $this->posterExportDirectory.$finalName;
 
                     $gen = $this->GeneratePoster->generate();
                     if (!(new Filesystem())->exists($gen)) {
@@ -117,12 +121,12 @@ class PosterReceiver
                     } else {
                         $converter = $this->getConverter($type);
                         $converter->setHeight($message->get('size'));
-                        $exitCode = $converter->callConverter($gen, $this->exportDirectory().md5($finalName));
+                        $exitCode = $converter->callConverter($gen, $this->posterExportDirectory.md5($finalName));
                         if ($exitCode > 0) {
                             $this->Logger->error('Poster converter subprocess failed', ['type' => $type, 'exitCode' => $exitCode, 'stderr' => $converter->getErrorOutput()]);
                         } else {
                             $filesystem = new Filesystem();
-                            $filesystem->rename($this->exportDirectory().md5($finalName), $finalFile);
+                            $filesystem->rename($this->posterExportDirectory.md5($finalName), $finalFile);
 
                             if ((new Filesystem())->exists($finalFile)) {
                                 $generatedFiles++;
@@ -174,13 +178,5 @@ class PosterReceiver
         }
 
         return new RsvgConverter($this->RsvgPath);
-    }
-
-    /**
-     * @return string
-     */
-    protected function exportDirectory()
-    {
-        return $this->dataDirectory.'/poster/';
     }
 }

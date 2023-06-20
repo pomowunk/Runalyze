@@ -15,7 +15,7 @@ class BackupReceiver
 {
     protected AccountRepository $accountRepository;
     protected NotificationRepository $notificationRepository;
-    protected string $backupPath;
+    protected string $backupExportDirectory;
     protected string $databasePrefix;
     protected string $runalyzeVersion;
     protected ParameterBagInterface $parameterBag;
@@ -23,7 +23,7 @@ class BackupReceiver
     public function __construct(
         AccountRepository $accountRepository,
         NotificationRepository $notificationRepository,
-        string $dataDirectory,
+        string $backupExportDirectory,
         string $databasePrefix,
         string $runalyzeVersion,
         ParameterBagInterface $parameterBag,
@@ -31,7 +31,7 @@ class BackupReceiver
     {
         $this->accountRepository = $accountRepository;
         $this->notificationRepository = $notificationRepository;
-        $this->backupPath = $dataDirectory.'/backup-tool/backup/';
+        $this->backupExportDirectory = $backupExportDirectory;
         $this->databasePrefix = $databasePrefix;
         $this->runalyzeVersion = $runalyzeVersion;
         $this->parameterBag = $parameterBag;
@@ -46,9 +46,13 @@ class BackupReceiver
 
         $account = $this->accountRepository->find($message->get('accountid'));
 
+        if (!is_dir($this->backupExportDirectory)) {
+            mkdir($this->backupExportDirectory, 0777, true);
+        }
+
         if ('json' == $message->get('export-type')) {
             $Backup = new JsonBackup(
-                $this->backupPath.$fileHandler->generateInternalFilename(FilenameHandler::JSON_FORMAT),
+                $this->backupExportDirectory.$fileHandler->generateInternalFilename(FilenameHandler::JSON_FORMAT),
                 $message->get('accountid'),
                 \DB::getInstance(),
                 $this->databasePrefix,
@@ -57,7 +61,7 @@ class BackupReceiver
             $Backup->run();
         } else {
             $Backup = new SqlBackup(
-                $this->backupPath.$fileHandler->generateInternalFilename(FilenameHandler::SQL_FORMAT),
+                $this->backupExportDirectory.$fileHandler->generateInternalFilename(FilenameHandler::SQL_FORMAT),
                 $message->get('accountid'),
                 \DB::getInstance(),
                 $this->databasePrefix,

@@ -61,7 +61,7 @@ class CreateController extends Controller
     protected $translator;
 
     /** @var string */
-    protected $importDirectory;
+    protected $activityImportDirectory;
 
     /** @var string */
     protected $garminApiKey;
@@ -76,7 +76,7 @@ class CreateController extends Controller
         SportRepository $sportRepository,
         TrainingRepository $trainingRepository,
         TranslatorInterface $translator,
-        string $dataDirectory,
+        string $activityImportDirectory,
         string $garminApiKey)
     {
         $this->activityConverter = $converter;
@@ -88,7 +88,7 @@ class CreateController extends Controller
         $this->sportRepository = $sportRepository;
         $this->trainingRepository = $trainingRepository;
         $this->translator = $translator;
-        $this->importDirectory = $dataDirectory.'/import/';
+        $this->activityImportDirectory = $activityImportDirectory;
         $this->garminApiKey = $garminApiKey;
     }
 
@@ -138,11 +138,11 @@ class CreateController extends Controller
         $importResult = null;
 
         if ($request->query->has('file')) {
-            $importResult = $fileImporter->importSingleFile($this->importDirectory.$request->query->get('file'));
+            $importResult = $fileImporter->importSingleFile($this->activityImportDirectory.$request->query->get('file'));
         } elseif ($request->query->has('files')) {
             $importResult = $fileImporter->importFiles(
                 array_map(function ($file) {
-                    return $this->importDirectory.$file;
+                    return $this->activityImportDirectory.$file;
                 }, explode(';', $request->query->get('files')))
             );
         }

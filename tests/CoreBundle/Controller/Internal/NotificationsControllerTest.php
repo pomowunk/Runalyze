@@ -35,7 +35,7 @@ class NotificationsControllerTest extends AbstractFixturesAwareWebTestCase
     protected function insertMessageFor(Account $account)
     {
         $notification = Notification::createFromMessage(
-            new TemplateBasedMessage('../../../tests/CoreBundle/DataFixtures/messages/test-message.yml'),
+            new TemplateBasedMessage(TESTS_ROOT.'/CoreBundle/DataFixtures/messages/test-message.yml'),
             $account
         );
         $notification->setCreatedAt(10);

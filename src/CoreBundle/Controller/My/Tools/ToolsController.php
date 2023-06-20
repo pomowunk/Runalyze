@@ -238,14 +238,14 @@ class ToolsController extends Controller
     /**
      * @Route("/my/tools/poster", name="poster")
      * @Security("has_role('ROLE_USER')")
+     * @todo Fix poster generation by migrating to symfony/messenger.
      */
     public function posterAction(
         Request $request,
         Account $account,
         TranslatorInterface $translator,
         FileHandler $fileHandler,
-        $producer = null)
-    {
+    ) {
         throw $this->createNotFoundException('Poster generation is temporarily disabled.');
         // $form = $this->createForm(PosterType::class, [
         //     'postertype' => ['heatmap'],

@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,22 +12,17 @@ use Symfony\Component\Finder\Finder;
 
 class CleanupPostersCommand extends ContainerAwareCommand
 {
-    /** @var Filesystem */
-    protected $filesystem;
-
-    /** @var string */
-    protected $dataDirectory;
-
-    /** @var string */
-    protected $posterStoragePeriod;
+    protected Filesystem $filesystem;
+    protected string $posterExportDirectory;
+    protected string $posterStoragePeriod;
 
     public function __construct(
         Filesystem $filesystem,
-        string $dataDirectory,
+        string $posterExportDirectory,
         string $posterStoragePeriod)
     {
         $this->filesystem = $filesystem;
-        $this->dataDirectory = $dataDirectory;
+        $this->posterExportDirectory = $posterExportDirectory;
         $this->posterStoragePeriod = $posterStoragePeriod;
 
         parent::__construct();
@@ -56,7 +52,7 @@ class CleanupPostersCommand extends ContainerAwareCommand
         $finder
             ->files()
             ->name('*.png')
-            ->in($this->dataDirectory.'/poster/')
+            ->in($this->posterExportDirectory)
             ->date(sprintf('until %s days ago', $days));
 
         $deleted= $finder->count();

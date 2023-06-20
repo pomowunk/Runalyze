@@ -47,24 +47,17 @@ class FileImporter implements LoggerAwareInterface
     /** @var bool */
     protected $RemoveFiles = true;
 
-    /**
-     * @param FitConverter $fitConverter
-     * @param TtbinConverter $ttbinConverter
-     * @param string|null $directoryForFailedImports
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(
         FitConverter $fitConverter,
         TtbinConverter $ttbinConverter,
-        $directoryForFailedImports = null,
+        string $failedActivityImportDirectory = null,
         LoggerInterface $logger = null
-    )
-    {
+    ) {
         $this->ParserMapping = new FileExtensionToParserMapping();
         $this->Converter = [$fitConverter, $ttbinConverter, new KmzConverter()];
         $this->ZipConverter = new ZipConverter($this->getSupportedFileExtensions());
         $this->Filesystem = new Filesystem();
-        $this->DirectoryForFailedImports = $directoryForFailedImports;
+        $this->DirectoryForFailedImports = $failedActivityImportDirectory;
         $this->logger = $logger ?: new NullLogger();
     }
 

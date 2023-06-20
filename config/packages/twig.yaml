@@ -12,7 +12,5 @@ twig:
         thunderforest_api_key: '%app.thunderforest_api_key%'
         mapbox_api_key: '%app.mapbox_api_key%'
         locales: '%app.locales%'
-    paths:
-        '%app.data_directory%/views': __main__
     form_themes:
         - 'form/fields.html.twig'

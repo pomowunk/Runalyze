@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class JsonImportToolController extends Controller
 {
     /** @var string */
-    protected $importPath;
+    protected $backupImportDirectory;
 
     /** @var string */
     protected $runalyzeVersion;
@@ -30,9 +30,9 @@ class JsonImportToolController extends Controller
     /** @var string */
     protected $databasePrefix;
 
-    public function __construct(string $dataDirectory, string $runalyzeVersion, string $databasePrefix)
+    public function __construct(string $backupImportDirectory, string $runalyzeVersion, string $databasePrefix)
     {
-        $this->importPath = $dataDirectory.'/backup-tool/import/';
+        $this->backupImportDirectory = $backupImportDirectory;
         $this->runalyzeVersion = $runalyzeVersion;
         $this->databasePrefix = $databasePrefix;
     }
@@ -54,9 +54,12 @@ class JsonImportToolController extends Controller
         }
 
         try {
-            $backupFile->move($this->importPath, $backupFile->getClientOriginalName());
+            if (!is_dir($this->backupImportDirectory)) {
+                mkdir($this->backupImportDirectory, 0777, true);
+            }
+            $backupFile->move($this->backupImportDirectory, $backupFile->getClientOriginalName());
         } catch (FileException $e) {
-            return $this->json(['error' => 'Moving file did not work. Set chmod 777 for /data/backup-tool/import/']);
+            return $this->json(['error' => 'Moving file did not work. Set chmod 777 for '.$this->backupImportDirectory]);
         }
 
         $flashBag->set('json-import.file', $backupFile->getClientOriginalName());
@@ -75,11 +78,11 @@ class JsonImportToolController extends Controller
         }
 
         $filename = $flashBag->get('json-import.file')[0];
-        $fileInfo = new \SplFileInfo($this->importPath.$filename);
-        $analyzer = new JsonBackupAnalyzer($this->importPath.$filename, $this->runalyzeVersion);
+        $fileInfo = new \SplFileInfo($this->backupImportDirectory.$filename);
+        $analyzer = new JsonBackupAnalyzer($this->backupImportDirectory.$filename, $this->runalyzeVersion);
 
         if (!$analyzer->fileIsOkay()) {
-            (new Filesystem())->remove($this->importPath.$filename);
+            (new Filesystem())->remove($this->backupImportDirectory.$filename);
 
             return $this->render('tools/backup/import_bad_file.html.twig', [
                 'file' => $fileInfo,
@@ -118,7 +121,7 @@ class JsonImportToolController extends Controller
         $filename = $flashBag->get('json-import.file')[0];
 
         $importer = new JsonImporter(
-            $this->importPath.$filename,
+            $this->backupImportDirectory.$filename,
             \DB::getInstance(),
             $account->getId(),
             $this->databasePrefix

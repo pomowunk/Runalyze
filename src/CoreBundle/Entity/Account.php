@@ -164,14 +164,14 @@ class Account implements AdvancedUserInterface, \Serializable, IdentifiableEntit
     /**
      * @var bool
      * @Assert\Type("bool")
-     * @ORM\Column(name="allow_mails", type="boolean")
+     * @ORM\Column(name="allow_mails", type="boolean", options={"default":true})
      */
     private $allowMails = true;
 
     /**
      * @var bool
      * @Assert\Type("bool")
-     * @ORM\Column(name="allow_support", type="boolean")
+     * @ORM\Column(name="allow_support", type="boolean", options={"default":false})
      */
     private $allowSupport = false;
 

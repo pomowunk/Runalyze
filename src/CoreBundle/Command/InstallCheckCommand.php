@@ -52,17 +52,7 @@ class InstallCheckCommand extends ContainerAwareCommand
 
     /** @var String[] */
     protected array $DirectoriesThatMustBeWritable = [
-        '/data/backup-tool/backup/',
-        '/data/backup-tool/import/',
-        '/data/import/',
-        '/data/poster/',
-        '/data/sessions/',
-        '/var/cache/',
-        '/var/legacy_cache/',
-        '/var/log/',
-        '/var/poster/',
-        '/var/queue/',
-        '/var/tmp/'
+        '/var/',
     ];
 
     protected Connection $connection;

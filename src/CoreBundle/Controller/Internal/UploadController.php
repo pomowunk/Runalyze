@@ -17,11 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends Controller
 {
     /** @var string */
-    protected $importDirectory;
+    protected $activityImportDirectory;
 
-    public function __construct(string $dataDirectory)
+    public function __construct(string $activityImportDirectory)
     {
-        $this->importDirectory = $dataDirectory.'/import';
+        $this->activityImportDirectory = $activityImportDirectory;
     }
 
     /**
@@ -40,8 +40,12 @@ class UploadController extends Controller
             }
 
             try {
+                if (!is_dir($this->activityImportDirectory)) {
+                    mkdir($this->activityImportDirectory, 0777, true);
+                }
+
                 $file->move(
-                    $this->importDirectory,
+                    $this->activityImportDirectory,
                     $newFileName
                 );
 
@@ -72,8 +76,11 @@ class UploadController extends Controller
         }
 
         try {
+            if (!is_dir($this->activityImportDirectory)) {
+                mkdir($this->activityImportDirectory, 0777, true);
+            }
             $filesystem->appendToFile(
-                $this->importDirectory.$fileName,
+                $this->activityImportDirectory.$fileName,
                 $request->request->get('data')
             );
 

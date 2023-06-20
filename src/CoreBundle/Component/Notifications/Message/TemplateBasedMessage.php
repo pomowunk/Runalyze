@@ -9,32 +9,21 @@ use Symfony\Component\Yaml\Yaml;
 
 class TemplateBasedMessage implements MessageInterface
 {
-    /** @var string base path relative to root */
-    const BASE_PATH = '../../../../../data/views/notifications/';
-
-    /** @var string */
-    protected $TemplateName;
-
-    /** @var null|int $lifetime [days] */
-    protected $Lifetime = null;
-
-    /** @var null|array */
-    protected $TemplateContent = null;
+    protected string $templatePath;
+    protected ?int $LifetimeInDays = null;
+    protected ?array $TemplateContent = null;
 
     /**
-     * @param string $templateName relative to self::BASE_PATH
-     * @param null|int $lifetime [days] (only required for insert progress)
-     *
      * @throws \InvalidArgumentException
      */
-    public function __construct($templateName, $lifetime = null)
+    public function __construct(string $templatePath, int $lifetimeInDays = null)
     {
-        if (!file_exists(__DIR__.'/'.self::BASE_PATH.$templateName)) {
-            throw new \InvalidArgumentException(sprintf('Given template "%s" cannot be found in "%s".', $templateName, __DIR__.'/'.self::BASE_PATH));
+        if (!file_exists($templatePath)) {
+            throw new \InvalidArgumentException(sprintf('Given template "%s" cannot be found.', $templatePath));
         }
 
-        $this->TemplateName = $templateName;
-        $this->Lifetime = $lifetime;
+        $this->templatePath = $templatePath;
+        $this->LifetimeInDays = $lifetimeInDays;
     }
 
     public function getMessageType()
@@ -44,12 +33,12 @@ class TemplateBasedMessage implements MessageInterface
 
     public function getData()
     {
-        return $this->TemplateName;
+        return $this->templatePath;
     }
 
     public function getLifetime()
     {
-        return $this->Lifetime;
+        return $this->LifetimeInDays;
     }
 
     public function getText(TranslatorInterface $translator = null)
@@ -76,7 +65,7 @@ class TemplateBasedMessage implements MessageInterface
     protected function loadTemplateIfNotDoneYet()
     {
         if (null === $this->TemplateContent) {
-            $this->TemplateContent = Yaml::parse(file_get_contents(__DIR__.'/'.self::BASE_PATH.$this->TemplateName));
+            $this->TemplateContent = Yaml::parse(file_get_contents($this->templatePath));
         }
     }
 

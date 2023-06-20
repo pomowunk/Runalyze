@@ -23,11 +23,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class BackupToolController extends Controller
 {
     /** @var string */
-    protected $backupPath;
+    protected $backupExportDirectory;
 
-    public function __construct(string $dataDirectory)
+    public function __construct(string $backupExportDirectory)
     {
-        $this->backupPath = $dataDirectory.'/backup-tool/backup/';
+        $this->backupExportDirectory = $backupExportDirectory;
     }
 
     /**
@@ -42,7 +42,7 @@ class BackupToolController extends Controller
     {
         $fileSystem = new Filesystem();
         $fileHandler = new FilenameHandler($account->getId());
-        $filePath = $this->backupPath;
+        $filePath = $this->backupExportDirectory;
         $internalFilename = $fileHandler->transformPublicToInternalFilename($filename);
 
         if (!$fileSystem->exists($filePath.$internalFilename)) {
@@ -67,15 +67,16 @@ class BackupToolController extends Controller
     /**
      * @Route("", name="tools-backup")
      * @Security("has_role('ROLE_USER')")
+     * @todo Fix backup by migrating to symfony/messenger.
      */
-    // public function backupAction(
-    //     Account $account,
-    //     Request $request,
-    //     RouteRepository $routeRepository,
-    //     TrainingRepository $trainingRepository,
-    //     Producer $producer,
-    //     FlashBagInterface $flashBag)
-    // {
+    public function backupAction(
+        Account $account,
+        Request $request,
+        RouteRepository $routeRepository,
+        TrainingRepository $trainingRepository,
+        FlashBagInterface $flashBag,
+    ) {
+        throw $this->createNotFoundException("Backup is temporarily disabled!");
     //     $lockedRoutes = $routeRepository->accountHasLockedRoutes($account);
     //     $hasLockedTrainings = $trainingRepository->accountHasLockedTrainings($account);
 
@@ -95,7 +96,7 @@ class BackupToolController extends Controller
     //     $finder = new Finder();
     //     $finder
     //         ->files()
-    //         ->in($this->backupPath)
+    //         ->in($this->backupExportDirectory)
     //         ->filter(function(\SplFileInfo $file) use ($fileHandler) {
     //             return $fileHandler->validateInternalFilename($file->getFilename());
     //         })
@@ -110,5 +111,5 @@ class BackupToolController extends Controller
     //         'hasLocks' => ($lockedRoutes || $hasLockedTrainings),
     //         'form' => $form->createView()
     //     ]);
-    // }
+    }
 }

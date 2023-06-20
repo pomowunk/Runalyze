@@ -16,7 +16,7 @@ class TemplateBasedMessageTest extends TestCase
 
     public function testSimpleTemplate()
     {
-        $message = new TemplateBasedMessage('../../../tests/CoreBundle/DataFixtures/messages/test-message.yml');
+        $message = new TemplateBasedMessage(TESTS_ROOT.'/CoreBundle/DataFixtures/messages/test-message.yml');
 
         $this->assertTrue($message->hasLink());
         $this->assertEquals('foobar', $message->getText());

@@ -35,7 +35,7 @@ class NotificationRepositoryTest extends AbstractRepositoryTestCase
     protected function insertMessageFor(Account $account, $createdAt = null, $expirationAt = null)
     {
         $notification = Notification::createFromMessage(
-            new TemplateBasedMessage('../../../tests/CoreBundle/DataFixtures/messages/test-message.yml'),
+            new TemplateBasedMessage(TESTS_ROOT.'/CoreBundle/DataFixtures/messages/test-message.yml'),
             $account
         );
 

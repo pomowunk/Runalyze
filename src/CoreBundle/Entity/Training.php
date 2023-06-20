@@ -35,9 +35,7 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
      *
      * @Assert\NotBlank(message = "You need to choose a sport.")
      * @ORM\ManyToOne(targetEntity="Runalyze\Bundle\CoreBundle\Entity\Sport", inversedBy = "trainings")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sportid", referencedColumnName="id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="sportid", referencedColumnName="id", nullable=false)
      */
     private $sport;
 
@@ -45,9 +43,7 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
      * @var \Runalyze\Bundle\CoreBundle\Entity\Type
      *
      * @ORM\ManyToOne(targetEntity="Runalyze\Bundle\CoreBundle\Entity\Type", inversedBy = "trainings")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="typeid", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="typeid", referencedColumnName="id")
      */
     private $type;
 
@@ -83,14 +79,14 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_public", type="boolean")
+     * @ORM\Column(name="is_public", type="boolean", options={"default":false})
      */
     private $isPublic = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_track", type="boolean")
+     * @ORM\Column(name="is_track", type="boolean", options={"default":false})
      */
     private $isTrack = false;
 
@@ -194,7 +190,7 @@ class Training implements IdentifiableEntityInterface, AccountRelatedEntityInter
     /**
      * @var bool
      *
-     * @ORM\Column(name="use_vo2max", type="boolean")
+     * @ORM\Column(name="use_vo2max", type="boolean", options={"default":true})
      */
     private $useVO2max = true;
 

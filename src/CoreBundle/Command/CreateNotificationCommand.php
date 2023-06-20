@@ -112,7 +112,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
     protected function validateInput(InputInterface $input, OutputInterface $output)
     {
         return (
-            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template must exist in /data/views/notifications/.') &&
+            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template not found.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('lang')), $output, 'Language keys must be alphabetic strings.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('exclude-lang')), $output, 'Language keys to exclude must be alphabetic strings.') &&
             $this->checkValidation($this->validateAccountIds($input->getOption('account')), $output, 'Account IDs must be integers.') &&
@@ -139,13 +139,13 @@ class CreateNotificationCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $templateName
+     * @param string $templatePath
      * @return bool
      */
-    protected function validateTemplate($templateName)
+    protected function validateTemplate($templatePath)
     {
         try {
-            new TemplateBasedMessage($templateName);
+            new TemplateBasedMessage($templatePath);
         } catch (\InvalidArgumentException $e) {
             return false;
         }
