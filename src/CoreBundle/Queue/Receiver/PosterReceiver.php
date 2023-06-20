@@ -20,41 +20,20 @@ use Symfony\Component\Finder\Finder;
 
 class PosterReceiver
 {
-    /** @var LoggerInterface */
-    protected $Logger;
-
-    /** @var AccountRepository */
-    protected $AccountRepository;
-
-    /** @var SportRepository */
-    protected $SportRepository;
-
-    /** @var NotificationRepository */
-    protected $NotificationRepository;
-
-    /** @var GenerateJsonData */
-    protected $GenerateJsonData;
-
-    /** @var GeneratePoster */
-    protected $GeneratePoster;
-
-    /** @var FileHandler */
-    protected $FileHandler;
-
-    /** @var AccountMailer */
-    protected $AccountMailer;
-
-    /** @var string */
-    protected $posterExportDirectory;
-
-    /** @var string */
-    protected $RsvgPath;
-
-    /** @var string */
-    protected $InkscapePath;
+    protected LoggerInterface $Logger;
+    protected AccountRepository $AccountRepository;
+    protected SportRepository $SportRepository;
+    protected NotificationRepository $NotificationRepository;
+    protected GenerateJsonData $GenerateJsonData;
+    protected GeneratePoster $GeneratePoster;
+    protected FileHandler $FileHandler;
+    protected AccountMailer $AccountMailer;
+    protected string $posterExportDirectory;
+    protected string $RsvgPath;
+    protected string $InkscapePath;
 
     public function __construct(
-        LoggerInterface $logger,
+        LoggerInterface $queueLogger,
         AccountRepository $accountRepository,
         SportRepository $sportRepository,
         NotificationRepository $notificationRepository,
@@ -66,7 +45,7 @@ class PosterReceiver
         string $rsvgPath,
         string $inkscapePath)
     {
-        $this->Logger = $logger;
+        $this->Logger = $queueLogger;
         $this->AccountRepository = $accountRepository;
         $this->SportRepository = $sportRepository;
         $this->NotificationRepository = $notificationRepository;

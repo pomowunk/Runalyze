@@ -207,7 +207,6 @@ services:
         public: true
     Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver:
         public: true
-        tags: [ { name: monolog.logger, channel: queue } ]
 
     Runalyze\Bundle\CoreBundle\Repository\:
         resource: '%kernel.project_dir%/src/CoreBundle/Repository/*'
@@ -220,10 +219,6 @@ services:
     Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache:
         arguments:
             $cache: '@app.cache.activity_uploads'
-    Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter:
-        tags: [ {name: monolog.logger, channel: activity_uploads} ]
-    Runalyze\Bundle\CoreBundle\Services\Import\FileImporter:
-        tags: [ {name: monolog.logger, channel: activity_uploads} ]
     Runalyze\DEM\Reader:
         alias: 'Runalyze\Bundle\CoreBundle\Services\Import\GeoTiffReader'
     Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup:
@@ -251,14 +246,5 @@ services:
     Runalyze\Metrics\Weight\Unit\AbstractWeightUnit:
         factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWeightUnit'
 
-    Runalyze\Service\ElevationCorrection\Strategy\Geonames:
-        tags: [ {name: monolog.logger, channel: external_services} ]
-    Runalyze\Service\ElevationCorrection\Strategy\GoogleMaps:
-        tags: [ {name: monolog.logger, channel: external_services} ]
-
     Runalyze\Service\WeatherForecast\DatabaseCacheInterface:
         alias: 'Runalyze\Bundle\CoreBundle\Repository\WeathercacheRepository'
-    Runalyze\Service\WeatherForecast\Strategy\DarkSky:
-        tags: [ {name: monolog.logger, channel: external_services} ]
-    Runalyze\Service\WeatherForecast\Strategy\OpenWeatherMap:
-        tags: [ {name: monolog.logger, channel: external_services} ]

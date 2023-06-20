@@ -27,38 +27,28 @@ class FileImporter implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /** @var \Runalyze\Parser\Common\FileTypeConverterInterface[] */
-    protected $Converter = [];
-
-    /** @var ZipConverter */
-    protected $ZipConverter;
-
-    /** @var FileExtensionToParserMapping */
-    protected $ParserMapping;
-
-    /** @var Filesystem */
-    protected $Filesystem;
-
-    /** @var string|null */
-    protected $DirectoryForFailedImports;
+    protected array $Converter = [];
+    protected ZipConverter $ZipConverter;
+    protected FileExtensionToParserMapping $ParserMapping;
+    protected Filesystem $Filesystem;
+    protected ?string $DirectoryForFailedImports;
 
     /** @var ParserException[] */
-    protected $ConverterExceptions = [];
-
-    /** @var bool */
-    protected $RemoveFiles = true;
+    protected array $ConverterExceptions = [];
+    protected bool $RemoveFiles = true;
 
     public function __construct(
         FitConverter $fitConverter,
         TtbinConverter $ttbinConverter,
         string $failedActivityImportDirectory = null,
-        LoggerInterface $logger = null
+        LoggerInterface $activityUploadsLogger = null
     ) {
         $this->ParserMapping = new FileExtensionToParserMapping();
         $this->Converter = [$fitConverter, $ttbinConverter, new KmzConverter()];
         $this->ZipConverter = new ZipConverter($this->getSupportedFileExtensions());
         $this->Filesystem = new Filesystem();
         $this->DirectoryForFailedImports = $failedActivityImportDirectory;
-        $this->logger = $logger ?: new NullLogger();
+        $this->logger = $activityUploadsLogger ?: new NullLogger();
     }
 
     public function disableFileDeletion($flag = true)

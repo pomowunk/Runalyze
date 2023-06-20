@@ -23,19 +23,13 @@ class Geonames extends AbstractStrategyFromExternalAPI
 {
     use GuessUnknownValuesTrait;
 
-    /** @var string */
-    protected $GeonamesUsername;
+    protected string $GeonamesUsername;
 
-    /**
-     * @param string $geonamesUsername
-     * @param Client $client
-     * @param LoggerInterface|null $logger
-     */
-    public function __construct($geonamesUsername, Client $client, LoggerInterface $logger = null)
+    public function __construct(string $geonamesUsername, Client $client, LoggerInterface $externalServicesLogger = null)
     {
         $this->GeonamesUsername = $geonamesUsername;
 
-        parent::__construct($client, $logger);
+        parent::__construct($client, $externalServicesLogger);
     }
 
     public function isPossible()

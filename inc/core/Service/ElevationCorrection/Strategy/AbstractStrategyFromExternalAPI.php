@@ -16,16 +16,13 @@ abstract class AbstractStrategyFromExternalAPI extends AbstractStrategy implemen
 {
     use LoggerAwareTrait;
 
-    /** @var int */
-    protected $PointsPerCall = 20;
+    protected int $PointsPerCall = 20;
+    protected Client $HttpClient;
 
-    /** @var Client */
-    protected $HttpClient;
-
-    public function __construct(Client $client, LoggerInterface $logger = null)
+    public function __construct(Client $client, LoggerInterface $externalServicesLogger = null)
     {
         $this->HttpClient = $client;
-        $this->logger = $logger ?: new NullLogger();
+        $this->logger = $externalServicesLogger ?: new NullLogger();
     }
 
     public function loadAltitudeData(array $latitudes, array $longitudes)
