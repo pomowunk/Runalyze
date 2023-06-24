@@ -26,13 +26,6 @@ class PercentageHilly extends AbstractKey
 		return __('Hilly');
 	}
 
-	public function description()
-	{
-		return __(
-			'' // TODO
-		);
-	}
-
 	public function stringFor(Context $context)
 	{
         if ((!$context->activity()->isPublic() && \Request::isOnSharedPage()) OR $context->activity()->id() <= 0) {

@@ -25,7 +25,7 @@ class Language implements InterfaceChoosable
      * Locale dir
      * @var string
      */
-    private static $LOCALE_DIR = './vendor/runalyze/translations/gettext';
+    private static $LOCALE_DIR = './translations/gettext';
 
     /**
      * Current language
@@ -77,7 +77,7 @@ class Language implements InterfaceChoosable
      */
     protected function setLocaleDir()
     {
-        self::$LOCALE_DIR = __DIR__.'/../../vendor/runalyze/translations/gettext';
+        self::$LOCALE_DIR = __DIR__.'/../../translations/gettext';
     }
 
     /**
@@ -102,9 +102,23 @@ class Language implements InterfaceChoosable
 
         self::$CURRENT_LANG = $language;
 
-        putenv("LANG=$locale");
-        setlocale(LC_ALL, $locale);
-        setlocale(LC_NUMERIC, 'C');
+        $l = (explode('.', $locale) ?? [$locale])[0];
+        putenv("LANG=$l");
+        putenv("LANGUAGE=$l");
+        setlocale(LC_ALL, 
+            "$l.utf8",
+            "$l.UTF8",
+            "$l.utf-8",
+            "$l.UTF-8",
+            $l
+        );
+        setlocale(LC_NUMERIC,
+            "C.utf8",
+            "C.UTF8",
+            "C.utf-8",
+            "C.UTF-8",
+            "C"
+        );
 
         if (!headers_sent() && (!isset($_COOKIE[self::COOKIE_KEY]) || $_COOKIE[self::COOKIE_KEY] != $language)) {
             setcookie(self::COOKIE_KEY, $language);

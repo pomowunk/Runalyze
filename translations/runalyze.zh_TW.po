@@ -1,0 +1,3480 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-24 14:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: inc/import/class.ImporterWindow.php:22
+msgid "Add workout"
+msgstr ""
+
+#: inc/class.DataBrowserShared.php:120 inc/class.DataBrowser.php:302
+msgid "Activity per month"
+msgstr ""
+
+#: inc/class.DataBrowserShared.php:128 inc/class.DataBrowser.php:310
+msgid "Activity per week"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:61
+msgid "Search activities"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:74
+#: inc/tpl/tpl.Frontend.header.php:135
+msgid "Search"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:91
+msgid "Time range"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:99
+msgid "Sorting"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:108
+msgid "Send to multi editor"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:109
+#, php-format
+msgid "Our multi editor is limited to a maximum of %d activities."
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:122
+msgid "Results per page"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:137
+#: inc/core/Dataset/Keys/Sport.php:53
+msgid "Sport"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:141
+msgid "Choose sport(s)"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:151
+msgid "all"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:153
+msgid "none"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:162
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:400
+msgid "Notes"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:174
+#: inc/training/view/section/table/class.TableSwimLane.php:44
+#: inc/core/Dataset/Keys/Type.php:52
+#: inc/system/config/class.ConfigTabPlugins.php:187
+msgid "Type"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:174
+msgid "Choose activity type(s)"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:175
+#: inc/core/Dataset/Keys/Weather.php:43
+msgid "Weather"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:175
+msgid "Choose weather conditions"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:176
+#: inc/tpl/tpl.Frontend.header.php:115
+#: inc/core/Dataset/Keys/MainEquipment.php:44
+msgid "Equipment"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:176
+msgid "Choose equipment"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:177
+msgid "Tag"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:177
+msgid "Choose tag"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:183
+#: inc/training/view/section/table/class.TableSwimLane.php:40
+#: inc/training/view/section/table/class.TableZonesAbstract.php:105
+#: inc/training/view/section/table/class.TableLapsComputed.php:63
+#: inc/core/View/Window/Laps/Table.php:141
+#: inc/core/View/Leaflet/Activity.php:218 inc/core/View/Splits/Table.php:154
+#: inc/core/View/Activity/Plot/Series/DistanceSeries.php:39
+#: inc/core/Dataset/Keys/Distance.php:49 inc/core/Activity/Distance.php:80
+msgid "Distance"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:184
+#: inc/core/View/Activity/Plot/Series/Elevation.php:81
+#: inc/core/Dataset/Keys/Elevation.php:44 inc/core/Activity/Elevation.php:58
+msgid "Elevation"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:185
+#: inc/core/Dataset/Keys/Route.php:69
+msgid "Route"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:187
+#: inc/core/View/Window/Laps/Table.php:144
+#: inc/core/Dataset/Keys/Duration.php:54
+msgid "Duration"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:188
+#: inc/training/search/class.FormularSelectSearchSort.php:41
+#: inc/training/view/class.ElevationInfo.php:131
+#: inc/core/View/Activity/Plot/Series/Gradient.php:54
+#: inc/core/View/Activity/Box/Gradient.php:26
+#: inc/core/Dataset/Keys/Gradient.php:45
+msgid "Gradient"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:189
+#: inc/core/Dataset/Keys/Title.php:46
+msgid "Title"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:191
+#: inc/training/search/class.FormularSelectSearchSort.php:38
+#: inc/training/view/section/table/class.TableZonesHeartrate.php:22
+#: inc/training/view/section/table/class.TableLapsComputed.php:65
+#: inc/core/View/Window/Laps/Table.php:146 inc/core/View/Splits/Table.php:156
+#: inc/core/View/Activity/Plot/Series/Pace.php:73
+#: inc/core/View/Activity/Box/Pace.php:28
+#: inc/core/View/Activity/Box/PaceAlternative.php:37
+#: inc/core/Dataset/Keys/Pace.php:56
+msgid "Pace"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:192
+#: inc/core/View/Window/Laps/Table.php:267 inc/core/Data/Cadence/General.php:22
+#: inc/core/Dataset/Keys/Cadence.php:44
+msgid "Cadence"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:193
+#: inc/core/Dataset/Keys/TrainingPartner.php:55
+msgid "Partner"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:195
+msgid "avg. HR"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:196
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:36
+#: inc/core/View/Window/Laps/Table.php:277
+#: inc/core/View/Activity/Plot/Series/StrideLength.php:54
+#: inc/core/Dataset/Keys/StrideLength.php:44
+#: inc/core/Activity/StrideLength.php:58
+msgid "Stride length"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:197
+msgid "Is public"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:199
+msgid "max. HR"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:200
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:144
+#: inc/core/View/Window/Laps/Table.php:281
+#: inc/core/View/Activity/Plot/Series/Power.php:38
+#: inc/core/Dataset/Keys/Power.php:44
+msgid "Power"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:201
+msgid "Is race"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:204
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:76
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:184
+#: inc/core/View/Window/Laps/Table.php:273
+#: inc/core/View/Activity/Plot/Series/VerticalOscillation.php:41
+#: inc/core/Dataset/Keys/VerticalOscillation.php:44
+msgid "Vertical oscillation"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:205
+msgid "Uses VO<sub>2</sub>max"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:207
+#: inc/draw/class.PlotSumData.php:198 inc/draw/class.PlotSumData.php:203
+#: inc/core/View/Activity/Box/Trimp.php:14 inc/core/Dataset/Keys/Trimp.php:44
+#: inc/core/Configuration/Category/Trimp.php:96
+msgid "TRIMP"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:208
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:39
+#: inc/core/View/Window/Laps/Table.php:275
+#: inc/core/View/Activity/Plot/Series/VerticalRatio.php:42
+#: inc/core/Dataset/Keys/VerticalRatio.php:44
+#: inc/core/Activity/VerticalRatio.php:48
+msgid "Vertical ratio"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:209
+msgid "Track"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:211
+#: inc/core/View/Activity/Box/RPE.php:30 inc/core/Dataset/Keys/RPE.php:52
+msgid "RPE"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:212
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:50
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:82
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:181
+#: inc/core/View/Activity/Plot/Series/GroundContact.php:40
+msgid "Ground contact"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:213
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:209
+#: inc/core/View/Activity/Plot/Series/Temperature.php:40
+#: inc/core/Dataset/Keys/Temperature.php:44
+#: inc/core/Dataset/Keys/Weather.php:73 inc/core/Activity/Temperature.php:60
+msgid "Temperature"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:215
+#: inc/core/Dataset/Keys/Energy.php:45 inc/core/Activity/Energy.php:59
+msgid "Energy"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:216
+msgid "Ground Contact Balance"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:217
+#: inc/core/Data/Weather/WindSpeed.php:63 inc/core/Dataset/Keys/Weather.php:85
+msgid "Wind Speed"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:219
+#: inc/core/Activity/PerformanceCondition.php:58
+msgid "Performance condition"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:220
+#: inc/core/Dataset/Keys/FitTrainingEffect.php:43
+#: inc/core/Activity/TrainingEffect.php:53
+msgid "Training Effect"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:221
+#: inc/core/Data/Weather/Humidity.php:58 inc/core/Dataset/Keys/Weather.php:77
+#: inc/core/Dataset/Keys/Humidity.php:43
+msgid "Humidity"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:225
+#: inc/core/Data/Weather/Pressure.php:58 inc/core/Dataset/Keys/Weather.php:81
+#: inc/core/Dataset/Keys/AirPressure.php:52
+msgid "Pressure"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:227
+#: inc/training/view/section/class.SectionRouteRowElevation.php:74
+#: inc/core/Dataset/Keys/ClimbScore.php:21
+msgid "Climb Score"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:228
+msgid "Percentage Hilly"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:328
+msgid "Yes"
+msgstr ""
+
+#: inc/training/search/class.SearchFormular.php:329
+msgid "No"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:35
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:102
+msgid "Date"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:57
+#: inc/core/View/Activity/Box/FlightTime.php:14
+#: inc/core/Dataset/Keys/FlightTime.php:21
+msgid "Flight time"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:58
+#: inc/core/View/Activity/Box/FlightRatio.php:16
+#: inc/core/Dataset/Keys/FlightRatio.php:21
+msgid "Flight ratio"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:59
+#: inc/training/search/class.FormularSelectSearchSort.php:60
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:64
+#: inc/core/View/Activity/Plot/Series/ImpactGs.php:28
+#: inc/core/Dataset/Keys/AverageImpactGs.php:22
+msgid "Impact Gs"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:59
+#: inc/training/search/class.FormularSelectSearchSort.php:61
+#: inc/training/search/class.FormularSelectSearchSort.php:63
+#: inc/training/search/class.FormularSelectSearchSort.php:65
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:10
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:13
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:16
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:19
+#: inc/core/View/Activity/Plot/Series/ImpactGs.php:28
+#: inc/core/View/Activity/Plot/Series/FootstrikeType.php:28
+#: inc/core/View/Activity/Plot/Series/PronationExcursion.php:28
+#: inc/core/View/Activity/Plot/Series/BrakingGs.php:28
+msgid "left"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:60
+#: inc/training/search/class.FormularSelectSearchSort.php:62
+#: inc/training/search/class.FormularSelectSearchSort.php:64
+#: inc/training/search/class.FormularSelectSearchSort.php:66
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:11
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:14
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:17
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:20
+#: inc/core/View/Activity/Plot/Series/ImpactGs.php:28
+#: inc/core/View/Activity/Plot/Series/FootstrikeType.php:28
+#: inc/core/View/Activity/Plot/Series/PronationExcursion.php:28
+#: inc/core/View/Activity/Plot/Series/BrakingGs.php:28
+msgid "right"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:61
+#: inc/training/search/class.FormularSelectSearchSort.php:62
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:69
+#: inc/core/View/Activity/Plot/Series/BrakingGs.php:28
+#: inc/core/Dataset/Keys/AverageBrakingGs.php:22
+msgid "Braking Gs"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:63
+#: inc/training/search/class.FormularSelectSearchSort.php:64
+#: inc/core/Dataset/Keys/AverageFootstrikeType.php:22
+msgid "Footstrike type"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:65
+#: inc/training/search/class.FormularSelectSearchSort.php:66
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:19
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:20
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:79
+#: inc/core/View/Activity/Plot/Series/PronationExcursion.php:28
+#: inc/core/Dataset/Keys/AveragePronationExcursion.php:22
+msgid "Pronation excursion"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:76
+msgid "Wind speed"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:77
+msgid "Wind direction"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:83
+msgid "descending"
+msgstr ""
+
+#: inc/training/search/class.FormularSelectSearchSort.php:83
+msgid "ascending"
+msgstr ""
+
+#: inc/training/search/class.SearchResults.php:697
+#, php-format
+msgid "Found %s activities"
+msgstr ""
+
+#: inc/training/search/class.FormularInputSearchTimeRange.php:34
+msgid "to"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteOnlyElevation.php:17
+msgid "Elevation data"
+msgstr ""
+
+#: inc/training/view/section/class.SectionSwimLaneRow.php:29
+#: inc/core/View/Activity/Plot/Series/Stroke.php:62
+msgid "Stroke"
+msgstr ""
+
+#: inc/training/view/section/class.SectionSwimLaneRow.php:31
+msgid "SWOLF"
+msgstr ""
+
+#: inc/training/view/section/class.SectionSwimLaneRow.php:33
+msgid "SWOLFcycles"
+msgstr ""
+
+#: inc/training/view/section/class.SectionLaps.php:20
+#: inc/core/View/Window/Laps/Table.php:125
+msgid "Laps"
+msgstr ""
+
+#: inc/training/view/section/class.SectionLaps.php:23
+#: inc/core/View/Activity/Plot/LapsManual.php:27
+msgid "Manual Laps"
+msgstr ""
+
+#: inc/training/view/section/class.SectionLaps.php:27
+#: inc/core/View/Activity/Plot/LapsComputed.php:26
+msgid "Computed Laps"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteRowElevation.php:80
+#: inc/core/Dataset/Keys/PercentageHilly.php:21
+msgid "Percentage hilly"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteRowElevation.php:90
+#: inc/training/view/section/class.SectionRouteOnlyMap.php:17
+#: inc/training/view/section/class.SectionCompositeRow.php:219
+msgid "Course"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteRowElevation.php:106
+msgid "Climb Score view"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteRowElevation.php:110
+#: inc/training/view/section/class.SectionCompositeRow.php:232
+#: inc/training/view/class.TrainingView.php:119
+msgid "More about elevation"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteRowElevation.php:114
+#: inc/training/view/section/class.SectionCompositeRow.php:237
+msgid "Elevation data were corrected."
+msgstr ""
+
+#: inc/training/view/section/class.SectionRouteRowElevation.php:116
+#: inc/training/view/section/class.SectionCompositeRow.php:239
+msgid "Elevation data are not corrected."
+msgstr ""
+
+#: inc/training/view/section/class.SectionSwimLane.php:21
+#: inc/training/view/section/class.SectionSwimLane.php:22
+msgid "Lanes"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:10
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:11
+msgid "Impact"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:13
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:14
+msgid "Braking"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:16
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:17
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:74
+#: inc/core/View/Activity/Plot/Series/FootstrikeType.php:28
+msgid "Footstrike"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:55
+msgid "Fore-foot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:55
+msgid "Mid-foot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunScribeDataRow.php:55
+msgid "Heel"
+msgstr ""
+
+#: inc/training/view/section/class.SectionLapsRowManual.php:49
+#: inc/training/view/section/class.SectionLapsRowComputed.php:47
+msgid "More details about your laps"
+msgstr ""
+
+#: inc/training/view/section/class.SectionPaceRow.php:21
+msgid "Pace plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionPaceRow.php:30
+#: inc/training/view/section/class.SectionHeartrateRow.php:28
+msgid "You'll be soon able to configure your own zones."
+msgstr ""
+
+#: inc/training/view/section/class.SectionPaceRow.php:32
+#: inc/training/view/section/class.SectionCompositeRow.php:52
+msgid "Pace zones"
+msgstr ""
+
+#: inc/training/view/section/class.SectionPaceRow.php:74
+#: inc/core/Dataset/Keys/VO2maxValue.php:36
+msgid "Effective VO<sub>2</sub>max"
+msgstr ""
+
+#: inc/training/view/section/class.SectionPaceRow.php:85
+msgid "More about VO<sub>2</sub>max estimation"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHRV.php:18
+msgid "Heart rate variability"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRoute.php:17
+msgid "Course and elevation data"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:45
+msgid "Oscillation"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunningDynamicsRow.php:55
+#: inc/core/View/Window/Laps/Table.php:271
+#: inc/core/View/Activity/Plot/Series/GroundContactBalance.php:58
+#: inc/core/Dataset/Keys/GroundcontactBalance.php:44
+msgid "Ground contact balance"
+msgstr ""
+
+#: inc/training/view/section/class.SectionPace.php:17
+msgid "Pace data"
+msgstr ""
+
+#: inc/training/view/section/class.SectionOverviewRow.php:52
+#: inc/training/view/section/table/class.TableSwimLane.php:41
+#: inc/training/view/section/table/class.TableZonesAbstract.php:104
+#: inc/training/view/section/table/class.TableLapsComputed.php:64
+#: inc/training/view/section/class.SectionCompositeRow.php:84
+#: inc/core/View/Window/Laps/Table.php:142
+#: inc/core/View/Leaflet/Activity.php:219 inc/core/View/Splits/Table.php:155
+#: inc/core/View/Activity/Plot/Series/TimeSeries.php:37
+#: inc/core/Dataset/Keys/Daytime.php:53
+msgid "Time"
+msgstr ""
+
+#: inc/training/view/section/class.SectionOverviewRow.php:53
+#: inc/training/view/section/class.SectionCompositeRow.php:99
+#: inc/core/Dataset/Keys/ElapsedTime.php:44
+msgid "Elapsed time"
+msgstr ""
+
+#: inc/training/view/section/class.SectionOverviewRow.php:55
+#: inc/training/view/section/class.SectionHRVRow.php:45
+#: inc/training/view/section/class.SectionHeartrateRow.php:52
+#: inc/training/view/section/class.SectionHeartrateRow.php:55
+#: inc/training/view/section/table/class.TableZonesPace.php:35
+#: inc/training/view/section/table/class.TableZonesHeartrate.php:22
+#: inc/training/view/section/table/class.TableLapsComputed.php:66
+#: inc/training/view/section/class.SectionCompositeRow.php:160
+#: inc/training/view/section/class.SectionCompositeRow.php:163
+#: inc/training/view/class.ElevationInfo.php:131
+#: inc/core/View/Window/Laps/Table.php:148
+#: inc/core/View/Activity/Box/Pace.php:28
+#: inc/core/View/Activity/Box/Gradient.php:26
+#: inc/core/View/Activity/Box/PaceAlternative.php:37
+#: inc/core/View/Activity/Box/Speed.php:37
+#: inc/core/Dataset/Keys/HeartrateAverage.php:44
+#: inc/core/Dataset/Keys/HeartrateAverage.php:53
+msgid "avg."
+msgstr ""
+
+#: inc/training/view/section/class.SectionOverviewRow.php:55
+#: inc/training/view/section/class.SectionOverviewRow.php:56
+#: inc/training/view/section/class.SectionHeartrateRow.php:52
+#: inc/training/view/section/class.SectionHeartrateRow.php:55
+#: inc/training/view/section/class.SectionCompositeRow.php:160
+#: inc/training/view/section/class.SectionCompositeRow.php:163
+#: inc/core/View/Activity/Box/MaximalHeartRate.php:48
+#: inc/core/Dataset/Keys/HeartrateAverage.php:44
+#: inc/core/Dataset/Keys/HeartrateMaximum.php:44
+msgid "Heart rate"
+msgstr ""
+
+#: inc/training/view/section/class.SectionOverviewRow.php:56
+#: inc/core/View/Window/Laps/Table.php:149
+#: inc/core/View/Activity/Box/MaximalHeartRate.php:48
+#: inc/core/Dataset/Keys/HeartrateMaximum.php:44
+msgid "max."
+msgstr ""
+
+#: inc/training/view/section/class.SectionOverview.php:17
+msgid "Overview"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:58
+msgid "Additional notes"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:62
+msgid "Cadence plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:67
+msgid "Power plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:72
+msgid "Temperature plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:78
+#: inc/core/View/Activity/Plot/Series/Smo2.php:34
+#: inc/core/View/Activity/Plot/Series/Smo2.php:37
+#: inc/core/View/Activity/Box/Smo2.php:30
+#: inc/core/View/Activity/Box/Smo2.php:33
+msgid "SmO2"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:78
+#: inc/core/View/Activity/Plot/Series/Thb.php:34
+#: inc/core/View/Activity/Plot/Series/Thb.php:37
+#: inc/core/View/Activity/Box/Thb.php:30 inc/core/View/Activity/Box/Thb.php:33
+msgid "THb"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:105
+msgid "Time of day"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:143
+msgid "This value has been calculated."
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:157
+#: inc/training/view/section/table/class.TableSwimLane.php:43
+#: inc/core/Dataset/Keys/TotalStrokes.php:53
+msgid "Strokes"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:163
+#: inc/training/view/section/table/class.TableSwimLane.php:42
+#: inc/core/View/Activity/Plot/Series/Swolfcycles.php:62
+#: inc/core/View/Activity/Plot/Series/Swolf.php:63
+#: inc/core/Dataset/Keys/Swolf.php:44
+msgid "Swolf"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:206
+msgid "Weather condition"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:295
+#: inc/core/Dataset/Keys/Tags.php:46
+msgid "Tags"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:307
+#: inc/core/Dataset/Keys/TrainingPartner.php:46
+msgid "Training partner"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:375
+msgid "Age standard"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:376
+msgid "Open standard"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:377
+#, php-format
+msgid "via tables by %s"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:384
+msgid "Race Result"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:386
+#: inc/core/Dataset/Keys/RaceResult.php:126
+#: inc/core/Dataset/Keys/RaceResult.php:176
+msgid "Official distance"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:387
+#: inc/core/Dataset/Keys/RaceResult.php:127
+#: inc/core/Dataset/Keys/RaceResult.php:177
+msgid "Official time"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:388
+msgid "Age grade"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:389
+msgid "Place overall"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:390
+msgid "Place age group"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:391
+msgid "Place gender"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:411
+#, php-format
+msgid "Source of weather data: %s"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:427
+#, php-format
+msgid ""
+"You created this training on <strong>%s</strong> at <strong>%s</strong>."
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneousRow.php:434
+#, php-format
+msgid "Last modification on <strong>%s</strong> at <strong>%s</strong>."
+msgstr ""
+
+#: inc/training/view/section/class.SectionHRVRow.php:30
+msgid "R-R intervals"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHRVRow.php:31
+msgid "Successive differences"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHRVRow.php:32
+msgid "Poincaré plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHRVRow.php:45
+#: inc/core/View/Activity/Plot/Series/HRV.php:90
+#: inc/core/View/Activity/Plot/HRVPoincare.php:50
+#: inc/core/View/Activity/Plot/HRVPoincare.php:59
+msgid "R-R interval"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHRVRow.php:52
+msgid "Anomalies"
+msgstr ""
+
+#: inc/training/view/section/class.SectionMiscellaneous.php:34
+msgid "Miscellaneous"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHeartrateRow.php:20
+msgid "Heartrate plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionHeartrateRow.php:30
+msgid "Heartrate zones"
+msgstr ""
+
+#: inc/training/view/section/class.SectionRunningDynamics.php:20
+msgid "Running Dynamics"
+msgstr ""
+
+#: inc/training/view/section/class.SectionComposite.php:17
+msgid "Composite data"
+msgstr ""
+
+#: inc/training/view/section/table/class.TableZonesPace.php:35
+#: inc/core/View/Window/Laps/Table.php:148
+#: inc/core/View/Window/Laps/Table.php:149
+#: inc/core/Dataset/Keys/HeartrateAverage.php:53
+#: inc/core/Dataset/Keys/HeartrateMaximum.php:53
+msgid "HR"
+msgstr ""
+
+#: inc/training/view/section/table/class.TableZonesPace.php:54
+msgid "faster"
+msgstr ""
+
+#: inc/training/view/section/table/class.TableZonesAbstract.php:102
+msgid "Zone"
+msgstr ""
+
+#: inc/training/view/section/table/class.TableLapsComputed.php:66
+msgid "bpm"
+msgstr ""
+
+#: inc/training/view/section/table/class.TableLapsComputed.php:67
+msgid "elev."
+msgstr ""
+
+#: inc/training/view/section/class.SectionHeartrate.php:17
+msgid "Heartrate data"
+msgstr ""
+
+#: inc/training/view/section/class.SectionCompositeRow.php:45
+msgid "Composite plot"
+msgstr ""
+
+#: inc/training/view/section/class.SectionCompositeRow.php:50
+#: inc/training/view/section/class.SectionCompositeRow.php:58
+msgid "You will be soon able to configure your own zones."
+msgstr ""
+
+#: inc/training/view/section/class.SectionCompositeRow.php:60
+msgid "Heart rate zones"
+msgstr ""
+
+#: inc/training/view/section/class.SectionCompositeRow.php:149
+msgid "More about VO<sub>2</sub>max calculation"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:98
+#, php-format
+msgid "Elevation calculation for: %s"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:107
+msgid "apply data"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:112
+msgid "General data"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:115
+msgid "manual value"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:115
+msgid "If you did not insert a value by hand, this value has been calculated."
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:119
+msgid "Lowest point"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:123
+msgid "calculated value"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:123
+msgid ""
+"This value is calculated with your current configuration. The saved value "
+"may be outdated."
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:127
+msgid "Highest point"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:135
+msgid "Up/Down"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:151
+msgid "You can choose the algorithm and threshold in the configuration window."
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:153
+msgid "Elevation data for different algorithms/thresholds"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:166
+msgid ""
+"Elevation data for different algorithms/thresholds (based on original data)"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:191
+#: inc/core/View/Activity/Plot/ElevationAlgorithms.php:95
+msgid "Threshold"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:229
+msgid "Elevation correction"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:233
+msgid "Elevation data has been corrected."
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:236
+msgid "Elevation data has not been corrected."
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:237
+msgid "correct now"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:257
+#: inc/training/view/class.ElevationInfo.php:258
+#: inc/training/view/class.ElevationInfo.php:259
+#, php-format
+msgid "correct again using %s"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:257
+msgid "srtm files"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:260
+msgid "remove corrected elevation data"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:271
+msgid "Compare algorithms"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:282
+msgid "Note for elevation data"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:286
+msgid ""
+"The calculation of elevation data is very difficult - there is not one "
+"single solution. Bad gps data can be corrected via srtm-data but these are "
+"only available in a 90x90m grid and not always perfectly accurate. In "
+"addition, every platform uses another algorithm to determine the elevation "
+"value (for up-/downwards). We give you therefore the possibility to choose "
+"algorithm and threshold such that the values fit your experience."
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:297
+msgid "Problem"
+msgstr ""
+
+#: inc/training/view/class.ElevationInfo.php:300
+msgid "No elevation data available."
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:60
+msgid "Show week"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:68
+msgid "Share"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:71
+#: inc/core/Dataset/Keys/Setting.php:116 inc/core/Dataset/Keys/Setting.php:133
+#: inc/core/Dataset/Keys/SharedLink.php:44
+msgid "Public link"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:90
+msgid "Export"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:96
+#, php-format
+msgid "as %s"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:111
+#: inc/core/Dataset/Keys/Tools.php:114 inc/core/Dataset/Keys/Tools.php:135
+msgid "Analyze splits"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:115
+msgid "Show VO<sub>2</sub>max calculation"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:123
+#: inc/core/Dataset/Keys/Tools.php:119 inc/core/Dataset/Keys/Tools.php:137
+msgid "Climb score"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:127
+msgid "Analyze time series"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:131
+msgid "Find best sub segments"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:137
+#: inc/tpl/tpl.Frontend.header.php:122 inc/core/Dataset/Keys/Tools.php:52
+msgid "Tools"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:150
+#: inc/core/Dataset/Keys/Setting.php:146
+msgid "Make private"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:153
+#: inc/core/Dataset/Keys/Setting.php:149
+msgid "Make public"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:158
+msgid "Edit race result"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:160
+msgid "Add race result"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:164
+msgid "Edit activity"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:167
+#: inc/core/Dataset/Keys/Setting.php:114
+msgid "Do you really want to delete this activity?"
+msgstr ""
+
+#: inc/training/view/class.TrainingView.php:167
+#: inc/core/Dataset/Keys/Setting.php:114 inc/core/Dataset/Keys/Setting.php:131
+msgid "Delete activity"
+msgstr ""
+
+#: inc/training/view/class.TrainingViewSectionTabbedPlot.php:63
+#: inc/plugin/class.PluginStat.php:259 inc/plugin/class.PluginStat.php:316
+msgid "All"
+msgstr ""
+
+#: inc/html/class.HTML.php:81 inc/html/class.HTML.php:107
+#: inc/draw/class.PlotSumData.php:182 inc/draw/class.PlotSumData.php:188
+#: inc/core/Dataset/Keys/RaceResult.php:130
+#: inc/core/Dataset/Keys/RaceResult.php:178
+msgid "Total"
+msgstr ""
+
+#: inc/html/class.Ajax.php:436 inc/core/View/Leaflet/Activity.php:265
+msgid "Start"
+msgstr ""
+
+#: inc/html/class.Ajax.php:437
+msgid "previous"
+msgstr ""
+
+#: inc/html/class.Ajax.php:439 inc/class.DataBrowser.php:268
+msgid "next"
+msgstr ""
+
+#: inc/html/class.Ajax.php:440
+msgid "End"
+msgstr ""
+
+#: inc/html/class.Ajax.php:443 inc/html/class.Ajax.php:444
+#: inc/html/class.Ajax.php:445 inc/html/class.Ajax.php:446
+#: inc/html/class.Ajax.php:447
+msgid "per page"
+msgstr ""
+
+#: inc/html/formular/class.FormularValueParser.php:113
+msgid "The date could not be parsed."
+msgstr ""
+
+#: inc/html/formular/class.FormularValueParser.php:117
+msgid "The date must not be in the future."
+msgstr ""
+
+#: inc/html/formular/class.FormularValueParser.php:144
+msgid "You have to enter a time."
+msgstr ""
+
+#: inc/html/formular/class.FormularField.php:215
+msgid "Your input is not allowed."
+msgstr ""
+
+#: inc/data/class.Splits.php:162
+msgid "in"
+msgstr ""
+
+#: inc/data/class.Splits.php:162
+msgid "Resting"
+msgstr ""
+
+#: inc/data/class.SportFactory.php:133
+#: inc/core/Data/Weather/BeaufortScale.php:145
+#: inc/core/Data/Weather/Condition.php:117
+msgid "unknown"
+msgstr ""
+
+#: inc/draw/class.PlotMonthSumData.php:27
+msgid "Monthly chart:"
+msgstr ""
+
+#: inc/draw/class.PlotWeekSumData.php:42
+msgid "Weekly chart:"
+msgstr ""
+
+#: inc/draw/class.Plot.php:145
+msgid "There is an unknown problem with this plot."
+msgstr ""
+
+#: inc/draw/class.Plot.php:146
+msgid "Error code"
+msgstr ""
+
+#: inc/draw/class.Plot.php:406 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:109
+msgid "Jan"
+msgstr ""
+
+#: inc/draw/class.Plot.php:407 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:110
+msgid "Feb"
+msgstr ""
+
+#: inc/draw/class.Plot.php:408 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:111
+msgid "Mar"
+msgstr ""
+
+#: inc/draw/class.Plot.php:409 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:112
+msgid "Apr"
+msgstr ""
+
+#: inc/draw/class.Plot.php:410 inc/tpl/tpl.DataBrowser.php:29
+#: inc/tpl/tpl.DataBrowser.php:31 inc/core/Util/Time.php:113
+msgid "May"
+msgstr ""
+
+#: inc/draw/class.Plot.php:411 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:114
+msgid "Jun"
+msgstr ""
+
+#: inc/draw/class.Plot.php:412 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:115
+msgid "Jul"
+msgstr ""
+
+#: inc/draw/class.Plot.php:413 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:116
+msgid "Aug"
+msgstr ""
+
+#: inc/draw/class.Plot.php:414 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:117
+msgid "Sep"
+msgstr ""
+
+#: inc/draw/class.Plot.php:415 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:118
+msgid "Oct"
+msgstr ""
+
+#: inc/draw/class.Plot.php:416 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:119
+msgid "Nov"
+msgstr ""
+
+#: inc/draw/class.Plot.php:417 inc/tpl/tpl.DataBrowser.php:31
+#: inc/core/Util/Time.php:121
+msgid "Dec"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:184 inc/draw/class.PlotSumData.php:189
+msgid "By type"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:196 inc/draw/class.PlotSumData.php:202
+msgid "Distance/Duration"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:211 inc/draw/class.PlotSumData.php:213
+msgid "All sports"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:214
+msgid "Main sports"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:233 inc/draw/class.PlotSumData.php:241
+#: inc/plugin/class.PluginStat.php:284 inc/plugin/class.PluginStat.php:303
+msgid "Last 6 months"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:235 inc/draw/class.PlotSumData.php:242
+#: inc/plugin/class.PluginStat.php:285 inc/plugin/class.PluginStat.php:305
+msgid "Last 12 months"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:268
+msgid "last 6 months"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:270
+msgid "last 12 months"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:331
+msgid "There are no data for this timerange."
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:493
+msgid "without"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:525
+msgid "Races"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:526
+msgid "Training"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:545
+msgid "target:"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:563 inc/core/View/Plot/Series.php:160
+#: inc/core/View/Activity/Plot/Laps.php:121
+msgid "avg:"
+msgstr ""
+
+#: inc/draw/class.PlotSumData.php:585
+msgid "Target is based on current marathon shape calculations."
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:44 inc/tpl/tpl.Frontend.header.php:46
+msgid "Public athlete page"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:46
+msgid "Your public athlete page is deactivated."
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:50
+msgid "Account settings"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:51
+msgid "Privacy settings"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:53
+msgid "Exit impersonation"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:55
+msgid "Logout"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:65
+msgid "Glossary"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:66
+msgid "Documentation"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:69
+msgid "Feedback"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:71
+msgid "Forum"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:72
+msgid "Blog"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:74
+msgid "About us"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:83
+msgid "Show all notifications"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:85
+msgid "No new notifications"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:99
+msgid "Activity upload"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:100
+msgid "Manual activity"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:101
+msgid "New equipment"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:102
+msgid "New body values"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:108
+#: inc/plugin/config/class.PluginConfigurationWindow.php:114
+msgid "Configuration"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:111
+#: inc/core/Configuration/Category/General.php:194
+#: inc/system/config/class.ConfigTabGeneral.php:20
+msgid "General settings"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:112
+#: inc/system/config/class.ConfigTabPlugins.php:17
+msgid "Plugins"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:113
+msgid "Dataset"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:114
+msgid "Sports"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:116
+msgid "Activity tags"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:125
+msgid "Trend analysis"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:126
+msgid "ANOVA"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:127
+msgid "Analyze your VO2max"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:128
+msgid "Running tables"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:129
+msgid "Poster generator"
+msgstr ""
+
+#: inc/tpl/tpl.Frontend.header.php:131
+msgid "More"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:20
+msgid "Choose a date ..."
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:89
+#: inc/core/Parameter/Application/WeekStart.php:51
+msgid "Sunday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:90
+#: inc/core/Parameter/Application/WeekStart.php:48
+msgid "Monday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:91
+msgid "Tuesday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:92
+msgid "Wednesday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:93
+msgid "Thursday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:94
+msgid "Friday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:26 inc/core/Util/Time.php:96
+msgid "Saturday"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "Su"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "Mo"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "Tu"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "We"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "Th"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "Fr"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:27
+msgid "Sa"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:89
+msgid "Sun"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:90
+msgid "Mon"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:91
+msgid "Tue"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:92
+msgid "Wed"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:93
+msgid "Thu"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:94
+msgid "Fri"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:28 inc/core/Util/Time.php:96
+msgid "Sat"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:29 inc/core/Util/Time.php:109
+msgid "January"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:29 inc/core/Util/Time.php:110
+msgid "February"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:29 inc/core/Util/Time.php:111
+msgid "March"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:29 inc/core/Util/Time.php:112
+msgid "April"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:29 inc/core/Util/Time.php:114
+msgid "June"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:30 inc/core/Util/Time.php:115
+msgid "July"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:30 inc/core/Util/Time.php:116
+msgid "August"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:30 inc/core/Util/Time.php:117
+msgid "September"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:30 inc/core/Util/Time.php:118
+msgid "October"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:30 inc/core/Util/Time.php:119
+msgid "November"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:30 inc/core/Util/Time.php:121
+msgid "December"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:32
+msgid "wk"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:40
+msgid "You can select any time range by selecting two dates."
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:44
+msgid "Show selection"
+msgstr ""
+
+#: inc/tpl/tpl.DataBrowser.php:157
+msgid "There are no activities for this time range."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Table.php:143
+msgid "Lap"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Table.php:145
+#: inc/core/View/Window/Laps/Table.php:147
+msgid "Diff."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Table.php:150
+msgid "elevation"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Table.php:269
+#: inc/core/Dataset/Keys/Groundcontact.php:44
+msgid "Ground contact time"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Table.php:292
+msgid "Average"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Table.php:317
+msgid "Show inactive splits"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:41
+msgid "Calculate laps"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:56 inc/core/View/Window/Laps/Form.php:67
+msgid "Lap every ..."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:56
+msgid "Distance, after which a new lap should start"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:67 inc/core/View/Window/Laps/Form.php:79
+#: inc/core/View/Window/Laps/Form.php:82 inc/core/View/Window/Laps/Form.php:93
+#: inc/core/View/Window/Laps/Form.php:96 inc/core/View/Window/Laps/Form.php:118
+msgid "or"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:67
+msgid "Time, after which a new lap should start"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:79
+msgid "Manual distances"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:80
+msgid ""
+"List with all distances, comma seperated. Put \"+\" at the beginning to "
+"treat distances as intervals."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:82 inc/core/View/Window/Laps/Form.php:96
+msgid "e.g."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:93
+msgid "Manual times"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:94
+msgid ""
+"List with all times, comma seperated. Put \"+\" at the beginning to treat "
+"times as intervals."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:106
+msgid "Lap time goal"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:118
+msgid "Pace goal"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:129
+msgid ""
+"Calculate values for handmade splits although total distance does not match."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:133
+msgid "The total distance of your handmade laps differs from the gps distance."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:140
+msgid "Leave lap distances empty to use your handmade laps."
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:153
+msgid "Show calculated laps"
+msgstr ""
+
+#: inc/core/View/Window/Laps/Form.php:154
+msgid "Show manual laps"
+msgstr ""
+
+#: inc/core/View/Icon/WindIcon.php:66 inc/core/Dataset/Keys/Wind.php:44
+msgid "Wind"
+msgstr ""
+
+#: inc/core/View/RaceResult/Dataview.php:91
+#, php-format
+msgid "of %u overall"
+msgstr ""
+
+#: inc/core/View/RaceResult/Dataview.php:104
+#, php-format
+msgid "of %u in your age group"
+msgstr ""
+
+#: inc/core/View/RaceResult/Dataview.php:117
+#, php-format
+msgid "of %u men/women"
+msgstr ""
+
+#: inc/core/View/RaceResult/Dataview.php:173
+#, php-format
+msgid "(first %u%%)"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:239
+#, php-format
+msgid "<strong>%s. %s</strong> in %s"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:240
+#: inc/core/View/Leaflet/Activity.php:270
+#: inc/core/View/Leaflet/Activity.php:354
+#, php-format
+msgid "<strong>Time:</strong> %s"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:269
+#, php-format
+msgid "<strong>Total:</strong> %s"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:352
+#, php-format
+msgid "<strong>Pause</strong> of %s"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:353
+#, php-format
+msgid "<strong>Distance:</strong> %s"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:357
+msgid "<strong>Heart rate:</strong>"
+msgstr ""
+
+#: inc/core/View/Leaflet/Activity.php:357
+#, php-format
+msgid "%s to %s"
+msgstr ""
+
+#: inc/core/View/Leaflet/Map.php:138
+msgid "There was a problem trying to show the map."
+msgstr ""
+
+#: inc/core/View/Splits/Table.php:157
+msgid "diff"
+msgstr ""
+
+#: inc/core/View/Splits/Table.php:230
+msgid "Goal"
+msgstr ""
+
+#: inc/core/View/Splits/Table.php:243
+msgid "Average (active)"
+msgstr ""
+
+#: inc/core/View/Splits/Table.php:251
+msgid "Average (total)"
+msgstr ""
+
+#: inc/core/View/Splits/Table.php:266
+msgid "1st/2nd Half"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/Series/Heartrate.php:56
+msgid "Heartrate"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/Series/HRVdifferencesWithoutAnomalies.php:55
+msgid "Difference"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/Series/Stroke.php:65
+msgid "strokes"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/Series/GradeAdjustedPace.php:35
+msgid "Grade adjusted pace"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/Series/PaceCumulativeAverage.php:49
+msgid "Moving average"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/LapsComputed.php:35
+msgid "No GPS-data available. Can\\'t compute laps."
+msgstr ""
+
+#: inc/core/View/Activity/Plot/ActivityPlot.php:82
+msgid "No plot available."
+msgstr ""
+
+#: inc/core/View/Activity/Plot/ElevationAlgorithms.php:82
+msgid "Original data"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/ElevationAlgorithms.php:107
+msgid "Douglas-Peucker"
+msgstr ""
+
+#: inc/core/View/Activity/Plot/LapsManual.php:38
+msgid "There are no manual laps."
+msgstr ""
+
+#: inc/core/View/Activity/Dataview.php:335
+#: inc/core/Dataset/Keys/FitHrvAnalysis.php:44
+msgid "HRV score"
+msgstr ""
+
+#: inc/core/View/Activity/Box/ElevationUpDown.php:35
+msgid "Elevation up/down"
+msgstr ""
+
+#: inc/core/View/Activity/Box/MaximalHeartRateInPercent.php:64
+msgid "This value exceeds your entered maximal heart rate."
+msgstr ""
+
+#: inc/core/View/Activity/Box/MaximalHeartRateInPercent.php:65
+msgid "Please adjust your maximal heart rate."
+msgstr ""
+
+#: inc/core/View/Activity/Box/Pace.php:28
+#: inc/core/View/Activity/Box/Speed.php:37
+msgid "Speed"
+msgstr ""
+
+#: inc/core/View/Activity/Box/TotalCadence.php:27
+msgid "Number of steps"
+msgstr ""
+
+#: inc/core/View/Activity/Box/TotalCadence.php:29
+msgid "Total cadence"
+msgstr ""
+
+#: inc/core/Data/Weather/Sources.php:40
+msgid "internal database"
+msgstr ""
+
+#: inc/core/Data/Weather/WindDegree.php:58 inc/core/Dataset/Keys/Weather.php:89
+msgid "Wind Degree"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:119
+msgid "Calm"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:121
+msgid "Light air"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:123
+msgid "Light breeze"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:125
+msgid "Gentle breeze"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:127
+msgid "Moderate breeze"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:129
+msgid "Fresh breeze"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:131
+msgid "Strong breeze"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:133
+msgid "High wind"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:135
+msgid "Fresh gale"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:137
+msgid "Strong gale"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:139
+msgid "Whole gale"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:141
+msgid "Violent storm"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:143
+msgid "Hurricane force"
+msgstr ""
+
+#: inc/core/Data/Weather/BeaufortScale.php:169
+msgid "Beaufort scale"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:72
+#: inc/core/Data/Weather/CardinalDirection.php:76
+msgid "N"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:77
+msgid "NE"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:78
+msgid "E"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:79
+msgid "SE"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:80
+msgid "S"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:81
+msgid "SW"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:82
+msgid "W"
+msgstr ""
+
+#: inc/core/Data/Weather/CardinalDirection.php:83
+msgid "NW"
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:58
+msgid "No effect"
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:60
+msgid "Caution"
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:62
+msgid "Extreme caution"
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:64
+msgid "Danger"
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:66
+msgid "Extreme danger"
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:103
+msgid "Temperature and humidity should not have any effect."
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:105
+msgid ""
+"Fatigue is possible with prolonged exposure and activity. Continuing "
+"activity could result in heat cramps."
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:107
+msgid ""
+"Heat cramps and heat exhaustion are possible. Continuing activity could "
+"result in heat stroke."
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:109
+msgid ""
+"Heat cramps and heat exhaustion are likely; heat stroke is probable with "
+"continued activity."
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndexEffect.php:111
+msgid "Heat stroke is imminent."
+msgstr ""
+
+#: inc/core/Data/Weather/HeatIndex.php:114
+#: inc/core/Dataset/Keys/HeatIndex.php:44
+msgid "Heat index"
+msgstr ""
+
+#: inc/core/Data/Weather/WindChillFactor.php:88
+msgid "Wind chill factor"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:96
+msgid "sunny"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:98
+msgid "fair"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:100
+msgid "cloudy"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:102
+msgid "changeable"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:104
+msgid "rainy"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:106
+msgid "snowing"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:108
+msgid "heavy rain"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:110
+msgid "foggy"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:112
+msgid "thundery"
+msgstr ""
+
+#: inc/core/Data/Weather/Condition.php:114
+msgid "windy"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:53 inc/core/Data/Stroketype.php:76
+msgid "Freestyle"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:55
+msgid "Backstroke"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:57
+msgid "Breaststroke"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:59 inc/core/Data/Stroketype.php:82
+msgid "Butterfly"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:61 inc/core/Data/Stroketype.php:84
+msgid "Drill"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:63 inc/core/Data/Stroketype.php:86
+msgid "Mixed"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:78
+msgid "Back"
+msgstr ""
+
+#: inc/core/Data/Stroketype.php:80
+msgid "Breast"
+msgstr ""
+
+#: inc/core/Data/RPE.php:9
+msgid "No exertion at all"
+msgstr ""
+
+#: inc/core/Data/RPE.php:10
+msgid "Extremely light"
+msgstr ""
+
+#: inc/core/Data/RPE.php:12
+msgid "Very light"
+msgstr ""
+
+#: inc/core/Data/RPE.php:14
+msgid "Light"
+msgstr ""
+
+#: inc/core/Data/RPE.php:16
+msgid "Somewhat hard"
+msgstr ""
+
+#: inc/core/Data/RPE.php:18
+msgid "Hard"
+msgstr ""
+
+#: inc/core/Data/RPE.php:20
+msgid "Very Hard"
+msgstr ""
+
+#: inc/core/Data/RPE.php:22
+msgid "Extremely hard"
+msgstr ""
+
+#: inc/core/Data/RPE.php:23
+msgid "Maximal exertion"
+msgstr ""
+
+#: inc/core/Data/Weather.php:206
+msgid "at"
+msgstr ""
+
+#: inc/core/Data/Cadence/Running.php:28
+msgid "Cadence (running)"
+msgstr ""
+
+#: inc/core/Data/Cadence/Running.php:46
+msgid "spm = steps per minute"
+msgstr ""
+
+#: inc/core/Data/Cadence/General.php:40
+msgid "rpm = rotations per minute"
+msgstr ""
+
+#: inc/core/Profile/View/DatasetPrivacyProfile.php:24
+msgid "private"
+msgstr ""
+
+#: inc/core/Profile/View/DatasetPrivacyProfile.php:26
+msgid "public"
+msgstr ""
+
+#: inc/core/Profile/View/DataBrowserRowProfile.php:27
+msgid "complete row"
+msgstr ""
+
+#: inc/core/Profile/View/DataBrowserRowProfile.php:29
+msgid "only icon"
+msgstr ""
+
+#: inc/core/Profile/View/DataBrowserRowProfile.php:31
+msgid "Inherit from sport"
+msgstr ""
+
+#: inc/core/Profile/Athlete/Gender.php:27
+msgid "not set"
+msgstr ""
+
+#: inc/core/Profile/Athlete/Gender.php:29
+msgid "male"
+msgstr ""
+
+#: inc/core/Profile/Athlete/Gender.php:31
+msgid "female"
+msgstr ""
+
+#: inc/core/Profile/Sport/Running.php:24
+msgid "Running"
+msgstr ""
+
+#: inc/core/Profile/Sport/Generic.php:26
+msgid "Generic"
+msgstr ""
+
+#: inc/core/Profile/Sport/Cycling.php:24
+msgid "Cycling"
+msgstr ""
+
+#: inc/core/Profile/Sport/Settings/SportRelevanceProfile.php:24
+msgid "Alternative sport"
+msgstr ""
+
+#: inc/core/Profile/Sport/Settings/SportRelevanceProfile.php:26
+msgid "Main Sport"
+msgstr ""
+
+#: inc/core/Profile/Sport/Rowing.php:24
+msgid "Rowing"
+msgstr ""
+
+#: inc/core/Profile/Sport/Swimming.php:24
+msgid "Swimming"
+msgstr ""
+
+#: inc/core/Profile/Sport/Hiking.php:24
+msgid "Hiking"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:54
+msgid "Widget"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:82 inc/core/Export/Share/Html.php:55
+msgid "Code"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:86 inc/core/Export/Share/Html.php:59
+msgid "HTML-Code"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:89
+msgid ""
+"Runalyze runs on a local server. Only people in your local network will be "
+"able to see the training."
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:93 inc/core/Export/Share/Html.php:61
+msgid "Add this code to your blog/website."
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:95
+msgid "Width"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:100
+msgid "Height"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:105
+msgid "Change size"
+msgstr ""
+
+#: inc/core/Export/Share/IFrame.php:111 inc/core/Export/Share/Html.php:63
+msgid "Preview"
+msgstr ""
+
+#: inc/core/Export/Share/Html.php:45
+msgid "HTML"
+msgstr ""
+
+#: inc/core/Export/Share/Html.php:67
+msgid "Your training is private: There is no link included."
+msgstr ""
+
+#: inc/core/Export/Share/GooglePlus.php:49
+msgid "Google+"
+msgstr ""
+
+#: inc/core/Export/Share/AbstractSharer.php:41
+msgid "I did sport: "
+msgstr ""
+
+#: inc/core/Export/Share/AbstractSharer.php:45
+msgid " in "
+msgstr ""
+
+#: inc/core/Export/Share/AbstractSharer.php:89
+msgid "Runalyze is running on a local server."
+msgstr ""
+
+#: inc/core/Export/Share/AbstractSharer.php:90
+msgid ""
+"Linking your activity in a social network does not make sense - nobody will "
+"be able to see your activity."
+msgstr ""
+
+#: inc/core/Export/Share/Twitter.php:55
+msgid "Twitter"
+msgstr ""
+
+#: inc/core/Export/Share/Facebook.php:73
+msgid "Facebook"
+msgstr ""
+
+#: inc/core/Dataset/Keys/ClimbScore.php:26
+msgid "CS"
+msgstr ""
+
+#: inc/core/Dataset/Keys/ElapsedTime.php:53
+msgid ""
+"Elapsed time is the difference between end and start of your activity "
+"including pauses."
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceCondition.php:43
+#: inc/core/Dataset/Keys/FitPerformanceConditionStart.php:31
+#: inc/core/Dataset/Keys/FitPerformanceConditionEnd.php:31
+msgid "Performance Condition"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceCondition.php:43
+#: inc/core/Dataset/Keys/FitVO2maxEstimate.php:44
+#: inc/core/Dataset/Keys/FitRecoveryTime.php:43
+#: inc/core/Dataset/Keys/FitHrvAnalysis.php:44
+#: inc/core/Dataset/Keys/FitTrainingEffect.php:43
+#: inc/core/Dataset/Keys/FitPerformanceConditionStart.php:31
+#: inc/core/Dataset/Keys/FitPerformanceConditionEnd.php:31
+msgid "(by file)"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceCondition.php:52
+#: inc/core/Activity/PerformanceCondition.php:67
+msgid "PC"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceCondition.php:62
+#: inc/core/Dataset/Keys/FitPerformanceConditionStart.php:50
+#: inc/core/Dataset/Keys/FitPerformanceConditionEnd.php:50
+msgid ""
+"The performance condition is an assessment, detected by some Garmin devices, "
+"of your ability to perform compared to your average fitness level."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Temperature.php:53
+msgid "Temp."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Route.php:79
+#, php-format
+msgid "Route names are automatically cut after %u characters."
+msgstr ""
+
+#: inc/core/Dataset/Keys/WindChill.php:43
+msgid "Windchill"
+msgstr ""
+
+#: inc/core/Dataset/Keys/WindChill.php:53
+msgid ""
+"Windchill is the perceived air temperature felt by the body on exposed skin "
+"due to the flow of air."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Title.php:56
+#, php-format
+msgid "Titles are automatically cut after %u characters."
+msgstr ""
+
+#: inc/core/Dataset/Keys/VerticalRatio.php:53
+msgid "Vertical ratio is the ratio of vertical oscillation to stride length."
+msgstr ""
+
+#: inc/core/Dataset/Keys/VO2maxValue.php:55
+msgid ""
+"Estimated VO<sub>2</sub>max based on pace and heart rate. The value is "
+"slightly transparent if it is not used for your VO<sub>2</sub>max shape."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Trimp.php:54
+msgid ""
+"Trimp values are colored based on their value, slightly transparent for low "
+"values and dark red for high values."
+msgstr ""
+
+#: inc/core/Dataset/Keys/MainEquipment.php:35
+msgid "Main Equipment"
+msgstr ""
+
+#: inc/core/Dataset/Keys/MainEquipment.php:53
+msgid ""
+"You can choose a main equipment type for each sport in your sport "
+"configuration. Equipment objects of this type will be shown with their names."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Setting.php:52
+msgid "Setting"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Setting.php:112 inc/core/Dataset/Keys/Setting.php:129
+msgid "Edit"
+msgstr ""
+
+#: inc/core/Dataset/Keys/TotalStrokes.php:44
+msgid "Total strokes"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitVO2maxEstimate.php:53
+msgid "(file)"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitVO2maxEstimate.php:62
+msgid "Garmin's newer devices have an integrated VO2max estimation."
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitVO2maxEstimate.php:63
+msgid ""
+"This value refers to your estimated VO2max at the start of the activity."
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitRecoveryTime.php:43
+#: inc/core/Dataset/Keys/FitRecoveryTime.php:52
+msgid "Recovery time"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitRecoveryTime.php:62
+msgid ""
+"Garmin calculates a suggested recovery time based on your heart rate "
+"variability right after the end of your activity."
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitHrvAnalysis.php:53
+msgid "HRV"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitHrvAnalysis.php:63
+msgid ""
+"Garmin calculates some HRV score within the first 12 minutes of every "
+"activity. The value - probably the recovery time in minutes - is display as "
+"a colored marker, green for low values and red for high values. Garmin shows "
+"this value as recovery status."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Energy.php:54
+msgid ""
+"Energy values are taken from your device or calculated by a simple formula."
+msgstr ""
+
+#: inc/core/Dataset/Keys/VerticalOscillation.php:53
+msgid ""
+"Vertical oscillation is your vertical motion of your torso measured in "
+"centimeters"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Tools.php:118 inc/core/Dataset/Keys/Tools.php:136
+msgid "Elevation info"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Tools.php:122 inc/core/Dataset/Keys/Tools.php:138
+msgid "Time series"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Tools.php:123 inc/core/Dataset/Keys/Tools.php:139
+msgid "Sub segments"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Groundcontact.php:53
+msgid "Groundcontact"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitTrainingEffect.php:52
+msgid "TE"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitTrainingEffect.php:62
+msgid ""
+"Training Effect is an indicator between 1.0 (easy) and 5.0 (overreaching) to "
+"rate the impact of aerobic exercise on your body."
+msgstr ""
+
+#: inc/core/Dataset/Keys/TrainingPartner.php:65
+#, php-format
+msgid "Training partner are automatically cut after %u characters."
+msgstr ""
+
+#: inc/core/Dataset/Keys/AveragePronationExcursion.php:27
+msgid "Pronation"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceConditionStart.php:31
+msgid "at start"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceConditionStart.php:40
+msgid "PC start"
+msgstr ""
+
+#: inc/core/Dataset/Keys/PercentageHilly.php:26
+msgid "Hilly"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Type.php:43
+msgid "Activity type"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Type.php:62
+msgid ""
+"The activity type is shown with its abbreviation. It is bold if the type is "
+"marked as quality session."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Gradient.php:54
+msgid "Grad."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Gradient.php:63
+msgid ""
+"The gradient describes the ratio of elevation gain (or less) and distance. "
+"Dividing total elevation by total distance gives this value."
+msgstr ""
+
+#: inc/core/Dataset/Keys/HeatIndex.php:53
+msgid "HI"
+msgstr ""
+
+#: inc/core/Dataset/Keys/HeatIndex.php:63
+msgid ""
+"The heat index is a measure of how hot it really feels when relative "
+"humidity is factored with the actual air temperature."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Daytime.php:44
+msgid "Daytime"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Daytime.php:70
+msgid "Exact daytime of the activity. (the date itself is always shown)"
+msgstr ""
+
+#: inc/core/Dataset/Keys/CompleteEquipment.php:34
+msgid "Complete equipment"
+msgstr ""
+
+#: inc/core/Dataset/Keys/CompleteEquipment.php:52
+msgid "Your complete equipment is shown as icon with tooltip."
+msgstr ""
+
+#: inc/core/Dataset/Keys/RPE.php:61
+msgid ""
+"Rating of Perceived Exertion or Borg scale, a scale devised to show "
+"perceived exertion during exercise"
+msgstr ""
+
+#: inc/core/Dataset/Keys/VO2maxIcon.php:36
+msgid "Effective VO<sub>2</sub>max icon"
+msgstr ""
+
+#: inc/core/Dataset/Keys/VO2maxIcon.php:55
+msgid ""
+"Each VO<sub>2</sub>max value of an activity is marked with an arrow to show "
+"if the value is (much) higher than your current shape, equal to it or (much) "
+"lower:"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Sport.php:71
+msgid "The sports icon is shown."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Elevation.php:53
+msgid "Elev."
+msgstr ""
+
+#: inc/core/Dataset/Keys/Elevation.php:62
+msgid ""
+"Calculated value for total elevation, i.e. maximum of total ascent or "
+"descent."
+msgstr ""
+
+#: inc/core/Dataset/Keys/RaceResult.php:40
+msgid "Race result"
+msgstr ""
+
+#: inc/core/Dataset/Keys/RaceResult.php:88
+msgid "Your placements at races"
+msgstr ""
+
+#: inc/core/Dataset/Keys/RaceResult.php:134
+#: inc/core/Dataset/Keys/RaceResult.php:179
+msgid "Age group"
+msgstr ""
+
+#: inc/core/Dataset/Keys/RaceResult.php:138
+#: inc/core/Dataset/Keys/RaceResult.php:180
+msgid "Gender"
+msgstr ""
+
+#: inc/core/Dataset/Keys/RaceResult.php:161
+msgid "Race name"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Splits.php:46
+msgid "Splits"
+msgstr ""
+
+#: inc/core/Dataset/Keys/Splits.php:56
+msgid ""
+"Splits are shown as clock icon with all lap times as tooltip. They are shown "
+"only if there are handmade laps, i.e. there are active and inactive laps, or "
+"if it was a race. "
+msgstr ""
+
+#: inc/core/Dataset/Keys/AirPressure.php:43
+msgid "Air pressure"
+msgstr ""
+
+#: inc/core/Dataset/Keys/GroundcontactBalance.php:53
+msgid "GCB"
+msgstr ""
+
+#: inc/core/Dataset/Keys/GroundcontactBalance.php:62
+msgid "Ground contact time balance measures your running symmetry."
+msgstr ""
+
+#: inc/core/Dataset/Keys/SharedLink.php:63
+msgid ""
+"You can decide for each activity whether it is visible for everybody or not. "
+"If it is public a linked icon is shown."
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceConditionEnd.php:31
+msgid "at the end"
+msgstr ""
+
+#: inc/core/Dataset/Keys/FitPerformanceConditionEnd.php:40
+msgid "PC End"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityCreationMode.php:39
+msgid "Upload form"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityCreationMode.php:40
+msgid "Garmin-Communicator"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityCreationMode.php:41
+msgid "Standard form"
+msgstr ""
+
+#: inc/core/Parameter/Application/DatabaseOrder.php:44
+msgid "id (oldest first)"
+msgstr ""
+
+#: inc/core/Parameter/Application/DatabaseOrder.php:45
+msgid "id (latest first)"
+msgstr ""
+
+#: inc/core/Parameter/Application/DatabaseOrder.php:46
+msgid "alphabetical"
+msgstr ""
+
+#: inc/core/Parameter/Application/HeartRateUnit.php:39
+msgid "absolute value"
+msgstr ""
+
+#: inc/core/Parameter/Application/HeartRateUnit.php:40
+msgid "&#37; HRmax"
+msgstr ""
+
+#: inc/core/Parameter/Application/HeartRateUnit.php:41
+msgid "&#37; HRreserve"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrecision.php:21
+msgid "every data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrecision.php:22
+msgid "every second data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrecision.php:23
+msgid "every fifth data point (recommended)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrecision.php:24
+msgid "every tenth data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrecision.php:25
+msgid "every twentieth data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/PaceAxisType.php:16
+msgid "linear"
+msgstr ""
+
+#: inc/core/Parameter/Application/PaceAxisType.php:17
+msgid "reversed linear"
+msgstr ""
+
+#: inc/core/Parameter/Application/PaceAxisType.php:18
+msgid "as speed"
+msgstr ""
+
+#: inc/core/Parameter/Application/EnergyUnit.php:36
+msgid "Kilocalories"
+msgstr ""
+
+#: inc/core/Parameter/Application/EnergyUnit.php:37
+msgid "Kilojoules"
+msgstr ""
+
+#: inc/core/Parameter/Application/PaceAxisLimit.php:28
+msgid "automatic"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrivacy.php:39
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:27
+msgid "never"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrivacy.php:40
+msgid "only for race results"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRoutePrivacy.php:41
+msgid "always"
+msgstr ""
+
+#: inc/core/Parameter/Application/ElevationMethod.php:45
+msgid "no smoothing"
+msgstr ""
+
+#: inc/core/Parameter/Application/ElevationMethod.php:46
+msgid "Threshold method"
+msgstr ""
+
+#: inc/core/Parameter/Application/ElevationMethod.php:47
+msgid "Douglas-Peucker-Algorithm"
+msgstr ""
+
+#: inc/core/Parameter/Application/WeightUnit.php:40
+msgid "kilograms"
+msgstr ""
+
+#: inc/core/Parameter/Application/WeightUnit.php:41
+msgid "pounds"
+msgstr ""
+
+#: inc/core/Parameter/Application/WeightUnit.php:42
+msgid "stones"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:21
+msgid "every 50m a data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:22
+msgid "every 100m a data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:23
+msgid "every 200m a data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:24
+msgid "every 500m a data point"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:25
+msgid "max. 50 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:26
+msgid "max. 100 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:27
+msgid "max. 200 data points (recommended)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:28
+msgid "max. 300 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:29
+msgid "max. 400 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:30
+msgid "max. 500 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:31
+msgid "max. 750 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotPrecision.php:32
+msgid "max. 1000 data points"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotMode.php:39
+msgid "all separated"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotMode.php:40
+msgid "Pace / Heart rate"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityPlotMode.php:41
+msgid "Pace / Heart rate / Elevation"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:28
+msgid "at too big distance (15s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:29
+msgid "at too big distance (30s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:30
+msgid "at too big distance (60s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:31
+msgid "at too big distance (120s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:32
+msgid "at too big distance (240s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:33
+msgid "at too big distance (300s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/ActivityRouteBreak.php:34
+msgid "at too big distance (600s)"
+msgstr ""
+
+#: inc/core/Parameter/Application/TemperatureUnit.php:35
+msgid "Celsius (°C)"
+msgstr ""
+
+#: inc/core/Parameter/Application/TemperatureUnit.php:36
+msgid "Fahrenheit (°F)"
+msgstr ""
+
+#: inc/core/Parameter/Application/DistanceUnitSystem.php:94
+msgid "Metric units"
+msgstr ""
+
+#: inc/core/Parameter/Application/DistanceUnitSystem.php:95
+msgid "Imperial units"
+msgstr ""
+
+#: inc/core/Parameter/Application/DataBrowserMode.php:33
+msgid "Week view"
+msgstr ""
+
+#: inc/core/Parameter/Application/DataBrowserMode.php:34
+msgid "Month view"
+msgstr ""
+
+#: inc/core/Configuration/Messages.php:26
+msgid "Database cleanup"
+msgstr ""
+
+#: inc/core/Configuration/Messages.php:27
+#, php-format
+msgid "You can now use the %s to recalculate the concerning values."
+msgstr ""
+
+#: inc/core/Configuration/Messages.php:34
+msgid "sports configuration"
+msgstr ""
+
+#: inc/core/Configuration/Messages.php:37
+#, php-format
+msgid ""
+"You may want to adjust pace units in %s. They are not changed automatically."
+msgstr ""
+
+#: inc/core/Configuration/Messages.php:49
+#, php-format
+msgid ""
+"%s has been recalculated. New value: <strong>%s</strong> (old value: %s)"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:186
+msgid "Activity form"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:189
+msgid "Default window"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:193
+msgid "Calculate energy"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:194
+msgid "Recalculate energy after changing duration by hand"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:198
+msgid "Detect pauses"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:199
+msgid "Detect pauses (distance not increasing) when importing training"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:215
+msgid "Automatically load weather conditions"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:216
+msgid "via openweathermap.org"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:220
+msgid "for weather: Location"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:221
+msgid ""
+"For loading weather data from openweathermap.org<br>e.g. <em>Berlin, de</em>"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:232
+msgid "Automatically correct elevation data"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:233
+msgid ""
+"Instead of using gps-elevation a correction via external services is "
+"possible."
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:243
+msgid "Sort: sports"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:247
+msgid "Sort: activity types"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityForm.php:251
+msgid "Sort: equipment"
+msgstr ""
+
+#: inc/core/Configuration/Category/Design.php:57
+msgid "Design"
+msgstr ""
+
+#: inc/core/Configuration/Category/Design.php:59
+msgid "Background image"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:299
+msgid "Activity view"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:302
+msgid "Number of decimals"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:306
+msgid "Activity view: show rows in full height"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:307
+msgid "By default e.g. lap data will be scrollable and not shown completely."
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:323
+msgid "Plots: combination"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:327
+msgid "Plots: precision"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:328
+msgid "How many data points should be plotted?"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:332
+msgid "Plots: smooth curves"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:336
+msgid "Plots: use time as x-axis"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:340
+msgid "Pace plot: y-axis minimum"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:341
+msgid "Data points below this limit will be ignored. (only for min/km)"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:345
+msgid "Pace plot: y-axis maximum"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:346
+msgid "Data points above this limit will be ignored. (only for min/km)"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:350
+msgid "Pace plot: y-axis scale type"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:351
+msgid "Scale type that will be used to show pace on y-axis."
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:355
+msgid "Pace plot: Ignore outliers"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:356
+msgid "Try to ignore outliers in the pace plot."
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:360
+msgid "Splits plot: use zero as axis minimum"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:370
+msgid "Map: interrupt route"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:371
+msgid ""
+"The gps path can be interrupted in case of <em>interruptions</em> (e.g. by "
+"car/train/...).Finding these interruptions is not easy. You can define up to "
+"which distance (in seconds by average pace)between two data points can be "
+"interpolated."
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:377
+msgid "Map: precision"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:378
+msgid "How many data points shoud be displayed?"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:382
+msgid "Map: show map first"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:383
+msgid "show map before plots"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:387
+msgid "Map: zoom on scroll"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:397
+msgid "Elevation: smoothing"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:398
+msgid "Choose the algorithm to smooth the elevation data"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:402
+msgid "Elevation: threshold"
+msgstr ""
+
+#: inc/core/Configuration/Category/ActivityView.php:403
+msgid "Threshold for the smoothing algorithm"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:99
+msgid "Days for ATL"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:100
+msgid "Number of days for ATL time constant"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:104
+msgid "Days for CTL"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:105
+msgid "Number of days for CTL time constant"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:109
+msgid "Show ATL/CTL in percent of your maximum"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:110
+msgid ""
+"By default ATL/CTL are scaled based on your historical maximum. This can "
+"lead to wrong assumptions if you were overtrained. Deactivate this option in "
+"that case."
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:116
+msgid "Show TSB in percent of ATL/CTL"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:117
+msgid ""
+"The scale of TSB values depends on your ATL/CTL. You can display TSB as "
+"percentage of your current ATL/CTL to keep consistency."
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:141
+msgid "Maximal CTL"
+msgstr ""
+
+#: inc/core/Configuration/Category/Trimp.php:142
+msgid "Maximal ATL"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:96
+msgid "Calendar view"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:99
+msgid "Calendar: mode"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:100
+msgid "Default mode for the calendar"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:104
+msgid "Calendar: show labels for dataset"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:108
+msgid "Calendar: show days with activities only"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:112
+msgid "Calendar: create button"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:113
+msgid "Add a link for every day to create a new activity."
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:117
+#: inc/class.DataBrowser.php:294
+msgid "Calendar"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:117
+msgid "reverse order"
+msgstr ""
+
+#: inc/core/Configuration/Category/DataBrowser.php:118
+msgid "Show days in reverse orders"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:197
+msgid "Beginning of the week"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:201
+msgid "Unit system for distances"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:202
+msgid ""
+"Changing the unit system for distances does not change pace units. You have "
+"to adjust them in sports configuration."
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:206
+msgid "Weight unit"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:210
+msgid "Energy unit"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:214
+msgid "Temperature unit"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:218
+msgid "Heart rate unit"
+msgstr ""
+
+#: inc/core/Configuration/Category/General.php:222
+msgid "Main sport"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:101
+#: inc/core/Configuration/Category/BasicEndurance.php:149
+msgid "Marathon shape"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:103
+msgid "Minimal distance for longjogs"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:104
+msgid "Every run above this distance will be rated."
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:108
+msgid "Days for longjogs"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:109
+msgid "Number of days to look at for longjog goal."
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:112
+msgid "Days for week kilometer"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:113
+msgid "Number of days to look at for weekly kilometer goal."
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:116
+msgid "Days for week kilometer (minimum)"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:117
+msgid "This value will be used if not enough data is available."
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:120
+msgid "Factor for week kilometers"
+msgstr ""
+
+#: inc/core/Configuration/Category/BasicEndurance.php:121
+msgid "Percentage as value between 0.00 and 1.00."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:121
+msgid "VO<sub>2</sub>max estimation"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:124
+msgid "Time constant length for VO<sub>2</sub>max"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:125
+msgid "Time constant length for VO<sub>2</sub>max rolling average"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:129
+msgid "Manual correction factor"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:130
+msgid ""
+"Manual correction factor (e.g. 0.9), if the automatic factor does not fit. "
+"Can be left empty."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:131
+#, php-format
+msgid "Value must be between %s and %s."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:135
+msgid "Use fixed VO<sub>2</sub>max value"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:136
+msgid ""
+"Fixed VO<sub>2</sub>max value (e.g. 55), if the estimation does not fit. Can "
+"be left empty."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:140
+msgid "Adapt for elevation"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:141
+msgid ""
+"The distance can be corrected by a formula from Peter Greif to adapt for "
+"elevation."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:145
+msgid "Correction per positive elevation"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:146
+msgid "Add for each meter upwards X meter to the distance."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:146
+#: inc/core/Configuration/Category/VO2max.php:152
+msgid "Only for VO2max estimation"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:151
+msgid "Correction per negative elevation"
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:152
+msgid "Add for each meter downwards X meter to the distance."
+msgstr ""
+
+#: inc/core/Configuration/Category/VO2max.php:169
+msgid "VO<sub>2</sub>max shape"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:82
+msgid "Privacy"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:84
+msgid ""
+"You can define the default privacy of new activities by sport type in the "
+"associated sport configuration."
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:88
+msgid "Public athlete page: active"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:89
+msgid "If activated: Everyone can see a list of all your (public) activities."
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:93
+msgid "Public athlete page: private workouts"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:94
+msgid ""
+"If activated: Display a summary for each private activity in the public "
+"activity list."
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:98
+msgid "Public athlete page: general statistics"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:99
+msgid "Show some general statistics above the activity list"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:103
+msgid "Public activities: show map"
+msgstr ""
+
+#: inc/core/Configuration/Category/Privacy.php:104
+msgid "You can hide the map for public activities"
+msgstr ""
+
+#: inc/core/Activity/Weight.php:72
+msgid "Weight"
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:68
+msgid "Easy"
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:70
+msgid "Maintaining workout"
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:72
+msgid "Improving Fitness"
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:74
+msgid "Highly Improving"
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:76
+msgid "Overreaching"
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:92
+msgid ""
+"Helps recovery (short activities). Improves endurance with longer activities "
+"(more than 40 minutes)."
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:94
+msgid "Maintains your aerobic fitness."
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:96
+msgid ""
+"Improves your aerobic fitness if repeated as part of your weekly training "
+"program."
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:98
+msgid ""
+"Highly improves your aerobic fitness if repeated 1-2 times per week with "
+"adequate recovery time."
+msgstr ""
+
+#: inc/core/Activity/TrainingEffectLevel.php:100
+msgid ""
+"Causes temporary overload with high improvement. Train up to this number "
+"with extreme care. Requires additional recovery days."
+msgstr ""
+
+#: inc/core/Activity/PoolLength.php:58
+msgid "Pool length"
+msgstr ""
+
+#: inc/core/Activity/GroundcontactBalance.php:48
+msgid "Groundcontact balance"
+msgstr ""
+
+#: inc/class.DataBrowser.php:221
+msgid "week"
+msgstr ""
+
+#: inc/class.DataBrowser.php:258
+msgid "back"
+msgstr ""
+
+#: inc/class.DataBrowser.php:276
+msgid "today"
+msgstr ""
+
+#: inc/class.DataBrowser.php:286
+msgid "Reload current datasheet"
+msgstr ""
+
+#: inc/class.DataBrowser.php:326
+msgid "Search for an activity"
+msgstr ""
+
+#: inc/system/class.SharedLinker.php:61
+msgid ""
+"You can activate your public athlete page at <em>Configuration->Privacy</em>"
+msgstr ""
+
+#: inc/system/class.SharedLinker.php:63
+msgid "Your public athlete page"
+msgstr ""
+
+#: inc/system/config/class.ConfigTab.php:100
+#: inc/plugin/config/class.PluginConfigurationWindow.php:123
+msgid "Save"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabs.php:74
+msgid "The settings have been saved."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:32
+msgid "Panels"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:33
+msgid "Panels are small statistics always shown on the right side."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:37
+#: inc/plugin/class.PluginType.php:50
+msgid "Statistics"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:38
+msgid "Normal statistics are shown below the activitiy log."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:41
+msgid "Install a new plugin"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:42
+msgid "New plugins can be installed here."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:63
+msgid "No plugins available."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:71
+msgid "Mode"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:72
+msgid "Order"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:84
+msgid "The plugin cannot be found."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:93
+msgid "enabled"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:94
+msgid "hidden*"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:95
+msgid "not enabled"
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:133
+msgid "* Hidden plugins only show their headings."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:136
+msgid "* Hidden plugins are grouped as 'Miscellaneous'."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:179
+msgid "There are no new plugins to install."
+msgstr ""
+
+#: inc/system/config/class.ConfigTabPlugins.php:186
+msgid "Plugin"
+msgstr ""
+
+#: inc/class.FrontendSharedStatistics.php:20
+msgid "No data available."
+msgstr ""
+
+#: inc/plugin/class.PluginInstaller.php:74
+msgid "Install plugin"
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:69
+msgid "back to overview"
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:75
+msgid "Plugin configuration"
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:99
+msgid "Description"
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:103
+msgid "The plugin is deactivated."
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:117
+msgid "There are no settings."
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:135
+msgid "Activate plugin"
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:136
+msgid "Deactivate plugin"
+msgstr ""
+
+#: inc/plugin/config/class.PluginConfigurationWindow.php:138
+msgid "Activation"
+msgstr ""
+
+#: inc/plugin/class.PluginType.php:46
+msgid "Panel"
+msgstr ""
+
+#: inc/plugin/class.Plugin.php:397
+msgid "Year on year"
+msgstr ""
+
+#: inc/plugin/class.PluginStat.php:339
+msgid "In total"
+msgstr ""

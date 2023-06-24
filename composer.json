@@ -30,7 +30,6 @@
         "runalyze/devices": "dev-master",
         "runalyze/glossary": "dev-master",
         "runalyze/gpxtrackposter": "^1.0.0",
-        "runalyze/translations": "dev-master",
         "sensio/framework-extra-bundle": "^5.0",
         "snc/redis-bundle": "2.*",
         "symfony/asset": "4.4.*",

@@ -1,3 +1,4 @@
 jms_translation:
-    path: /_trans
-    controller: '@JMSTranslationBundle/Controller/TranslateController'
+    resource: "@JMSTranslationBundle/Controller/"
+    type:     annotation
+    prefix:   /_trans

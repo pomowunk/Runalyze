@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c3933b66e177a1588b7a25132299b7c",
+    "content-hash": "77c615fcec7d60c77bdcc29b1f3a28ad",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -3976,33 +3976,6 @@
                 "reference": "8b337ca89e1cf9552dc0bbb08d8b81bc55335c45"
             },
             "type": "library"
-        },
-        {
-            "name": "runalyze/translations",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Runalyze/translations.git",
-                "reference": "6068b54251c4b10da17380b937f56b521fd6656c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Runalyze/translations/zipball/6068b54251c4b10da17380b937f56b521fd6656c",
-                "reference": "6068b54251c4b10da17380b937f56b521fd6656c",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Translation of Runalyze",
-            "support": {
-                "issues": "https://github.com/Runalyze/translations/issues",
-                "source": "https://github.com/Runalyze/translations/tree/master"
-            },
-            "abandoned": true,
-            "time": "2019-02-23T22:17:40+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -12141,7 +12114,6 @@
         "runalyze/common": 20,
         "runalyze/devices": 20,
         "runalyze/glossary": 20,
-        "runalyze/translations": 20,
         "runalyze/playground": 20
     },
     "prefer-stable": true,
