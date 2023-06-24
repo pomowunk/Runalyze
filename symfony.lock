@@ -89,9 +89,6 @@
             "tests/bootstrap.php"
         ]
     },
-    "runalyze/glossary": {
-        "version": "dev-master"
-    },
     "runalyze/playground": {
         "version": "dev-master"
     },

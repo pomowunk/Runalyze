@@ -1,12 +1,7 @@
 controllers:
+    resource: ../../src/Controller/
+    type: annotation
+
+legacy_controllers:
     resource: ../../src/CoreBundle/Controller/
-    type: annotation
-
-kernel:
-    resource: ../../src/Kernel.php
-    type: annotation
-
-glossary:
-    prefix: /glossary
-    resource: '../../vendor/runalyze/glossary/Controller'
     type: annotation

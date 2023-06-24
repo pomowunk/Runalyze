@@ -8,7 +8,6 @@ return [
     JMS\TranslationBundle\JMSTranslationBundle::class => ['all' => true],
     Liip\FunctionalTestBundle\LiipFunctionalTestBundle::class => ['dev' => true, 'test' => true],
     Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
-    Runalyze\Bundle\GlossaryBundle\GlossaryBundle::class => ['all' => true],
     Runalyze\Bundle\PlaygroundBundle\PlaygroundBundle::class => ['dev' => true, 'test' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Snc\RedisBundle\SncRedisBundle::class => ['all' => true],

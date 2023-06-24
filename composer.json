@@ -28,7 +28,6 @@
         "runalyze/common": "dev-master",
         "runalyze/dem-reader": "^1.0",
         "runalyze/devices": "dev-master",
-        "runalyze/glossary": "dev-master",
         "runalyze/gpxtrackposter": "^1.0.0",
         "sensio/framework-extra-bundle": "^5.0",
         "snc/redis-bundle": "2.*",

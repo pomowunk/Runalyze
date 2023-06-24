@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77c615fcec7d60c77bdcc29b1f3a28ad",
+    "content-hash": "03acbe94d95a9be61753dcbfe2d174a1",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -3916,56 +3916,6 @@
                 "source": "https://github.com/Runalyze/devices/tree/v0.4.7"
             },
             "time": "2023-06-09T07:55:24+00:00"
-        },
-        {
-            "name": "runalyze/glossary",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Runalyze/glossary.git",
-                "reference": "06a5bfc6a74a8d2d969b342c3132900d881aed65"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Runalyze/glossary/zipball/06a5bfc6a74a8d2d969b342c3132900d881aed65",
-                "reference": "06a5bfc6a74a8d2d969b342c3132900d881aed65",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "phpunit/phpunit": "4.8.*"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Runalyze\\Bundle\\GlossaryBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "RUNALYZE Team",
-                    "email": "mail@runalyze.com",
-                    "homepage": "https://runalyze.com"
-                }
-            ],
-            "description": "provides the glossary for runalyze",
-            "keywords": [
-                "runalyze",
-                "symfony3"
-            ],
-            "support": {
-                "issues": "https://github.com/Runalyze/glossary/issues",
-                "source": "https://github.com/Runalyze/glossary/tree/master"
-            },
-            "time": "2019-03-04T15:29:49+00:00"
         },
         {
             "name": "runalyze/gpxtrackposter",
@@ -12113,7 +12063,6 @@
         "p3k/picofeed": 0,
         "runalyze/common": 20,
         "runalyze/devices": 20,
-        "runalyze/glossary": 20,
         "runalyze/playground": 20
     },
     "prefer-stable": true,
