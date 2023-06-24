@@ -233,18 +233,18 @@ services:
         resource: '../tests/CoreBundle/DataFixtures'
 
     Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit:
-        factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getDistanceUnit'
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getDistanceUnit']
     app.unit_system.elevation:
         class: Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit
-        factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getElevationUnit'
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getElevationUnit']
     Runalyze\Metrics\Energy\Unit\AbstractEnergyUnit:
-        factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getEnergyUnit'
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getEnergyUnit']
     Runalyze\Metrics\Temperature\Unit\AbstractTemperatureUnit:
-        factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getTemperatureUnit'
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getTemperatureUnit']
     Runalyze\Metrics\Velocity\Unit\AbstractPaceInDecimalFormatUnit:
-        factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWindSpeedUnit'
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getWindSpeedUnit']
     Runalyze\Metrics\Weight\Unit\AbstractWeightUnit:
-        factory: 'Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory:getWeightUnit'
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getWeightUnit']
 
     Runalyze\Service\WeatherForecast\DatabaseCacheInterface:
         alias: 'Runalyze\Bundle\CoreBundle\Repository\WeathercacheRepository'
