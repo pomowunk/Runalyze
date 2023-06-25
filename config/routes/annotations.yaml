@@ -1,7 +1,3 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
-
-legacy_controllers:
-    resource: ../../src/CoreBundle/Controller/
-    type: annotation

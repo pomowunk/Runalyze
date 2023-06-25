@@ -141,7 +141,7 @@ services:
 
     Runalyze\Bundle\CoreBundle\:
         resource: '../src/CoreBundle/*'
-        exclude: '../src/CoreBundle/{Entity,Controller}'
+        exclude: '../src/CoreBundle/Entity/'
 
     Runalyze\:
         resource: '../inc/core/*'
@@ -150,11 +150,6 @@ services:
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
-
-    Runalyze\Bundle\CoreBundle\Controller\:
-        resource: '../src/CoreBundle/Controller/*'
-        public: true
         tags: ['controller.service_arguments']
 
     # # add more service definitions when explicit configuration is needed

@@ -34,6 +34,6 @@ class RunalyzePluginStat_MonthlyStats extends PluginStat {
 	 * @see PluginStat::displayContent()
 	 */
 	protected function displayContent() {
-		// deprecated, see Runalyze\Bundle\CoreBundle\Controller\AbstractPluginsAwareController::getResponseForMonthlyStats
+		// deprecated, see App\Controller\AbstractPluginsAwareController::getResponseForMonthlyStats
 	}
 }
