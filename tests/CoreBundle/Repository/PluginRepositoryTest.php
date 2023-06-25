@@ -21,7 +21,7 @@ class PluginRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->PluginRepository = $this->EntityManager->getRepository('CoreBundle:Plugin');
+        $this->PluginRepository = $this->EntityManager->getRepository(Plugin::class);
         $this->EmptyAccount = $this->getEmptyAccount();
     }
 

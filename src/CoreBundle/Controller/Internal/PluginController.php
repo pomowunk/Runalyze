@@ -45,7 +45,7 @@ class PluginController extends AbstractPluginsAwareController
 
     /**
      * @Route("/toggle/{id}", name="internal-plugin-toggle")
-     * @ParamConverter("plugin", class="CoreBundle:Plugin")
+     * @ParamConverter("plugin", class="Runalyze\Bundle\CoreBundle\Entity\Plugin")
      * @Security("is_granted('ROLE_USER')")
      */
     public function togglePanelAction(Plugin $plugin, Account $account)
@@ -65,7 +65,7 @@ class PluginController extends AbstractPluginsAwareController
 
     /**
      * @Route("/move/{id}/up", name="internal-plugin-move-up")
-     * @ParamConverter("plugin", class="CoreBundle:Plugin")
+     * @ParamConverter("plugin", class="Runalyze\Bundle\CoreBundle\Entity\Plugin")
      * @Security("is_granted('ROLE_USER')")
      */
     public function movePanelUpAction(Plugin $plugin, Account $account)
@@ -85,7 +85,7 @@ class PluginController extends AbstractPluginsAwareController
 
     /**
      * @Route("/move/{id}/down", name="internal-plugin-move-down")
-     * @ParamConverter("plugin", class="CoreBundle:Plugin")
+     * @ParamConverter("plugin", class="Runalyze\Bundle\CoreBundle\Entity\Plugin")
      * @Security("is_granted('ROLE_USER')")
      */
     public function movePanelDownAction(Plugin $plugin, Account $account)

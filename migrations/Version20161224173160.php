@@ -34,12 +34,12 @@ class Version20161224173160 extends AbstractMigration implements ContainerAwareI
         $em = $this->container->get('doctrine.orm.entity_manager');
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-        $repo = $em->getRepository('CoreBundle:Route');
+        $repo = $em->getRepository(Route::class);
 
         $numberLockedRoutes = $em->createQueryBuilder()
             ->select('count(route.id)')
             ->where('route.lock = 1')
-            ->from('CoreBundle:Route','route')
+            ->from(Route::class, 'route')
             ->getQuery()->getSingleScalarResult();
 
         while ($numberLockedRoutes > 0) {
@@ -57,7 +57,7 @@ class Version20161224173160 extends AbstractMigration implements ContainerAwareI
                 /** @var Route $route */
                 $route = $row[0];
                 $route->setLock(0);
-                $route->setGeohashes( implode('|', GeohashLine::shorten( explode('|', $route->getGeohashes()) )) );
+                $route->setGeohashes(GeohashLine::shorten($route->getGeohashes()));
                 $em->persist($route);
 
                 if (($i % $batchSize) === 0) {

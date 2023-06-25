@@ -23,7 +23,7 @@ class EquipmentUpdateSubscriber implements EventSubscriber
     {
         $entityManager = $args->getEntityManager();
         $unitOfWork = $entityManager->getUnitOfWork();
-        $this->EquipmentRepository = $entityManager->getRepository('CoreBundle:Equipment');
+        $this->EquipmentRepository = $entityManager->getRepository(Equipment::class);
 
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof Training) {

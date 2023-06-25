@@ -19,7 +19,7 @@ class AccountRepositoryTest extends AbstractRepositoryTestCase
 
         parent::setUp();
 
-        $this->AccountRepository = $this->EntityManager->getRepository('CoreBundle:Account');
+        $this->AccountRepository = $this->EntityManager->getRepository(Account::class);
     }
 
     /**

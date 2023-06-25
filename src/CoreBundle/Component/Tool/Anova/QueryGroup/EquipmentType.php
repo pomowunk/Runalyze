@@ -5,6 +5,7 @@ namespace Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryGroup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\Equipment;
 use Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaData;
 
 class EquipmentType implements QueryGroupInterface
@@ -44,7 +45,7 @@ class EquipmentType implements QueryGroupInterface
     {
         $groups = [];
 
-        foreach ($entityManager->getRepository('CoreBundle:Equipment')->findByTypeId($this->EquipmentTypeId, $account) as $equipment) {
+        foreach ($entityManager->getRepository(Equipment::class)->findByTypeId($this->EquipmentTypeId, $account) as $equipment) {
             $groups[$equipment->getId()] = $equipment->getName();
         }
 

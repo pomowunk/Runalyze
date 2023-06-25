@@ -108,7 +108,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/category/{id}/edit", name="equipment-category-edit")
-     * @ParamConverter("equipmentType", class="CoreBundle:EquipmentType")
+     * @ParamConverter("equipmentType", class="Runalyze\Bundle\CoreBundle\Entity\EquipmentType")
      *
      * @param Request $request
      * @param EquipmentType $equipmentType
@@ -143,7 +143,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/category/{id}/delete", name="equipment-category-delete")
-     * @ParamConverter("equipmentType", class="CoreBundle:EquipmentType")
+     * @ParamConverter("equipmentType", class="Runalyze\Bundle\CoreBundle\Entity\EquipmentType")
      */
     public function deleteEquipmentTypeAction(
         Request $request,
@@ -171,7 +171,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/add/{id}", name="equipment-add", requirements={"id" = "\d+"})
-     * @ParamConverter("equipmentType", class="CoreBundle:EquipmentType")
+     * @ParamConverter("equipmentType", class="Runalyze\Bundle\CoreBundle\Entity\EquipmentType")
      */
     public function equipmentAddAction(Request $request, EquipmentType $equipmentType, Account $account)
     {
@@ -202,7 +202,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="equipment-edit")
-     * @ParamConverter("equipment", class="CoreBundle:Equipment")
+     * @ParamConverter("equipment", class="Runalyze\Bundle\CoreBundle\Entity\Equipment")
      * @param Request $request
      * @param Equipment $equipment
      * @param Account $account
@@ -236,7 +236,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="equipment-delete")
-     * @ParamConverter("equipment", class="CoreBundle:Equipment")
+     * @ParamConverter("equipment", class="Runalyze\Bundle\CoreBundle\Entity\Equipment")
      */
     public function deleteEquipmentAction(
         Request $request,

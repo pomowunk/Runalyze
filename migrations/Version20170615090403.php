@@ -7,6 +7,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\ClimbScoreCalculator;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\FlatOrHillyAnalyzer;
+use Runalyze\Bundle\CoreBundle\Entity\Route;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Service\ElevationCorrection\StepwiseElevationProfileFixer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -33,7 +34,7 @@ class Version20170615090403 extends AbstractMigration implements ContainerAwareI
         $em = $this->container->get('doctrine.orm.entity_manager');
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-        $repo = $em->getRepository('CoreBundle:Training');
+        $repo = $em->getRepository(Training::class);
         $numLocked = $this->getNumberOfLockedRoutes($em);
 
         $flatOrHillyAnalyzer = new FlatOrHillyAnalyzer();
@@ -111,7 +112,7 @@ class Version20170615090403 extends AbstractMigration implements ContainerAwareI
         return (int)$em->createQueryBuilder()
             ->select('count(r.id)')
             ->where('r.lock = 1')
-            ->from('CoreBundle:Route','r')
+            ->from(Route::class, 'r')
             ->getQuery()->getSingleScalarResult();
     }
 

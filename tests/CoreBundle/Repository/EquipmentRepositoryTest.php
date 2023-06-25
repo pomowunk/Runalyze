@@ -3,6 +3,8 @@
 namespace Runalyze\Bundle\CoreBundle\Tests\Repository;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\Equipment;
+use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 
@@ -24,8 +26,8 @@ class EquipmentRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->EquipmentRepository = $this->EntityManager->getRepository('CoreBundle:Equipment');
-        $this->TrainingRepository = $this->EntityManager->getRepository('CoreBundle:Training');
+        $this->EquipmentRepository = $this->EntityManager->getRepository(Equipment::class);
+        $this->TrainingRepository = $this->EntityManager->getRepository(Training::class);
         $this->Account = $this->getDefaultAccount();
     }
 

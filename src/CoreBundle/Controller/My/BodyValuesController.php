@@ -55,7 +55,7 @@ class BodyValuesController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="body-values-edit")
-     * @ParamConverter("user", class="CoreBundle:User")
+     * @ParamConverter("user", class="Runalyze\Bundle\CoreBundle\Entity\User")
      * @param Request $request
      * @param User $user
      * @param Account $account
@@ -90,7 +90,7 @@ class BodyValuesController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="body-values-delete")
-     * @ParamConverter("user", class="CoreBundle:User")
+     * @ParamConverter("user", class="Runalyze\Bundle\CoreBundle\Entity\User")
      * @param User $user
      * @param Account $account
      * @return \Symfony\Component\HttpFoundation\RedirectResponse

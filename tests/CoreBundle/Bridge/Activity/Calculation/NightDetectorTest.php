@@ -20,6 +20,8 @@ class NightDetectorTest extends TestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('Europe/Berlin');
+
         $this->Activity = new Training();
         $this->Activity->setRoute(new Route());
         $this->Detector = new NightDetector();

@@ -143,13 +143,12 @@ class SportRepository extends ServiceEntityRepository
      */
     public function getSportStatisticsSince(?int $timestamp, Account $account, bool $raw = false)
     {
-        $queryBuilder = $this->_em->createQueryBuilder()
+        $queryBuilder = $this->createQueryBuilder('s')
             ->select('s')
             ->addSelect('COUNT(t.id) as num')
             ->addSelect('SUM(t.distance) as distance')
             ->addSelect('SUM(t.s) as time_in_s')
             ->addSelect('SUM(CASE WHEN t.distance > 0 THEN 1 ELSE 0 END) as count_distance')
-            ->from('CoreBundle:Sport', 's')
             ->innerJoin('s.trainings', 't','WITH', 't.account = :account')
             ->where('s.account = :account')
             ->setParameter(':account', $account->getId())

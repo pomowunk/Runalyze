@@ -44,9 +44,8 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getSpeedUnitFor($activityid, $accountid)
     {
-        return $this->_em->createQueryBuilder()
+        return $this->createQueryBuilder('t')
             ->select('s.speed')
-            ->from('CoreBundle:Training', 't')
             ->join('t.sport', 's')
             ->where('t.id = :id AND t.account = :account')
             ->setParameter('id', $activityid)
@@ -122,9 +121,8 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getActiveYearsFor(Account $account, $sportid = null, $minimumActivities = null)
     {
-        $queryBuilder = $this->_em->createQueryBuilder()
+        $queryBuilder = $this->createQueryBuilder('t')
             ->select('YEAR(FROM_UNIXTIME(t.time)) AS year')
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->setParameter('account', $account->getId())
             ->addGroupBy('year');
@@ -152,9 +150,8 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getNumberOfActivitiesFor(Account $account, $year = null, $sportid = null)
     {
-        $queryBuilder = $this->_em->createQueryBuilder()
+        $queryBuilder = $this->createQueryBuilder('t')
             ->select('COUNT(1) as num')
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->setParameter('account', $account->getId());
 
@@ -180,9 +177,8 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getNumberOfActivitiesWithActivityType(Type $type)
     {
-        $queryBuilder = $this->_em->createQueryBuilder()
+        $queryBuilder = $this->createQueryBuilder('t')
             ->select('COUNT(1) as num')
-            ->from('CoreBundle:Training', 't')
             ->where('t.type = :typeid')
             ->setParameter('typeid', $type->getId());
 
@@ -195,10 +191,9 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getTypesWithTraining(Account $account)
     {
-        $qb = $this->_em->createQueryBuilder();
+        $qb = $this->createQueryBuilder('t');
         $queryBuilder = $qb
             ->select('IDENTITY(t.type)')
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->andWhere($qb->expr()->isNotNull('t.type'))
             ->addGroupBy('t.type')
@@ -212,10 +207,9 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getSportsWithTraining(Account $account)
     {
-        $qb = $this->_em->createQueryBuilder();
+        $qb = $this->createQueryBuilder('t');
         $queryBuilder = $qb
             ->select('IDENTITY(t.sport)')
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->andWhere($qb->expr()->isNotNull('t.sport'))
             ->addGroupBy('t.sport')
@@ -231,12 +225,11 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getMonthlyStatsFor(Account $account, $column = null, $sportid = null)
     {
-        $queryBuilder = $this->_em->createQueryBuilder()
+        $queryBuilder = $this->createQueryBuilder('t')
             ->select(
                 'YEAR(FROM_UNIXTIME(t.time)) AS year',
                 'MONTH(FROM_UNIXTIME(t.time)) AS month'
             )
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->setParameter('account', $account->getId())
             ->addGroupBy('year')
@@ -278,13 +271,12 @@ class TrainingRepository extends ServiceEntityRepository
     {
         $statistics = new AccountStatistics();
 
-        $dataForAccount = $this->_em->createQueryBuilder()
+        $dataForAccount = $this->createQueryBuilder('t')
             ->select(
                 'COUNT(1) as num',
                 'SUM(t.distance) as distance',
                 'SUM(t.s) as duration'
             )
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->setParameter('account', $account->getId())
             ->getQuery()
@@ -307,14 +299,13 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getQueryForJsonPosterData(Account $account, Sport $sport, $year)
     {
-        return $this->_em->createQueryBuilder()
+        return $this->createQueryBuilder('t')
             ->select(
                 't.s',
                 't.time',
                 't.distance',
                 'r.geohashes'
             )
-            ->from('CoreBundle:Training', 't')
             ->join('t.route', 'r')
             ->where('t.account = :account')
             ->andWhere('t.sport = :sport')
@@ -337,14 +328,13 @@ class TrainingRepository extends ServiceEntityRepository
      */
     public function getStatsForPoster(Account $account, Sport $sport, $year)
     {
-        return $this->_em->createQueryBuilder()
+        return $this->createQueryBuilder('t')
             ->select(
                 'COUNT(t.id) as num',
                 'SUM(t.distance) as total_distance',
                 'MIN(t.distance) as min_distance',
                 'MAX(t.distance) as max_distance'
             )
-            ->from('CoreBundle:Training', 't')
             ->where('t.account = :account')
             ->andWhere('t.sport = :sport')
             ->andWhere('t.time BETWEEN :startTime and :endTime')

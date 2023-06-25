@@ -4,9 +4,10 @@ namespace Runalyze\Bundle\CoreBundle\Tests\Repository;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
+use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\VO2maxCorrectionFactorCalculation;
 
 /**
@@ -27,8 +28,8 @@ class RaceresultRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->RaceresultRepository = $this->EntityManager->getRepository('CoreBundle:Raceresult');
-        $this->TrainingRepository = $this->EntityManager->getRepository('CoreBundle:Training');
+        $this->RaceresultRepository = $this->EntityManager->getRepository(Raceresult::class);
+        $this->TrainingRepository = $this->EntityManager->getRepository(Training::class);
         $this->Account = $this->getDefaultAccount();
     }
 
@@ -38,9 +39,10 @@ class RaceresultRepositoryTest extends AbstractRepositoryTestCase
         $this->assertNull($this->RaceresultRepository->findForAccount(1, 1));
 
         $this->assertEqualsWithDelta(1.0, $this->RaceresultRepository->getEffectiveVO2maxCorrectionFactor(
-            $this->Account,
-            $this->getDefaultAccountsRunningSport()->getId()
-        ), 1e-6);
+                $this->Account,
+                $this->getDefaultAccountsRunningSport()->getId()
+            ), 1e-6
+        );
     }
 
     public function testSingleRace()
@@ -66,7 +68,7 @@ class RaceresultRepositoryTest extends AbstractRepositoryTestCase
         $this->assertEquals('10', $races[0][0]['officialDistance']);
         $this->assertEquals('Awesome pirace', $races[0][0]['name']);
 
-        $this->assertFalse($this->getContainer()->get('test.runalyze.recalculationmanager')->isTaskScheduled($this->Account, VO2maxCorrectionFactorCalculation::class));
+        $this->assertFalse(self::$container->get(RecalculationManager::class)->isTaskScheduled($this->Account, VO2maxCorrectionFactorCalculation::class));
     }
 
     public function testFindingVO2maxCorrectionFactorForSingleRace()
@@ -78,11 +80,12 @@ class RaceresultRepositoryTest extends AbstractRepositoryTestCase
         $expectedFactor = $activity->getVO2maxByTime() / $activity->getVO2max();
 
         $this->assertEqualsWithDelta($expectedFactor, $this->RaceresultRepository->getEffectiveVO2maxCorrectionFactor(
-            $this->Account,
-            $this->getDefaultAccountsRunningSport()->getId()
-        ), 0.01);
+                $this->Account,
+                $this->getDefaultAccountsRunningSport()->getId()
+            ), 0.01
+        );
 
-        $this->assertTrue($this->getContainer()->get('test.runalyze.recalculationmanager')->isTaskScheduled($this->Account, VO2maxCorrectionFactorCalculation::class));
+        $this->assertTrue(self::$container->get(RecalculationManager::class)->isTaskScheduled($this->Account, VO2maxCorrectionFactorCalculation::class));
     }
 
     public function testFindingVO2maxCorrectionFactorForMultipleRaces()
@@ -105,9 +108,10 @@ class RaceresultRepositoryTest extends AbstractRepositoryTestCase
         $this->insertRace('foobar', $activity);
 
         $this->assertEqualsWithDelta($expectedFactor, $this->RaceresultRepository->getEffectiveVO2maxCorrectionFactor(
-            $this->Account,
-            $this->getDefaultAccountsRunningSport()->getId()
-        ), 0.01);
+                $this->Account,
+                $this->getDefaultAccountsRunningSport()->getId()
+            ), 0.01
+        );
     }
 
     /**

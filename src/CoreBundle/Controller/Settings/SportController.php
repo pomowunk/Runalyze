@@ -76,7 +76,7 @@ class SportController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $type->setSport($em->getReference('CoreBundle:Sport', $sportid));
+            $type->setSport($em->getReference(Sport::class, $sportid));
             $this->typeRepository->save($type);
             $this->automaticReloadFlagSetter->set(AutomaticReloadFlagSetter::FLAG_PLUGINS);
             return $this->redirectToRoute('sport-edit', ['id' => $sportid]);
@@ -90,7 +90,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/type/{id}/edit", name="sport-type-edit", requirements={"id" = "\d+"})
-     * @ParamConverter("type", class="CoreBundle:Type")
+     * @ParamConverter("type", class="Runalyze\Bundle\CoreBundle\Entity\Type")
      */
     public function typeEditAction(Request $request, Type $type, Account $account)
     {
@@ -117,7 +117,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/type/{id}/delete", name="sport-type-delete", requirements={"id" = "\d+"})
-     * @ParamConverter("type", class="CoreBundle:Type")
+     * @ParamConverter("type", class="Runalyze\Bundle\CoreBundle\Entity\Type")
      */
     public function deleteSportTypeAction(
         Request $request,
@@ -185,7 +185,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="sport-edit", requirements={"id" = "\d+"})
-     * @ParamConverter("sport", class="CoreBundle:Sport")
+     * @ParamConverter("sport", class="Runalyze\Bundle\CoreBundle\Entity\Sport")
      */
     public function sportEditAction(Request $request, Sport $sport, Account $account)
     {
@@ -213,7 +213,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="sport-delete", requirements={"id" = "\d+"})
-     * @ParamConverter("sport", class="CoreBundle:Sport")
+     * @ParamConverter("sport", class="Runalyze\Bundle\CoreBundle\Entity\Sport")
      */
     public function sportDeleteAction(
         Request $request,

@@ -3,6 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Tests\Repository;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
+use Runalyze\Bundle\CoreBundle\Entity\Conf;
 use Runalyze\Bundle\CoreBundle\Entity\User;
 use Runalyze\Bundle\CoreBundle\Repository\UserRepository;
 
@@ -21,7 +22,7 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->UserRepository = $this->EntityManager->getRepository('CoreBundle:User');
+        $this->UserRepository = $this->EntityManager->getRepository(User::class);
         $this->Account = $this->getDefaultAccount();
     }
 
@@ -54,13 +55,15 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
 
     public function testCurrentHeartRateStats()
     {
+        $confRepository = $this->EntityManager->getRepository(Conf::class);
+
         $this->insertDataForDefaultAccount(197, 48);
 
         $this->assertEquals(197, $this->UserRepository->getCurrentMaximalHeartRate($this->Account));
         $this->assertEquals(48, $this->UserRepository->getCurrentRestingHeartRate($this->Account));
 
-        $this->assertEquals('197', $this->EntityManager->getRepository('CoreBundle:Conf')->findByAccountAndKey($this->Account, 'HF_MAX')->getValue());
-        $this->assertEquals('48', $this->EntityManager->getRepository('CoreBundle:Conf')->findByAccountAndKey($this->Account, 'HF_REST')->getValue());
+        $this->assertEquals('197', $confRepository->findByAccountAndKey($this->Account, 'HF_MAX')->getValue());
+        $this->assertEquals('48', $confRepository->findByAccountAndKey($this->Account, 'HF_REST')->getValue());
     }
 
     public function testThatZeroesAreIgnored()

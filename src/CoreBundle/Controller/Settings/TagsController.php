@@ -38,7 +38,7 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="settings-tags-edit")
-     * @ParamConverter("tag", class="CoreBundle:Tag")
+     * @ParamConverter("tag", class="Runalyze\Bundle\CoreBundle\Entity\Tag")
      *
      * @param Request $request
      * @param Tag $tag
@@ -69,7 +69,7 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="settings-tags-delete")
-     * @ParamConverter("tag", class="CoreBundle:Tag")
+     * @ParamConverter("tag", class="Runalyze\Bundle\CoreBundle\Entity\Tag")
      */
     public function tagDeleteAction(
         Request $request,

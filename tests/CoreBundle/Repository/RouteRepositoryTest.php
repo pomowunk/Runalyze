@@ -17,7 +17,7 @@ class RouteRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->RouteRepository = $this->EntityManager->getRepository('CoreBundle:Route');
+        $this->RouteRepository = $this->EntityManager->getRepository(Route::class);
     }
 
     public function testCheckingForLockedRoutes()

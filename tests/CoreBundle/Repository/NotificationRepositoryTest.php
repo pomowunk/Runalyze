@@ -22,7 +22,7 @@ class NotificationRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->NotificationRepository = $this->EntityManager->getRepository('CoreBundle:Notification');
+        $this->NotificationRepository = $this->EntityManager->getRepository(Notification::class);
         $this->Account = $this->getDefaultAccount();
     }
 

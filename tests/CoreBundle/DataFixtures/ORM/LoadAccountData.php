@@ -8,18 +8,18 @@ use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
 use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Runalyze\Bundle\CoreBundle\Entity\Sport;
+use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface, ORMFixtureInterface
+class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ORMFixtureInterface
 {
-    protected ?ContainerInterface $Container;
+    protected EncoderFactoryInterface $encoderFactory;
     public static Account $emptyAccount;
     public static Account $defaultAccount;
 
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->Container = $container;
+    public function __construct(EncoderFactoryInterface $encoderFactory) {
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function load(ObjectManager $manager)
@@ -34,7 +34,7 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
         static::$emptyAccount->setUsername('empty');
         static::$emptyAccount->setMail('empty@test.com');
 
-        $encoder = $this->Container->get('test.security.encoder_factory')->getEncoder(static::$emptyAccount);
+        $encoder = $this->encoderFactory->getEncoder(static::$emptyAccount);
         static::$emptyAccount->setPassword($encoder->encodePassword('emptyPassword', static::$emptyAccount->getSalt()));
 
         $manager->persist(static::$emptyAccount);
@@ -59,11 +59,11 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 
     protected function registerAccount(ObjectManager $manager, Account $account, $password)
     {
-        $sportRepo = $manager->getRepository('CoreBundle:Sport');
-        $equipmentTypeRepo = $manager->getRepository('CoreBundle:EquipmentType');
+        $sportRepo = $manager->getRepository(Sport::class);
+        $equipmentTypeRepo = $manager->getRepository(EquipmentType::class);
         
         $registration = new Registration($manager, $account, $sportRepo, $equipmentTypeRepo);
-        $registration->setPassword($password, $this->Container->get('test.security.encoder_factory'));
+        $registration->setPassword($password, $this->encoderFactory);
         $registration->registerAccount();
 
         return $registration;

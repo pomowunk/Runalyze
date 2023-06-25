@@ -24,14 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class RaceResultController extends AbstractController
 {
     /**
-     * @return RaceresultRepository
-     */
-    protected function getRaceresultRepository()
-    {
-        return $this->getDoctrine()->getRepository('CoreBundle:Raceresult');
-    }
-
-    /**
      * @Route("/{activityId}", name="raceresult-form", requirements={"activityId" = "\d+"})
      * @param int $activityId
      * @param Account $account

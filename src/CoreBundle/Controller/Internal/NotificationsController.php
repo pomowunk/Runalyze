@@ -40,7 +40,7 @@ class NotificationsController extends AbstractController
 
     /**
      * @Route("/read/{id}", name="internal-notifications-read")
-     * @ParamConverter("notification", class="CoreBundle:Notification")
+     * @ParamConverter("notification", class="Runalyze\Bundle\CoreBundle\Entity\Notification")
      * @Security("is_granted('ROLE_USER')")
      */
     public function readNotificationAction(Notification $notification, Account $account)

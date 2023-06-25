@@ -42,7 +42,7 @@ class Version20171104230424 extends AbstractMigration implements ContainerAwareI
         $this->NegativeTimeStepFilter = new NegativeTimeStepFilter();
         $this->NegativeDistanceStepFilter = new NegativeDistanceStepFilter(0.1);
 
-        $repo = $em->getRepository('CoreBundle:Training');
+        $repo = $em->getRepository(Training::class);
         $numLocked = $this->getNumberOfLockedRoutes($em) + $this->getNumberOfLockedTrackData($em);
 
         while ($numLocked > 0) {
@@ -220,7 +220,7 @@ class Version20171104230424 extends AbstractMigration implements ContainerAwareI
         return (int)$em->createQueryBuilder()
             ->select('count(r.id)')
             ->where('r.lock = 1')
-            ->from('CoreBundle:Route','r')
+            ->from(Route::class, 'r')
             ->getQuery()->getSingleScalarResult();
     }
 
@@ -233,7 +233,7 @@ class Version20171104230424 extends AbstractMigration implements ContainerAwareI
         return (int)$em->createQueryBuilder()
             ->select('count(t.activity)')
             ->where('t.lock = 1')
-            ->from('CoreBundle:Trackdata','t')
+            ->from(Trackdata::class, 't')
             ->getQuery()->getSingleScalarResult();
     }
 

@@ -50,12 +50,11 @@ class RaceresultRepository extends ServiceEntityRepository
      */
     public function findBySportAndYear(Account $account, Sport $sport, $year)
     {
-        return $this->_em->createQueryBuilder()
+        return $this->createQueryBuilder('r')
             ->select(
                 'r',
                 't.time'
             )
-            ->from('CoreBundle:Raceresult', 'r')
             ->join('r.activity', 't')
             ->where('r.account = :account')
             ->andWhere('t.sport = :sport')

@@ -15,6 +15,8 @@ use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Type;
+use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
+use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\MarathonShapeCalculation;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\VO2maxShapeCalculation;
 use Runalyze\Parser\Activity\Common\Data\Round\RoundCollection;
@@ -34,7 +36,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->TrainingRepository = $this->EntityManager->getRepository('CoreBundle:Training');
+        $this->TrainingRepository = $this->EntityManager->getRepository(Training::class);
         $this->Account = $this->getDefaultAccount();
     }
 
@@ -295,9 +297,9 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
         $routeId = $result->getRoute()->getId();
         $this->TrainingRepository->remove($activity);
 
-        $this->assertNull($this->EntityManager->getRepository('CoreBundle:Route')->find($routeId));
-        $this->assertNull($this->EntityManager->getRepository('CoreBundle:Trackdata')->findByActivity($activity->getId(), $this->getDefaultAccount()));
-        $this->assertNull($this->EntityManager->getRepository('CoreBundle:Hrv')->findByActivity($activity->getId()));
+        $this->assertNull($this->EntityManager->getRepository(Route::class)->find($routeId));
+        $this->assertNull($this->EntityManager->getRepository(Trackdata::class)->findByActivity($activity->getId(), $this->getDefaultAccount()));
+        $this->assertNull($this->EntityManager->getRepository(Hrv::class)->findByActivity($activity->getId()));
     }
 
     public function testThatPowerIsNotRemovedAtUpdate()
@@ -354,7 +356,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
         $this->TrainingRepository->remove($activity);
 
-        $this->assertNull($this->EntityManager->getRepository('CoreBundle:Raceresult')->findByActivity($activity->getId()));
+        $this->assertNull($this->EntityManager->getRepository(Raceresult::class)->findByActivity($activity->getId()));
     }
 
     public function testActivityWithSwimData()
@@ -380,7 +382,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
         $this->TrainingRepository->remove($activity);
 
-        $this->assertNull($this->EntityManager->getRepository('CoreBundle:Swimdata')->findByActivity($activity->getId()));
+        $this->assertNull($this->EntityManager->getRepository(Swimdata::class)->findByActivity($activity->getId()));
     }
 
     /**
@@ -388,7 +390,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
      */
     public function testThatVO2maxUpdateInListenerRecalculatesMarathonShape()
     {
-        $recalculationManager = $this->getContainer()->get('test.runalyze.recalculationmanager');
+        $recalculationManager = self::$container->get(RecalculationManager::class);
 
         $activity = $this->getActivityForDefaultAccount(time(), 2700, 10.0, $this->getDefaultAccountsRunningSport());
         $activity->setPulseAvg(140);
@@ -427,11 +429,14 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
     public function testThatStartTimeForSimpleExampleIsCalculated()
     {
+        $recalculationManager = self::$container->get(RecalculationManager::class);
+        $configurationManager = self::$container->get(ConfigurationManager::class);
+        
         $this->insertActivityForDefaultAccount(987654321);
         $firstActivity = $this->insertActivityForDefaultAccount(123456789);
 
-        $this->getContainer()->get('test.runalyze.recalculationmanager')->runScheduledTasks();
-        $configList = $this->getContainer()->get('test.runalyze.configurationmanager')->getList($this->getDefaultAccount());
+        $recalculationManager->runScheduledTasks();
+        $configList = $configurationManager->getList($this->getDefaultAccount());
 
         $this->assertEquals(123456789, $configList->get('data.START_TIME'));
 
@@ -439,15 +444,15 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
         $this->TrainingRepository->save($firstActivity);
 
-        $this->getContainer()->get('test.runalyze.recalculationmanager')->runScheduledTasks();
-        $configList = $this->getContainer()->get('test.runalyze.configurationmanager')->getList($this->getDefaultAccount());
+        $recalculationManager->runScheduledTasks();
+        $configList = $configurationManager->getList($this->getDefaultAccount());
 
         $this->assertEquals(100000000, $configList->get('data.START_TIME'));
 
         $this->TrainingRepository->remove($firstActivity);
 
-        $this->getContainer()->get('test.runalyze.recalculationmanager')->runScheduledTasks();
-        $configList = $this->getContainer()->get('test.runalyze.configurationmanager')->getList($this->getDefaultAccount());
+        $recalculationManager->runScheduledTasks();
+        $configList = $configurationManager->getList($this->getDefaultAccount());
 
         $this->assertEquals(987654321, $configList->get('data.START_TIME'));
     }
@@ -594,7 +599,7 @@ class TrainingRepositoryTest extends AbstractRepositoryTestCase
 
     public function testEquipmentStatistics()
     {
-        $someEquipment = $this->EntityManager->getRepository('CoreBundle:Equipment')->findBy(
+        $someEquipment = $this->EntityManager->getRepository(Equipment::class)->findBy(
             ['account' => $this->getDefaultAccount()],
             null,
             3

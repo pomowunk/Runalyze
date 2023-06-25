@@ -57,7 +57,7 @@ class ViewController extends AbstractController
     /**
      * @Route("/activity/{id}", name="ActivityShow", requirements={"id" = "\d+"})
      * @Security("is_granted('ROLE_USER')")
-     * @ParamConverter("activity", class="CoreBundle:Training")
+     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
      */
     public function displayAction(
         Request $request,
@@ -91,7 +91,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/vo2max-info")
-     * @ParamConverter("activity", class="CoreBundle:Training")
+     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
      * @Security("is_granted('ROLE_USER')")
      */
     public function vo2maxInfoAction(
@@ -194,7 +194,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/sub-segments-info", requirements={"id" = "\d+"}, name="activity-tool-sub-segments-info")
-     * @ParamConverter("activity", class="CoreBundle:Training")
+     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
      * @Security("is_granted('ROLE_USER')")
      */
     public function subSegmentInfoAction($id, Training $activity, Account $account, ConfigurationManager $confManager)
@@ -252,7 +252,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/climb-score", requirements={"id" = "\d+"}, name="activity-tool-climb-score")
-     * @ParamConverter("activity", class="CoreBundle:Training")
+     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
      */
     public function climbScoreAction(
         Training $activity,

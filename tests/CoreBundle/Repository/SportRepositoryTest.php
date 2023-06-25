@@ -4,8 +4,8 @@ namespace Runalyze\Bundle\CoreBundle\Tests\Repository;
 
 use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Entity\Training;
+use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Profile\Sport\SportProfile;
 
@@ -27,8 +27,8 @@ class SportRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->SportRepository = $this->EntityManager->getRepository('CoreBundle:Sport');
-        $this->TrainingRepository = $this->EntityManager->getRepository('CoreBundle:Training');
+        $this->SportRepository = $this->EntityManager->getRepository(Sport::class);
+        $this->TrainingRepository = $this->EntityManager->getRepository(Training::class);
         $this->Account = $this->getDefaultAccount();
     }
 

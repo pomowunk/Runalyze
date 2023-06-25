@@ -23,7 +23,7 @@ class WeathercacheRepositoryTest extends AbstractRepositoryTestCase
     {
         parent::setUp();
 
-        $this->Repository = $this->EntityManager->getRepository('CoreBundle:Weathercache');
+        $this->Repository = $this->EntityManager->getRepository(Weathercache::class);
 
         $this->Location = new Location();
         $this->Location->setGeohash('u1xjn3n74zxv');
