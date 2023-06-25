@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use App\Entity\Sport;
+use App\Entity\Training;
 use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\TrimpCalculator;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Profile\Athlete\Gender;
 
 class TrimpCalculatorTest extends TestCase

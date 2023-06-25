@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Model\Trackdata\Climb\ClimbProfile;
 
 class FlatOrHillyAnalyzer

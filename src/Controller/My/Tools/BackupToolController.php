@@ -2,10 +2,10 @@
 
 namespace App\Controller\My\Tools;
 
+use App\Entity\Account;
+use App\Repository\RouteRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\RouteRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Form\Tools\BackupExportType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

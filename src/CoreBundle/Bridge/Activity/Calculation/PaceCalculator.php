@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
+use App\Entity\Trackdata;
 use Runalyze\Calculation\Activity\PaceSmoother;
 use Runalyze\Model\Trackdata\Entity;
 

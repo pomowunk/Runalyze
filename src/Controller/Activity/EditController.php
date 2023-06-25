@@ -2,14 +2,14 @@
 
 namespace App\Controller\Activity;
 
+use App\Entity\Account;
+use App\Entity\Common\AccountRelatedEntityInterface;
+use App\Entity\Raceresult;
+use App\Entity\Training;
+use App\Repository\RaceresultRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityDecorator;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityPreview;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Form\ActivityType;
 use Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory;
 use Runalyze\Bundle\CoreBundle\Services\Activity\DataSeriesRemover;
@@ -56,7 +56,7 @@ class EditController extends AbstractController
     /**
      * @Route("/activity/{id}/edit", name="activity-edit", requirements={"id" = "\d+"})
      * @Security("is_granted('ROLE_USER')")
-     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+     * @ParamConverter("activity", class="App\Entity\Training")
      */
     public function activityEditAction(Request $request, Training $activity, Account $account, DataSeriesRemover $dataSeriesRemover, RaceresultRepository $raceresultRepository, ActivityContextFactory $activityContextFactory): Response
     {
@@ -133,7 +133,7 @@ class EditController extends AbstractController
    /**
     * @Route("/activity/{id}/delete", name="activity-delete", requirements={"id" = "\d+"})
     * @Security("is_granted('ROLE_USER')")
-    * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+    * @ParamConverter("activity", class="App\Entity\Training")
     */
    public function deleteAction(Training $activity, Account $account): Response
    {
@@ -151,7 +151,7 @@ class EditController extends AbstractController
     /**
      * @Route("/activity/{id}/elevation-correction", name="activity-elevation-correction", requirements={"id" = "\d+"})
      * @Security("is_granted('ROLE_USER')")
-     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+     * @ParamConverter("activity", class="App\Entity\Training")
      */
     public function elevationCorrectionAction(Request $request, Training $activity, Account $account, ElevationCorrection $elevationCorrection, GeoTiff $geotiff, Geonames $geonames, GoogleMaps $googleMaps): Response
     {

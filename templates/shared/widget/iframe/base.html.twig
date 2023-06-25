@@ -6,7 +6,7 @@
 {% from '_macro/utilities.html.twig' import boxedValue, boxedValueFor %}
 
 {% block content %}
-    {# @var activity \Runalyze\Bundle\CoreBundle\Entity\Training #}
+    {# @var activity \App\Entity\Training #}
     {% set activity = context.activity %}
     {# @var configList \Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList #}
     {% set configList = config(context.account) %}

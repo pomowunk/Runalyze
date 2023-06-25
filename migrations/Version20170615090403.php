@@ -2,13 +2,13 @@
 
 namespace Runalyze\Migrations;
 
+use App\Entity\Route;
+use App\Entity\Training;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\ClimbScoreCalculator;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\FlatOrHillyAnalyzer;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Service\ElevationCorrection\StepwiseElevationProfileFixer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Poster;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
+use App\Entity\Account;
+use App\Entity\Sport;
 use Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;

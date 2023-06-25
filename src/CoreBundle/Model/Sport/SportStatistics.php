@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Model\Sport;
 
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
+use App\Entity\Sport;
 
 class SportStatistics
 {

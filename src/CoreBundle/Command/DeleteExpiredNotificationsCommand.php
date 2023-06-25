@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
+use App\Repository\NotificationRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

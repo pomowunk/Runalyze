@@ -3,11 +3,11 @@
 namespace App\Controller\Internal;
 
 use App\Controller\AbstractPluginsAwareController;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Plugin;
-use Runalyze\Bundle\CoreBundle\Repository\PluginRepository;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use App\Entity\Account;
+use App\Entity\Plugin;
+use App\Repository\PluginRepository;
+use App\Repository\SportRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -46,7 +46,7 @@ class PluginController extends AbstractPluginsAwareController
 
     /**
      * @Route("/toggle/{id}", name="internal-plugin-toggle")
-     * @ParamConverter("plugin", class="Runalyze\Bundle\CoreBundle\Entity\Plugin")
+     * @ParamConverter("plugin", class="App\Entity\Plugin")
      * @Security("is_granted('ROLE_USER')")
      */
     public function togglePanelAction(Plugin $plugin, Account $account): Response
@@ -66,7 +66,7 @@ class PluginController extends AbstractPluginsAwareController
 
     /**
      * @Route("/move/{id}/up", name="internal-plugin-move-up")
-     * @ParamConverter("plugin", class="Runalyze\Bundle\CoreBundle\Entity\Plugin")
+     * @ParamConverter("plugin", class="App\Entity\Plugin")
      * @Security("is_granted('ROLE_USER')")
      */
     public function movePanelUpAction(Plugin $plugin, Account $account): Response
@@ -86,7 +86,7 @@ class PluginController extends AbstractPluginsAwareController
 
     /**
      * @Route("/move/{id}/down", name="internal-plugin-move-down")
-     * @ParamConverter("plugin", class="Runalyze\Bundle\CoreBundle\Entity\Plugin")
+     * @ParamConverter("plugin", class="App\Entity\Plugin")
      * @Security("is_granted('ROLE_USER')")
      */
     public function movePanelDownAction(Plugin $plugin, Account $account): Response

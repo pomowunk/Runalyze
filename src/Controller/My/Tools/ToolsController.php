@@ -2,12 +2,14 @@
 
 namespace App\Controller\My\Tools;
 
+use App\Entity\Account;
+use App\Repository\SportRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Anova\AnovaDataQuery;
 use Runalyze\Bundle\CoreBundle\Component\Tool\DatabaseCleanup\JobGeneral;
 use Runalyze\Bundle\CoreBundle\Component\Tool\DatabaseCleanup\JobLoop;
 use Runalyze\Bundle\CoreBundle\Component\Tool\TrendAnalysis\TrendAnalysisDataQuery;
 use Runalyze\Bundle\CoreBundle\Component\Tool\VO2maxAnalysis\VO2maxAnalysis;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaData;
 use Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaType;
 use Runalyze\Bundle\CoreBundle\Form\Tools\DatabaseCleanupType;
@@ -23,8 +25,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Availability;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;

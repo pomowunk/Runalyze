@@ -2,17 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Account;
+use App\Repository\AccountRepository;
+use App\Repository\EquipmentTypeRepository;
+use App\Repository\SportRepository;
+use App\Repository\TrainingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Runalyze\Activity\Distance;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
 use Runalyze\Bundle\CoreBundle\Form\FeedbackType;
 use Runalyze\Bundle\CoreBundle\Form\RegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;

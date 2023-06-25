@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Import;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Account;
+use App\Entity\Training;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class ActivityCache

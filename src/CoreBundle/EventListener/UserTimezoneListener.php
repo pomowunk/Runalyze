@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Parameter\Application\Timezone;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

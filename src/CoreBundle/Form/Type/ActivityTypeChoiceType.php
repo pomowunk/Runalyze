@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Type;
 
-use Runalyze\Bundle\CoreBundle\Entity\Type;
+use App\Entity\Type;
 use Runalyze\Bundle\CoreBundle\Form\AbstractTokenStorageAwareType;
 use Runalyze\Bundle\CoreBundle\Form\ConfigurationManagerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

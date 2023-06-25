@@ -141,7 +141,6 @@ services:
 
     Runalyze\Bundle\CoreBundle\:
         resource: '../src/CoreBundle/*'
-        exclude: '../src/CoreBundle/Entity/'
 
     Runalyze\:
         resource: '../inc/core/*'
@@ -203,10 +202,6 @@ services:
     Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver:
         public: true
 
-    Runalyze\Bundle\CoreBundle\Repository\:
-        resource: '%kernel.project_dir%/src/CoreBundle/Repository/*'
-        public: true
-
     Runalyze\Bundle\CoreBundle\Services\AccountMailer:
         calls: [ [setFrom, ['%app.mail_sender%', '%app.mail_name%']] ]
     Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater:
@@ -242,4 +237,4 @@ services:
         factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getWeightUnit']
 
     Runalyze\Service\WeatherForecast\DatabaseCacheInterface:
-        alias: 'Runalyze\Bundle\CoreBundle\Repository\WeathercacheRepository'
+        alias: 'App\Repository\WeathercacheRepository'

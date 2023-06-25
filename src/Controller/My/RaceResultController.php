@@ -2,15 +2,15 @@
 
 namespace App\Controller\My;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use App\Entity\Account;
+use App\Entity\Raceresult;
+use App\Repository\RaceresultRepository;
+use App\Repository\TrainingRepository;
+use App\Repository\SportRepository;
 use Runalyze\Metrics\LegacyUnitConverter;
 use Runalyze\Sports\Running\VO2max\Estimation\DanielsGilbertFormula;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Runalyze\Bundle\CoreBundle\Form\RaceResultType;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup;
 use Runalyze\Bundle\CoreBundle\Services\LegacyCache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

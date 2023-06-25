@@ -2,9 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Activity;
 
+use App\Entity\Training;
 use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class ActivityContextFactory
 {

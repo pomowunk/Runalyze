@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Configuration;
 
+use App\Entity\Sport;
 use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\UnitSystem;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Runalyze\Metrics\Velocity\Unit\SecondsPer500y;
 use Runalyze\Metrics\Velocity\Unit\SecondsPerMile;

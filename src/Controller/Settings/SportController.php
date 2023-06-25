@@ -2,13 +2,13 @@
 
 namespace App\Controller\Settings;
 
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Entity\Type;
+use App\Repository\SportRepository;
+use App\Repository\TrainingRepository;
+use App\Repository\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Type;
-use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Form\Settings\SportType;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Profile\Sport\SportProfile;
@@ -84,7 +84,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/type/{id}/edit", name="sport-type-edit", requirements={"id" = "\d+"})
-     * @ParamConverter("type", class="Runalyze\Bundle\CoreBundle\Entity\Type")
+     * @ParamConverter("type", class="App\Entity\Type")
      */
     public function typeEditAction(Request $request, Type $type, Account $account): Response
     {
@@ -111,7 +111,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/type/{id}/delete", name="sport-type-delete", requirements={"id" = "\d+"})
-     * @ParamConverter("type", class="Runalyze\Bundle\CoreBundle\Entity\Type")
+     * @ParamConverter("type", class="App\Entity\Type")
      */
     public function deleteSportTypeAction(
         Request $request,
@@ -179,7 +179,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="sport-edit", requirements={"id" = "\d+"})
-     * @ParamConverter("sport", class="Runalyze\Bundle\CoreBundle\Entity\Sport")
+     * @ParamConverter("sport", class="App\Entity\Sport")
      */
     public function sportEditAction(Request $request, Sport $sport, Account $account): Response
     {
@@ -207,7 +207,7 @@ class SportController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="sport-delete", requirements={"id" = "\d+"})
-     * @ParamConverter("sport", class="Runalyze\Bundle\CoreBundle\Entity\Sport")
+     * @ParamConverter("sport", class="App\Entity\Sport")
      */
     public function sportDeleteAction(
         Request $request,

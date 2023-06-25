@@ -2,17 +2,17 @@
 
 namespace App\Controller\Settings;
 
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Dataset;
+use App\Entity\Account;
+use App\Entity\Dataset;
+use App\Repository\AccountRepository;
+use App\Repository\DatasetRepository;
+use App\Repository\EquipmentRepository;
+use App\Repository\TagRepository;
 use Runalyze\Bundle\CoreBundle\Form\Settings\ChangeMailType;
 use Runalyze\Bundle\CoreBundle\Form\Settings\ChangePasswordType;
 use Runalyze\Bundle\CoreBundle\Form\Settings\DatasetCollectionType;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Dataset\DefaultConfiguration;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\DatasetRepository;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Runalyze\Bundle\CoreBundle\Form\Settings\AccountType;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;

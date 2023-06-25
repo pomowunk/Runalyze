@@ -2,12 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\ArgumentResolver;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class AccountValueResolver implements ArgumentValueResolverInterface
 {

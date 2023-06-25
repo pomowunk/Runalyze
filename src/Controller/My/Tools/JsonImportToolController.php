@@ -2,10 +2,10 @@
 
 namespace App\Controller\My\Tools;
 
+use App\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonBackupAnalyzer;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonImporter;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\EntityListener;
 
+use App\Entity\Account;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\User;
-use Runalyze\Bundle\CoreBundle\Repository\UserRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 
 class UserListener

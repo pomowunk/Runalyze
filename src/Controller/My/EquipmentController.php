@@ -2,11 +2,11 @@
 
 namespace App\Controller\My;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
+use App\Entity\Account;
+use App\Entity\Equipment;
+use App\Entity\EquipmentType;
+use App\Repository\EquipmentRepository;
+use App\Repository\EquipmentTypeRepository;
 use Runalyze\Bundle\CoreBundle\Form;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
@@ -102,7 +102,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/category/{id}/edit", name="equipment-category-edit")
-     * @ParamConverter("equipmentType", class="Runalyze\Bundle\CoreBundle\Entity\EquipmentType")
+     * @ParamConverter("equipmentType", class="App\Entity\EquipmentType")
      */
     public function typeEditAction(Request $request, EquipmentType $equipmentType, Account $account): Response
     {
@@ -132,7 +132,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/category/{id}/delete", name="equipment-category-delete")
-     * @ParamConverter("equipmentType", class="Runalyze\Bundle\CoreBundle\Entity\EquipmentType")
+     * @ParamConverter("equipmentType", class="App\Entity\EquipmentType")
      */
     public function deleteEquipmentTypeAction(
         Request $request,
@@ -161,7 +161,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/add/{id}", name="equipment-add", requirements={"id" = "\d+"})
-     * @ParamConverter("equipmentType", class="Runalyze\Bundle\CoreBundle\Entity\EquipmentType")
+     * @ParamConverter("equipmentType", class="App\Entity\EquipmentType")
      */
     public function equipmentAddAction(Request $request, EquipmentType $equipmentType, Account $account): Response
     {
@@ -192,7 +192,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="equipment-edit")
-     * @ParamConverter("equipment", class="Runalyze\Bundle\CoreBundle\Entity\Equipment")
+     * @ParamConverter("equipment", class="App\Entity\Equipment")
      */
     public function equipmentEditAction(Request $request, Equipment $equipment, Account $account): Response
     {
@@ -222,7 +222,7 @@ class EquipmentController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="equipment-delete")
-     * @ParamConverter("equipment", class="Runalyze\Bundle\CoreBundle\Entity\Equipment")
+     * @ParamConverter("equipment", class="App\Entity\Equipment")
      */
     public function deleteEquipmentAction(
         Request $request,

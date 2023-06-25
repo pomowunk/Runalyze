@@ -2,7 +2,7 @@
 
 namespace App\Controller\Internal;
 
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\DuplicateFinder;
 use Runalyze\Util\LocalTime;

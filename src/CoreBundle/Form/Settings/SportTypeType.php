@@ -2,6 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Settings;
 
+use App\Entity\Account;
+use App\Entity\Type;
 use Runalyze\Bundle\CoreBundle\Form\Type\HeartRateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Runalyze\Profile\View\DataBrowserRowProfile;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SportTypeType extends AbstractType
@@ -69,7 +70,7 @@ class SportTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Runalyze\Bundle\CoreBundle\Entity\Type'
+            'data_class' => Type::class
         ]);
     }
 }

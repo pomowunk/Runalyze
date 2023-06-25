@@ -2,9 +2,9 @@
 
 namespace App\Controller\Settings;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Tag;
-use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
+use App\Entity\Account;
+use App\Entity\Tag;
+use App\Repository\TagRepository;
 use Runalyze\Bundle\CoreBundle\Form\Settings\TagType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -38,7 +38,7 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="settings-tags-edit")
-     * @ParamConverter("tag", class="Runalyze\Bundle\CoreBundle\Entity\Tag")
+     * @ParamConverter("tag", class="App\Entity\Tag")
      */
     public function tagEditAction(Request $request, Tag $tag, Account $account): Response
     {
@@ -64,7 +64,7 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="settings-tags-delete")
-     * @ParamConverter("tag", class="Runalyze\Bundle\CoreBundle\Entity\Tag")
+     * @ParamConverter("tag", class="App\Entity\Tag")
      */
     public function tagDeleteAction(
         Request $request,

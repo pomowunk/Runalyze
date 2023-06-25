@@ -2,17 +2,17 @@
 
 namespace App\Controller\Activity;
 
+use App\Entity\Account;
+use App\Entity\Raceresult;
+use App\Entity\Route as EntityRoute;
+use App\Entity\Sport;
+use App\Entity\Training;
+use App\Repository\SportRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityPreview;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\Route as EntityRoute;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Form\ActivityType;
 use Runalyze\Bundle\CoreBundle\Form\MultiImporterType;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache;

@@ -2,9 +2,9 @@
 
 namespace App\Controller\My;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\User;
-use Runalyze\Bundle\CoreBundle\Repository\UserRepository;
+use App\Entity\Account;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Runalyze\Bundle\CoreBundle\Form\BodyValuesType;
 use Runalyze\Bundle\CoreBundle\Services\AutomaticReloadFlagSetter;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
@@ -54,7 +54,7 @@ class BodyValuesController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="body-values-edit")
-     * @ParamConverter("user", class="Runalyze\Bundle\CoreBundle\Entity\User")
+     * @ParamConverter("user", class="App\Entity\User")
      */
     public function editAction(
         Request $request,
@@ -86,7 +86,7 @@ class BodyValuesController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="body-values-delete")
-     * @ParamConverter("user", class="Runalyze\Bundle\CoreBundle\Entity\User")
+     * @ParamConverter("user", class="App\Entity\User")
      */
     public function deleteAction(
         User $user,

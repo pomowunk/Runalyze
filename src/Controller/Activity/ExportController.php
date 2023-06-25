@@ -2,7 +2,7 @@
 
 namespace App\Controller\Activity;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Export\File;
 use Runalyze\Export\File\AbstractFileExporter;
 use Runalyze\Export\Share;

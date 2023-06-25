@@ -2,8 +2,8 @@
 
 namespace App\Controller\Internal;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use App\Entity\Account;
+use App\Repository\SportRepository;
 use Runalyze\Util\LocalTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

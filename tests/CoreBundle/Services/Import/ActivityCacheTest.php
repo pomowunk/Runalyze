@@ -2,14 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Import;
 
+use App\Entity\Account;
+use App\Entity\Hrv;
+use App\Entity\Raceresult;
+use App\Entity\Route;
+use App\Entity\Swimdata;
+use App\Entity\Trackdata;
+use App\Entity\Training;
 use PHPUnit\Framework\TestCase;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Hrv;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Swimdata;
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 

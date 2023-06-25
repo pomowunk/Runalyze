@@ -33,12 +33,10 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            CoreBundle:
-                is_bundle: false
+            Entities:
                 type: annotation
-                dir: '%kernel.project_dir%/src/CoreBundle/Entity'
-                prefix: 'Runalyze\Bundle\CoreBundle\Entity'
-                alias: CoreBundle
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
         hydrators:
             COLUMN_HYDRATOR: Runalyze\Bundle\CoreBundle\Doctrine\Hydrator\ColumnHydrator
         dql:

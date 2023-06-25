@@ -1,13 +1,13 @@
 <?php
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
+use App\Entity\Account;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Psr\Log\LoggerInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;

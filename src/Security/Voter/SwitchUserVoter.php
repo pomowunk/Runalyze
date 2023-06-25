@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;

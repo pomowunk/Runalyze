@@ -2,15 +2,15 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\DataFixtures;
 
+use App\Entity\Account;
+use App\Entity\EquipmentType;
+use App\Entity\Sport;
+use App\Entity\Training;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\ORM\LoadAccountData;
 
 abstract class AbstractFixturesAwareWebTestCase extends WebTestCase

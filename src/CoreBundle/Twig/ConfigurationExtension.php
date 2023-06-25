@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Twig;
 
+use App\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Component\Configuration\RunalyzeConfigurationList;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

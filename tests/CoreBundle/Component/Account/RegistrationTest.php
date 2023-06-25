@@ -2,16 +2,16 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Account;
 
+use App\Entity\Account;
+use App\Entity\EquipmentType;
+use App\Entity\Sport;
+use App\Repository\AccountRepository;
+use App\Repository\EquipmentTypeRepository;
+use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManager;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**

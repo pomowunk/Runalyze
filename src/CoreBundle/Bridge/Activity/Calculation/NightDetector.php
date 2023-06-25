@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
+use App\Entity\Training;
 use League\Geotools\Geohash\Geohash;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Util\LocalTime;
 
 class NightDetector

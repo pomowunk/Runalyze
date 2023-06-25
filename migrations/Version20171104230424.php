@@ -2,12 +2,12 @@
 
 namespace Runalyze\Migrations;
 
+use App\Entity\Route;
+use App\Entity\Trackdata;
+use App\Entity\Training;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Parser\Activity\Common\Data\ActivityDataContainer;
 use Runalyze\Parser\Activity\Common\Exception\InvalidDataException;
 use Runalyze\Parser\Activity\Common\Filter\NegativeDistanceStepFilter;

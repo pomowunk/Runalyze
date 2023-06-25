@@ -2,11 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use App\Entity\Account;
+use App\Entity\Training;
+use App\Repository\AccountRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityContextAdapterFactory;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerFilter;

@@ -22,7 +22,7 @@
             </thead>
             <tbody class="c">
                 {% for type in equipmentTypes %}
-                    {# @var type \Runalyze\Bundle\CoreBundle\Entity\EquipmentType #}
+                    {# @var type \App\Entity\EquipmentType #}
                     <tr>
                         <td><a class="window" href="{{ url('equipment-category-edit', {'id': type.id}) }}"><i class="fa fa-fw fa-pencil"></i></a>
                             <a class="window" href="{{ url('equipment-add', {'id': type.id}) }}" title="{{ 'Add equipment'|trans }}"><i class="fa fa-fw fa-plus"></i></a>

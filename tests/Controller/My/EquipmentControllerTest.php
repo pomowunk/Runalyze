@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller\My;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\AbstractFixturesAwareWebTestCase;
 
 /**

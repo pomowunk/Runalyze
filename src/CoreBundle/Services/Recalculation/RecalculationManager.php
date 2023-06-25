@@ -2,9 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Recalculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use App\Entity\Account;
+use App\Repository\RaceresultRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\Task\MarathonShapeCalculation;

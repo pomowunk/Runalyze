@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services;
 
+use App\Entity\Raceresult;
+use App\Entity\Training;
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Files\Config;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class LegacyCache
 {

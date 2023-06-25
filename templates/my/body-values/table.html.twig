@@ -33,7 +33,7 @@
             <tbody class="c">
             {% if values|length > 0 %}
                 {% for entry in values %}
-                    {# @var entry \Runalyze\Bundle\CoreBundle\Entity\User #}
+                    {# @var entry \App\Entity\User #}
                     <tr>
                         <td><a class="window" href="{{ url('body-values-edit', {'id': entry.id}) }}"><i class="fa fa-fw fa-pencil"></i></a></td>
                         <td><a class="window" href="{{ url('body-values-delete', {'id': entry.id}) }}"><i class="fa fa-fw fa-times"></i></a></td>

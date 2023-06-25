@@ -2,13 +2,13 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
+use App\Entity\Notification;
+use App\Repository\AccountRepository;
+use App\Repository\NotificationRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\FilenameHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\JsonBackup;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\SqlBackup;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\BackupReadyMessage;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class BackupReceiver

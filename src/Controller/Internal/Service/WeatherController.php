@@ -2,7 +2,7 @@
 
 namespace App\Controller\Internal\Service;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\WeatherForecast;
 use Runalyze\Parser\Activity\Common\Data\WeatherData;

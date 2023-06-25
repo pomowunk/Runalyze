@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Activity;
 
+use App\Entity\Account;
 use Runalyze\AgeGrade\Lookup;
 use Runalyze\AgeGrade\Table\FemaleTable;
 use Runalyze\AgeGrade\Table\MaleTable;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Services\TokenStorageAwareServiceTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

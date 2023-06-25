@@ -2,11 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form;
 
+use App\Entity\Account;
+use App\Entity\Tag;
+use App\Entity\Training;
+use App\Repository\TagRepository;
 use League\Geotools\Geohash\Geohash;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Tag;
-use Runalyze\Bundle\CoreBundle\Repository\TagRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Form\Type\ActivityEquipmentType;
 use Runalyze\Bundle\CoreBundle\Form\Type\ActivityRoundType;
 use Runalyze\Bundle\CoreBundle\Form\Type\ActivityTypeChoiceType;

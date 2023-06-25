@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Tools\TrendAnalysis;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use App\Entity\Account;
+use App\Repository\SportRepository;
+use App\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryValue\QueryValues;
-use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

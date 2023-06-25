@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryGroup;
 
+use App\Entity\Account;
+use App\Entity\Type as EntityType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Type as EntityType;
 use Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaData;
 
 class Type implements QueryGroupInterface

@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\EntityListener;
 
+use App\Entity\Raceresult;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;
 
 class RaceResultListener

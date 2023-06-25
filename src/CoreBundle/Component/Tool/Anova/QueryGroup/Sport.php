@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryGroup;
 
+use App\Entity\Account;
+use App\Entity\Sport as EntitySport;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport as EntitySport;
 use Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaData;
 
 class Sport implements QueryGroupInterface

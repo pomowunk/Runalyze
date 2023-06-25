@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use App\Repository\AccountRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

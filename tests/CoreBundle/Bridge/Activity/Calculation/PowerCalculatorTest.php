@@ -2,12 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use App\Entity\Route;
+use App\Entity\Sport;
+use App\Entity\Trackdata;
+use App\Entity\Training;
 use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\PowerCalculator;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Profile\Sport\SportProfile;
 
 class PowerCalculatorTest extends TestCase

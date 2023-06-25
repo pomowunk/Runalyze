@@ -1,6 +1,6 @@
 <?php
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Configuration;
 use Runalyze\Timezone;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

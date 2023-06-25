@@ -2,10 +2,10 @@
 
 namespace App\Tests\Controller\Internal;
 
+use App\Entity\Account;
+use App\Entity\Notification;
+use App\Repository\NotificationRepository;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\TemplateBasedMessage;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\AbstractFixturesAwareWebTestCase;
 
 /**

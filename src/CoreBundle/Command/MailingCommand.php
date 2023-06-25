@@ -2,9 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Doctrine\ORM\QueryBuilder;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use App\Entity\Account;
+use App\Repository\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

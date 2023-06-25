@@ -2,12 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use App\Entity\Account;
+use App\Entity\Notification;
+use App\Repository\AccountRepository;
+use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Connection;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\TemplateBasedMessage;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

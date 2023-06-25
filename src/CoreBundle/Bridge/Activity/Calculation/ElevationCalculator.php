@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Route;
+use App\Entity\Route;
 use Runalyze\Calculation\Elevation\Calculator;
 use Runalyze\Parameter\Application\ElevationMethod;
 

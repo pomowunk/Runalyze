@@ -22,7 +22,7 @@
             <tbody>
             {% if tags|length > 0 %}
                 {% for tag in tags %}
-                    {# @var tag \Runalyze\Bundle\CoreBundle\Entity\Tag #}
+                    {# @var tag \App\Entity\Tag #}
                     <tr>
                         <td class="as-small-as-possible">
                             <a class="window" href="{{ url('settings-tags-edit', {'id': tag.id}) }}"><i class="fa fa-fw fa-pencil" title="{% trans %}Edit{% endtrans %}"></i></a>

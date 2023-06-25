@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Import;
 
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Training;
 use Runalyze\Parser\Activity\Common\Data\WeatherData;
 use Runalyze\Profile\Weather\Mapping\EnglishTextMapping;
 

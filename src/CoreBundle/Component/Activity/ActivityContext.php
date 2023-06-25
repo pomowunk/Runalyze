@@ -2,13 +2,13 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Activity;
 
-use Runalyze\Bundle\CoreBundle\Entity\Hrv;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Swimdata;
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Hrv;
+use App\Entity\Raceresult;
+use App\Entity\Route;
+use App\Entity\Sport;
+use App\Entity\Swimdata;
+use App\Entity\Trackdata;
+use App\Entity\Training;
 
 class ActivityContext
 {
@@ -53,7 +53,7 @@ class ActivityContext
     }
 
     /**
-     * @return \Runalyze\Bundle\CoreBundle\Entity\Account
+     * @return \App\Entity\Account
      */
     public function getAccount()
     {

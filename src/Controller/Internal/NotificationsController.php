@@ -2,10 +2,10 @@
 
 namespace App\Controller\Internal;
 
+use App\Entity\Account;
+use App\Entity\Notification;
+use App\Repository\NotificationRepository;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\MessageFactory;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,7 +40,7 @@ class NotificationsController extends AbstractController
 
     /**
      * @Route("/read/{id}", name="internal-notifications-read")
-     * @ParamConverter("notification", class="Runalyze\Bundle\CoreBundle\Entity\Notification")
+     * @ParamConverter("notification", class="App\Entity\Notification")
      * @Security("is_granted('ROLE_USER')")
      */
     public function readNotificationAction(Notification $notification, Account $account): Response

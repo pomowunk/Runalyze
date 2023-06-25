@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form;
 
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -73,7 +74,7 @@ class BodyValuesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Runalyze\Bundle\CoreBundle\Entity\User'
+            'data_class' => User::class
         ]);
     }
 }

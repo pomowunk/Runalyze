@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use App\Entity\Account;
+use App\Repository\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Form\RecoverPasswordType;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

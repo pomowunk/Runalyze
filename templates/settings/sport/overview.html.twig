@@ -27,7 +27,7 @@
 
             {% if sports|length > 0 %}
                 {% for sport in sports %}
-                    {# @var sport \Runalyze\Bundle\CoreBundle\Entity\Sport #}
+                    {# @var sport \App\Entity\Sport #}
                     <tr>
                         <td>
                             <a class="window" href="{{ url('sport-edit', {'id': sport.id}) }}"><i class="fa fa-fw fa-pencil"></i></a>

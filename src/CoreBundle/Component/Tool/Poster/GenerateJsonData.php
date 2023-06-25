@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Poster;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Repository\RaceresultRepository;
+use App\Repository\TrainingRepository;
 use Doctrine\ORM\Query;
 use Runalyze\Model;
 use Symfony\Component\Filesystem\Filesystem;

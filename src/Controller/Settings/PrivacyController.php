@@ -2,7 +2,7 @@
 
 namespace App\Controller\Settings;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Form\Settings\PrivacyData;
 use Runalyze\Bundle\CoreBundle\Form\Settings\PrivacyType;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;

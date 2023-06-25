@@ -2,9 +2,9 @@
 
 namespace App\Controller\Internal\Data;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\PluginConfRepository;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
+use App\Entity\Account;
+use App\Repository\PluginConfRepository;
+use App\Repository\RaceresultRepository;
 use Runalyze\Bundle\CoreBundle\Services\Activity\AgeGradeLookup;
 use Runalyze\Util\LocalTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

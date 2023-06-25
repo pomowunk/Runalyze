@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Type;
 
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use App\Entity\Sport;
+use App\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Form\AbstractTokenStorageAwareType;
 use Runalyze\Bundle\CoreBundle\Form\ConfigurationManagerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

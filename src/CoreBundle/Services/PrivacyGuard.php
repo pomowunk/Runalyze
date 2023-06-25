@@ -2,9 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Account;
+use App\Entity\Raceresult;
+use App\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

@@ -2,14 +2,14 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\DataFixtures\ORM;
 
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Entity\EquipmentType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ORMFixtureInterface

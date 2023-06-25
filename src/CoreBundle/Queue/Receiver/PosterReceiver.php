@@ -2,6 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
+use App\Entity\Notification;
+use App\Repository\AccountRepository;
+use App\Repository\NotificationRepository;
+use App\Repository\SportRepository;
 use Psr\Log\LoggerInterface;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\PosterGeneratedMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\AbstractSvgToPngConverter;
@@ -9,10 +13,6 @@ use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\InkscapeConverter
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\RsvgConverter;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GeneratePoster;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Filesystem\Filesystem;

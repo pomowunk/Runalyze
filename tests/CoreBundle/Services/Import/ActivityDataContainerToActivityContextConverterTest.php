@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Import;
 
-use Runalyze\Bundle\CoreBundle\Entity\Conf;
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Type;
+use App\Entity\Conf;
+use App\Entity\Equipment;
+use App\Entity\Sport;
+use App\Entity\Type;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\AbstractFixturesAwareWebTestCase;

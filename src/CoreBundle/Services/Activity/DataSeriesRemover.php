@@ -2,11 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Activity;
 
+use App\Entity\Hrv;
+use App\Entity\Route;
+use App\Entity\Trackdata;
+use App\Entity\Training;
 use Doctrine\ORM\EntityManager;
-use Runalyze\Bundle\CoreBundle\Entity\Hrv;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class DataSeriesRemover
 {

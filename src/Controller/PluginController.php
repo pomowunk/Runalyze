@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use App\Entity\Account;
+use App\Repository\SportRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Selection\SportSelectionFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

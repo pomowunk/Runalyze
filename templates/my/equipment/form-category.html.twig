@@ -75,7 +75,7 @@
                     </thead>
                     <tbody class="c">
                         {% for entry in equipment %}
-                            {# @var entry \Runalyze\Bundle\CoreBundle\Entity\Equipment #}
+                            {# @var entry \App\Entity\Equipment #}
                             <tr>
                                 <td><a class="window" href="{{ url('equipment-edit', {'id': entry.id}) }}"><i class="fa fa-fw fa-pencil"></i></a></td>
                                 <td>{{ entry.name }}</td>

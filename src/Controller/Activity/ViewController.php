@@ -2,15 +2,15 @@
 
 namespace App\Controller\Activity;
 
+use App\Entity\Account;
+use App\Entity\Common\AccountRelatedEntityInterface;
+use App\Entity\Training;
+use App\Repository\TrackdataRepository;
+use App\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityDecorator;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Common\AccountRelatedEntityInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Component\Activity\Tool\BestSubSegmentsStatistics;
 use Runalyze\Bundle\CoreBundle\Component\Activity\Tool\TimeSeriesStatistics;
 use Runalyze\Bundle\CoreBundle\Component\Activity\VO2maxCalculationDetailsDecorator;
-use Runalyze\Bundle\CoreBundle\Repository\TrackdataRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Activity\ActivityContextFactory;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\LegacyCache;
@@ -56,7 +56,7 @@ class ViewController extends AbstractController
     /**
      * @Route("/activity/{id}", name="ActivityShow", requirements={"id" = "\d+"})
      * @Security("is_granted('ROLE_USER')")
-     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+     * @ParamConverter("activity", class="App\Entity\Training")
      */
     public function displayAction(
         Request $request,
@@ -91,7 +91,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/vo2max-info")
-     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+     * @ParamConverter("activity", class="App\Entity\Training")
      * @Security("is_granted('ROLE_USER')")
      */
     public function vo2maxInfoAction(
@@ -196,7 +196,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/sub-segments-info", requirements={"id" = "\d+"}, name="activity-tool-sub-segments-info")
-     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+     * @ParamConverter("activity", class="App\Entity\Training")
      * @Security("is_granted('ROLE_USER')")
      */
     public function subSegmentInfoAction(
@@ -259,7 +259,7 @@ class ViewController extends AbstractController
 
     /**
      * @Route("/activity/{id}/climb-score", requirements={"id" = "\d+"}, name="activity-tool-climb-score")
-     * @ParamConverter("activity", class="Runalyze\Bundle\CoreBundle\Entity\Training")
+     * @ParamConverter("activity", class="App\Entity\Training")
      */
     public function climbScoreAction(
         Training $activity,

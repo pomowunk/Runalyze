@@ -2,13 +2,13 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Settings;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Type;
-use Runalyze\Bundle\CoreBundle\Repository\TypeRepository;
+use App\Entity\Account;
+use App\Entity\EquipmentType;
+use App\Entity\Sport;
+use App\Entity\Type;
+use App\Repository\EquipmentTypeRepository;
+use App\Repository\SportRepository;
+use App\Repository\TypeRepository;
 use Runalyze\Bundle\CoreBundle\Form\Type\EnergyKcalType;
 use Runalyze\Bundle\CoreBundle\Form\Type\HeartRateType;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
@@ -196,7 +196,7 @@ class SportType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Runalyze\Bundle\CoreBundle\Entity\Sport'
+            'data_class' => Sport::class
         ]);
     }
 }

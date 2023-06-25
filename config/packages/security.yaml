@@ -1,12 +1,12 @@
 security:
     encoders:
-        Runalyze\Bundle\CoreBundle\Entity\Account:
+        App\Entity\Account:
             id: App\Security\Sha256SaltedEncoder
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         runalyzeuser:
             entity:
-                class: 'Runalyze\Bundle\CoreBundle\Entity\Account'
+                class: 'App\Entity\Account'
     firewalls:
         default:
             anonymous: lazy

@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Configuration;
 
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
+use App\Entity\Sport;
 use Runalyze\Metrics\Cadence;
 use Runalyze\Metrics\Common\Unit\Factorial;
 use Runalyze\Metrics\Distance;

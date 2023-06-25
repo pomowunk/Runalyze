@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryGroup;
 
+use App\Entity\Account;
+use App\Entity\Equipment;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
 use Runalyze\Bundle\CoreBundle\Form\Tools\Anova\AnovaData;
 
 class EquipmentType implements QueryGroupInterface
