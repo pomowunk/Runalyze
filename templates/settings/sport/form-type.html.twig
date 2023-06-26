@@ -40,7 +40,7 @@
 
     <div class="panel-content">
         <p class="text margin-top">
-            {% if sport_id is not null %}
+            {% if sport_id|default(null) is not null %}
                 <a class="window" href="{{ url('sport-edit', {'id': sport_id}) }}">&laquo; {% trans %}back to list{% endtrans %}</a>
             {% else %}
                 <a class="window" href="{{ url('settings-sports') }}">&laquo; {% trans %}back to list{% endtrans %}</a>

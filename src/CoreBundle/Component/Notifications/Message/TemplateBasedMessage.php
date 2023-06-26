@@ -4,7 +4,7 @@ namespace Runalyze\Bundle\CoreBundle\Component\Notifications\Message;
 
 use Runalyze\Profile\Notifications\MessageTypeProfile;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class TemplateBasedMessage implements MessageInterface

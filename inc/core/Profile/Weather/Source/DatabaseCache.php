@@ -2,7 +2,7 @@
 
 namespace Runalyze\Profile\Weather\Source;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatabaseCache extends AbstractSource
 {

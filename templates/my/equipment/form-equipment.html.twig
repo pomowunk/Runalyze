@@ -53,7 +53,7 @@
 
     <div class="panel-content">
         <p class="text margin-top">
-            {% if category_id is not null %}
+            {% if category_id|default(null) is not null %}
                 <a class="window" href="{{ url('equipment-category-edit', {'id': category_id}) }}">&laquo; {% trans %}back to list{% endtrans %}</a>
             {% else %}
                 <a class="window" href="{{ url('equipment-overview') }}">&laquo; {% trans %}back to list{% endtrans %}</a>
