@@ -2,15 +2,16 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
+use App\Repository\NotificationRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class DeleteExpiredNotificationsCommand extends ContainerAwareCommand
+class DeleteExpiredNotificationsCommand extends Command
 {
-    /** @var NotificationRepository */
-    protected $notificationRepository;
+    protected static $defaultName = 'runalyze:notifications:clear';
+
+    protected NotificationRepository $notificationRepository;
 
     public function __construct(
         NotificationRepository $notificationRepository)
@@ -23,18 +24,11 @@ class DeleteExpiredNotificationsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:notifications:clear')
             ->setDescription('Delete all expired notifications')
         ;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $numRemoved = $this->notificationRepository->removeExpiredNotifications();
 

@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Configuration;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\ConfRepository;
+use App\Entity\Account;
+use App\Repository\ConfRepository;
 
 class ConfigurationUpdater
 {

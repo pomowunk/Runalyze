@@ -2,13 +2,13 @@
 
 namespace Runalyze\Bundle\CoreBundle\EntityListener;
 
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Entity\Training;
+use App\Repository\EquipmentRepository;
+use App\Repository\SportRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;

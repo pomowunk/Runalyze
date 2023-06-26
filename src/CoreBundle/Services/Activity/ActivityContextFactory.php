@@ -2,9 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Activity;
 
+use App\Entity\Training;
 use Doctrine\ORM\EntityManager;
 use Runalyze\Bundle\CoreBundle\Component\Activity\ActivityContext;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class ActivityContextFactory
 {
@@ -22,8 +22,6 @@ class ActivityContextFactory
      */
     public function getContext(Training $activity)
     {
-        $activityId = $activity->getId();
-
         return new ActivityContext(
             $activity,
             $activity->getTrackdata(),
@@ -43,7 +41,7 @@ class ActivityContextFactory
      */
     public function getContextById($activityId, $accountId)
     {
-        $activity = $this->EntityManager->getRepository('CoreBundle:Training')->findForAccount($activityId, $accountId);
+        $activity = $this->EntityManager->getRepository(Training::class)->findForAccount($activityId, $accountId);
 
         if (null === $activity) {
             throw new \InvalidArgumentException('Unknown activity (id = '.$activityId.').');

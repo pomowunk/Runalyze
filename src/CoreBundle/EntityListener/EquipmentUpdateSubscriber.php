@@ -2,12 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\EntityListener;
 
+use App\Entity\Equipment;
+use App\Entity\Training;
+use App\Repository\EquipmentRepository;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 
 class EquipmentUpdateSubscriber implements EventSubscriber
 {
@@ -23,7 +23,7 @@ class EquipmentUpdateSubscriber implements EventSubscriber
     {
         $entityManager = $args->getEntityManager();
         $unitOfWork = $entityManager->getUnitOfWork();
-        $this->EquipmentRepository = $entityManager->getRepository('CoreBundle:Equipment');
+        $this->EquipmentRepository = $entityManager->getRepository(Equipment::class);
 
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof Training) {

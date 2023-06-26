@@ -16,7 +16,7 @@ class ModelQueryTest extends TestCase
     protected function setUp(): void
     {
         $this->DB = \DB::getInstance();
-        $this->DB->exec('DELETE FROM `runalyze_training`');
+        $this->DB->exec('DELETE FROM `'.PREFIX.'training`');
 
         $Date = new \DateTime('today 15:30');
         $this->DB->insert('training', array('time', 'trimp', 'sportid', 's'), array($Date->getTimestamp(), 100, 1, 2));
@@ -35,7 +35,7 @@ class ModelQueryTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->DB->exec('DELETE FROM `runalyze_training`');
+        $this->DB->exec('DELETE FROM `'.PREFIX.'training`');
     }
 
     public function testSimpleQuery()

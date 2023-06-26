@@ -1,0 +1,4 @@
+playground:
+    prefix: /_playground
+    resource: '../../../vendor/runalyze/playground/Resources/config/routing.yml'
+    type: yaml

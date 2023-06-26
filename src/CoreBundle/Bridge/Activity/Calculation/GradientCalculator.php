@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Trackdata;
+use App\Entity\Route;
+use App\Entity\Trackdata;
 use Runalyze\Calculation\Math\MovingAverage\Kernel\AbstractKernel;
 use Runalyze\Calculation\Route\Gradient;
 

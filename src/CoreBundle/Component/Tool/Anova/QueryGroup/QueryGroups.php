@@ -2,6 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Anova\QueryGroup;
 
+use App\Entity\EquipmentType as EntityEquipmentType;
 use Runalyze\Common\Enum\AbstractEnum;
 use Runalyze\Common\Enum\AbstractEnumFactoryTrait;
 
@@ -24,7 +25,7 @@ final class QueryGroups extends AbstractEnum
     /** @var int */
     const EQUIPMENT_TYPE = 'equipment';
 
-    public static function getEnumForEquipmentType(\Runalyze\Bundle\CoreBundle\Entity\EquipmentType $equipmentType)
+    public static function getEnumForEquipmentType(EntityEquipmentType $equipmentType)
     {
         return self::EQUIPMENT_TYPE.'_'.$equipmentType->getId();
     }

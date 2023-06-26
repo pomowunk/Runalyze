@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Selection;
 
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
+use App\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\TokenStorageAwareServiceTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

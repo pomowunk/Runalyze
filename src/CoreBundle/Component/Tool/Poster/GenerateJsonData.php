@@ -2,38 +2,26 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Poster;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Repository\RaceresultRepository;
+use App\Repository\TrainingRepository;
 use Doctrine\ORM\Query;
 use Runalyze\Model;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GenerateJsonData
 {
-    /** @var TrainingRepository */
-    protected $TrainingRepository;
+    protected TrainingRepository $TrainingRepository;
+    protected RaceresultRepository $RaceresultRepository;
+    protected string $posterJsonDirectory;
+    protected string $Directory;
 
-    /** @var RaceresultRepository */
-    protected $RaceresultRepository;
-
-    /** @var string */
-    protected $KernelRootDir;
-
-    /** @var string */
-    protected $Directory;
-
-    /**
-     * @param TrainingRepository $trainingRepository
-     * @param RaceresultRepository $raceresultRepository
-     * @param string $kernelRootDir
-     */
-    public function __construct(TrainingRepository $trainingRepository, RaceresultRepository $raceresultRepository, $kernelRootDir)
+    public function __construct(TrainingRepository $trainingRepository, RaceresultRepository $raceresultRepository, $posterJsonDirectory)
     {
         $this->TrainingRepository = $trainingRepository;
         $this->RaceresultRepository = $raceresultRepository;
-        $this->KernelRootDir = $kernelRootDir;
+        $this->posterJsonDirectory = $posterJsonDirectory;
     }
 
     /**
@@ -41,7 +29,7 @@ class GenerateJsonData
      */
     public function getPathToJsonFiles()
     {
-        return $this->KernelRootDir.'/../var/tmp/'.$this->Directory;
+        return $this->posterJsonDirectory.'/'.$this->Directory;
     }
 
     /**

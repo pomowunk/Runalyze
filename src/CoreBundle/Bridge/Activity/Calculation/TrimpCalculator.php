@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
+use App\Entity\Training;
 use Runalyze\Athlete;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Calculation\Trimp\Calculator;
 use Runalyze\Calculation\Trimp\DataCollector;
 

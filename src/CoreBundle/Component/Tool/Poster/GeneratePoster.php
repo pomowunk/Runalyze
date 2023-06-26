@@ -2,40 +2,30 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Poster;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Repository\TrainingRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class GeneratePoster
 {
-    /** @var array */
-    protected $Parameter = [];
+    protected array $Parameter = [];
+    protected string $projectDir;
+    protected string $posterSvgDirectory;
+    protected string $Python3Path;
+    protected TrainingRepository $TrainingRepository;
+    protected string $Filename;
+    protected string $StdErr = '';
 
-    /** @var string */
-    protected $KernelRootDir;
-
-    /** @var string */
-    protected $Python3path;
-
-    /** @var TrainingRepository */
-    protected $TrainingRepository;
-
-    /** @var string */
-    protected $Filename;
-
-    /** @var string */
-    protected $StdErr = '';
-
-    /**
-     * @param string $kernelRootDir
-     * @param string $python3Path
-     * @param TrainingRepository $trainingRepository
-     */
-    public function __construct($kernelRootDir, $python3Path, TrainingRepository $trainingRepository)
-    {
-        $this->KernelRootDir = $kernelRootDir;
+    public function __construct(
+        string $projectDirectory,
+        string $posterSvgDirectory,
+        string $python3Path,
+        TrainingRepository $trainingRepository,
+    ) {
+        $this->projectDir = $projectDirectory;
+        $this->posterSvgDirectory = $posterSvgDirectory;
         $this->Python3Path = $python3Path;
         $this->TrainingRepository = $trainingRepository;
     }
@@ -45,15 +35,7 @@ class GeneratePoster
      */
     protected function pathToRepository()
     {
-        return $this->KernelRootDir.'/../vendor/runalyze/gpxtrackposter/';
-    }
-
-    /**
-     * @return string
-     */
-    protected function pathToSvgDirectory()
-    {
-        return $this->KernelRootDir.'/../var/poster/';
+        return $this->projectDir.'/vendor/runalyze/gpxtrackposter/';
     }
 
     /**
@@ -70,13 +52,17 @@ class GeneratePoster
      */
     public function generate()
     {
+        if (!is_dir($this->posterSvgDirectory)) {
+            mkdir($this->posterSvgDirectory, 0777, true);
+        }
+
         $cmd = $this->Python3Path.' create_poster.py '.implode(' ', $this->Parameter);
         $builder = new Process($cmd);
         $builder->setWorkingDirectory(realpath($this->pathToRepository()));
         $builder->run();
         $this->StdErr = $builder->getErrorOutput();
 
-        return $this->pathToSvgDirectory().$this->Filename;
+        return $this->posterSvgDirectory.$this->Filename;
     }
 
     /**
@@ -86,6 +72,8 @@ class GeneratePoster
      * @param Account $account
      * @param Sport $sport
      * @param null|string $title
+     * 
+     * @todo Move athlete.svg and runalyze.svg to assets/poster/, pass the path to poster generator python script!
      */
     public function buildCommand($type, $jsonDir, $year, Account $account, Sport $sport, $title, $backgroundColor, $trackColor, $textColor, $raceColor)
     {
@@ -96,7 +84,7 @@ class GeneratePoster
         $this->Parameter[] = '--json-dir '.escapeshellarg($jsonDir);
         $this->Parameter[] = '--athlete '.escapeshellarg($account->getUsername());
         $this->Parameter[] = '--year '.(string)(int)$year;
-        $this->Parameter[] = '--output '.escapeshellarg($this->pathToSvgDirectory().$this->Filename);
+        $this->Parameter[] = '--output '.escapeshellarg($this->posterSvgDirectory.$this->Filename);
         $this->Parameter[] = '--type '.$type;
         $this->Parameter[] = '--title '.escapeshellarg($title);
         $this->Parameter[] = '--background-color '.escapeshellarg($backgroundColor);
@@ -140,7 +128,7 @@ class GeneratePoster
     public function deleteSvg()
     {
         $filesystem = new Filesystem();
-        $filesystem->remove($this->pathToSvgDirectory().$this->Filename);
+        $filesystem->remove($this->posterSvgDirectory.$this->Filename);
     }
     
     /**

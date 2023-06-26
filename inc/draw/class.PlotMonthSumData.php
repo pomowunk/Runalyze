@@ -12,9 +12,6 @@ use Runalyze\Util\LocalTime;
  * @package Runalyze\Plot
  */
 class PlotMonthSumData extends PlotSumData {
-	/**
-	 * Constructor
-	 */
 	public function __construct() {
 		$this->timerStart = Request::param('y') == parent::LAST_6_MONTHS ? 7 : 1;
 		$this->timerEnd   = 12;
@@ -22,27 +19,15 @@ class PlotMonthSumData extends PlotSumData {
 		parent::__construct();
 	}
 
-	/**
-	 * Get CSS id
-	 * @return string
-	 */
-	protected function getCSSid() {
+	protected function getCSSid(): string {
 		return 'monthKM'.$this->Year.'_'.$this->Sport->id();
 	}
 
-	/**
-	 * Get title
-	 * @return string
-	 */
-	protected function getTitle() {
+	protected function getTitle(): string {
 		return __('Monthly chart:');
 	}
 
-	/**
-	 * Get X labels
-	 * @return array
-	 */
-	protected function getXLabels() {
+	protected function getXLabels(): array {
 		$months = array();
 		$add = ($this->Year == parent::LAST_6_MONTHS || $this->Year == parent::LAST_12_MONTHS) ? date('m') : 0;
 		$i = 0;
@@ -55,11 +40,7 @@ class PlotMonthSumData extends PlotSumData {
 		return $months;
 	}
 
-	/**
-	 * Timer table for query
-	 * @return string
-	 */
-	protected function timer() {
+	protected function timer(): string {
 		if ($this->Year == parent::LAST_6_MONTHS) {
 			return '((MONTH(FROM_UNIXTIME(`time`)) + 12 - '.date('m').' - 1)%12 + 1)';
 		} elseif ($this->Year == parent::LAST_12_MONTHS) {
@@ -69,24 +50,15 @@ class PlotMonthSumData extends PlotSumData {
 		return 'MONTH(FROM_UNIXTIME(`time`))';
 	}
 
-	/**
-	 * @return int
-	 */
-	protected function beginningOfLast6Months() {
+	protected function beginningOfLast6Months(): int {
 		return LocalTime::fromString("first day of -5 months 00:00")->getTimestamp();
 	}
 
-	/**
-	 * @return int
-	 */
-	protected function beginningOfLast12Months() {
+	protected function beginningOfLast12Months(): int {
 		return LocalTime::fromString("first day of -11 months 00:00")->getTimestamp();
 	}
 
-	/**
-	 * @return float
-	 */
-	protected function factorForWeekKm() {
+	protected function factorForWeekKm(): float {
 		return 365/12/7;
 	}
 }

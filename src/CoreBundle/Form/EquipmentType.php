@@ -2,8 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
+use App\Entity\Account;
+use App\Entity\Equipment;
+use App\Repository\EquipmentTypeRepository;
 use Runalyze\Bundle\CoreBundle\Form\Type\DistanceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -100,7 +101,7 @@ class EquipmentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Runalyze\Bundle\CoreBundle\Entity\Equipment'
+            'data_class' => Equipment::class
         ]);
     }
 }

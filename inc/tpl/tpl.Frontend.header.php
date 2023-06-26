@@ -1,5 +1,5 @@
 <?php
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,7 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 	<span id="menu-link" onclick="$('#headline').toggleClass('menu-expanded');"><i class="fa fa-fw fa-bars"></i></span>
 	<a class="tab logo" href="<?php echo System::getFullDomain(); ?>" title="Runalyze">Runalyze</a>
 
-	<?php if ($this instanceof Controller && $this->get('security.authorization_checker')->isGranted('ROLE_USER')): ?>
+	<?php if ($this instanceof AbstractController && $this->get('security.authorization_checker')->isGranted('ROLE_USER')): ?>
         <?php $username = $this->get('security.token_storage')->getToken()->getUser()->getUsername(); ?>
         <div class="headline-menu right">
             <div class="submenu-label">
@@ -49,7 +49,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
                 <li class="separator"></li>
                 <li><a class="window" href="<?php echo $this->get('router')->generate('settings-account'); ?>"><i class="fa fa-fw fa-cogs"></i>&nbsp;<?php _e('Account settings'); ?></a></li>
                 <li><a class="window" href="<?php echo $this->get('router')->generate('settings-privacy'); ?>"><i class="fa fa-fw fa-unlock-alt"></i>&nbsp;<?php _e('Privacy settings'); ?></a></li>
-                <li><a class="window" href="<?php echo $this->get('router')->generate('logout'); ?>"><i class="fa fa-fw fa-sign-out"></i>&nbsp;<?php _e('Logout'); ?></a></li>
+	            <?php if ($this instanceof AbstractController && $this->get('security.authorization_checker')->isGranted('ROLE_PREVIOUS_ADMIN')): ?>
+                    <li><a href="<?php echo $this->get('router')->generate('dashboard', ['_switch_user' => '_exit']); ?>"><i class="fa fa-fw fa-sign-out"></i>&nbsp;<?php _e('Exit impersonation'); ?></a></li>
+                <?php else: ?>
+                    <li><a class="window" href="<?php echo $this->get('router')->generate('logout'); ?>"><i class="fa fa-fw fa-sign-out"></i>&nbsp;<?php _e('Logout'); ?></a></li>
+                <?php endif; ?>
             </ul>
         </div>
 
@@ -61,7 +65,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
                 <li><a class="window" href="<?php echo $this->get('router')->generate('glossary-index'); ?>"><i class="fa fa-fw fa-book"></i>&nbsp;<?php _e('Glossary'); ?></a></li>
                 <li><a href="https://help.runalyze.com"><i class="fa fa-fw fa-book"></i>&nbsp;<?php _e('Documentation'); ?></a></li>
                 <li class="separator"></li>
-                <?php if (!empty($this->getParameter('feedback_mail'))) { ?>
+                <?php if (!empty($this->getParameter('app.feedback_mail'))) { ?>
                 <li><a class="window" href="<?php echo $this->get('router')->generate('feedback'); ?>"><i class="fa fa-fw fa-cogs"></i>&nbsp;<?php _e('Feedback'); ?></a></li>
                 <?php } ?>
                 <li><a href="https://forum.runalyze.com"><i class="fa fa-fw fa-comments"></i>&nbsp;<?php _e('Forum'); ?></a></li>

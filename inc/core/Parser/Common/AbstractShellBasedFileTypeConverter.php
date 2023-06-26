@@ -22,7 +22,7 @@ abstract class AbstractShellBasedFileTypeConverter implements FileTypeConverterI
     {
         $outputFile = $this->getConvertedFileName($inputFile);
 
-        shell_exec($this->buildCommand($inputFile, $outputFile).' 2>&1');
+        shell_exec('('.$this->buildCommand($inputFile, $outputFile).') 2>&1');
 
         $this->readFirstLineOfOutputAndForwardToSubclass($outputFile);
 

@@ -2,16 +2,17 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use App\Repository\AccountRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class CleanupRegistrationsCommand extends ContainerAwareCommand
+class CleanupRegistrationsCommand extends Command
 {
-    /** @var AccountRepository */
-    protected $accountRepository;
+    protected static $defaultName = 'runalyze:cleanup:registrations';
+
+    protected AccountRepository $accountRepository;
 
     public function __construct(AccountRepository $accountRepository)
     {
@@ -23,19 +24,12 @@ class CleanupRegistrationsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:cleanup:registrations')
             ->setDescription('Delete not activated account (default: older than 7 days).')
             ->addArgument('days', InputArgument::OPTIONAL, 'min. age of not activated accounts')
         ;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = $input->getArgument('days') ?: 7;
 

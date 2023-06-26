@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType as EntityEquipmentType;
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Entity\EquipmentType;
+use App\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Form\Type\DistanceType;
 use Runalyze\Bundle\CoreBundle\Form\Type\DurationNullableType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -65,8 +65,8 @@ class EquipmentCategoryType extends AbstractType
                 if (!$equipmentType || null === $equipmentType->getId()) {
                     $form->add('input', ChoiceType::class, [
                         'choices' => [
-                            'Single choice' => EntityEquipmentType::CHOICE_SINGLE,
-                            'Multiple Choice' => EntityEquipmentType::CHOICE_MULTIPLE
+                            'Single choice' => EquipmentType::CHOICE_SINGLE,
+                            'Multiple Choice' => EquipmentType::CHOICE_MULTIPLE
                         ],
                         'choice_translation_domain' => false,
                         'label' => 'Mode'
@@ -100,7 +100,7 @@ class EquipmentCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Runalyze\Bundle\CoreBundle\Entity\EquipmentType'
+            'data_class' => EquipmentType::class
         ]);
     }
 }

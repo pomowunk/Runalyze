@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
+use App\Entity\Training;
 use League\Geotools\Geohash\Geohash;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Util\LocalTime;
 
 class NightDetector
@@ -18,11 +18,14 @@ class NightDetector
             return null;
         }
 
+        /** @var GeoHash */
+        $gh = (new Geohash())->decode($activity->getRoute()->getStartpoint());
+
         // TODO use activity's offset if known
         $detector = new \Runalyze\Calculation\NightDetector();
         $detector->setFrom(
             (new LocalTime($activity->getTime()))->toServerTimestamp() + (int)round(0.5 * $activity->getS()),
-            (new Geohash())->decode($activity->getRoute()->getStartpoint())->getCoordinate()
+            $gh->getCoordinate()
         );
 
         return $detector->isNight();

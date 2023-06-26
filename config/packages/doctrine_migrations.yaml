@@ -1,0 +1,8 @@
+doctrine_migrations:
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        'Runalyze\Migrations': '%kernel.project_dir%/migrations'
+    storage:
+        table_storage:
+            table_name: '%app.database_prefix%migration_versions'

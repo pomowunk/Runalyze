@@ -101,19 +101,16 @@ abstract class PlotSumData extends Plot {
     /** @var mixed */
     protected $ParamType;
 
-	/**
-	 * Constructor
-	 */
 	public function __construct() {
-	    $this->ParamSportId = Request::param('sportid');
+	    $sportIdParam = Request::param('sportid');
         $this->ParamYear = Request::param('y');
         $this->ParamGroup = Request::param('group');
         $this->ParamType = Request::param('type');
 
-		$sportid = strlen($this->ParamSportId) > 0 ? $this->ParamSportId : Configuration::General()->runningSport();
+		$this->ParamSportId = strlen($sportIdParam) > 0 ? (int)$sportIdParam : Configuration::General()->runningSport();
 
 		$this->Year  = $this->getRequestedYear();
-		$this->Sport = new Sport($sportid);
+		$this->Sport = new Sport($this->ParamSportId);
 
 		parent::__construct($this->getCSSid(), 800, 500);
 
@@ -134,17 +131,11 @@ abstract class PlotSumData extends Plot {
 		return (int)$this->ParamYear;
 	}
 
-	/**
-	 * Display
-	 */
 	final public function display() {
 		$this->displayHeader();
 		$this->displayContent();
 	}
 
-	/**
-	 * Display header
-	 */
 	private function displayHeader() {
 		echo '<div class="panel-heading">';
 		echo '<div class="panel-menu">';
@@ -154,9 +145,6 @@ abstract class PlotSumData extends Plot {
 		echo '</div>';
 	}
 
-	/**
-	 * Display content
-	 */
 	private function displayContent() {
 		echo '<div class="panel-content">';
 		$this->outputDiv();
@@ -165,10 +153,7 @@ abstract class PlotSumData extends Plot {
 		echo '</div>';
 	}
 
-	/**
-	 * Get navigation
-	 */
-	private function getNavigationMenu() {
+	private function getNavigationMenu(): string {
 		$Menus = array(
 			$this->getMenuLinksForGrouping(),
 			$this->getMenuLinksForAnalysis(),
@@ -192,11 +177,7 @@ abstract class PlotSumData extends Plot {
 		return $Code;
 	}
 
-	/**
-	 * Get menu links for grouping
-	 * @return array
-	 */
-	private function getMenuLinksForGrouping() {
+	private function getMenuLinksForGrouping(): array {
 		if ('' == $this->ParamGroup) {
 			$Current = __('Total');
 		} else {
@@ -210,11 +191,7 @@ abstract class PlotSumData extends Plot {
 		return ['title' => $Current, 'links' => $Links];
 	}
 
-	/**
-	 * Get menu links for analysis
-	 * @return array
-	 */
-	private function getMenuLinksForAnalysis() {
+	private function getMenuLinksForAnalysis(): array {
 		if ($this->Analysis == self::ANALYSIS_DEFAULT) {
 			$Current = __('Distance/Duration');
 		} else {
@@ -229,11 +206,7 @@ abstract class PlotSumData extends Plot {
 		return ['title' => $Current, 'links' => $Links];
 	}
 
-	/**
-	 * Get menu links for sports
-	 * @return array
-	 */
-	private function getMenuLinksForSports() {
+	private function getMenuLinksForSports(): array {
 		$CurrentId = $this->Sport->id();
 		$Current = __('All sports');
 		$Links = array(
@@ -255,11 +228,7 @@ abstract class PlotSumData extends Plot {
 		return ['title' => $Current, 'links' => $Links];
 	}
 
-	/**
-	 * Get menu links for years
-	 * @return array
-	 */
-	private function getMenuLinksForYears() {
+	private function getMenuLinksForYears(): array {
 		if (self::LAST_6_MONTHS == $this->Year) {
 			$Current = __('Last 6 months');
 		} elseif (self::LAST_12_MONTHS == $this->Year) {
@@ -279,9 +248,6 @@ abstract class PlotSumData extends Plot {
 		return ['title' => $Current, 'links' => $Links];
 	}
 
-	/**
-	 * Link to plot
-	 */
 	private function link(string $text, string $year, int $sportid, string $group, bool $current = false, bool $analysis = false): string {
 		if (!$analysis) {
 			$analysis = $this->Analysis;
@@ -455,9 +421,6 @@ abstract class PlotSumData extends Plot {
 		return 'wk';
 	}
 
-	/**
-	 * Set data
-	 */
 	private function setData() {
 		if ('sport' == $this->ParamGroup || 'mainsport' == $this->ParamGroup)
 			$this->setDataForSports();
@@ -542,9 +505,6 @@ abstract class PlotSumData extends Plot {
 			$this->Data[] = array('label' => $Type['name'], 'data' => $Type['data']);
 	}
 
-	/**
-	 * Set data to compare training and competition
-	 */
 	private function setDataForCompetitionAndTraining() {
 		$Kilometers            = array_fill(0, $this->timerEnd - $this->timerStart + 1, 0);
 		$KilometersCompetition = array_fill(0, $this->timerEnd - $this->timerStart + 1, 0);
@@ -569,16 +529,10 @@ abstract class PlotSumData extends Plot {
 		}
 	}
 
-	/**
-	 * @return bool
-	 */
-	protected function showsTarget() {
+	protected function showsTarget(): bool {
 		return ($this->Sport->isRunning() && $this->Analysis == self::ANALYSIS_DEFAULT && $this->usesDistance);
 	}
 
-	/**
-	 * Add line for target
-	 */
 	protected function addTarget() {
 		if ($this->showsTarget()) {
 			$BasicEndurance = new BasicEndurance();
@@ -592,9 +546,6 @@ abstract class PlotSumData extends Plot {
 		}
 	}
 
-	/**
-	 * Add line for average
-	 */
 	protected function addAverage() {
 		$avg = $this->getAverage();
 
@@ -612,10 +563,7 @@ abstract class PlotSumData extends Plot {
 		$this->addAnnotation(-1, $avg, __('avg:').'&nbsp;'.$string, 0, -10);
 	}
 
-	/**
-	 * @return int
-	 */
-	protected function getAverage() {
+	protected function getAverage(): int {
 		$sum = 0;
 
 		foreach ($this->Data as $series) {
@@ -627,14 +575,8 @@ abstract class PlotSumData extends Plot {
 		return (int)round($sum / ($this->timerEnd - $this->timerStart + 1));
 	}
 
-	/**
-	 * @return float
-	 */
-	abstract protected function factorForWeekKm();
+	abstract protected function factorForWeekKm(): float;
 
-	/**
-	 * Display additional info
-	 */
 	protected function displayInfos() {
 		if ($this->showsTarget()) {
 			$BasicEndurance = new BasicEndurance();

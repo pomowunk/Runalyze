@@ -2,16 +2,16 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Account;
 
+use App\Entity\Account;
+use App\Entity\Conf;
+use App\Entity\Equipment;
+use App\Entity\EquipmentType;
+use App\Entity\Plugin;
+use App\Entity\Sport;
+use App\Entity\Type;
+use App\Repository\EquipmentTypeRepository;
+use App\Repository\SportRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Conf;
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Entity\Plugin;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Type;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
-use Runalyze\Bundle\CoreBundle\Repository\EquipmentTypeRepository;
 use Runalyze\Metrics\Velocity\Unit\PaceEnum;
 use Runalyze\Parameter\Application\Timezone;
 use Runalyze\Profile\Sport\SportProfile;

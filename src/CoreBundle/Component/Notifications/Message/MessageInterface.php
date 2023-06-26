@@ -3,7 +3,7 @@
 namespace Runalyze\Bundle\CoreBundle\Component\Notifications\Message;
 
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 interface MessageInterface
 {

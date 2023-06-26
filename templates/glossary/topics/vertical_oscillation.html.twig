@@ -1,0 +1,16 @@
+{% extends "glossary/_base.html.twig" %}
+
+{% import 'glossary/_macro/references.html.twig' as ref %}
+
+{% block glossaryHeader %}
+    {% trans %}Vertical oscillation{% endtrans %}
+{% endblock %}
+
+{% block glossaryContent %}
+    <p class="text">
+    </p>
+
+    {{ ref.referencesHead() }}
+    {{ ref.singleReferenceTextWithLink("Running dynamics", "http://fellrnr.com/wiki/Running_Dynamics", "http://fellrnr.com") }}
+    {{ ref.referencesFoot() }}
+{% endblock %}

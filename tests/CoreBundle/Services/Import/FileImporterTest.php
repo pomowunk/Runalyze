@@ -17,8 +17,8 @@ class FileImporterTest extends TestCase
     protected function setUp(): void
     {
         $this->Importer = new FileImporter(
-            new FitConverter('', ''),
-            new TtbinConverter('')
+            new FitConverter(PERL_PATH, TESTS_ROOT.'/../call/perl/fittorunalyze.pl'),
+            new TtbinConverter(TTBIN_PATH)
         );
         $this->Importer->disableFileDeletion();
     }
@@ -56,9 +56,9 @@ class FileImporterTest extends TestCase
     {
         $handler = $this->setLoggerToImporter();
         $results = $this->Importer->importFiles([
-            'none.fit',
-            'foobar.zip',
-            'test.csv'
+            TESTS_ROOT.'/testfiles/none.fit',
+            TESTS_ROOT.'/testfiles/foobar.zip',
+            TESTS_ROOT.'/testfiles/test.csv'
         ]);
 
         $this->assertCount(3, $results);

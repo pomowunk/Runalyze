@@ -2,23 +2,24 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\DataFixtures\ORM;
 
+use App\Entity\Account;
+use App\Entity\Sport;
+use App\Entity\EquipmentType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Runalyze\Bundle\CoreBundle\Component\Account\Registration;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface, ORMFixtureInterface
+class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface, ORMFixtureInterface
 {
-    /** @var ContainerInterface|null */
-    protected $Container;
+    protected EncoderFactoryInterface $encoderFactory;
+    public static Account $emptyAccount;
+    public static Account $defaultAccount;
 
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->Container = $container;
+    public function __construct(EncoderFactoryInterface $encoderFactory) {
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function load(ObjectManager $manager)
@@ -29,28 +30,28 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 
     protected function addEmptyAccount(ObjectManager $manager)
     {
-        $emptyAccount = new Account();
-        $emptyAccount->setUsername('empty');
-        $emptyAccount->setMail('empty@test.com');
+        static::$emptyAccount = new Account();
+        static::$emptyAccount->setUsername('empty');
+        static::$emptyAccount->setMail('empty@test.com');
 
-        $encoder = $this->Container->get('test.security.encoder_factory')->getEncoder($emptyAccount);
-        $emptyAccount->setPassword($encoder->encodePassword('emptyPassword', $emptyAccount->getSalt()));
+        $encoder = $this->encoderFactory->getEncoder(static::$emptyAccount);
+        static::$emptyAccount->setPassword($encoder->encodePassword('emptyPassword', static::$emptyAccount->getSalt()));
 
-        $manager->persist($emptyAccount);
+        $manager->persist(static::$emptyAccount);
         $manager->flush();
 
-        $this->addReference('account-empty', $emptyAccount);
+        $this->addReference('account-empty', static::$emptyAccount);
     }
 
     protected function registerDefaultAccount(ObjectManager $manager)
     {
-        $defaultAccount = new Account();
-        $defaultAccount->setUsername('default');
-        $defaultAccount->setMail('default@test.com');
+        static::$defaultAccount = new Account();
+        static::$defaultAccount->setUsername('default');
+        static::$defaultAccount->setMail('default@test.com');
 
-        $registration = $this->registerAccount($manager, $defaultAccount, 'defaultPassword');
+        $registration = $this->registerAccount($manager, static::$defaultAccount, 'defaultPassword');
 
-        $this->addReference('account-default', $defaultAccount);
+        $this->addReference('account-default', static::$defaultAccount);
         $this->addReference('account-default.sport-running', $registration->getRegisteredSportForRunning());
         $this->addReference('account-default.sport-cycling', $registration->getRegisteredSportForCycling());
         $this->addReference('account-default.equipment-type-clothes', $registration->getRegisteredEquipmentTypeClothes());
@@ -58,11 +59,11 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 
     protected function registerAccount(ObjectManager $manager, Account $account, $password)
     {
-        $sportRepo = $manager->getRepository('CoreBundle:Sport');
-        $equipmentTypeRepo = $manager->getRepository('CoreBundle:EquipmentType');
+        $sportRepo = $manager->getRepository(Sport::class);
+        $equipmentTypeRepo = $manager->getRepository(EquipmentType::class);
         
         $registration = new Registration($manager, $account, $sportRepo, $equipmentTypeRepo);
-        $registration->setPassword($password, $this->Container->get('test.security.encoder_factory'));
+        $registration->setPassword($password, $this->encoderFactory);
         $registration->registerAccount();
 
         return $registration;

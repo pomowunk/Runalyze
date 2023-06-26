@@ -1,0 +1,81 @@
+<?php
+
+namespace Runalyze\Migrations;
+
+use App\Entity\Route;
+use Doctrine\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Runalyze\Calculation\Route\GeohashLine;
+
+/**
+ * refactoring geohashes in route table
+ */
+class Version20161224173160 extends AbstractMigration implements ContainerAwareInterface
+{
+    /** @var ContainerInterface|null */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
+    public function up(Schema $schema): void
+    {
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+
+        $repo = $em->getRepository(Route::class);
+
+        $numberLockedRoutes = $em->createQueryBuilder()
+            ->select('count(route.id)')
+            ->where('route.lock = 1')
+            ->from(Route::class, 'route')
+            ->getQuery()->getSingleScalarResult();
+
+        while ($numberLockedRoutes > 0) {
+            $lockedRoutes = $repo->createQueryBuilder('r')
+                ->select('r')
+                ->where('r.lock = 1')
+                ->setMaxResults(100)
+                ->getQuery();
+
+            $batchSize = 100;
+            $i = 0;
+            $iterableResult = $lockedRoutes->iterate();
+
+            foreach ($iterableResult as $row) {
+                /** @var Route $route */
+                $route = $row[0];
+                $route->setLock(0);
+                $route->setGeohashes(GeohashLine::shorten($route->getGeohashes()));
+                $em->persist($route);
+
+                if (($i % $batchSize) === 0) {
+                    $em->flush();
+                    $em->clear();
+                    gc_collect_cycles();
+                }
+
+                ++$i;
+            }
+
+            $em->flush();
+
+            $numberLockedRoutes = $numberLockedRoutes - 100;
+        }
+    }
+
+    public function down(Schema $schema): void
+    {
+    }
+}

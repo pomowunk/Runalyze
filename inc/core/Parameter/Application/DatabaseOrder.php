@@ -6,10 +6,10 @@
 
 namespace Runalyze\Parameter\Application;
 
+use App\Entity\Common\IdentifiableEntityInterface;
+use App\Entity\Common\NamedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Runalyze\Bundle\CoreBundle\Entity\Common\IdentifiableEntityInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Common\NamedEntityInterface;
 
 /**
  * DatabaseOrder

@@ -1,4 +1,0 @@
-bernard:
-    driver: file
-    options:
-        directory: '%kernel.root_dir%/../var/queue'

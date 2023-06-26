@@ -2,9 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Type;
 
+use App\Entity\Equipment;
+use App\Entity\EquipmentType;
 use Doctrine\Common\Collections\ArrayCollection;
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
 use Runalyze\Bundle\CoreBundle\Form\ConfigurationManagerAwareTrait;
 use Runalyze\Bundle\CoreBundle\Form\TokenStorageAwareTypeTrait;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

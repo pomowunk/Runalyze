@@ -2,11 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Notifications;
 
+use App\Entity\Notification;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\BackupReadyMessage;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\MessageInterface;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\PosterGeneratedMessage;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\TemplateBasedMessage;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
 use Runalyze\Profile\Notifications\MessageTypeProfile;
 
 class MessageFactory

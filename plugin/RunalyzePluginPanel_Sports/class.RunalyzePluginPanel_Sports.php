@@ -19,6 +19,6 @@ class RunalyzePluginPanel_Sports extends PluginPanel
 
 	protected function displayContent()
     {
-        // deprecated, see Runalyze\Bundle\CoreBundle\Controller\AbstractPluginsAwareController::getResponseForSportsPanel
+        // deprecated, see App\Controller\AbstractPluginsAwareController::getResponseForSportsPanel
     }
 }

@@ -1,0 +1,204 @@
+{% extends "base_logged_in.html.twig" %}
+
+{% import _self as this %}
+
+{% macro statisticsCell(value, unit) %}
+    {{ value|raw }} <small>{{ unit|raw }}</small>
+{% endmacro %}
+
+{% macro statisticsCellUnit(value) %}
+    {# @var value \Runalyze\Bundle\CoreBundle\Twig\DisplayableValue #}
+    {{ value.value }} <small>{{ value.unit }}</small>
+{% endmacro %}
+
+{% macro statisticsCellUnitStd(value) %}
+    {# @var value \Runalyze\Bundle\CoreBundle\Twig\DisplayableValue #}
+    {% if value.value < 0 %}
+        &plusmn;{{ value.value|abs }} <small>{{ value.unit }}</small>
+    {% else %}
+        &plusmn;{{ value.value }} <small>{{ value.unit }}</small>
+    {% endif %}
+{% endmacro %}
+
+{% macro statisticsRow(label, unit, mean, min, max, median, mode, cov, std, q10, q90) %}
+    {% import _self as this %}
+
+    <tr class="c">
+        <td class="l"><strong>{{ label }}</strong></td>
+        <td>{{ this.statisticsCell(mean, unit) }}</td>
+        <td>{{ this.statisticsCell(min, unit) }}</td>
+        <td>{{ this.statisticsCell(max, unit) }}</td>
+        <td>{{ this.statisticsCell(median, unit) }}</td>
+        <td>{{ this.statisticsCell(mode, unit) }}</td>
+        <td>{{ this.statisticsCell((100 * cov)|round, "&#37;") }}</td>
+        <td>{{ this.statisticsCell("&plusmn;" ~ std, unit) }}</td>
+        <td>{{ this.statisticsCell(q10, unit) }}</td>
+        <td>{{ this.statisticsCell(q90, unit) }}</td>
+    </tr>
+{% endmacro %}
+
+{% macro statisticsRowUnit(label, mean, min, max, median, mode, cov, std, q10, q90) %}
+    {% import _self as this %}
+
+    <tr class="c">
+        <td class="l"><strong>{{ label }}</strong></td>
+        <td>{{ this.statisticsCellUnit(mean) }}</td>
+        <td>{{ this.statisticsCellUnit(min) }}</td>
+        <td>{{ this.statisticsCellUnit(max) }}</td>
+        <td>{{ this.statisticsCellUnit(median) }}</td>
+        <td>{{ this.statisticsCellUnit(mode) }}</td>
+        <td>{{ this.statisticsCell((100 * cov)|round, "&#37;") }}</td>
+        <td>{{ this.statisticsCellUnitStd(std) }}</td>
+        <td>{{ this.statisticsCellUnit(q10) }}</td>
+        <td>{{ this.statisticsCellUnit(q90) }}</td>
+    </tr>
+{% endmacro %}
+
+{% macro statisticsRowDefault(label, unit, distribution, factor, decimals) %}
+    {# @var distribution \Runalyze\Calculation\Distribution\Empirical #}
+    {% import _self as this %}
+    {% set factor = factor|default(1) %}
+
+    {{ this.statisticsRow(
+        label,
+        unit,
+        (factor * distribution.mean)|number_format(decimals|default(0)),
+        (factor * distribution.min)|number_format(decimals|default(0)),
+        (factor * distribution.max)|number_format(decimals|default(0)),
+        (factor * distribution.median)|number_format(decimals|default(0)),
+        (factor * distribution.mode)|number_format(decimals|default(0)),
+        distribution.coefficientOfVariation,
+        (factor * distribution.stdDev)|number_format(decimals|default(0)),
+        (factor * distribution.quantile(0.1))|number_format(decimals|default(0)),
+        (factor * distribution.quantile(0.9))|number_format(decimals|default(0))
+    ) }}
+{% endmacro %}
+
+{% block content %}
+    <div class="panel-heading">
+        <h1>{% trans %}Analyze time series{% endtrans %}</h1>
+    </div>
+
+    <div class="panel-content">
+        <table class="fullwidth zebra-style">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th rel="tooltip" title="{% trans %}arithmetic mean{% endtrans %}">{% trans %}mean{% endtrans %}</th>
+                    <th rel="tooltip" title="{% trans %}minimum{% endtrans %}">{% trans %}min.{% endtrans %}</th>
+                    <th rel="tooltip" title="{% trans %}maximum{% endtrans %}">{% trans %}max.{% endtrans %}</th>
+                    <th rel="tooltip" title="{% trans %}i.e. 50% quantile{% endtrans %}">{% trans %}median{% endtrans %}</th>
+                    <th rel="tooltip" title="{% trans %}most common value{% endtrans %}">{% trans %}mode{% endtrans %}</th>
+                    <th rel="tooltip" title="{% trans %}coefficiant of variance = standard deviation / mean{% endtrans %}">{% trans %}cov{% endtrans %}</th>
+                    <th rel="tooltip" title="{% trans %}standard deviation{% endtrans %}">{% trans %}std. dev.{% endtrans %}</th>
+                    <th rel="tooltip" title="10&#37; {% trans %}quantile{% endtrans %}">q10</th>
+                    <th rel="tooltip" title="90&#37; {% trans %}quantile{% endtrans %}">q90</th>
+                </tr>
+            </thead>
+            <tbody class="top-and-bottom-border">
+                {% if statistics.hasStatisticsForPace %}
+                    {% set current = statistics.statisticsForPace %}
+                    {# @var current \Runalyze\Calculation\Distribution\Empirical #}
+                    {{ this.statisticsRowUnit(
+                        "Pace"|trans,
+                        pace(paceAverage, paceUnit),
+                        pace(current.max, paceUnit),
+                        pace(current.min, paceUnit),
+                        pace(current.median, paceUnit),
+                        pace(current.mode, paceUnit),
+                        current.coefficientOfVariation,
+                        paceComparison(paceAverage, (paceAverage - current.stdDev), paceUnit),
+                        pace(current.quantile(0.1), paceUnit),
+                        pace(current.quantile(0.9), paceUnit)
+                    ) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForHeartRate %}
+                    {% set current = statistics.statisticsForHeartRate %}
+                    {# @var current \Runalyze\Calculation\Distribution\Empirical #}
+                    {{ this.statisticsRowUnit(
+                        "Heart rate"|trans,
+                        heartRate(current.mean),
+                        heartRate(current.min),
+                        heartRate(current.max),
+                        heartRate(current.median),
+                        heartRate(current.mode),
+                        current.coefficientOfVariation,
+                        heartRateComparison(current.mean, (current.mean + current.stdDev)),
+                        heartRate(current.quantile(0.1)),
+                        heartRate(current.quantile(0.9))
+                    ) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForCadence %}
+                    {{ this.statisticsRowDefault("Cadence"|trans, "rpm", statistics.statisticsForCadence) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForStrideLength %}
+                    {% set current = statistics.statisticsForStrideLength %}
+                    {# @var current \Runalyze\Calculation\Distribution\Empirical #}
+                    {{ this.statisticsRowUnit(
+                        "Stride length"|trans,
+                        strideLength(current.mean),
+                        strideLength(current.min),
+                        strideLength(current.max),
+                        strideLength(current.median),
+                        strideLength(current.mode),
+                        current.coefficientOfVariation,
+                        strideLength(current.stdDev),
+                        strideLength(current.quantile(0.1)),
+                        strideLength(current.quantile(0.9))
+                    ) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForPower %}
+                    {{ this.statisticsRowDefault("Power"|trans, "W", statistics.statisticsForPower) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForGroundcontact %}
+                    {{ this.statisticsRowDefault("Groundcontact"|trans, "ms", statistics.statisticsForGroundcontact) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForGroundcontactBalance %}
+                    {{ this.statisticsRowDefault("Groundcontact balance"|trans, "&#37;L", statistics.statisticsForGroundcontactBalance, 0.01, 2) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForVerticalOscillation %}
+                    {{ this.statisticsRowDefault("Vertical oscillation"|trans, "cm", statistics.statisticsForVerticalOscillation, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForVerticalRatio %}
+                    {{ this.statisticsRowDefault("Vertical ratio"|trans, "&#37;", statistics.statisticsForVerticalRatio, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForSaturatedHemoglobin %}
+                    {{ this.statisticsRowDefault("Saturated hemoglobin"|trans, "&#37;", statistics.statisticsForSaturatedHemoglobin, 0.01, 2) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForSaturatedHemoglobin2 %}
+                    {{ this.statisticsRowDefault("Saturated hemoglobin"|trans ~ " (2)", "&#37;", statistics.statisticsForSaturatedHemoglobin2, 0.01, 2) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForTotalHemoglobin %}
+                    {{ this.statisticsRowDefault("Total hemoglobin"|trans, "g/dL", statistics.statisticsForTotalHemoglobin, 0.01, 2) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForTotalHemoglobin2 %}
+                    {{ this.statisticsRowDefault("Total hemoglobin"|trans ~ " (2)", "g/dL", statistics.statisticsForTotalHemoglobin2, 0.01, 2) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForImpactGsLeft %}
+                    {{ this.statisticsRowDefault("Impact Gs"|trans ~ " (left)", "G", statistics.statisticsForImpactGsLeft, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForImpactGsRight %}
+                    {{ this.statisticsRowDefault("Impact Gs"|trans ~ " (right)", "G", statistics.statisticsForImpactGsRight, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForBrakingGsLeft %}
+                    {{ this.statisticsRowDefault("Braking Gs"|trans ~ " (left)", "G", statistics.statisticsForBrakingGsLeft, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForBrakingGsRight %}
+                    {{ this.statisticsRowDefault("Braking Gs"|trans ~ " (right)", "G", statistics.statisticsForBrakingGsRight, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForFootstrikeTypeLeft %}
+                    {{ this.statisticsRowDefault("Footstrike type"|trans ~ " (left)", "G", statistics.statisticsForFootstrikeTypeLeft, 1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForFootstrikeTypeRight %}
+                    {{ this.statisticsRowDefault("Footstrike type"|trans ~ " (right)", "G", statistics.statisticsForFootstrikeTypeRight, 1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForPronationExcursionLeft %}
+                    {{ this.statisticsRowDefault("Pronation excursion"|trans ~ " (left)", "G", statistics.statisticsForPronationExcursionLeft, 0.1, 1) }}
+                {% endif %}
+                {% if statistics.hasStatisticsForPronationExcursionRight %}
+                    {{ this.statisticsRowDefault("Pronation excursion"|trans ~ " (right)", "G", statistics.statisticsForPronationExcursionRight, 0.1, 1) }}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

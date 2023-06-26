@@ -95,6 +95,10 @@ abstract class AbstractBackup
 
 		$this->Writer->finish();
         $fs = new Filesystem();
+		$dir = dirname($this->Filename);
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true);
+		}
         $fs->rename($this->WriterPath, $this->Filename);
     }
 

@@ -1,0 +1,2 @@
+monolog:
+    channels: ['queue', 'console', 'external_services', 'activity_uploads']

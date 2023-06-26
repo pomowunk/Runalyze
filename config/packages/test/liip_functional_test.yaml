@@ -1,0 +1,4 @@
+liip_functional_test:
+    authentication:
+        username: "default"
+        password: "defaultPassword"

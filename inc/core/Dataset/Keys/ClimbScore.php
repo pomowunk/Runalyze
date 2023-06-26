@@ -26,13 +26,6 @@ class ClimbScore extends AbstractKey
 		return __('CS');
 	}
 
-	public function description()
-	{
-		return __(
-			'' // TODO
-		);
-	}
-
 	public function stringFor(Context $context)
 	{
         if ((!$context->activity()->isPublic() && \Request::isOnSharedPage()) OR $context->activity()->id() <= 0) {

@@ -2,19 +2,20 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class InstallCommand extends ContainerAwareCommand
+class InstallCommand extends Command
 {
-    /** @var \Symfony\Bundle\FrameworkBundle\Console\Application */
-    protected $Application;
+    protected static $defaultName = 'runalyze:install';
 
-    /** @var array */
-    protected $Commands = [
+    protected Application $Application;
+
+    protected array $Commands = [
         [
             'command' => 'check',
             'message' => 'Check requirements'
@@ -32,7 +33,6 @@ class InstallCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:install')
             ->setDescription('Install RUNALYZE and setup database.')
             ->addOption(
                 'skip',
@@ -44,10 +44,6 @@ class InstallCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->Application = $this->getApplication();
@@ -57,9 +53,6 @@ class InstallCommand extends ContainerAwareCommand
         $this->removeCommandsThatShouldBeSkipped($input);
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     */
     protected function removeCommandsThatShouldBeSkipped(InputInterface $input)
     {
         if ($input->hasOption('skip') && is_array($input->getOption('skip'))) {
@@ -71,13 +64,7 @@ class InstallCommand extends ContainerAwareCommand
         }
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Installing RUNALYZE...</info>');
         $output->writeln('');

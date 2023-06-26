@@ -29,7 +29,7 @@ use Runalyze\Util\LocalTime;
         $months = array(__("January"), __("February"), __("March"), __("April"), __("May"), __("June"),
             __("July"), __("August"), __("September"), __("October"), __("November"), __("December"));
         $monthsShort = array(__("Jan"), __("Feb"), __("Mar"), __("Apr"), __("May"), __("Jun"), __("Jul"), __("Aug"), __("Sep"), __("Oct"), __("Nov"), __("Dec"),);
-        $weekMin=_("wk");
+        $weekMin=__("wk");
 
         $locale = array ("days" => $days, "daysMin"=>$daysMin, "daysShort"=>$daysShort, "months" => $months, "monthsShort" => $monthsShort, "weekMin" => $weekMin );
 

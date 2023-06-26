@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services\Recalculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 
 interface RecalculationTaskInterface
 {

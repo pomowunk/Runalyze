@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Training;
 use Runalyze\Calculation\Elevation\DistanceModifier;
 use Runalyze\Sports\Running\VO2max\Estimation\DanielsGilbertFormula;
 

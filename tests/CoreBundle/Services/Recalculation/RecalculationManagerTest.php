@@ -2,11 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Recalculation;
 
+use App\Entity\Account;
+use App\Repository\ConfRepository;
+use App\Repository\RaceresultRepository;
+use App\Repository\TrainingRepository;
 use PHPUnit\Framework\TestCase;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\ConfRepository;
-use Runalyze\Bundle\CoreBundle\Repository\RaceresultRepository;
-use Runalyze\Bundle\CoreBundle\Repository\TrainingRepository;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater;
 use Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager;

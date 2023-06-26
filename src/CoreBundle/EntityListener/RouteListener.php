@@ -2,10 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\EntityListener;
 
+use App\Entity\Account;
+use App\Entity\Route;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\ElevationCorrection;
 

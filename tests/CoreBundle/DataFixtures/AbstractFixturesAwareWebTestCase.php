@@ -2,50 +2,41 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\DataFixtures;
 
+use App\Entity\Account;
+use App\Entity\EquipmentType;
+use App\Entity\Sport;
+use App\Entity\Training;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\EquipmentType;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\ORM\LoadAccountData;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 abstract class AbstractFixturesAwareWebTestCase extends WebTestCase
 {
-    use FixturesTrait;
-    
-    /** @var  Client */
-    protected $Client;
-
-    /** @var ReferenceRepository */
-    protected $Fixtures;
-
-    /** @var array|null */
-    protected $FixtureClasses = null;
-
-    /** @var EntityManager */
-    protected $EntityManager;
+    protected AbstractDatabaseTool $databaseTool;
+    protected EntityManager $EntityManager;
+    protected ?array $FixtureClasses = null;
+    protected ReferenceRepository $Fixtures;
 
     protected function setUp(): void
     {
+        parent::setUp();
+        self::bootKernel();
+
+        /** @var EntityManager */
+        $this->EntityManager = self::$container->get('doctrine')->getManager();
+
         if (null === $this->FixtureClasses) {
             $this->FixtureClasses = [
                 LoadAccountData::class
             ];
         }
-        
-        $this->EntityManager = $this->getContainer()->get('doctrine')->getManager();
-        $this->EntityManager->clear();
 
-        $this->Fixtures = $this->loadFixtures($this->FixtureClasses, false, 'default')->getReferenceRepository();
-
-        $this->Client = $this->getContainer()->get('test.client');
-        $this->Client->disableReboot();
-
-        parent::setUp();
+        /** @var AbstractDatabaseTool */
+        $this->databaseTool = self::$container->get(DatabaseToolCollection::class)->get();
+        $this->Fixtures = $this->databaseTool->loadFixtures($this->FixtureClasses)->getReferenceRepository();
     }
 
     protected function tearDown(): void
@@ -54,63 +45,43 @@ abstract class AbstractFixturesAwareWebTestCase extends WebTestCase
 
         if (null !== $this->EntityManager) {
             $this->EntityManager->close();
-            $this->EntityManager = null;
+            unset($this->EntityManager);
         }
+
+        unset($this->databaseTool);
     }
 
-    /**
-     * @return Account
-     */
-    protected function getDefaultAccount()
+    protected function getDefaultAccount(): Account
     {
         return $this->Fixtures->getReference('account-default');
     }
 
-    /**
-     * @return Sport
-     */
-    protected function getDefaultAccountsRunningSport()
+    protected function getDefaultAccountsRunningSport(): Sport
     {
         return $this->Fixtures->getReference('account-default.sport-running');
     }
 
-    /**
-     * @return Sport
-     */
-    protected function getDefaultAccountsCyclingSport()
+    protected function getDefaultAccountsCyclingSport(): Sport
     {
         return $this->Fixtures->getReference('account-default.sport-cycling');
     }
 
-    /**
-     * @return EquipmentType
-     */
-    protected function getDefaultAccountsClothesType()
+    protected function getDefaultAccountsClothesType(): EquipmentType
     {
         return $this->Fixtures->getReference('account-default.equipment-type-clothes');
     }
 
-    /**
-     * @return Account
-     */
-    protected function getEmptyAccount()
+    protected function getEmptyAccount(): Account
     {
         return $this->Fixtures->getReference('account-empty');
     }
 
-    /**
-     * @param int|null $timestamp
-     * @param int|float $duration
-     * @param float|int|null $distance
-     * @param Sport|null $sport
-     * @return Training
-     */
     protected function getActivityForDefaultAccount(
-        $timestamp = null,
-        $duration = 3600,
-        $distance = null,
+        int $timestamp = null,
+        int|float $duration = 3600,
+        float|int $distance = null,
         Sport $sport = null
-    )
+    ): Training
     {
         return (new Training())
             ->setS($duration)

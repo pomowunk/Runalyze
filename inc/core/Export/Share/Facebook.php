@@ -55,10 +55,10 @@ class Facebook extends AbstractSocialSharer
         $url   = urlencode($this->publicURL().'?utm_medium=referral&utm_source=facebook');
         $title = urlencode($this->Context->dataview()->titleWithComment());
         $text  = urlencode($this->text());
-        $image = System::getFullDomainWithProtocol(true).'web/assets/images/runalyze.png';
+        $image = System::getFullDomainWithProtocol(true).'public/assets/images/runalyze.png';
 
         if (System::isAtLocalhost()) {
-            $image = 'https://runalyze.com/web/assets/images/runalyze.png';
+            $image = 'https://runalyze.com/public/assets/images/runalyze.png';
         }
 
         return 'https://www.facebook.com/dialog/feed?app_id='.self::$APP_ID.'&link='.$url.'&picture='.$image.'&name='.$title.'&caption='.$url.'&description='.$text.'&redirect_uri=http://www.facebook.com';

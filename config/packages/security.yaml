@@ -1,0 +1,40 @@
+security:
+    encoders:
+        App\Entity\Account:
+            id: App\Security\Sha256SaltedEncoder
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        runalyzeuser:
+            entity:
+                class: 'App\Entity\Account'
+    firewalls:
+        default:
+            anonymous: lazy
+            provider: runalyzeuser
+            user_checker: App\Security\UserChecker
+            switch_user: { role: CAN_SWITCH_USER, parameter: _switch_user }
+            logout:
+                path: /logout
+                target: /
+            form_login:
+                login_path: login
+                check_path: login_check
+                csrf_token_generator: security.csrf.token_manager
+                use_referer: true
+            remember_me:
+                secret: '%app.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        setup:
+            pattern: ^/(update|install)
+            security: false
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    # access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }

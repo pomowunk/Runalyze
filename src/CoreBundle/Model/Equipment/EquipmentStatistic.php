@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Model\Equipment;
 
-use Runalyze\Bundle\CoreBundle\Entity\Equipment;
+use App\Entity\Equipment;
 
 class EquipmentStatistic
 {

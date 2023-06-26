@@ -1,0 +1,240 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+imports:
+    - { resource: app_languages.yaml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    app.version: '4.3.0'
+    env(RUNALYZE_LOCALE): 'en'
+    app.locale: '%env(string:RUNALYZE_LOCALE)%'
+    app.secret: '%env(APP_SECRET)%'
+
+    env(MAINTENANCE_MODE): false
+    app.maintenanceMode: '%env(bool:MAINTENANCE_MODE)%'
+    env(ALLOW_UPDATE): true
+    app.allow_update: '%env(bool:ALLOW_UPDATE)%'
+    env(USER_CAN_REGISTER): true
+    app.user_can_register: '%env(bool:USER_CAN_REGISTER)%'
+    env(USER_DISABLE_ACCOUNT_ACTIVATION): false
+    app.user_disable_account_activation: '%env(bool:USER_DISABLE_ACCOUNT_ACTIVATION)%'
+
+    app.database_url: '%env(DATABASE_URL)%'
+    app.database_host: '%env(string:key:host:url:DATABASE_URL)%'
+    app.database_port: '%env(int:key:port:url:DATABASE_URL)%'
+    app.database_user: '%env(string:key:user:url:DATABASE_URL)%'
+    app.database_password: '%env(string:key:pass:url:DATABASE_URL)%'
+    app.database_name: '%env(string:key:path:url:DATABASE_URL)%'
+    env(DATABASE_PREFIX): runalyze_
+    app.database_prefix: '%env(string:DATABASE_PREFIX)%'
+
+    env(GARMIN_API_KEY): ''
+    app.garmin_api_key: '%env(string:GARMIN_API_KEY)%'
+    env(OPENWEATHERMAP_API_KEY): ''
+    app.openweathermap_api_key: '%env(string:OPENWEATHERMAP_API_KEY)%'
+    env(DARKSKY_API_KEY): ''
+    app.darksky_api_key: '%env(string:DARKSKY_API_KEY)%'
+    env(NOKIA_HERE_APPID): ''
+    app.nokia_here_appid: '%env(string:NOKIA_HERE_APPID)%'
+    env(NOKIA_HERE_TOKEN): ''
+    app.nokia_here_token: '%env(string:NOKIA_HERE_TOKEN)%'
+    env(THUNDERFOREST_API_KEY): ''
+    app.thunderforest_api_key: '%env(string:THUNDERFOREST_API_KEY)%'
+    env(MAPBOX_API_KEY): ''
+    app.mapbox_api_key: '%env(string:MAPBOX_API_KEY)%'
+    env(GEONAMES_USERNAME): ''
+    app.geonames_username: '%env(string:GEONAMES_USERNAME)%'
+
+    app.data_directory: '%kernel.project_dir%/data/'
+    env(SRTM_DIRECTORY): '%app.data_directory%/srtm/'
+    app.srtm_directory: '%env(string:resolve:SRTM_DIRECTORY)%'
+    app.activityImportDirectory: '%kernel.project_dir%/var/activity_import/'
+    app.failedActivityImportDirectory: '%kernel.project_dir%/var/activity_import_failed/'
+    app.posterJsonDirectory: '%kernel.project_dir%/var/poster_json/'
+    app.posterSvgDirectory: '%kernel.project_dir%/var/poster_svg/'
+    app.posterExportDirectory: '%kernel.project_dir%/var/poster_export/'
+    app.backupImportDirectory: '%kernel.project_dir%/var/backup_import/'
+    app.backupExportDirectory: '%kernel.project_dir%/var/backup_export/'
+    app.legacyCachePath: '%kernel.project_dir%/var/legacy_cache/'
+
+    env(PERL_PATH): '/usr/bin/perl'
+    app.perl_path: '%env(string:PERL_PATH)%'
+    env(PYTHON3_PATH): '/usr/bin/python3'
+    app.python3_path: '%env(string:PYTHON3_PATH)%'
+    env(RSVG_PATH): '/usr/bin/rsvg-convert'
+    app.rsvg_path: '%env(string:RSVG_PATH)%'
+    env(INKSCAPE_PATH): '/usr/bin/inkscape'
+    app.inkscape_path: '%env(string:INKSCAPE_PATH)%'
+    env(TTBIN_PATH): '../call/perl/ttbincnv'
+    app.ttbin_path: '%env(string:TTBIN_PATH)%'
+    env(SQLITE_MOD_SPATIALITE): 'mod_spatialite.so'
+    app.sqlite_mod_spatialite: '%env(string:SQLITE_MOD_SPATIALITE)%'
+
+    env(MAIL_SENDER): ''
+    app.mail_sender: '%env(string:MAIL_SENDER)%'
+    env(MAIL_NAME): ''
+    app.mail_name: '%env(string:MAIL_NAME)%'
+    env(FEEDBACK_MAIL): ''
+    app.feedback_mail: '%env(string:FEEDBACK_MAIL)%'
+
+    app.backup_storage_period: 5
+    app.poster_storage_period: 5
+
+    app.router.request_context.host: localhost
+    app.router.request_context.scheme: http
+    app.router.request_context.base_url: ''
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $databasePrefix: '%app.database_prefix%'
+            $defaultLocale: '%kernel.default_locale%'
+            $feedbackMail: '%app.feedback_mail%'
+            $runalyzeVersion: '%app.version%'
+            $maintenanceMode: '%app.maintenanceMode%'
+            $userCanRegister: '%app.user_can_register%'
+            $userDisableAccountActivation: '%app.user_disable_account_activation%'
+            $backupStoragePeriod: '%app.backup_storage_period%'
+            $posterStoragePeriod: '%app.poster_storage_period%'
+
+            $projectDirectory: '%kernel.project_dir%'
+            $dataDirectory: '%app.data_directory%'
+            $activityImportDirectory: '%app.activityImportDirectory%'
+            $failedActivityImportDirectory: '%app.failedActivityImportDirectory%'
+            $posterJsonDirectory: '%app.posterJsonDirectory%'
+            $posterSvgDirectory: '%app.posterSvgDirectory%'
+            $posterExportDirectory: '%app.posterExportDirectory%'
+            $backupImportDirectory: '%app.backupImportDirectory%'
+            $backupExportDirectory: '%app.backupExportDirectory%'
+            $legacyCachePath: '%app.legacyCachePath%'
+            $srtmDirectory: '%app.srtm_directory%'
+
+            $inkscapePath: '%app.inkscape_path%'
+            $pathToFitPerlScript: '%kernel.project_dir%/call/perl/fittorunalyze.pl'
+            $pathToPerl: '%app.perl_path%'
+            $pathToTtbincnv: '%kernel.project_dir%/app/%app.ttbin_path%'
+            $python3Path: '%app.python3_path%'
+            $rsvgPath: '%app.rsvg_path%'
+            $spatialiteExtensionName: '%app.sqlite_mod_spatialite%'
+            $timezoneDatabasePath: '%app.data_directory%/timezone.sqlite'
+
+            $darkSkyApiKey: '%app.darksky_api_key%'
+            $garminApiKey: '%app.garmin_api_key%'
+            $geonamesUsername: '%app.geonames_username%'
+            $openWeatherMapApiKey: '%app.openweathermap_api_key%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/CoreBundle/'
+            # - '../src/Kernel.php'
+            - '../src/functions.php'
+
+    Runalyze\Bundle\CoreBundle\:
+        resource: '../src/CoreBundle/*'
+
+    Runalyze\:
+        resource: '../inc/core/*'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # # add more service definitions when explicit configuration is needed
+    # # please note that last definitions always *replace* previous ones
+
+    Doctrine\ORM\EntityManager:
+        alias: doctrine.orm.default_entity_manager
+        public: false
+
+    GuzzleHttp\Client: ~
+
+    Monolog\Formatter\LineFormatter:
+        arguments:
+        - '[%%datetime%%] [%%extra.token%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n'
+
+    Runalyze\Bundle\CoreBundle\ArgumentResolver\AccountValueResolver:
+        autoconfigure: false
+        tags: [ {name: controller.argument_value_resolver, priority: 50} ]
+
+    Runalyze\Bundle\CoreBundle\EntityListener\:
+        resource: '../src/CoreBundle/EntityListener/*Listener.php'
+        tags: [ {name: doctrine.orm.entity_listener, lazy: true} ]
+    Runalyze\Bundle\CoreBundle\EntityListener\EquipmentUpdateSubscriber:
+        tags: [ {name: doctrine.event_subscriber, connection: default, lazy: true} ]
+
+    Runalyze\Bundle\CoreBundle\EventListener\AccountLastActionListener:
+        tags: [ {name: kernel.event_listener, event: kernel.controller, method: onCoreController} ]
+    Runalyze\Bundle\CoreBundle\EventListener\ConsoleErrorStatusListener:
+        tags: [ {name: kernel.event_listener, event: console.terminate} ]
+    Runalyze\Bundle\CoreBundle\EventListener\ConsoleExceptionListener:
+        tags: [ {name: kernel.event_listener, event: console.exception} ]
+    Runalyze\Bundle\CoreBundle\EventListener\LocaleListener:
+        tags: [ {name: kernel.event_subscriber} ]
+    Runalyze\Bundle\CoreBundle\EventListener\MaintenanceListener:
+        lazy: true # TODO: patches the container loading the default configuration list while building the container (ValueExtension)
+        tags: [ {name: kernel.event_listener, event: kernel.request, method: onKernelRequest} ]
+    Runalyze\Bundle\CoreBundle\EventListener\RecalculationTasksPerformerListener:
+        tags: [ {name: kernel.event_listener, event: kernel.terminate, method: onTerminate} ]
+    Runalyze\Bundle\CoreBundle\EventListener\TablePrefixSubscriber:
+        tags: [ {name: doctrine.event_subscriber} ]
+    Runalyze\Bundle\CoreBundle\EventListener\UserLocaleListener:
+        tags: [ {name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin} ]
+    Runalyze\Bundle\CoreBundle\EventListener\UserTimezoneListener:
+        tags: [ {name: kernel.event_listener, event: kernel.request, method: onKernelRequest} ]
+
+    Runalyze\Bundle\CoreBundle\Form\Type\ElevationType:
+        arguments: ['@app.unit_system.elevation']
+
+    Runalyze\Bundle\CoreBundle\Queue\Receiver\BackupReceiver:
+        public: true
+    Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver:
+        public: true
+
+    Runalyze\Bundle\CoreBundle\Services\AccountMailer:
+        calls: [ [setFrom, ['%app.mail_sender%', '%app.mail_name%']] ]
+    Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationUpdater:
+        lazy: true
+    Runalyze\Bundle\CoreBundle\Services\Import\ActivityCache:
+        arguments:
+            $cache: '@app.cache.activity_uploads'
+    Runalyze\DEM\Reader:
+        alias: 'Runalyze\Bundle\CoreBundle\Services\Import\GeoTiffReader'
+    Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup:
+        arguments:
+            $silentExceptions: true
+    Runalyze\Bundle\CoreBundle\Services\Recalculation\RecalculationManager:
+        lazy: true
+    Runalyze\Bundle\CoreBundle\Services\SessionRequestProcessor:
+        tags: [ {name: monolog.processor, method: processRecord} ]
+
+    Runalyze\Bundle\CoreBundle\Tests\DataFixtures\:
+        resource: '../tests/CoreBundle/DataFixtures'
+
+    Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit:
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getDistanceUnit']
+    app.unit_system.elevation:
+        class: Runalyze\Metrics\Distance\Unit\AbstractDistanceUnit
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getElevationUnit']
+    Runalyze\Metrics\Energy\Unit\AbstractEnergyUnit:
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getEnergyUnit']
+    Runalyze\Metrics\Temperature\Unit\AbstractTemperatureUnit:
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getTemperatureUnit']
+    Runalyze\Metrics\Velocity\Unit\AbstractPaceInDecimalFormatUnit:
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getWindSpeedUnit']
+    Runalyze\Metrics\Weight\Unit\AbstractWeightUnit:
+        factory: ['@Runalyze\Bundle\CoreBundle\Services\UnitSystemFactory', 'getWeightUnit']
+
+    Runalyze\Service\WeatherForecast\DatabaseCacheInterface:
+        alias: 'App\Repository\WeathercacheRepository'

@@ -62,7 +62,7 @@ class Stroke extends ActivityPointSeries {
 		$this->Label = __('Stroke');
 		$this->Color = self::COLOR;
 
-		$this->UnitString = _('strokes');
+		$this->UnitString = __('strokes');
 		$this->UnitDecimals = 0;
 
 		$this->TickSize = 10;

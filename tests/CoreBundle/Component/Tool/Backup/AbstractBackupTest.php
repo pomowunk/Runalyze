@@ -2,33 +2,35 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Component\Tool\Backup;
 
-use PHPUnit\Framework\TestCase;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Backup\AbstractBackup;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @group dependsOn
  * @group dependsOnOldDatabase
  */
 
-class AbstractBackupTest extends TestCase
+class AbstractBackupTest extends KernelTestCase
 {
     /** @var string */
-    const TESTFILE = '/../../../../../data/backup-tool/backup/test.json.gz';
+    protected string $testFile;
 
     /** @var AbstractBackup */
     protected $Backup;
 
     public function setUp(): void
     {
+        static::bootKernel();
+        $this->testFile = (string)static::$container->getParameter('app.posterExportDirectory').'/test.json.gz';
         $mockBuilder = $this->getMockBuilder(AbstractBackup::class);
-        $mockBuilder->setConstructorArgs([__DIR__.self::TESTFILE, 1, \DB::getInstance(), 'runalyze_', '3.2.0']);
+        $mockBuilder->setConstructorArgs([$this->testFile, 1, \DB::getInstance(), PREFIX, '3.2.0']);
         $this->Backup = $mockBuilder->getMockForAbstractClass();
     }
 
     public function tearDown(): void
     {
-        if (file_exists(__DIR__.self::TESTFILE)) {
-            unlink(__DIR__.self::TESTFILE);
+        if (file_exists($this->testFile)) {
+            unlink($this->testFile);
         }
     }
 

@@ -27,45 +27,28 @@ class FileImporter implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /** @var \Runalyze\Parser\Common\FileTypeConverterInterface[] */
-    protected $Converter = [];
-
-    /** @var ZipConverter */
-    protected $ZipConverter;
-
-    /** @var FileExtensionToParserMapping */
-    protected $ParserMapping;
-
-    /** @var Filesystem */
-    protected $Filesystem;
-
-    /** @var string|null */
-    protected $DirectoryForFailedImports;
+    protected array $Converter = [];
+    protected ZipConverter $ZipConverter;
+    protected FileExtensionToParserMapping $ParserMapping;
+    protected Filesystem $Filesystem;
+    protected ?string $DirectoryForFailedImports;
 
     /** @var ParserException[] */
-    protected $ConverterExceptions = [];
+    protected array $ConverterExceptions = [];
+    protected bool $RemoveFiles = true;
 
-    /** @var bool */
-    protected $RemoveFiles = true;
-
-    /**
-     * @param FitConverter $fitConverter
-     * @param TtbinConverter $ttbinConverter
-     * @param string|null $directoryForFailedImports
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(
         FitConverter $fitConverter,
         TtbinConverter $ttbinConverter,
-        $directoryForFailedImports = null,
-        LoggerInterface $logger = null
-    )
-    {
+        string $failedActivityImportDirectory = null,
+        LoggerInterface $activityUploadsLogger = null
+    ) {
         $this->ParserMapping = new FileExtensionToParserMapping();
         $this->Converter = [$fitConverter, $ttbinConverter, new KmzConverter()];
         $this->ZipConverter = new ZipConverter($this->getSupportedFileExtensions());
         $this->Filesystem = new Filesystem();
-        $this->DirectoryForFailedImports = $directoryForFailedImports;
-        $this->logger = $logger ?: new NullLogger();
+        $this->DirectoryForFailedImports = $failedActivityImportDirectory;
+        $this->logger = $activityUploadsLogger ?: new NullLogger();
     }
 
     public function disableFileDeletion($flag = true)

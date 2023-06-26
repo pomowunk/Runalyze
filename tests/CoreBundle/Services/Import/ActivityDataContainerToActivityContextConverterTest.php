@@ -2,6 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Services\Import;
 
+use App\Entity\Conf;
+use App\Entity\Equipment;
+use App\Entity\Sport;
+use App\Entity\Type;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 use Runalyze\Bundle\CoreBundle\Services\Import\ActivityDataContainerToActivityContextConverter;
 use Runalyze\Bundle\CoreBundle\Tests\DataFixtures\AbstractFixturesAwareWebTestCase;
@@ -26,11 +30,11 @@ class ActivityDataContainerToActivityContextConverterTest extends AbstractFixtur
 
         $this->Container = new ActivityDataContainer();
         $this->Converter = new ActivityDataContainerToActivityContextConverter(
-            $this->EntityManager->getRepository('CoreBundle:Sport'),
-            $this->EntityManager->getRepository('CoreBundle:Type'),
-            $this->EntityManager->getRepository('CoreBundle:Equipment'),
+            $this->EntityManager->getRepository(Sport::class),
+            $this->EntityManager->getRepository(Type::class),
+            $this->EntityManager->getRepository(Equipment::class),
             new ConfigurationManager(
-                $this->EntityManager->getRepository('CoreBundle:Conf'),
+                $this->EntityManager->getRepository(Conf::class),
                 new TokenStorage(
                     new PreAuthenticatedToken($this->getDefaultAccount(), 'foo', 'bar')
                 )
@@ -75,7 +79,7 @@ class ActivityDataContainerToActivityContextConverterTest extends AbstractFixtur
         $this->Container->Metadata->setSportName('Running');
 
         $backupDefaultType = $this->getDefaultAccountsRunningSport()->getDefaultType();
-        $defaultType = $this->EntityManager->getRepository('CoreBundle:Type')->findBy(['name' => 'Fartlek'])[0];
+        $defaultType = $this->EntityManager->getRepository(Type::class)->findBy(['name' => 'Fartlek'])[0];
         $this->getDefaultAccountsRunningSport()->setDefaultType($defaultType);
 
         $activityContext = $this->Converter->getContextFor($this->Container);

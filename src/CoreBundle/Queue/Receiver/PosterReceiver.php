@@ -2,7 +2,10 @@
 
 namespace Runalyze\Bundle\CoreBundle\Queue\Receiver;
 
-use Bernard\Message\PlainMessage;
+use App\Entity\Notification;
+use App\Repository\AccountRepository;
+use App\Repository\NotificationRepository;
+use App\Repository\SportRepository;
 use Psr\Log\LoggerInterface;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\PosterGeneratedMessage;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\AbstractSvgToPngConverter;
@@ -10,10 +13,6 @@ use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\InkscapeConverter
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\Converter\RsvgConverter;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\FileHandler;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GeneratePoster;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
-use Runalyze\Bundle\CoreBundle\Repository\SportRepository;
 use Runalyze\Bundle\CoreBundle\Component\Tool\Poster\GenerateJsonData;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,41 +20,20 @@ use Symfony\Component\Finder\Finder;
 
 class PosterReceiver
 {
-    /** @var LoggerInterface */
-    protected $Logger;
-
-    /** @var AccountRepository */
-    protected $AccountRepository;
-
-    /** @var SportRepository */
-    protected $SportRepository;
-
-    /** @var NotificationRepository */
-    protected $NotificationRepository;
-
-    /** @var GenerateJsonData */
-    protected $GenerateJsonData;
-
-    /** @var GeneratePoster */
-    protected $GeneratePoster;
-
-    /** @var FileHandler */
-    protected $FileHandler;
-
-    /** @var AccountMailer */
-    protected $AccountMailer;
-
-    /** @var string */
-    protected $dataDirectory;
-
-    /** @var string */
-    protected $RsvgPath;
-
-    /** @var string */
-    protected $InkscapePath;
+    protected LoggerInterface $Logger;
+    protected AccountRepository $AccountRepository;
+    protected SportRepository $SportRepository;
+    protected NotificationRepository $NotificationRepository;
+    protected GenerateJsonData $GenerateJsonData;
+    protected GeneratePoster $GeneratePoster;
+    protected FileHandler $FileHandler;
+    protected AccountMailer $AccountMailer;
+    protected string $posterExportDirectory;
+    protected string $RsvgPath;
+    protected string $InkscapePath;
 
     public function __construct(
-        LoggerInterface $logger,
+        LoggerInterface $queueLogger,
         AccountRepository $accountRepository,
         SportRepository $sportRepository,
         NotificationRepository $notificationRepository,
@@ -63,11 +41,11 @@ class PosterReceiver
         GeneratePoster $generatePoster,
         FileHandler $posterFileHandler,
         AccountMailer $accountMailer,
-        string $dataDirectory,
+        string $posterExportDirectory,
         string $rsvgPath,
         string $inkscapePath)
     {
-        $this->Logger = $logger;
+        $this->Logger = $queueLogger;
         $this->AccountRepository = $accountRepository;
         $this->SportRepository = $sportRepository;
         $this->NotificationRepository = $notificationRepository;
@@ -75,18 +53,22 @@ class PosterReceiver
         $this->GeneratePoster = $generatePoster;
         $this->FileHandler = $posterFileHandler;
         $this->AccountMailer = $accountMailer;
-        $this->dataDirectory = $dataDirectory;
+        $this->posterExportDirectory = $posterExportDirectory;
         $this->RsvgPath = $rsvgPath;
         $this->InkscapePath = $inkscapePath;
     }
 
-    public function posterGenerator(PlainMessage $message)
+    public function posterGenerator($message = null)
     {
         $account = $this->AccountRepository->find((int)$message->get('accountid'));
         $sport = $this->SportRepository->find((int)$message->get('sportid'));
 
         if (null === $account || null === $sport || $sport->getAccount()->getId() != $account->getId()) {
             return;
+        }
+
+        if (!is_dir($this->posterExportDirectory)) {
+            mkdir($this->posterExportDirectory, 0777, true);
         }
 
         $generatedFiles = 0;
@@ -110,7 +92,7 @@ class PosterReceiver
                     );
 
                     $finalName = $this->FileHandler->buildFinalFileName($account, $sport, $message->get('year'), $type, $message->get('size'));
-                    $finalFile = $this->exportDirectory().$finalName;
+                    $finalFile = $this->posterExportDirectory.$finalName;
 
                     $gen = $this->GeneratePoster->generate();
                     if (!(new Filesystem())->exists($gen)) {
@@ -118,12 +100,12 @@ class PosterReceiver
                     } else {
                         $converter = $this->getConverter($type);
                         $converter->setHeight($message->get('size'));
-                        $exitCode = $converter->callConverter($gen, $this->exportDirectory().md5($finalName));
+                        $exitCode = $converter->callConverter($gen, $this->posterExportDirectory.md5($finalName));
                         if ($exitCode > 0) {
                             $this->Logger->error('Poster converter subprocess failed', ['type' => $type, 'exitCode' => $exitCode, 'stderr' => $converter->getErrorOutput()]);
                         } else {
                             $filesystem = new Filesystem();
-                            $filesystem->rename($this->exportDirectory().md5($finalName), $finalFile);
+                            $filesystem->rename($this->posterExportDirectory.md5($finalName), $finalFile);
 
                             if ((new Filesystem())->exists($finalFile)) {
                                 $generatedFiles++;
@@ -175,13 +157,5 @@ class PosterReceiver
         }
 
         return new RsvgConverter($this->RsvgPath);
-    }
-
-    /**
-     * @return string
-     */
-    protected function exportDirectory()
-    {
-        return $this->dataDirectory.'/poster/';
     }
 }

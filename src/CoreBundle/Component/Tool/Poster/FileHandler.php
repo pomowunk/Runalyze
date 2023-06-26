@@ -2,8 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Tool\Poster;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
+use App\Entity\Account;
+use App\Entity\Sport;
+use Runalyze\Bundle\CoreBundle\Queue\Receiver\PosterReceiver;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +12,11 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class FileHandler
 {
-    /** @var string */
-    protected $posterDirectory;
+    protected string $posterExportDirectory;
 
-    public function __construct(string $dataDirectory)
+    public function __construct(string $posterExportDirectory)
     {
-        $this->posterDirectory = $dataDirectory.'/poster/';
+        $this->posterExportDirectory = $posterExportDirectory;
     }
 
     /**
@@ -30,7 +30,7 @@ class FileHandler
             ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
                 return ($b->getMTime() - $a->getMTime());
             })
-            ->in($this->posterDirectory);
+            ->in($this->posterExportDirectory);
 
         $list = [];
 
@@ -52,7 +52,7 @@ class FileHandler
     {
         $fs = new Filesystem();
         $filename = $account->getId().'-'.$filename;
-        $path = $this->posterDirectory.$filename;
+        $path = $this->posterExportDirectory.$filename;
 
         if ($fs->exists($path)) {
             $response = new Response();

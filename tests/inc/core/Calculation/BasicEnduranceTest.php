@@ -21,11 +21,11 @@ class BasicEnduranceTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->object = new BasicEndurance;
-		DB::getInstance()->exec('DELETE FROM `runalyze_training`');
+		DB::getInstance()->exec('DELETE FROM `'.PREFIX.'training`');
 	}
 
 	protected function tearDown(): void {
-		DB::getInstance()->exec('DELETE FROM `runalyze_training`');
+		DB::getInstance()->exec('DELETE FROM `'.PREFIX.'training`');
 	}
 
 	public function testSetterAndGetter() {

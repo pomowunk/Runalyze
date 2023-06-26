@@ -27,10 +27,10 @@ class Smo2 extends AbstractBox
 	{
         if ($sensorIndex == 1) {
             $trackdataKey = Trackdata\Entity::SMO2_1;
-            $label = _('SmO2'). ' (2)';
+            $label = __('SmO2'). ' (2)';
         } else {
             $trackdataKey = Trackdata\Entity::SMO2_0;
-            $label = _('SmO2');
+            $label = __('SmO2');
         }
 
         $value = new TrackdataAverages($Context->trackdata(), [$trackdataKey]);

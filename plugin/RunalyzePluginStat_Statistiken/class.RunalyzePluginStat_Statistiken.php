@@ -205,7 +205,7 @@ class RunalyzePluginStat_Statistiken extends PluginStat {
 
 		$Request = DB::getInstance()->query($Query);
 
-		$IsStreak = true;
+		$IsStreak = $Request->rowCount() > 0;
 		$FirstDay = true;
 		$NumDays  = 0;
 		$LastTime = time();

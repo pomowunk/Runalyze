@@ -1,13 +1,13 @@
 <?php
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
+use App\Entity\Account;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Psr\Log\LoggerInterface;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * SwitchUserListener allows a user to impersonate another one temporarily
@@ -28,7 +28,7 @@ use Symfony\Component\Security\Http\Firewall\ListenerInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SwitchUserListener implements ListenerInterface
+class SwitchUserListener
 {
     private $tokenStorage;
     private $provider;
@@ -64,7 +64,7 @@ class SwitchUserListener implements ListenerInterface
      *
      * @throws \LogicException if switching to a user failed
      */
-    public function handle(GetResponseEvent $event)
+    public function __invoke(RequestEvent $event)
     {
         $request = $event->getRequest();
 

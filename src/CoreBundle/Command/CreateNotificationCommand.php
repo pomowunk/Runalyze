@@ -2,32 +2,27 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
+use App\Entity\Account;
+use App\Entity\Notification;
+use App\Repository\AccountRepository;
+use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Connection;
 use Runalyze\Bundle\CoreBundle\Component\Notifications\Message\TemplateBasedMessage;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
-use Runalyze\Bundle\CoreBundle\Entity\Notification;
-use Runalyze\Bundle\CoreBundle\Repository\NotificationRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class CreateNotificationCommand extends ContainerAwareCommand
+class CreateNotificationCommand extends Command
 {
-    /** @var AccountRepository */
-    protected $accountRepository;
+    protected static $defaultName = 'runalyze:notifications:create';
 
-    /** @var Connection */
-    protected $connection;
-
-    /** @var NotificationRepository */
-    protected $notificationRepository;
-    
-    /** @var string */
-    protected $databasePrefix;
+    protected AccountRepository $accountRepository;
+    protected Connection $connection;
+    protected NotificationRepository $notificationRepository;
+    protected string $databasePrefix;
 
     public function __construct(
         AccountRepository $accountRepository,
@@ -46,7 +41,6 @@ class CreateNotificationCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:notifications:create')
             ->setDescription('Create global notifications')
             ->addArgument('template', InputArgument::REQUIRED, 'Template file')
             ->addOption('lang', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Languages to select accounts')
@@ -61,13 +55,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->validateInput($input, $output)) {
             return 1;
@@ -78,7 +66,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
             $question = new ConfirmationQuestion('Continue with this action? (y/n)', false);
 
             if (!$helper->ask($input, $output, $question)) {
-                return;
+                return 0;
             }
         }
 
@@ -101,18 +89,13 @@ class CreateNotificationCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>%u notifications have been created.</info>', $num));
         $output->writeln('');
 
-        return null;
+        return 0;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return bool
-     */
-    protected function validateInput(InputInterface $input, OutputInterface $output)
+    protected function validateInput(InputInterface $input, OutputInterface $output): bool
     {
         return (
-            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template must exist in /data/views/notifications/.') &&
+            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template not found.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('lang')), $output, 'Language keys must be alphabetic strings.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('exclude-lang')), $output, 'Language keys to exclude must be alphabetic strings.') &&
             $this->checkValidation($this->validateAccountIds($input->getOption('account')), $output, 'Account IDs must be integers.') &&
@@ -120,13 +103,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
         );
     }
 
-    /**
-     * @param bool $success
-     * @param OutputInterface $output
-     * @param string $messageOnError
-     * @return bool
-     */
-    protected function checkValidation($success, OutputInterface $output, $messageOnError)
+    protected function checkValidation(bool $success, OutputInterface $output, string $messageOnError): bool
     {
         if (!$success) {
             $output->writeln(sprintf('<error>Invalid input: %s</error>', $messageOnError));
@@ -138,14 +115,10 @@ class CreateNotificationCommand extends ContainerAwareCommand
         return true;
     }
 
-    /**
-     * @param string $templateName
-     * @return bool
-     */
-    protected function validateTemplate($templateName)
+    protected function validateTemplate(string $templatePath): bool
     {
         try {
-            new TemplateBasedMessage($templateName);
+            new TemplateBasedMessage($templatePath);
         } catch (\InvalidArgumentException $e) {
             return false;
         }
@@ -153,11 +126,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
         return true;
     }
 
-    /**
-     * @param array $lang
-     * @return bool
-     */
-    protected function validateLanguage(array $lang)
+    protected function validateLanguage(array $lang): bool
     {
         return array_reduce($lang,
             function ($state, $value) {
@@ -166,11 +135,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
         );
     }
 
-    /**
-     * @param array $accountIds
-     * @return bool
-     */
-    protected function validateAccountIds(array $accountIds)
+    protected function validateAccountIds(array $accountIds): bool
     {
         return array_reduce($accountIds,
             function ($state, $value) {
@@ -179,21 +144,12 @@ class CreateNotificationCommand extends ContainerAwareCommand
         );
     }
 
-    /**
-     * @param null|string $lifetime
-     * @return bool
-     */
-    protected function validateLifetime($lifetime)
+    protected function validateLifetime(string $lifetime): bool
     {
         return (null === $lifetime || ctype_digit($lifetime));
     }
 
-    /**
-     * @param string $template
-     * @param int|null $lifetime [days]
-     * @return Notification
-     */
-    protected function createNotification($template, $lifetime)
+    protected function createNotification(string $template, int $lifetime = null): Notification
     {
         if (null !== $lifetime) {
             $lifetime = (int)$lifetime;
@@ -205,7 +161,7 @@ class CreateNotificationCommand extends ContainerAwareCommand
         );
     }
 
-    protected function insertSingleNotifications(Notification $notification, array $accountIds)
+    protected function insertSingleNotifications(Notification $notification, array $accountIds): int
     {
         $num = 0;
 
@@ -224,25 +180,15 @@ class CreateNotificationCommand extends ContainerAwareCommand
         return $num;
     }
 
-    /**
-     * @param Notification $notification
-     * @param array $lang
-     * @param array $excludeLang
-     * @param mixed $lastActionBefore
-     * @param mixed $lastActionAfter
-     * @param mixed $registrationBefore
-     * @param mixed $registrationAfter
-     * @return int number of created notifications
-     */
     protected function insertNotificationsWithSubquery(
         Notification $notification,
         array $lang,
         array $excludeLang,
-        $lastActionBefore,
-        $lastActionAfter,
-        $registrationBefore,
-        $registrationAfter
-    )
+        mixed $lastActionBefore,
+        mixed $lastActionAfter,
+        mixed $registrationBefore,
+        mixed $registrationAfter
+    ): int
     {
         $accountWhere = $this->getWhereToFindRelevantAccounts($lang, $excludeLang, $lastActionBefore, $lastActionAfter, $registrationBefore, $registrationAfter);
 
@@ -259,23 +205,14 @@ class CreateNotificationCommand extends ContainerAwareCommand
         ]);
     }
 
-    /**
-     * @param array $lang
-     * @param array $excludeLang
-     * @param mixed $lastActionBefore
-     * @param mixed $lastActionAfter
-     * @param mixed $registrationBefore
-     * @param mixed $registrationAfter
-     * @return string
-     */
     protected function getWhereToFindRelevantAccounts(
         array $lang,
         array $excludeLang,
-        $lastActionBefore,
-        $lastActionAfter,
-        $registrationBefore,
-        $registrationAfter
-    )
+        mixed $lastActionBefore,
+        mixed $lastActionAfter,
+        mixed $registrationBefore,
+        mixed $registrationAfter
+    ): string
     {
         $whereCondition = [];
         $exclude = false;

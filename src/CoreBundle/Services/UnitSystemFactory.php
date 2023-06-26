@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
+use App\Entity\Account;
 use Runalyze\Bundle\CoreBundle\Services\Configuration\ConfigurationManager;
 
 class UnitSystemFactory

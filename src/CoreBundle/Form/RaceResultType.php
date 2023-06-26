@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form;
 
-use Runalyze\Bundle\CoreBundle\Entity\Raceresult;
+use App\Entity\Raceresult;
 use Runalyze\Bundle\CoreBundle\Form\Type\DistanceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

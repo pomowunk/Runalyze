@@ -2,11 +2,11 @@
 
 namespace Runalyze\Bundle\CoreBundle\EventListener;
 
+use App\Entity\Account;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
 
 class AccountLastActionListener
 {

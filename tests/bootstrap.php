@@ -4,6 +4,9 @@
  * @author Hannes Christiansen
  * @package Runalyze\PHPUnit
  */
+
+use App\Kernel;
+
 //ini_set('include_path', ini_get('include_path').PATH_SEPARATOR.dirname(__FILE__).'/../../../php/PEAR');
 
 error_reporting(E_ALL);
@@ -16,49 +19,49 @@ if (!defined('FRONTEND_PATH'))
 
 define('TESTS_ROOT', __DIR__);
 
-require_once FRONTEND_PATH.'../app/autoload.php';
+require_once FRONTEND_PATH.'../config/bootstrap.php';
 
 require_once FRONTEND_PATH.'system/define.consts.php';
 
 date_default_timezone_set('Europe/Berlin');
 
-if (!defined('NL'))
-	define('NL', "\n");
-
-if (!defined('NBSP'))
-	define('NBSP', '&nbsp;');
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel->boot();
+$container = $kernel->getContainer();
 
 if (!defined('PREFIX'))
-	define('PREFIX', 'runalyze_');
+	define('PREFIX', $container->getParameter('app.database_prefix'));
 
 if (!defined('PERL_PATH'))
-	define('PERL_PATH', '/usr/bin/perl');
+	define('PERL_PATH', $container->getParameter('app.perl_path'));
 
 if (!defined('TTBIN_PATH'))
-	define('TTBIN_PATH', FRONTEND_PATH.'../call/perl/ttbincnv');
+	define('TTBIN_PATH', FRONTEND_PATH.$container->getParameter('app.ttbin_path'));
 
 if (!defined('DATA_DIRECTORY'))
-    define('DATA_DIRECTORY', FRONTEND_PATH.'../data');
-
-if (!defined('GEONAMES_USERNAME'))
-	define('GEONAMES_USERNAME', 'runalyze');
+    define('DATA_DIRECTORY', $container->getParameter('app.data_directory'));
 
 if (!defined('SQLITE_MOD_SPATIALITE'))
-	define('SQLITE_MOD_SPATIALITE', 'mod_spatialite.so');
-
-if (!defined('DAY_IN_S'))
-	define('DAY_IN_S', 86400);
+	define('SQLITE_MOD_SPATIALITE', $container->getParameter('app.sqlite_mod_spatialite'));
 
 $_SERVER['REQUEST_URI'] = '/runalyze/index.php';
 $_SERVER['SCRIPT_NAME'] = '/runalyze/index.php';
 
 // Load and clean database
-DB::connect('db', '3306', 'root', 'password', 'runalyze_test');
+DB::connect(
+	$database_host = $container->getParameter('app.database_host'),
+	$database_port = $container->getParameter('app.database_port'),
+	$database_user = $container->getParameter('app.database_user'),
+	$database_password = $container->getParameter('app.database_password'),
+	$database_name = 'runalyze_test_old' //$container->getParameter('app.database_name')
+);
 DB::getInstance()->exec('SET GLOBAL sql_mode="TRADITIONAL"');
-DB::getInstance()->exec('DELETE FROM `runalyze_account`');
-DB::getInstance()->exec('INSERT INTO `runalyze_account` (`id`,`username`,`mail`) VALUES(1, "test", "test@test.com")');
-DB::getInstance()->exec('INSERT INTO `runalyze_account` (`username`,`mail`) VALUES("zero", "zero@test.com")');
-DB::getInstance()->exec('UPDATE `runalyze_account` SET `id`=0 WHERE `username`="zero"');
+DB::getInstance()->exec('SET FOREIGN_KEY_CHECKS=0');
+DB::getInstance()->exec('DELETE FROM `'.PREFIX.'account`');
+DB::getInstance()->exec('SET FOREIGN_KEY_CHECKS=1');
+DB::getInstance()->exec('INSERT INTO `'.PREFIX.'account` (`id`,`username`,`mail`,`password`,`salt`) VALUES(1, "test", "test@test.com","","")');
+DB::getInstance()->exec('INSERT INTO `'.PREFIX.'account` (`username`,`mail`,`password`,`salt`) VALUES("zero", "zero@test.com","","")');
+DB::getInstance()->exec('UPDATE `'.PREFIX.'account` SET `id`=0 WHERE `username`="zero"');
 
 // Login
 SessionAccountHandler::setAccount(array(
@@ -71,7 +74,7 @@ SessionAccountHandler::setAccount(array(
 
 $runalyze_test_tz_lookup = true;
 try {
-    $lookup = new \Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup(TESTS_ROOT.'/../data/timezone.sqlite', 'mod_spatialite.so');
+    $lookup = new \Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookup(DATA_DIRECTORY.'/timezone.sqlite', SQLITE_MOD_SPATIALITE);
     $lookup->getTimezoneForCoordinate(13.41, 52.52);
 } catch (\Runalyze\Bundle\CoreBundle\Services\Import\TimezoneLookupException $e) {
 	$runalyze_test_tz_lookup = false;
@@ -123,8 +126,30 @@ Helper::Unknown('');
 require_once FRONTEND_PATH.'../tests/fake/FakeContext.php';
 
 // Add doctrine types (required for test cases that do not use the kernel)
-\Doctrine\DBAL\Types\Type::addType(\Runalyze\Bundle\CoreBundle\Doctrine\Types\TinyIntType::TINYINT, \Runalyze\Bundle\CoreBundle\Doctrine\Types\TinyIntType::class);
+try {
+	\Doctrine\DBAL\Types\Type::addType(\Runalyze\Bundle\CoreBundle\Doctrine\Types\TinyIntType::TINYINT, \Runalyze\Bundle\CoreBundle\Doctrine\Types\TinyIntType::class);
+} catch (\Throwable $th) {
+	error_log("'TinyIntType' doctrine type was already registered.");
+}
+try {
 \Doctrine\DBAL\Types\Type::addType(\Runalyze\Bundle\CoreBundle\Doctrine\Types\PipeDelimitedArray::PIPE_ARRAY, \Runalyze\Bundle\CoreBundle\Doctrine\Types\PipeDelimitedArray::class);
+} catch (\Throwable $th) {
+	error_log("'PipeDelimitedArray' doctrine type was already registered.");
+}
+try {
 \Doctrine\DBAL\Types\Type::addType(\Runalyze\Bundle\CoreBundle\Doctrine\Types\GeohashArray::GEOHASH_ARRAY, \Runalyze\Bundle\CoreBundle\Doctrine\Types\GeohashArray::class);
+} catch (\Throwable $th) {
+	error_log("'GeohashArray' doctrine type was already registered.");
+}
+try {
 \Doctrine\DBAL\Types\Type::addType(\Runalyze\Bundle\CoreBundle\Doctrine\Types\RunalyzePauseArray::RUNALYZE_PAUSE_ARRAY, \Runalyze\Bundle\CoreBundle\Doctrine\Types\RunalyzePauseArray::class);
+} catch (\Throwable $th) {
+	error_log("'RunalyzePauseArray' doctrine type was already registered.");
+}
+try {
 \Doctrine\DBAL\Types\Type::addType(\Runalyze\Bundle\CoreBundle\Doctrine\Types\RunalyzeRoundArray::RUNALYZE_ROUND_ARRAY, \Runalyze\Bundle\CoreBundle\Doctrine\Types\RunalyzeRoundArray::class);
+} catch (\Throwable $th) {
+	error_log("'RunalyzeRoundArray' doctrine type was already registered.");
+}
+
+$kernel->shutdown();

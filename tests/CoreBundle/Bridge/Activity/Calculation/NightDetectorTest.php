@@ -2,12 +2,12 @@
 
 namespace Runalyze\Bundle\CoreBundle\Tests\Bridge\Activity\Calculation;
 
+use App\Entity\Route;
+use App\Entity\Training;
 use PHPUnit\Framework\TestCase;
 use League\Geotools\Coordinate\Coordinate;
 use League\Geotools\Geohash\Geohash;
 use Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation\NightDetector;
-use Runalyze\Bundle\CoreBundle\Entity\Route;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
 use Runalyze\Util\LocalTime;
 
 class NightDetectorTest extends TestCase
@@ -20,6 +20,8 @@ class NightDetectorTest extends TestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('Europe/Berlin');
+
         $this->Activity = new Training();
         $this->Activity->setRoute(new Route());
         $this->Detector = new NightDetector();

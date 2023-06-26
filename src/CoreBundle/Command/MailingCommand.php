@@ -2,37 +2,28 @@
 
 namespace Runalyze\Bundle\CoreBundle\Command;
 
-use Doctrine\ORM\QueryBuilder;
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Runalyze\Bundle\CoreBundle\Repository\AccountRepository;
+use App\Entity\Account;
+use App\Repository\AccountRepository;
 use Runalyze\Bundle\CoreBundle\Services\AccountMailer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 
-class MailingCommand extends ContainerAwareCommand
+class MailingCommand extends Command
 {
-    /** @var string */
-    protected $customMailDirectory = '/mail/custom/';
+    protected static $defaultName = 'runalyze:mails:send';
 
-    /** @var AccountMailer */
-    protected $accountMailer;
+    protected AccountMailer $accountMailer;
+    protected AccountRepository $accountRepository;
 
-    /** @var AccountRepository */
-    protected $accountRepository;
-
-    /** @var string */
-    protected $dataDirectory;
-
-    public function __construct(AccountMailer $accountMailer, AccountRepository $accountRepository, string $dataDirectory)
+    public function __construct(AccountMailer $accountMailer, AccountRepository $accountRepository)
     {
         $this->accountMailer = $accountMailer;
         $this->accountRepository = $accountRepository;
-        $this->dataDirectory = $dataDirectory;
 
         parent::__construct();
     }
@@ -41,8 +32,7 @@ class MailingCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('runalyze:mails:send')
-            ->setDescription('Send out a mails to users with custom templates in data/vies/mail/custom')
+            ->setDescription('Send out a mails to users with custom templates')
             ->addArgument('template', InputArgument::REQUIRED, 'Template file')
             ->addOption('subject', null, InputOption::VALUE_REQUIRED, 'Mail subject')
             ->addOption('lang', null, InputOption::VALUE_REQUIRED, 'Languages to select accounts')
@@ -56,13 +46,7 @@ class MailingCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return null|int null or 0 if everything went fine, or an error code
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->validateInput($input, $output)) {
             return 1;
@@ -76,24 +60,21 @@ class MailingCommand extends ContainerAwareCommand
             $question = new ConfirmationQuestion('Continue with this action? (y/n)', false);
 
             if (!$helper->ask($input, $output, $question)) {
-                return;
+                return 0;
             }
         }
         foreach($accounts as $account) {
             /** @var Account $account */
-            $this->accountMailer->sendMailTo($account, $input->getOption('subject'), $this->customMailDirectory . $input->getArgument('template'), ['account' => $account]);
+            $this->accountMailer->sendMailTo($account, $input->getOption('subject'), $input->getArgument('template'), ['account' => $account]);
         }
         $output->writeln(sprintf('<info>%u mail(s) have been sent.</info>', count($accounts)));
         $output->writeln('');
 
-        return null;
+        return 0;
     }
 
-    /**
-     * @param InputInterface $input
-     * @return array
-     */
-    private function buildQuery(InputInterface $input) {
+    private function buildQuery(InputInterface $input): array
+    {
         $query = $this->accountRepository->createQueryBuilder('a');
         $exclude = false;
 
@@ -133,28 +114,17 @@ class MailingCommand extends ContainerAwareCommand
 
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return bool
-     */
-    protected function validateInput(InputInterface $input, OutputInterface $output)
+    protected function validateInput(InputInterface $input, OutputInterface $output): bool
     {
         return (
-            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template must exist in /data/views/mail/custom.') &&
+            $this->checkValidation($this->validateTemplate($input->getArgument('template')), $output, 'Template not found.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('lang')), $output, 'Language keys must be alphabetic strings.') &&
             $this->checkValidation($this->validateLanguage($input->getOption('exclude-lang')), $output, 'Language keys to exclude must be alphabetic strings.') &&
             $this->checkValidation($this->validateAccountIds($input->getOption('account')), $output, 'Account IDs must be integers.')
         );
     }
 
-    /**
-     * @param bool $success
-     * @param OutputInterface $output
-     * @param string $messageOnError
-     * @return bool
-     */
-    protected function checkValidation($success, OutputInterface $output, $messageOnError)
+    protected function checkValidation(bool $success, OutputInterface $output, string $messageOnError): bool
     {
         if (!$success) {
             $output->writeln(sprintf('<error>Invalid input: %s</error>', $messageOnError));
@@ -166,21 +136,12 @@ class MailingCommand extends ContainerAwareCommand
         return true;
     }
 
-    /**
-     * @param string $templateName
-     * @return bool
-     */
-    protected function validateTemplate($templateName)
+    protected function validateTemplate(string $templatePath): bool
     {
-        $source = $this->dataDirectory.'/views'.$this->customMailDirectory.$templateName;
-        return (new Filesystem())->exists($source);
+        return (new Filesystem())->exists($templatePath);
     }
 
-    /**
-     * @param array $lang
-     * @return bool
-     */
-    protected function validateLanguage(array $lang)
+    protected function validateLanguage(array $lang): bool
     {
         return array_reduce($lang,
             function ($state, $value) {
@@ -189,11 +150,7 @@ class MailingCommand extends ContainerAwareCommand
         );
     }
 
-    /**
-     * @param array $accountIds
-     * @return bool
-     */
-    protected function validateAccountIds(array $accountIds)
+    protected function validateAccountIds(array $accountIds): bool
     {
         return array_reduce($accountIds,
             function ($state, $value) {
@@ -202,11 +159,7 @@ class MailingCommand extends ContainerAwareCommand
         );
     }
 
-    /**
-     * @param null|string $lifetime
-     * @return bool
-     */
-    protected function validateLifetime($lifetime)
+    protected function validateLifetime(string $lifetime = null): bool
     {
         return (null === $lifetime || ctype_digit($lifetime));
     }

@@ -44,7 +44,7 @@ class NightDetector
         $isAfterSunset = $timestamp > date_sunset($timestamp, SUNFUNCS_RET_TIMESTAMP, (float)$coordinate->getLatitude(), (float)$coordinate->getLongitude(), self::ZENITH);
         $isBeforeSunrise = $timestamp < date_sunrise($timestamp, SUNFUNCS_RET_TIMESTAMP, (float)$coordinate->getLatitude(), (float)$coordinate->getLongitude(), self::ZENITH);
 
-        $this->Value = $isAfterSunset || $isBeforeSunrise ? 1 : 0;
+        $this->Value = ($isAfterSunset || $isBeforeSunrise) ? 1 : 0;
 
         return $this;
     }

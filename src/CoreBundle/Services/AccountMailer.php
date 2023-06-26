@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Services;
 
-use Runalyze\Bundle\CoreBundle\Entity\Account;
-use Symfony\Component\Translation\TranslatorInterface;
+use App\Entity\Account;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class AccountMailer

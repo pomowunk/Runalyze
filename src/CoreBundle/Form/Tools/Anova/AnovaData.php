@@ -2,9 +2,9 @@
 
 namespace Runalyze\Bundle\CoreBundle\Form\Tools\Anova;
 
+use App\Entity\Sport;
+use App\Entity\Type;
 use DateTime;
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Type;
 
 class AnovaData
 {

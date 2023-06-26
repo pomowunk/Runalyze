@@ -2,8 +2,8 @@
 
 namespace Runalyze\Bundle\CoreBundle\Component\Activity;
 
-use Runalyze\Bundle\CoreBundle\Entity\Sport;
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Sport;
+use App\Entity\Training;
 
 class ActivityPreview
 {

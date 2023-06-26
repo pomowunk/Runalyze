@@ -1,0 +1,16 @@
+{% extends "account/activate/base.html.twig" %}
+
+{% block messages %}
+    <p class="info">
+        {% if username|default(null) %}
+        {% trans with {'%username%': username}%}Hi %username%{% endtrans %}<br>
+        {% endif %}
+        {% if alreadyActivated|default(null) %}
+            {% trans %}Your account has already been activated.{% endtrans %}
+        {% else %}
+            {% trans %}Your account has been activated.{% endtrans %}
+        {% endif %}
+        <br>
+        {% trans %}You can now use Runalyze.{% endtrans %}
+    </p>
+{% endblock %}

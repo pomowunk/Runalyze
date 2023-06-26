@@ -2,7 +2,7 @@
 
 namespace Runalyze\Bundle\CoreBundle\Bridge\Activity\Calculation;
 
-use Runalyze\Bundle\CoreBundle\Entity\Training;
+use App\Entity\Training;
 use Runalyze\Calculation\Power\CyclingPowerCalculator;
 use Runalyze\Calculation\Power\RunningPowerCalculator;
 use Runalyze\Model\Route;

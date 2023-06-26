@@ -4,6 +4,7 @@
  * @package Runalyze\Plot
  */
 
+use Runalyze\Parameter\Application\WeekStart;
 use Runalyze\Util\Time;
 use Runalyze\Util\LocalTime;
 
@@ -12,14 +13,8 @@ use Runalyze\Util\LocalTime;
  * @package Runalyze\Plot
  */
 class PlotWeekSumData extends PlotSumData {
-	/**
-	 * @var \Runalyze\Parameter\Application\WeekStart
-	 */
-	protected $WeekStart;
+	protected WeekStart $WeekStart;
 
-	/**
-	 * Constructor
-	 */
 	public function __construct() {
 		$this->timerStart = 1;
 		$this->WeekStart = Runalyze\Configuration::General()->weekStart();
@@ -39,27 +34,15 @@ class PlotWeekSumData extends PlotSumData {
 		parent::__construct();
 	}
 
-	/**
-	 * Get CSS id
-	 * @return string
-	 */
-	protected function getCSSid() {
+	protected function getCSSid(): string {
 		return 'weekKM'.$this->Year.'_'.$this->Sport->id();
 	}
 
-	/**
-	 * Get title
-	 * @return string
-	 */
-	protected function getTitle() {
+	protected function getTitle(): string {
 		return __('Weekly chart:');
 	}
 
-	/**
-	 * Get X labels
-	 * @return array
-	 */
-	protected function getXLabels() {
+	protected function getXLabels(): array {
 		$weeks = array();
 		$add = ($this->Year == parent::LAST_6_MONTHS || $this->Year == parent::LAST_12_MONTHS) ? 0 : $this->WeekStart->phpWeek() - $this->timerEnd;
 		$yearDiff = $add == 0 ? 0 : (int)date('Y') - (int)$this->Year;
@@ -80,9 +63,8 @@ class PlotWeekSumData extends PlotSumData {
 
 	/**
 	 * Timer table for query
-	 * @return string
 	 */
-	protected function timer() {
+	protected function timer(): string {
 		if ($this->Year == parent::LAST_6_MONTHS || $this->Year == parent::LAST_12_MONTHS) {
 			return '(('.$this->WeekStart->mysqlWeek('FROM_UNIXTIME(`time`)').' + '.$this->timerEnd.' - '.$this->WeekStart->phpWeek().' - 1)%'.$this->timerEnd.' + 1)';
 		}
@@ -90,7 +72,7 @@ class PlotWeekSumData extends PlotSumData {
 		return $this->WeekStart->mysqlWeek('FROM_UNIXTIME(`time`)');
 	}
 
-    protected function whereDate() {
+    protected function whereDate(): string {
         if (is_numeric($this->Year)) {
             $dateStart = (new LocalTime())->setISODate((int)$this->Year, 1, 1 + $this->WeekStart->differenceToMondayInDays())->setTime(0, 0, 0)->getTimestamp();
             $dateEnd = (new LocalTime())->setISODate((int)$this->Year + 1, 0, 7 + $this->WeekStart->differenceToMondayInDays())->setTime(23, 59, 59)->getTimestamp();
@@ -101,24 +83,15 @@ class PlotWeekSumData extends PlotSumData {
         return parent::whereDate();
     }
 
-	/**
-	 * @return int
-	 */
-	protected function beginningOfLast6Months() {
+	protected function beginningOfLast6Months(): int {
 		return $this->beginningOfTimerange();
 	}
 
-	/**
-	 * @return int
-	 */
-	protected function beginningOfLast12Months() {
+	protected function beginningOfLast12Months(): int {
 		return $this->beginningOfTimerange();
 	}
 
-	/**
-	 * @return int
-	 */
-	protected function beginningOfTimerange() {
+	protected function beginningOfTimerange(): int {
 		if ($this->WeekStart->isSunday() && date('w') != 0) {
 			return LocalTime::fromString($this->WeekStart->firstDayOfWeekForStrtotime()." -".$this->timerEnd." weeks 00:00")->getTimestamp();
 		}
@@ -126,10 +99,7 @@ class PlotWeekSumData extends PlotSumData {
 		return LocalTime::fromString($this->WeekStart->firstDayOfWeekForStrtotime()." -".($this->timerEnd - 1)." weeks 00:00")->getTimestamp();
 	}
 
-	/**
-	 * @return float
-	 */
-	protected function factorForWeekKm() {
+	protected function factorForWeekKm(): float {
 		return 1;
 	}
 }

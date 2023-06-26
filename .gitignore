@@ -6,36 +6,35 @@
 php.ini
 
 #Runalyze
-web/assets/v2.x/img/backgrounds/My-*
-data/sessions/sess*
-data/timezone.sqlite
+/public/assets/v2.x/img/backgrounds/My-*
 *.mo
-inc/locale/*.po
-web/app_dev.php
+/inc/locale/*.po
 /.htaccess
 
-#config
-app/config/config.yml
-app/config/config_prod.yml
-app/config/config_dev.yml
-app/config/config_test.yml
-app/config/config_test_empty.yml
-
-#composer
-composer.phar
-/vendor/
-
 #assets
-node_modules/
-web/assets/css/*.css
-web/assets/js/*.js
-web/assets/js/*.map
-web/vendor/
-npm-debug.log
+/node_modules/
+/public/assets/css/*.css
+/public/assets/js/*.js
+/public/assets/js/*.map
+/public/vendor/
+/npm-debug.log
 
-#symfony
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
 /var/
-!/var/cache/.gitkeep
-!/var/logs/.gitkeep
-
-!.gitkeep
+/vendor/
+###< symfony/framework-bundle ###

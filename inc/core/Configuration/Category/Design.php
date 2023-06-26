@@ -28,15 +28,15 @@ class Design extends \Runalyze\Configuration\Category {
 	 * Create handles
 	 */
 	protected function createHandles() {
-		$this->createHandle('DESIGN_BG_FILE', new SelectFile('web/assets/v2.x/img/backgrounds/runalyze.jpg', array(
-			'folder' => 'web/assets/v2.x/img/backgrounds/',
+		$this->createHandle('DESIGN_BG_FILE', new SelectFile('public/assets/v2.x/img/backgrounds/runalyze.jpg', array(
+			'folder' => 'public/assets/v2.x/img/backgrounds/',
 			'extensions' => array('jpg', 'png', 'gif', 'jpeg', 'svg', 'tiff', 'bmp')
 		)));
 	}
 
 	/**
 	 * Background image
-	 * @return string path without leading 'web/'
+	 * @return string path without leading 'public/'
 	 */
 	public function backgroundImage() {
 		return 'assets/v2.x/img/backgrounds/'.basename($this->get('DESIGN_BG_FILE'));

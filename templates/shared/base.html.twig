@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+
+{% set body_attributes = (body_attributes|default(' id="shared"')) %}
+
+{% block body %}
+    {% if not app.request.xmlHttpRequest %}
+        {{ include('_include/js_init.html.twig', {'sharedView': true}) }}
+
+        <div id="flot-loader"></div>
+
+        <div id="headline">
+            <a class="tab logo b" href="https://www.runalyze.com/" title="Runalyze" target="_blank">RUNALYZE</a>
+            {% if username|default(null) %}
+                <div class="headline-menu right">
+                    <div class="submenu-label">
+                        <i class="fa fa-fw fa-lg fa-user"></i>
+                {% if hasPublicList|default(null) %}
+                    <a href="{{ url('shared-athlete', {'username': username}) }}">{% trans %}Athlete page of %username%{% endtrans %}</a>
+                {% else %}
+                    {% trans %}Activity view of %username%{% endtrans %}
+                {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% if not app.request.xmlHttpRequest %}
+        <br class="clear">
+    {% endif %}
+{% endblock %}

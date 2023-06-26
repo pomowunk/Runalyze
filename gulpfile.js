@@ -4,12 +4,12 @@ var del = require('del');
 var gulp = require('gulp');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
+var execSync = require('child_process').execSync;
 var less = require('gulp-less');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var shell = require('gulp-shell');
-var phpunit = require('gulp-phpunit');
 var config = require('./resources.json');
 
 function clean(done) {
@@ -51,37 +51,44 @@ function scripts() {
 }
 scripts.description = 'Combine and minify javascript files.';
 
-function tests() {
-    return gulp.src('./tests/config.xml')
-        .pipe(phpunit('./vendor/bin/phpunit', { bootstrap: './tests/bootstrap.php', statusLine: false }));
-}
-tests.description = 'Run phpunit.';
-
 function translate() {
-  return gulp.src('./vendor/runalyze/translations/gettext/*/*/*.po', {read: false})
-    .pipe(shell([
-        'cp <%= file.path %> ./vendor/runalyze/translations/gettext', // Needed for symfony
-    ]))
-    .pipe(shell([
-        'msgfmt -v <%= file.path %> -o <%= target(file.path) %>'
-    ], {
-        templateData: {
-            target: function (f) {
-		return f.replace(/messages\.(.*)\.po$/, 'runalyze.mo')
-            }
-        }
-    }))
+    var poDomain = 'runalyze';
+    execSync(`rm -rf translations/gettext/ && mkdir translations/gettext`);
+    return gulp.src(`./translations/${poDomain}.*.po`)
+        .pipe(shell([
+            'mkdir translations/gettext/<%= extract_locale(file.path) %>',
+            'mkdir translations/gettext/<%= extract_locale(file.path) %>/LC_MESSAGES',
+            `msgfmt -v <%= file.path %> -o translations/gettext/<%= extract_locale(file.path) %>/LC_MESSAGES/${poDomain}.mo`
+        ], {
+            templateData: { 
+                extract_locale: (f) => f.replace(new RegExp(`^(?:.*\/)?${poDomain}\\.([a-z]{2}_[A-Z]{2})\\.po$`), "$1")
+            },
+            verbose: true
+        }));
 }
 translate.description = 'Compile translation files.';
+
+function extractTranslations() {
+    var poDomain = 'runalyze';
+    var poTemplatePath = `translations/${poDomain}.pot`;
+    execSync(`rm -f ${poTemplatePath} && touch ${poTemplatePath}`);
+    execSync(`find inc -name "*.php" -print0 | xargs -0 xgettext -o ${poTemplatePath} --join-existing --keyword=__ --keyword=_e --keyword=_n --from-code=utf-8`);
+    return gulp.src(`./translations/${poDomain}.*.po`)
+        .pipe(shell([
+            `msgmerge --backup=none -U <%= file.path %> ${poTemplatePath}`
+        ], { verbose: true }));
+}
+extractTranslations.description = 'Extract translatable strings from source files and update translation tables.';
 
 exports.clean = clean;
 exports.styles = styles;
 exports.stylesInstaller = stylesInstaller;
 exports.scripts = scripts;
-exports.tests = tests;
 exports.translate = translate;
+exports.extractTranslations = extractTranslations;
 
 var build = gulp.series(clean, gulp.parallel(styles, stylesInstaller, scripts));
 
 gulp.task('build', build);
 gulp.task('default', gulp.parallel(build, translate));
+gulp.task('updateTranslations', gulp.series(extractTranslations, translate));
